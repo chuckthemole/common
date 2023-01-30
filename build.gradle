@@ -10,11 +10,11 @@ plugins {
     // id 'java-library'
     // id 'visual-studio'
     id 'rumpus'
-    id 'rumpus.library-conventions'
-    id 'maven-publish'
+    id 'rumpus.java-conventions'
+    // id 'maven-publish'
     id 'org.springframework.boot' version '3.0.1'
 	id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.siouan.frontend-jdk11' version '6.0.0'
+    // id 'org.siouan.frontend-jdk11' version '6.0.0'
 }
 
 // https://stackoverflow.com/questions/56861256/gradle-build-failed-main-class-name-has-not-been-configured-and-it-could-not-be
@@ -25,22 +25,13 @@ jar {
     enabled = true
 }
 
-group = 'com.rumpus-common'
-version = '1.0'
-sourceCompatibility = '17'
-
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
-    gradlePluginPortal()
-}
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'org.apache.commons:commons-math3:3.6.1'
+    // api 'org.apache.commons:commons-math3:3.6.1'
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:31.0.1-jre'
+    // implementation 'com.google.guava:guava:31.0.1-jre'
 
     implementation('org.springframework.boot:spring-boot-starter:3.0.1')
     implementation('org.springframework.boot:spring-boot-starter-web:3.0.1') // Enables and configures Spring MVC
@@ -70,40 +61,3 @@ dependencies {
     // JS
     // implementation('com.github.eirslett:frontend-maven-plugin:1.12.1')
 }
-
-testing {
-    suites {
-        // Configure the built-in test suite
-        test {
-            // Use JUnit Jupiter test framework
-            useJUnitJupiter('5.8.2')
-        }
-    }
-}
-
-tasks.withType(Test) { 
-    testLogging {
-        exceptionFormat "full"
-        events "started", "skipped", "passed", "failed"
-        showStandardStreams true
-    }
-}
-
-// publishing {
-//     publications {
-//         create<MavenPublication>("rumpusLibrary") {
-//             groupId = "com.rumpus.common"
-//             artifactId = "library"
-//             version = "1.1"
-
-//             from(components["java"])
-//         }
-//     }
-
-//     repositories {
-//         maven {
-//             name = "myRepo"
-//             url = uri(layout.buildDirectory.dir("repo"))
-//         }
-//     }
-// }
