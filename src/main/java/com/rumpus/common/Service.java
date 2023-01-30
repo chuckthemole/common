@@ -2,9 +2,6 @@ package com.rumpus.common;
 
 import java.util.List;
 
-import com.rumpus.common.ApiDB.ApiDB;
-import com.rumpus.common.ApiDB.IApiDB;
-
 public class Service<T extends Model<T>> extends RumpusObject implements IService<T> {
 
     protected static final String NAME = "rawService";

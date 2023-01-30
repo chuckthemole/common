@@ -1,140 +1,95 @@
 package com.rumpus.common;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import com.rumpus.common.ApiDB.Api;
-import com.rumpus.common.ApiDB.ApiDB;
-import com.rumpus.common.ApiDB.IApi;
-import com.rumpus.common.ApiDB.IApiDB;
 
 public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
 
     private final static String NAME = "rawDao";
-    // protected IApiDB<T, API> apiDB;
-    IApi<T> api;
-    // protected static Map<String, IApiDB<T>> apiNames;
-    // protected static JdbcTemplate jdbcTemplate; // maybe abstract this to allow for other implementations
-    // protected final String apiName;
+    protected IApiDB<T> api;
     protected final String table;
-    protected final String idName;
-    // protected final Mapper<T> mapper;
-    // protected final Function<T, T> add;
 
-    static {
-        // jdbcTemplate = new JdbcTemplate();
-        // apiNames = new HashMap<>();
-    }
-
-    public Dao(IApi<T> api, String table, String idName) {
+    public Dao() {
         super(NAME);
-        this.api = api;
-        // this.mapper = api.mapper;
-        // this.add = add;
-        this.table = table;
-        this.idName = idName;
+        this.api = new ApiDB<>();
+        this.table = NO_NAME;
     }
-
-    // public static int addApiDB(String name, IApiDB<?> apiName) {
-    //     return apiNames.put(name, apiName) == null ? ERROR : SUCCESS;
-    // }
-
-    // @Autowired
-    // public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-    //     Dao.jdbcTemplate = jdbcTemplate;
-    // }
+    public Dao(String table, String name) {
+        super(name);
+        this.api = null;
+        this.table = table;
+    }
+    public Dao(IApiDB<T> api, String table, String name) {
+        super(name);
+        this.api = api;
+        this.table = table;
+    }
 
     @Override
     public boolean remove(int id) {
         LOG.info("Dao::remove()");
-        // // TODO: Check dependencies to delete
-        // StringBuilder sb = new StringBuilder();
-        // sb.append("DELETE FROM ")
-        //     .append(table)
-        //     .append(" WHERE ")
-        //     .append(id)
-        //     .append(" = ?;");
-        // final String sql = sb.toString();
-        // return jdbcTemplate.update(sql, id) > 0;
-        return api.remove(id);    
+        return this.api.isInitialized() ? this.api.remove(id) : false;
+    }
+
+    @Override
+    public boolean removeAll() {
+        LOG.info("Dao::removeAll()");
+        return this.api.isInitialized() ? this.api.removeAll() : false;
     }
 
     @Override
     public T get(int id) {
         LOG.info("Dao::get()");
-        // StringBuilder sb = new StringBuilder();
-        // sb.append("SELECT * FROM ")
-        //     .append(table)
-        //     .append(" WHERE ")
-        //     .append(id)
-        //     .append(" = ?;");
-        // final String sql = sb.toString();
-        // LOG.info(sql);
-        // return jdbcTemplate.queryForObject(sql, mapper, id);
-        return api.get(id);
+        return this.api.isInitialized() ? this.api.get(id) : null;
+    }
+
+    @Override
+    public List<T> get(Map<String, String> constraints) {
+        LOG.info("Dao::get()");
+        return this.api.isInitialized() ? this.api.get(constraints) : null;
     }
 
     @Override
     public List<T> getAll() {
         LOG.info("Dao::getAll()");
-        // StringBuilder sb = new StringBuilder();
-        // sb.append("SELECT * FROM ").append(table).append(";");
-        // final String sql = sb.toString();
-        // LOG.info(sql);
-        // List<T> objects = jdbcTemplate.query(sql, mapper);
-        // return objects;
-        return api.getAll();
+        return this.api.isInitialized() ? this.api.getAll() : null;
     }
 
     @Override
     public T add(T model) {
         LOG.info("Dao::add()");
-        // return add.apply(model);
-        return api.add(model);
-    }
-
-    @Override
-    public String getTable() {
-        return this.table;
-    }
-
-    @Override
-    public Mapper<T> getMapper() {
-        return this.api.getMapper();
-    }
-
-    // @Override
-    // public Function<T, T> getAddFunction() {
-    //     return this.add;
-    // }
-
-    @Override
-    public boolean removeAll() {
-        // LOG.info("Dao::removeAll()");
-        // // TODO: Check dependencies to delete
-        // StringBuilder sb = new StringBuilder();
-        // sb.append("DELETE FROM ")
-        //     .append(table)
-        //     .append(";");
-        // final String sql = sb.toString();
-        // return jdbcTemplate.update(sql) > 0;
-        return false;
+        return this.api.isInitialized() ? this.api.add(model) : null;
     }
 
     @Override
     public T update(T model) {
+        LOG.info("Dao::update()");
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public long countAll(Map<String, Object> params) {
+        LOG.info("Dao::countAll()");
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public String getTable() {
+        LOG.info("Dao::getTable()");
+        return this.table;
+    }
+
+    @Override
+    public Mapper<T> getMapper() {
+        LOG.info("Dao::getMapper()");
+        return this.api.getMapper();
+    }
+
+    @Override
+    public int setApiDB(IApiDB<T> api) {
+        this.api = api;
+        return SUCCESS;
     }
 }

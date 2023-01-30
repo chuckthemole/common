@@ -1,4 +1,4 @@
-package com.rumpus.common.ApiDB;
+package com.rumpus.common;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,10 +11,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-import com.rumpus.common.Mapper;
-import com.rumpus.common.Model;
-
-public class Jdbc<MODEL extends Model<MODEL>> extends Api<MODEL> {
+public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
 
     private final static String API_NAME = "JdbcTemplate";
     protected static JdbcTemplate jdbcTemplate;
@@ -22,7 +19,7 @@ public class Jdbc<MODEL extends Model<MODEL>> extends Api<MODEL> {
         jdbcTemplate = new JdbcTemplate();
     }
 
-    public Jdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
+    public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
         super(API_NAME, table, mapper);
         jdbcTemplate.setDataSource(dataSource);
         // this.mapper = mapper;
@@ -55,6 +52,29 @@ public class Jdbc<MODEL extends Model<MODEL>> extends Api<MODEL> {
         final String sql = sb.toString();
         LOG.info(sql);
         return jdbcTemplate.queryForObject(sql, mapper, id);
+    }
+
+    @Override
+    public List<MODEL> get(Map<String, String> constraints) {
+        LOG.info("Jdbc::get()");
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * FROM ")
+            .append(table)
+            .append(" WHERE ");
+        int count = 0;
+        int size = constraints.size();
+        for(String key : constraints.keySet()) {
+            sb.append(key).append(" = ?");
+            if(count == size) {
+                sb.append(";");
+            } else {
+                sb.append(" AND ");
+            }
+            count++;
+        }
+        final String sql = sb.toString();
+        LOG.info(sql);
+        return jdbcTemplate.query(sql, mapper, constraints.values());
     }
 
     @Override
