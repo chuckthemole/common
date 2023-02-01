@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
 
-@Component
+// @Component
 public class Rumpus {
-    protected IRumpusIO io;
+    protected IRumpusIO io = new RumpusIO();
     protected static final Logger LOG = LoggerFactory.getLogger(Rumpus.class);
 
     public final static Long NO_ID = Long.valueOf(-1);
@@ -23,8 +23,8 @@ public class Rumpus {
     public final static int EMPTY = -2;
     public final static int NOT_INITIALIZED = -10;
 
-    @Autowired
-    public Rumpus() {
-        io = new RumpusIO();
-    }
+    // @Autowired
+    // public Rumpus() {
+    //     io = new RumpusIO();
+    // }
 }
