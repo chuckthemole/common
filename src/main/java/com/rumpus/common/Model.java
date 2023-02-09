@@ -2,6 +2,7 @@ package com.rumpus.common;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -15,6 +16,7 @@ public class Model<T extends RumpusObject> extends RumpusObject implements IMode
     // Ctors
     public Model(String name) {
         super(name);
+        attributeMap = new HashMap<>();
     }
     public Model(String name, Map<String, String> attributeMap) {
         super(name);
