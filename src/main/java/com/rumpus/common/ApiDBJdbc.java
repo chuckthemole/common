@@ -106,6 +106,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         sbSql.deleteCharAt(sbSql.length() - 1);
         sbSql.append(");");
         final String sql = sbSql.toString();
+        LOG.info(sql);
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update((Connection conn) -> {
