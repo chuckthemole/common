@@ -13,15 +13,17 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
 
-    private final static String API_NAME = "JdbcTemplate";
-    protected static JdbcTemplate jdbcTemplate;
-    static {
-        jdbcTemplate = new JdbcTemplate();
-    }
+    private final static String API_NAME = "ApiJdbcTemplate";
+    // protected static JdbcTemplate CommonJdbc.jdbcTemplate;
+    // static {
+    //     CommonJdbc.jdbcTemplate = new JdbcTemplate();
+    // }
+    protected CommonJdbc jdbc;
 
     public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
         super(API_NAME, table, mapper);
-        jdbcTemplate.setDataSource(dataSource);
+        jdbc = new CommonJdbc();
+        jdbc.setDataSource(dataSource);
         // this.mapper = mapper;
         // this.add = add;
     }
@@ -37,7 +39,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
             .append(id)
             .append(" = ?;");
         final String sql = sb.toString();
-        return jdbcTemplate.update(sql, id) > 0;
+        return CommonJdbc.jdbcTemplate.update(sql, id) > 0;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
             .append(" = ?;");
         final String sql = sb.toString();
         LOG.info(sql);
-        return jdbcTemplate.queryForObject(sql, mapper, id);
+        return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         }
         final String sql = sb.toString();
         LOG.info(sql);
-        return jdbcTemplate.query(sql, mapper, constraints.values());
+        return CommonJdbc.jdbcTemplate.query(sql, mapper, constraints.values());
     }
 
     @Override
@@ -84,7 +86,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         sb.append("SELECT * FROM ").append(table).append(";");
         final String sql = sb.toString();
         LOG.info(sql);
-        List<MODEL> objects = jdbcTemplate.query(sql, mapper);
+        List<MODEL> objects = CommonJdbc.jdbcTemplate.query(sql, mapper);
         return objects;
     }
 
@@ -109,7 +111,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         LOG.info(sql);
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update((Connection conn) -> {
+        CommonJdbc.jdbcTemplate.update((Connection conn) -> {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             return model.getStatement().apply(statement);
         }, keyHolder);

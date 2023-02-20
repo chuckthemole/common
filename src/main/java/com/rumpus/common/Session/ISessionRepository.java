@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Session;
 
 import java.util.HashMap;
 import java.util.Map;

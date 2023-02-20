@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Session;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.session.Session;
 import org.springframework.web.server.WebSession;
+
 import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicReference;
 

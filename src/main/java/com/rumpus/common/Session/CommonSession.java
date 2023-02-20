@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Session;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -24,7 +24,7 @@ public class CommonSession implements Session {
     private Duration maxInactiveInterval;
     private boolean isExpired;
 
-    CommonSession() {
+    public CommonSession() {
         this.id = getUniqueId();
         CommonSession.sessionIds.add(this.id);
         this.creationTime = Instant.now();
@@ -33,7 +33,7 @@ public class CommonSession implements Session {
         this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
         this.isExpired = false;
     }
-    CommonSession(Session session) {
+    public CommonSession(Session session) {
         this.id = session.getId();
         CommonSession.sessionIds.add(this.id);
         this.creationTime = session.getCreationTime();
@@ -46,7 +46,7 @@ public class CommonSession implements Session {
         this.maxInactiveInterval = session.getMaxInactiveInterval();
         this.isExpired = session.isExpired();
     }
-    CommonSession(String id, Map<String, String> attributes, Instant creationTime, Instant lastAccesedTime, Duration maxInactiveInterval, boolean isExpired) {
+    public CommonSession(String id, Map<String, String> attributes, Instant creationTime, Instant lastAccesedTime, Duration maxInactiveInterval, boolean isExpired) {
         this.id = id;
         CommonSession.sessionIds.add(id);
         this.attributes = attributes;
