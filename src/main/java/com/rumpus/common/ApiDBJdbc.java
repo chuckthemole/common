@@ -11,6 +11,8 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
+import com.rumpus.common.util.StringUtil;
+
 public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
 
     private final static String API_NAME = "ApiJdbcTemplate";
@@ -43,6 +45,24 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     }
 
     @Override
+    public boolean remove(String id) {
+        LOG.info("Jdbc::remove()");
+        // TODO: Check dependencies to delete
+        StringBuilder sb = new StringBuilder();
+        sb.append("DELETE FROM ")
+            .append(table)
+            .append(" WHERE ");
+        if(StringUtil.isQuoted(id)) {
+            sb.append(id);
+        } else {
+            sb.append("\"").append(id).append("\"");
+        }
+        sb.append(" = ?;");
+        final String sql = sb.toString();
+        return CommonJdbc.jdbcTemplate.update(sql, id) > 0;
+    }
+
+    @Override
     public MODEL get(int id) {
         LOG.info("Jdbc::get()");
         StringBuilder sb = new StringBuilder();
@@ -51,6 +71,24 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
             .append(" WHERE ")
             .append(id)
             .append(" = ?;");
+        final String sql = sb.toString();
+        LOG.info(sql);
+        return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
+    }
+
+    @Override
+    public MODEL get(String id) {
+        LOG.info("Jdbc::get()");
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * FROM ")
+            .append(table)
+            .append(" WHERE ");
+        if(StringUtil.isQuoted(id)) {
+            sb.append(id);
+        } else {
+            sb.append("\"").append(id).append("\"");
+        }
+        sb.append(" = ?;");
         final String sql = sb.toString();
         LOG.info(sql);
         return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
@@ -116,7 +154,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
             return model.getStatement().apply(statement);
         }, keyHolder);
         if(keyHolder.getKey() != null) {
-            model.setId(keyHolder.getKey().longValue());
+            model.setId(keyHolder.getKey().toString());
         } else {
             model.setId(NO_ID);
         }

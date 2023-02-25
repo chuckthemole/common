@@ -1,60 +1,53 @@
 package com.rumpus.common.Session;
 
-import java.util.Map;
-import java.util.UUID;
+import com.rumpus.common.Dao;
 
-import javax.sql.DataSource;
-
-import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.Session;
-import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
-import org.springframework.session.jdbc.config.annotation.SpringSessionDataSource;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.session.SessionRepository;
 
-public class CommonSessionRepository<T extends Session> implements FindByIndexNameSessionRepository<T> {
+public class CommonSessionRepository extends Dao<CommonSession> implements SessionRepository<CommonSession> {
 
-    private FindByIndexNameSessionRepository<T> sessionRepository;
+    private static final String NAME = "CommonSessionRepository";
+    private static final String TABLE = "CommonSession";
 
-    public CommonSessionRepository(FindByIndexNameSessionRepository<T> sessionRepository) {
-        this.sessionRepository = sessionRepository;
+    private SessionEvent event;
+    
+    public CommonSessionRepository() {
+        super(TABLE, NAME);
     }
-
-    // private JdbcIndexedSessionRepository sessionRepository;
-    // public CommonSessionRepository(DataSource ds, TransactionTemplate tt) {
-    //     this.sessionRepository = new JdbcIndexedSessionRepository(null, tt)
-    // }
-
-    @Override
-    public T createSession() {
-        return this.sessionRepository.createSession();
+    public CommonSessionRepository(String table, String name) {
+        super(table, name);
+        this.event = new SessionEvent();
     }
 
     @Override
-    public void save(T session) {
-        this.sessionRepository.save(session);
+    public CommonSession createSession() {
+        LOG.info("CommonSessionRepository::createSession()");
+        CommonSession session = new CommonSession(true);
+        event.create(this, session);
+        return session;
     }
 
     @Override
-    public T findById(String id) {
-        return this.sessionRepository.findById(id);
+    public void save(CommonSession session) {
+        LOG.info("CommonSessionRepository::save()");
+        super.add(session);
+    }
+
+    @Override
+    public CommonSession findById(String id) {
+        LOG.info("CommonSessionRepository::findById()");
+        CommonSession session = super.get(id);
+        if(session == null) {
+            session = new CommonSession(true);
+            session.setId(id);
+        }
+        return session;
     }
 
     @Override
     public void deleteById(String id) {
-        this.sessionRepository.deleteById(id);
+        LOG.info("CommonSessionRepository::deleteById()");
+        this.event.destroy(this, this.findById(id));
+        super.remove(Integer.valueOf(id));
     }
-
-    // TESTING
-    void consume() {
-        T session = this.sessionRepository.createSession();
-        session.setAttribute("test", UUID.randomUUID().toString());
-        this.sessionRepository.save(session);
-    }
-
-    @Override
-    public Map<String, T> findByIndexNameAndIndexValue(String indexName, String indexValue) {
-        return this.sessionRepository.findByIndexNameAndIndexValue(indexName, indexValue);
-    }
-    
 }

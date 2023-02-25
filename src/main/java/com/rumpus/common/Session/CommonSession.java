@@ -2,42 +2,57 @@ package com.rumpus.common.Session;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.session.Session;
 
+import com.rumpus.common.Model;
 import com.rumpus.common.util.Random;
 
-public class CommonSession implements Session {
+import jakarta.servlet.http.HttpSession;
 
+public class CommonSession extends Model<CommonSession> implements Session {
+
+    private static final String NAME = "CommonSession";
     private static final String NO_ID = "-1";
     private static final short ID_LENGTH = 10;
     private static final long DEFAULT_MAX_INACTIVE_INTERVAL = 30;
 
-    private String id;
+    // private String id;
     private static Set<String> sessionIds; // make sure session ids are unique
-    private Map<String, String> attributes;
     private final Instant creationTime;
-    private Instant lastAccesedTime;
+    private Instant lastAccessedTime;
     private Duration maxInactiveInterval;
     private boolean isExpired;
 
-    public CommonSession() {
-        this.id = getUniqueId();
-        CommonSession.sessionIds.add(this.id);
+    static {
+        CommonSession.sessionIds = new HashSet<>();
+    }
+
+    public CommonSession(boolean initialize) {
+        super(NAME);
         this.creationTime = Instant.now();
-        this.lastAccesedTime = Instant.now();
-        this.attributes = new HashMap<>();
-        this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
-        this.isExpired = false;
+        if(initialize) {
+            this.id = getUniqueId();
+            CommonSession.sessionIds.add(this.id);
+            this.lastAccessedTime = Instant.now();
+            this.attributes = new HashMap<>();
+            this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
+            this.isExpired = false;
+        }
     }
     public CommonSession(Session session) {
+        super(NAME);
         this.id = session.getId();
         CommonSession.sessionIds.add(this.id);
         this.creationTime = session.getCreationTime();
-        this.lastAccesedTime = session.getLastAccessedTime();
+        this.lastAccessedTime = session.getLastAccessedTime();
         Set<String> names = session.getAttributeNames();
         this.attributes = new HashMap<>();
         for(String name : names) {
@@ -46,22 +61,111 @@ public class CommonSession implements Session {
         this.maxInactiveInterval = session.getMaxInactiveInterval();
         this.isExpired = session.isExpired();
     }
-    public CommonSession(String id, Map<String, String> attributes, Instant creationTime, Instant lastAccesedTime, Duration maxInactiveInterval, boolean isExpired) {
+    public CommonSession(HttpSession session) {
+        super(NAME);
+        this.id = session.getId();
+        CommonSession.sessionIds.add(this.id);
+
+        // try to parse creation time, if not, set to now()
+        Instant tempCreationTime = Instant.MAX;
+        try {
+            tempCreationTime = Instant.parse(Long.toString(session.getCreationTime()));
+        } catch(DateTimeParseException exception) {
+            LOG.info("Unable to parse creation time for HttpSession.");
+        }
+        if(tempCreationTime == Instant.MAX) {
+            tempCreationTime = Instant.now();
+        }
+        this.creationTime = tempCreationTime;
+
+        // try to parse last access time, if not, set to now()
+        this.lastAccessedTime = Instant.MAX;
+        try {
+            this.lastAccessedTime = Instant.parse(Long.toString(session.getLastAccessedTime()));
+        } catch(DateTimeParseException exception) {
+            LOG.info("Unable to parse last accessed time for HttpSession.");
+        }
+        if(this.lastAccessedTime == Instant.MAX) {
+            this.lastAccessedTime = Instant.now();
+        }
+
+        Set<String> names = new HashSet<>();
+        Iterator<String> itr = session.getAttributeNames().asIterator();
+        while(itr.hasNext()) {
+            names.add(itr.next());
+        }
+
+        this.attributes = new HashMap<>();
+        for(String name : names) {
+            this.attributes.put(name, session.getAttribute(name).toString());
+        }
+
+        // try to parse max inactive interval, if not, set to default
+        this.maxInactiveInterval = Duration.ZERO;
+        try {
+            this.maxInactiveInterval = Duration.parse(Integer.toString(session.getMaxInactiveInterval()));
+        } catch(DateTimeParseException exception) {
+            LOG.info("Unable to parse max inactive interval for HttpSession.");
+        }
+        if(Duration.ZERO.equals(this.maxInactiveInterval)) {
+            this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
+        }
+
+        this.isExpired = Boolean.parseBoolean(session.getAttribute("expired") != null ? session.getAttribute("expired").toString() : "false");
+    }
+    public CommonSession(
+            String id,
+            Map<String, String> attributes,
+            Instant creationTime,
+            Instant lastAccessedTime,
+            Duration maxInactiveInterval,
+            boolean isExpired) {
+        super(NAME);
         this.id = id;
         CommonSession.sessionIds.add(id);
         this.attributes = attributes;
         this.creationTime = creationTime;
-        this.lastAccesedTime = lastAccesedTime;
+        this.lastAccessedTime = lastAccessedTime;
         this.maxInactiveInterval = maxInactiveInterval;
         this.isExpired = isExpired;
     }
-    // public static CommonSession create() {
-    //     return new CommonSession<>();
-    // }
-
-    @Override
-    public String getId() {
-        return this.id;
+    private CommonSession(Instant creationTime) {
+        super(NAME);
+        this.creationTime = creationTime;
+    }
+    public static CommonSession create() {
+        return new CommonSession(true);
+    }
+    public static CommonSession create(String id, Map<String, String> attributes, Instant creationTime, Instant lastAccessedTime, Duration maxInactiveInterval, boolean isExpired) {
+        CommonSession session = new CommonSession(creationTime);
+        session.setId(id);
+        for(Map.Entry<String, String> attribute : attributes.entrySet()) {
+            session.setAttribute(attribute.getKey(), attribute.getValue());
+        }
+        session.setLastAccessedTime(lastAccessedTime);
+        session.setMaxInactiveInterval(maxInactiveInterval);
+        session.setExpired(isExpired);
+        return session;
+    }
+    public static CommonSession createFromMap(Map<String, String> entries) {
+        CommonSession session;
+        if(entries.containsKey("creation_time")) {
+            session = new CommonSession(Instant.parse(entries.get("creation_time")));
+        } else {
+            session = new CommonSession(Instant.now());
+        }
+        for(Map.Entry<String, String> entry : entries.entrySet()) {
+            if(entry.getKey().equals("id")) {
+                session.setId(entry.getValue());
+            } else if(entry.getKey().equals("last_accesed_time")) {
+                session.setLastAccessedTime(Instant.parse(entry.getValue()));
+            } else if(entry.getKey().equals("max_inactive_interval")) {
+                session.setMaxInactiveInterval(Duration.parse(entry.getValue()));
+            } else if(entry.getKey().equals("expired")) {
+                session.setExpired(Boolean.valueOf(entry.getValue()));
+            }
+        }
+        return session;
     }
 
     @Override
@@ -109,12 +213,12 @@ public class CommonSession implements Session {
 
     @Override
     public void setLastAccessedTime(Instant lastAccessedTime) {
-        this.lastAccesedTime = lastAccessedTime;
+        this.lastAccessedTime = lastAccessedTime;
     }
 
     @Override
     public Instant getLastAccessedTime() {
-        return this.lastAccesedTime;
+        return this.lastAccessedTime;
     }
 
     @Override
@@ -130,6 +234,10 @@ public class CommonSession implements Session {
     @Override
     public boolean isExpired() {
         return isExpired;
+    }
+
+    private void setExpired(boolean isExpired) {
+        this.isExpired = isExpired;
     }
     
     private String getUniqueId() {

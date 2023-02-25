@@ -6,7 +6,9 @@ import java.util.Map;
 // TODO have a list of registered ApiDBs
 // Right now the only one is ApiDBJdbc.java
 
-public class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements IApiDB<MODEL> {
+
+// TODO this should be an abstract class with abstract methods. Should be inherited.
+abstract class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements IApiDB<MODEL> {
 
     private static final String NAME = "rawApiDB";
     private boolean initialized;
@@ -43,6 +45,12 @@ public class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements I
 
     @Override
     public MODEL get(int id) {
+        LOG.info("ApiDB::get()");
+        return null;
+    }
+
+    @Override
+    public MODEL get(String id) {
         LOG.info("ApiDB::get()");
         return null;
     }

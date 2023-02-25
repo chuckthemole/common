@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+// TODO: Maybe make this abstract class
 public class CommonJdbc extends RumpusObject {
     
     private final static String NAME = "JdbcTemplate";

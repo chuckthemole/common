@@ -7,8 +7,8 @@ import java.util.function.Function;
 
 public interface IModel<T extends IRumpusObject> extends IRumpusObject {
     int init();
-    Long getId();
-    void setId(Long id);
+    String getId();
+    void setId(String id);
     void map(ResultSet rs);
     void setInitMap(Map<String, String> attributeMap);
     Map<String, String> getAttributes();

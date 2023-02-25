@@ -10,13 +10,13 @@ import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
 
 // @Component
-public class Rumpus {
+abstract public class Rumpus {
     protected IRumpusIO io = new RumpusIO();
     protected static final Logger LOG = LoggerFactory.getLogger(Rumpus.class);
 
-    public final static Long NO_ID = Long.valueOf(-1);
+    public final static String NO_ID = String.valueOf(-1);
 
-    public final static String NO_NAME = "NO_NAME";
+    public final static String NO_NAME = String.valueOf("NO_NAME");
 
     public final static int SUCCESS = 1;
     public final static int ERROR = -1;

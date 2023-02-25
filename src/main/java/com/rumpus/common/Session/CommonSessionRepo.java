@@ -17,7 +17,7 @@ public class CommonSessionRepo implements ReactiveSessionRepository<CommonSessio
 
     @Override
     public Mono<CommonSession> createSession() {
-        CommonSession session = new CommonSession();
+        CommonSession session = new CommonSession(true);
         save(session);
         return Mono.just(session);
     }

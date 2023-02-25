@@ -9,11 +9,11 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     protected IApiDB<T> api;
     protected final String table;
 
-    public Dao() {
-        super(NAME);
-        this.api = new ApiDB<>();
-        this.table = NO_NAME;
-    }
+    // public Dao() {
+    //     super(NAME);
+    //     this.api = new ApiDB<>();
+    //     this.table = NO_NAME;
+    // }
     public Dao(String table, String name) {
         super(name);
         this.api = null;
@@ -32,6 +32,12 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
+    public boolean remove(String id) {
+        LOG.info("Dao::remove()");
+        return this.api.isInitialized() ? this.api.remove(id) : false;
+    }
+
+    @Override
     public boolean removeAll() {
         LOG.info("Dao::removeAll()");
         return this.api.isInitialized() ? this.api.removeAll() : false;
@@ -39,6 +45,12 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
 
     @Override
     public T get(int id) {
+        LOG.info("Dao::get()");
+        return this.api.isInitialized() ? this.api.get(id) : null;
+    }
+
+    @Override
+    public T get(String id) {
         LOG.info("Dao::get()");
         return this.api.isInitialized() ? this.api.get(id) : null;
     }

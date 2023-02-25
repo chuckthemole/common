@@ -9,18 +9,18 @@ import java.util.function.Function;
 public class Model<T extends RumpusObject> extends RumpusObject implements IModel<T> {
 
     protected static final String NAME = "rawModel";
-    protected Long id;
-    protected Map<String, String> attributeMap; // TODO: Map<String, String> : String should be abstracted
+    protected String id;
+    protected Map<String, String> attributes; // TODO: Map<String, String> : String should be abstracted
     protected Function<PreparedStatement, PreparedStatement> statement;
 
     // Ctors
     public Model(String name) {
         super(name);
-        attributeMap = new HashMap<>();
+        attributes = new HashMap<>();
     }
-    public Model(String name, Map<String, String> attributeMap) {
+    public Model(String name, Map<String, String> attributes) {
         super(name);
-        this.attributeMap = attributeMap;
+        this.attributes = attributes;
     }
 
     @Override
@@ -29,18 +29,18 @@ public class Model<T extends RumpusObject> extends RumpusObject implements IMode
     }
 
     @Override
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Override
-    public void setInitMap(Map<String, String> attributeMap) {
-        this.attributeMap = attributeMap;
+    public void setInitMap(Map<String, String> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class Model<T extends RumpusObject> extends RumpusObject implements IMode
     }
     @Override
     public Map<String, String> getAttributes() {
-        return attributeMap;
+        return attributes;
     }
     @Override
     public int setStatement(Function<PreparedStatement, PreparedStatement> statement) {
