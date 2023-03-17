@@ -6,16 +6,16 @@ import java.util.Set;
 
 import org.springframework.security.core.Authentication;
 
-public class Auth implements Authentication {
+public class CommonAuthentication implements Authentication {
 
     private String name;
-    private Set<Authority> authorities;
+    private Set<CommonAuthority> authorities;
     private String password;
     private String username;
     private Map<String, String> details;
     private boolean authenticated;
 
-    public Auth(String name, Set<Authority> authorities, String password, String username, Map<String, String> details, boolean authenticated) {
+    public CommonAuthentication(String name, Set<CommonAuthority> authorities, String password, String username, Map<String, String> details, boolean authenticated) {
         this.name = name;
         this.authorities = authorities;
         this.password = password;
@@ -23,7 +23,7 @@ public class Auth implements Authentication {
         this.details = details;
         this.authenticated = authenticated;
     }
-    public Auth(Authentication auth) {
+    public CommonAuthentication(Authentication auth) {
         this.name = auth.getName();
         this.authorities.addAll(getAuthorities(auth));
         this.password = auth.getCredentials().toString();
@@ -41,7 +41,7 @@ public class Auth implements Authentication {
     }
 
     @Override
-    public Set<Authority> getAuthorities() {
+    public Set<CommonAuthority> getAuthorities() {
         return this.authorities;
     }
 
@@ -70,10 +70,10 @@ public class Auth implements Authentication {
         this.authenticated = isAuthenticated;
     }
 
-    private Set<Authority> getAuthorities(Authentication auth) {
-        Set<Authority> authorities = new HashSet<>();
+    private Set<CommonAuthority> getAuthorities(Authentication auth) {
+        Set<CommonAuthority> authorities = new HashSet<>();
         auth.getAuthorities().stream().forEach(grantedAuth -> {
-            authorities.add(new Authority(grantedAuth));
+            authorities.add(new CommonAuthority(grantedAuth));
         });
         return authorities;
     }

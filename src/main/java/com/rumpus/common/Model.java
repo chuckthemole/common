@@ -6,21 +6,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class Model<T extends RumpusObject> extends RumpusObject implements IModel<T> {
+public abstract class Model<T extends RumpusObject> extends RumpusObject implements IModel<T> {
 
     protected static final String NAME = "rawModel";
     protected String id;
     protected Map<String, String> attributes; // TODO: Map<String, String> : String should be abstracted
     protected Function<PreparedStatement, PreparedStatement> statement;
+    protected Map<String, String> metaData;
 
     // Ctors
     public Model(String name) {
         super(name);
-        attributes = new HashMap<>();
+        this.attributes = new HashMap<>();
+        this.metaData = new HashMap<>();
     }
     public Model(String name, Map<String, String> attributes) {
         super(name);
         this.attributes = attributes;
+        this.metaData = new HashMap<>();
+    }
+    public Model(String name, Map<String, String> attributes, Map<String, String> metaData) {
+        super(name);
+        this.attributes = attributes;
+        this.metaData = metaData;
     }
 
     @Override

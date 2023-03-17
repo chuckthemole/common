@@ -24,8 +24,15 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
 
     public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
         super(API_NAME, table, mapper);
-        jdbc = new CommonJdbc();
-        jdbc.setDataSource(dataSource);
+        this.jdbc = new CommonJdbc();
+        this.jdbc.setDataSource(dataSource);
+        // this.mapper = mapper;
+        // this.add = add;
+    }
+    public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper, String apiName) {
+        super(apiName, table, mapper);
+        this.jdbc = new CommonJdbc();
+        this.jdbc.setDataSource(dataSource);
         // this.mapper = mapper;
         // this.add = add;
     }
@@ -45,21 +52,21 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     }
 
     @Override
-    public boolean remove(String id) {
+    public boolean remove(String name) {
         LOG.info("Jdbc::remove()");
         // TODO: Check dependencies to delete
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM ")
             .append(table)
             .append(" WHERE ");
-        if(StringUtil.isQuoted(id)) {
-            sb.append(id);
+        if(StringUtil.isQuoted(name)) {
+            sb.append(name);
         } else {
-            sb.append("\"").append(id).append("\"");
+            sb.append("\"").append(name).append("\"");
         }
         sb.append(" = ?;");
         final String sql = sb.toString();
-        return CommonJdbc.jdbcTemplate.update(sql, id) > 0;
+        return CommonJdbc.jdbcTemplate.update(sql, name) > 0;
     }
 
     @Override
@@ -77,21 +84,21 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     }
 
     @Override
-    public MODEL get(String id) {
+    public MODEL get(String name) {
         LOG.info("Jdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
             .append(" WHERE ");
-        if(StringUtil.isQuoted(id)) {
-            sb.append(id);
+        if(StringUtil.isQuoted(name)) {
+            sb.append(name);
         } else {
-            sb.append("\"").append(id).append("\"");
+            sb.append("\"").append(name).append("\"");
         }
         sb.append(" = ?;");
         final String sql = sb.toString();
         LOG.info(sql);
-        return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
+        return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, name);
     }
 
     @Override
@@ -131,6 +138,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     @Override
     public MODEL add(MODEL model) {
         LOG.info("Jdbc::add()");
+        LOG.info(model.toString());
 
         // Build sql
         StringBuilder sbSql = new StringBuilder();
@@ -162,6 +170,22 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         return model;
 
         // return add.apply(model);
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return super.initialized;
+    }
+
+    @Override
+    public boolean removeAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'removeAll'");
+    }
+
+    @Override
+    public Mapper<MODEL> getMapper() {
+        return super.mapper;
     }
 
     // public int setMapper(Mapper<MODEL> mapper) {

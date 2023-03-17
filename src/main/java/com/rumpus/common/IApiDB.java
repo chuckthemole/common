@@ -9,7 +9,7 @@ public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
     public boolean remove(String id);
     public boolean removeAll();
     public MODEL get(int id);
-    public MODEL get(String id);
+    public MODEL get(String name);
     public List<MODEL> get(Map<String, String> constraints);
     public List<MODEL> getAll();
     public MODEL add(MODEL model);

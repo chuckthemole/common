@@ -10,7 +10,7 @@ public class CommonJdbc extends RumpusObject {
     private final static String NAME = "JdbcTemplate";
     protected static JdbcTemplate jdbcTemplate;
     static {
-        jdbcTemplate = new JdbcTemplate();
+        CommonJdbc.jdbcTemplate = new JdbcTemplate();
     }
 
     public CommonJdbc() {
@@ -18,10 +18,10 @@ public class CommonJdbc extends RumpusObject {
     }
     public CommonJdbc(DataSource dataSource) {
         super(NAME);
-        jdbcTemplate.setDataSource(dataSource);
+        CommonJdbc.jdbcTemplate.setDataSource(dataSource);
     }
 
     public void setDataSource(DataSource dataSource) {
-        jdbcTemplate.setDataSource(dataSource);
+        CommonJdbc.jdbcTemplate.setDataSource(dataSource);
     }
 }

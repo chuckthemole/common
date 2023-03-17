@@ -2,14 +2,14 @@ package com.rumpus.common;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public class Authority implements GrantedAuthority {
+public class CommonAuthority implements GrantedAuthority {
 
     private String authority;
 
-    public Authority(String authority) {
+    public CommonAuthority(String authority) {
         this.authority = authority;
     }
-    public Authority(GrantedAuthority authority) {
+    public CommonAuthority(GrantedAuthority authority) {
         this.authority = authority.getAuthority();
     }
 

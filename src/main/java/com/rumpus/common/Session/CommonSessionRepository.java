@@ -12,10 +12,10 @@ public class CommonSessionRepository extends Dao<CommonSession> implements Sessi
     private SessionEvent event;
     
     public CommonSessionRepository() {
-        super(TABLE, NAME);
+        super(TABLE, NO_META_TABLE, NAME);
     }
     public CommonSessionRepository(String table, String name) {
-        super(table, name);
+        super(table, NO_META_TABLE, name);
         this.event = new SessionEvent();
     }
 

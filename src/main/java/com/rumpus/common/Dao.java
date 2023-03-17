@@ -8,21 +8,24 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     private final static String NAME = "rawDao";
     protected IApiDB<T> api;
     protected final String table;
+    protected final String metaTable;
 
     // public Dao() {
     //     super(NAME);
     //     this.api = new ApiDB<>();
     //     this.table = NO_NAME;
     // }
-    public Dao(String table, String name) {
+    public Dao(String table, String metaTable, String name) {
         super(name);
         this.api = null;
         this.table = table;
+        this.metaTable = metaTable;
     }
-    public Dao(IApiDB<T> api, String table, String name) {
+    public Dao(IApiDB<T> api, String table, String metaTable, String name) {
         super(name);
         this.api = api;
         this.table = table;
+        this.metaTable = metaTable;
     }
 
     @Override
@@ -50,9 +53,9 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
-    public T get(String id) {
+    public T get(String name) {
         LOG.info("Dao::get()");
-        return this.api.isInitialized() ? this.api.get(id) : null;
+        return this.api.isInitialized() ? this.api.get(name) : null;
     }
 
     @Override

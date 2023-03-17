@@ -16,21 +16,26 @@ public class Service<T extends Model<T>> extends RumpusObject implements IServic
 
     @Override
     public T get(int id) {
-        return dao.get(id);
+        return this.dao.get(id);
+    }
+
+    @Override
+    public T get(String name) {
+        return this.dao.get(name);
     }
 
     @Override
     public List<T> getAll() {
-        return dao.getAll();
+        return this.dao.getAll();
     }
 
     @Override
     public T add(T rumpusModel) {
-        return dao.add(rumpusModel);
+        return this.dao.add(rumpusModel);
     }
 
     @Override
     public boolean remove(int id) {
-        return dao.remove(id);
+        return this.dao.remove(id);
     }
 }
