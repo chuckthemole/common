@@ -22,6 +22,7 @@ abstract public class Rumpus {
     public final static int ERROR = -1;
     public final static int EMPTY = -2;
     public final static int NOT_INITIALIZED = -10;
+    public final static int NOT_IMPLEMENTED = -11;
 
     public final static String NO_TABLE = "NO_TABLE";
     public final static String NO_META_TABLE = "NO_META_TABLE";
