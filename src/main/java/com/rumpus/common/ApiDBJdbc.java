@@ -24,14 +24,14 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
 
     public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
         super(API_NAME, table, mapper);
-        this.jdbc = new CommonJdbc();
+        this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
         // this.mapper = mapper;
         // this.add = add;
     }
     public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper, String apiName) {
         super(apiName, table, mapper);
-        this.jdbc = new CommonJdbc();
+        this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
         // this.mapper = mapper;
         // this.add = add;
