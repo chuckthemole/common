@@ -57,6 +57,13 @@ abstract public class Rumpus {
     protected static final String AUTH_ID = "auth_id";
     protected static final String USER_ID = "user_id";
 
+    // Paths
+    protected static final String PATH_API_USERS = "/api/users";
+
+    // Roles
+    protected static final String ROLE_USER = "USER";
+    protected static final String ROLE_ADMIN = "ADMIN";
+
     // @Autowired
     // public Rumpus() {
     //     io = new RumpusIO();
