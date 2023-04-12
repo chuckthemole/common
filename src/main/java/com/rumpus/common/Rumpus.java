@@ -58,7 +58,11 @@ abstract public class Rumpus {
     protected static final String USER_ID = "user_id";
 
     // Paths
+    protected static final String PATH_INDEX = "/";
     protected static final String PATH_API_USERS = "/api/users";
+    protected static final String PATH_LOGIN = "/login";
+    protected static final String PATH_LOGIN_FAILURE = "/api/login_failure";
+    protected static final String PATH_LOGOUT = "/logout";
 
     // Roles
     protected static final String ROLE_USER = "USER";
@@ -66,6 +70,6 @@ abstract public class Rumpus {
 
     // @Autowired
     // public Rumpus() {
-    //     io = new RumpusIO();
+    // io = new RumpusIO();
     // }
 }
