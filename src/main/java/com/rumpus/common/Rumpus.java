@@ -56,6 +56,7 @@ abstract public class Rumpus {
     protected static final String PASSWORD = "password";
     protected static final String AUTH_ID = "auth_id";
     protected static final String USER_ID = "user_id";
+    protected static final String EMPTY_AUTH_ID = String.valueOf(-1);
 
     // Paths
     protected static final String PATH_INDEX = "/";
@@ -65,8 +66,16 @@ abstract public class Rumpus {
     protected static final String PATH_LOGOUT = "/logout";
 
     // Roles
-    protected static final String ROLE_USER = "USER";
-    protected static final String ROLE_ADMIN = "ADMIN";
+    protected static final String ROLE_USER = "ROLE_USER";
+    protected static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE";
+    protected static final String ROLE_MANAGER = "ROLE_MANAGER";
+    protected static final String ROLE_ADMIN = "ROLE_ADMIN";
+    
+    // Shorthand Roles
+    protected static final String USER = "USER";
+    protected static final String EMPLOYEE = "EMPLOYEE";
+    protected static final String MANAGER = "MANAGER";
+    protected static final String ADMIN = "ADMIN";
 
     // @Autowired
     // public Rumpus() {

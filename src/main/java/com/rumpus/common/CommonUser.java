@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.AttributedCharacterIterator.Attribute;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
@@ -32,6 +33,7 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
     private static final String I_NEED_AUTHORITIES = "WHAT_AUTHORITY";
 
     private UserBuilder userDetailsBuilder;
+    private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty.
     // private UserDetails userDetails;
     static private PasswordEncoder encoder;
     @Expose private String email;
@@ -66,12 +68,13 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
     public int init() {
         // this.userDetails = new CommonUserDetails();
         // CommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        this.userDetailsBuilder = User.withUsername(NO_NAME).password(NO_NAME).authorities(I_NEED_AUTHORITIES, I_NEED_AUTHORITIES);
+        this.userDetailsBuilder = User.withUsername(NO_NAME).password(NO_NAME).authorities(ROLE_USER, ROLE_EMPLOYEE); // maybe just give USER role to begin with
         if(this.attributes == null || this.attributes.isEmpty()) {
-            LOG.info("WARNING: AttributeMap is empty.");
-            // this.userDetails.setUserName(NO_NAME);
-            this.id = NO_ID;
-            this.authId = EMPTY;
+            StringBuilder sbLogInfo = new StringBuilder();
+            sbLogInfo.append("\nAttributeMap is empty\n").append("This may not be needed depending on the use.");
+            LOG.info(sbLogInfo.toString());
+            this.id = NO_ID; // TODO: give Ids?
+            this.authId = EMPTY; // TODO: do I need this?
             return EMPTY;
         }
         if(this.attributes.containsKey(USERNAME)) {
@@ -146,10 +149,22 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         return this.userDetailsBuilder.build().getPassword();
     }
     public void setPassword(String password) {
+        this.userPassword = password;
         String encodedPassword = CommonUser.encoder.encode(password);
+        String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}", "");
         // UserBuilder builder = User.withUserDetails(userDetails).password(CommonUser.encoder.encode(password));
-        this.attributes.put(PASSWORD, encodedPassword);
-        this.userDetailsBuilder.password(encodedPassword);
+
+        this.attributes.put(PASSWORD, strippedPass);
+        this.userDetailsBuilder.password(strippedPass);
+    }
+    public String getUserPassword() {
+        if(this.userPassword.equals(null) || this.userPassword.isEmpty()) {
+            return String.valueOf("");
+        }
+        return this.userPassword;
+    }
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
     public int getAuth() {
         return this.authId;
