@@ -33,7 +33,7 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
     private static final String I_NEED_AUTHORITIES = "WHAT_AUTHORITY";
 
     private UserBuilder userDetailsBuilder;
-    private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty.
+    private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     // private UserDetails userDetails;
     static private PasswordEncoder encoder;
     @Expose private String email;
