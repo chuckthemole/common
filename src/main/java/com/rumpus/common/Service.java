@@ -38,4 +38,9 @@ public class Service<T extends Model<T>> extends RumpusObject implements IServic
     public boolean remove(int id) {
         return this.dao.remove(id);
     }
+
+    @Override
+    public boolean remove(String name) {
+        return this.dao.remove(name);
+    }
 }

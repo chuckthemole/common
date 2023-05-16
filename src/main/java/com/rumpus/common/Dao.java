@@ -35,9 +35,9 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
-    public boolean remove(String id) {
+    public boolean remove(String name) {
         LOG.info("Dao::remove()");
-        return this.api.isInitialized() ? this.api.remove(id) : false;
+        return this.api.isInitialized() ? this.api.remove(name) : false;
     }
 
     @Override

@@ -8,4 +8,5 @@ public interface IService<T extends IModel<T>> extends IRumpusObject {
     List<T> getAll();
     T add(T rumpusModel);
     boolean remove(int id);
+    boolean remove(String name);
 }
