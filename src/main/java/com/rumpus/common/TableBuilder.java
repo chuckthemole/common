@@ -2,7 +2,7 @@ package com.rumpus.common;
 
 import j2html.TagCreator;
 
-abstract class TableBuilder extends HtmlBuilder {
+abstract class TableBuilder extends HtmlBuilder implements ITableBuilder {
 
     private int columns;
     private int rows;
@@ -20,7 +20,7 @@ abstract class TableBuilder extends HtmlBuilder {
         setCssFramework(CSS.valueOf(css));
     }
 
-    public static String getTable() {
+    public String getTable() {
         String table = 
             TagCreator.div(
                 TagCreator.attrs(".container"),

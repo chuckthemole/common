@@ -4,7 +4,7 @@ package com.rumpus.common;
 
 import j2html.TagCreator;
 
-abstract class HtmlBuilder extends RumpusObject {
+abstract class HtmlBuilder extends RumpusObject implements IHtmlBuilder {
 
     protected static TagCreator tagCreator;
     private CSS cssFramework;
@@ -13,6 +13,7 @@ abstract class HtmlBuilder extends RumpusObject {
         super(name);
     }
 
+    @Override
     public void setCssFramework(CSS css) {
         this.cssFramework = css;
     }
