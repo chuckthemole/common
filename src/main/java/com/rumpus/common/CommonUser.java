@@ -201,6 +201,7 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
             return false;
         }
 
+        @SuppressWarnings(UNCHECKED)
         CommonUser<USER> user = (CommonUser<USER>) o;
         LOG.info("User Name: " + user.getUsername());
         LOG.info("This User Name: " + this.getUsername());

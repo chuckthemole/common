@@ -11,11 +11,18 @@ abstract class HtmlBuilder extends RumpusObject implements IHtmlBuilder {
 
     public HtmlBuilder(String name) {
         super(name);
+        this.cssFramework = CSS.NONE;
     }
 
     @Override
-    public void setCssFramework(CSS css) {
-        this.cssFramework = css;
+    public void setCssFramework(String css) {
+        if(css.equals("bulma")) {
+            this.cssFramework = CSS.BULMA;
+        } else if(css.equals("bootstrap")) {
+            this.cssFramework = CSS.BOOTSTRAP;
+        } else {
+            this.cssFramework = CSS.NONE;
+        }
     }
     
     public enum CSS {

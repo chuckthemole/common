@@ -182,9 +182,10 @@ public class CommonSession extends Model<CommonSession> implements Session {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(UNCHECKED)
     public String getAttribute(String attributeName) {
-        return this.attributes.get(attributeName);
+        final String attribute = this.attributes.get(attributeName);
+        return attribute != null ? attribute : "";
     }
 
     public Map<String, String> getAttibutes() {

@@ -68,11 +68,11 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     @Override
     public boolean remove(String name) {
         LOG.info("JdbcUserManager::remove()");
-        this.manager.deleteUser(name);
         if(!super.remove(name)) {
             LOG.error("ERROR: ApiDBJdbc.remove() could not remove.");
             return false;
         }
+        this.manager.deleteUser(name);
         return true;
     }
 

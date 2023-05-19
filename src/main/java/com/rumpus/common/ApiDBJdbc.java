@@ -58,14 +58,15 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM ")
             .append(table)
-            .append(" WHERE ");
-        if(StringUtil.isQuoted(name)) {
-            sb.append(name);
-        } else {
-            sb.append("\"").append(name).append("\"");
-        }
+            .append(" WHERE username");
+        // if(StringUtil.isQuoted(name) {
+        //     sb.append(name);
+        // } else {
+        //     sb.append("\"").append(name).append("\"");
+        // }
         sb.append(" = ?;");
         final String sql = sb.toString();
+        LOG.info("\n" + sql + "\n ? = " + name);
         return CommonJdbc.jdbcTemplate.update(sql, name) > 0;
     }
 

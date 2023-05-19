@@ -77,6 +77,9 @@ abstract public class Rumpus {
     protected static final String MANAGER = "MANAGER";
     protected static final String ADMIN = "ADMIN";
 
+    // MISC
+    protected static final String UNCHECKED = "unchecked";
+
     // @Autowired
     // public Rumpus() {
     // io = new RumpusIO();

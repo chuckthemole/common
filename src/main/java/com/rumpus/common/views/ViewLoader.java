@@ -1,6 +1,8 @@
 package com.rumpus.common.views;
 
+import com.rumpus.common.ITableBuilder;
 import com.rumpus.common.RumpusObject;
+import com.rumpus.common.TableBuilder;
 
 /**
  * @author Charles Thomas
@@ -11,6 +13,7 @@ import com.rumpus.common.RumpusObject;
 public abstract class ViewLoader extends RumpusObject implements IViewLoader {
     
     protected Footer footer;
+    protected ITableBuilder userTable;
 
 	public ViewLoader(String name) {
         super(name);
@@ -48,6 +51,17 @@ public abstract class ViewLoader extends RumpusObject implements IViewLoader {
     @Override
     public int setFooter(Footer footer) {
         this.footer = footer;
+        return SUCCESS;
+    }
+
+    @Override
+    public ITableBuilder getUserTable() {
+        return this.userTable;
+    }
+
+    @Override
+    public int setUserTable(ITableBuilder table) {
+        this.userTable = table;
         return SUCCESS;
     }
 }
