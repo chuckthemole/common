@@ -90,6 +90,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
     @Override
     public USER get(String name) {
+        LOG.info("JdbcUserManager::get()");
         USER user = super.get(name);
         if(user == null) {
             LOG.error("ERROR: ApiDBJdbc.get() could not get.");

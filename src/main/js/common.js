@@ -12,60 +12,54 @@ export const EMAIL = 'email';
 export const POST = 'POST';
 export const GET = 'GET';
 
-// Functions
-export function ActivateModal(modal, button) {
-    // For each modal, add click event
-   // on button click add is-active, on x click remove is-active
-   if (button !== undefined) {
-       button.onclick = function () {
-           modal.classList.add("is-active");
-           modal.classList.add("is-clipped");
-       }
-   }
-   if (modal.getElementsByClassName("modal-close")[0] !== undefined) {
-       modal.getElementsByClassName("modal-close")[0].onclick = function () {
-           modal.classList.remove("is-active");
-           modal.classList.remove("is-clipped");
-       }
-   }
+// * * * * * * * * * * *
+// * * * Functions * * *
+// * * * * * * * * * * * 
 
-   // If click outside the modal, close modal
-   window.onclick = function (event) {
-       var backgrounds = document.getElementsByClassName("modal-background");
-       Array.prototype.forEach.call(backgrounds, function (background) { // get all modal backgrounds
-           if (event.target == background) {
-               var modals = document.getElementsByClassName("modal");
-               Array.prototype.forEach.call(modals, function (modal) { // remove is-active from all modals
-                   modal.classList.remove("is-active");
-                   modal.classList.remove("is-clipped");
-               });
-           }
-       });
-   }
+// Modals
+export function ActivateModal(modal, button) {
+    if (button !== undefined) {
+        button.onclick = function () {
+            AddActiveClipped(modal);
+        }
+    }
+    RemoveActiveClippedOnClick(modal);
+    CloseOnBackgroundClick('modal-background', 'modal');
 }
 
 // Activates modal without button
 export function ActivateModalNoButton(modal) {
+    AddActiveClipped(modal);
+    RemoveActiveClippedOnClick(modal);
+    CloseOnBackgroundClick('modal-background', 'modal');
+}
+
+function AddActiveClipped(modal) {
     modal.classList.add("is-active");
     modal.classList.add("is-clipped");
-   if (modal.getElementsByClassName("modal-close")[0] !== undefined) {
-       modal.getElementsByClassName("modal-close")[0].onclick = function () {
-           modal.classList.remove("is-active");
-           modal.classList.remove("is-clipped");
-       }
-   }
-
-   // If click outside the modal, close modal
-   window.onclick = function (event) {
-       var backgrounds = document.getElementsByClassName("modal-background");
-       Array.prototype.forEach.call(backgrounds, function (background) { // get all modal backgrounds
-           if (event.target == background) {
-               var modals = document.getElementsByClassName("modal");
-               Array.prototype.forEach.call(modals, function (modal) { // remove is-active from all modals
-                   modal.classList.remove("is-active");
-                   modal.classList.remove("is-clipped");
-               });
-           }
-       });
-   }
+}
+function RemoveActiveClipped(modal) {
+    modal.classList.remove("is-active");
+    modal.classList.remove("is-clipped");
+}
+function RemoveActiveClippedOnClick(modal) {
+    if (modal.getElementsByClassName("modal-close")[0] !== undefined) {
+        modal.getElementsByClassName("modal-close")[0].onclick = function () {
+            RemoveActiveClipped(modal);
+        }
+    }
+}
+function CloseOnBackgroundClick(backgroundClass, modalClass) {
+    // If click outside the modal, close modal
+    window.onclick = function (event) {
+        var backgrounds = document.getElementsByClassName(backgroundClass);
+        Array.prototype.forEach.call(backgrounds, function (background) { // get all modal backgrounds
+            if (event.target == background) {
+                var modals = document.getElementsByClassName(modalClass);
+                Array.prototype.forEach.call(modals, function (modal) { // remove is-active from all modals
+                    RemoveActiveClipped(modal);
+                });
+            }
+        });
+    }
 }

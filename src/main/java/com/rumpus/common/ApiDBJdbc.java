@@ -84,6 +84,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
     }
 
+    // TODO this is working for user. Need to abstract 'username' for other objects. Maybe add parameter of constraint.
     @Override
     public MODEL get(String name) {
         LOG.info("Jdbc::get()");
@@ -91,11 +92,12 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         sb.append("SELECT * FROM ")
             .append(table)
             .append(" WHERE ");
-        if(StringUtil.isQuoted(name)) {
-            sb.append(name);
-        } else {
-            sb.append("\"").append(name).append("\"");
-        }
+        // if(StringUtil.isQuoted(name)) {
+        //     sb.append(name);
+        // } else {
+        //     sb.append("\"").append(name).append("\"");
+        // }
+        sb.append("username");
         sb.append(" = ?;");
         final String sql = sb.toString();
         LOG.info(sql);
