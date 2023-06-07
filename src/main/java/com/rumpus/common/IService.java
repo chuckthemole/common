@@ -9,4 +9,6 @@ public interface IService<T extends IModel<T>> extends IRumpusObject {
     T add(T rumpusModel);
     boolean remove(int id);
     boolean remove(String name);
+    T update(String oldModelKey, T updatedModel);
+    T update(String oldModelKey, T updatedModel, String condition);
 }

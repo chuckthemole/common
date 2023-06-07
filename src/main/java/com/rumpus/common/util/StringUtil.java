@@ -31,4 +31,26 @@ public class StringUtil {
     public static boolean isQuoted(String inpuString) {
         return (StringUtil.isSurrounded(inpuString, Character.valueOf('\'')) || StringUtil.isSurrounded(inpuString, Character.valueOf('"')));
     }
+
+    /**
+     * 
+     * @param str string to quote
+     * @return single quoted string
+     */
+    public static String singleQuote(String str) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("'").append(str).append("'");
+        return sb.toString();
+    }
+
+    /**
+     * 
+     * @param str string to quote
+     * @return double quoted string
+     */
+    public static String doubleQuote(String str) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"").append(str).append("\"");
+        return sb.toString();
+    }
 }

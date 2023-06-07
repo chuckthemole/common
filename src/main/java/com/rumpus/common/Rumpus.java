@@ -61,6 +61,8 @@ abstract public class Rumpus {
     // Paths
     protected static final String PATH_INDEX = "/";
     protected static final String PATH_API_USERS = "/api/users";
+    protected static final String PATH_VIEW_FOOTER = "/view/footer";
+    protected static final String PATH_VIEW_USER_TABLE = "/view/user_table";
     protected static final String PATH_LOGIN = "/login";
     protected static final String PATH_LOGIN_FAILURE = "/api/login_failure";
     protected static final String PATH_LOGOUT = "/logout";

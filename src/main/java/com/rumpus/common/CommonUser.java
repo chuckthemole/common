@@ -34,7 +34,6 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
     private UserBuilder userDetailsBuilder;
     private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
-    // private UserDetails userDetails;
     static private PasswordEncoder encoder;
     @Expose private String email;
     private int authId;
@@ -81,12 +80,13 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
             // this.userDetails.setUserName(this.attributes.get(USERNAME));
             this.userDetailsBuilder.username(this.attributes.get(USERNAME));
         } else {
+            this.attributes.put(USERNAME, this.getUsername());
             // this.userDetails.setUserName(NO_NAME); // don't need this else
         }
         if(this.attributes.containsKey(ID)) {
             this.setId(this.attributes.get(ID));
         } else {
-            this.setId(NO_ID);
+            // todo maybe?
         }
         if(this.attributes.containsKey(AUTH_ID)) {
             this.setAuth(Integer.parseInt(this.attributes.get(AUTH_ID)));

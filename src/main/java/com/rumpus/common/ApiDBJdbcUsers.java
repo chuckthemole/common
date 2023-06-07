@@ -1,11 +1,18 @@
 package com.rumpus.common;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import com.rumpus.common.Builder.SQLBuilder;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -28,6 +35,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     private JdbcUserDetailsManager manager;
     private AuthenticationManager authenticationManager;
     private DaoAuthenticationProvider authenticationProvider;
+    private final static Set<String> jdbcUserColumns = new HashSet<>(Arrays.asList("username", "email")); // current columns in jdbc db
 
     public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, Mapper<USER> mapper) {
         super(manager.getDataSource(), table, mapper, API_NAME);
@@ -69,7 +77,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     public boolean remove(String name) {
         LOG.info("JdbcUserManager::remove()");
         if(!super.remove(name)) {
-            LOG.error("ERROR: ApiDBJdbc.remove() could not remove.");
+            LOG.error("ERROR: ApiDBJdbc.remove() could not remove with name = '" + name + "'");
             return false;
         }
         this.manager.deleteUser(name);
@@ -142,23 +150,49 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
     @Override
     public USER add(USER newUser) {
+        // debug
         LOG.info("JdbcUserManager::add()");
         LOG.info(newUser.toString());
-        // CommonUserDetails details = newUser.getUserDetails();
+
+        // create user details in manager (user table). this saves username, password, and enabled.
         UserDetails details = newUser.getUserDetails();
-        // newUser.setUserDetails(details);
-        // this.authenticationManager.authenticate(details.getAuthority()); // messing around with auth manager
         this.manager.createUser(details);
 
+        // TODO check why I'm doing this, then comment. - chuck
         final String password = newUser.attributes.get(PASSWORD);
         newUser.attributes.remove(PASSWORD);
-        // USER user = super.add(newUser);
-        if(super.add(newUser) == null) {
-            // TODO: maybe catch here
-        }
+
+        // build sql for user meta table
+        SQLBuilder sqlBuilder = new SQLBuilder();
+        Map<String, String> columnValues = Map.of(
+            "username", newUser.getUsername(),
+            "email", newUser.getEmail(),
+            "id", this.idManager.add()
+        );
+        sqlBuilder.insert(this.table, columnValues);
+        LOG.info(sqlBuilder.toString());
+        super.onInsert(newUser, sqlBuilder.toString());
+        // create user in user meta table
+        // if(super.add(newUser) == null) {
+        //     // TODO: maybe catch here
+        // }
         
         newUser.attributes.put(PASSWORD, password);
         return newUser;
+    }
+
+    @Override
+    public USER update(String username, USER user, String condition) {
+        LOG.info("JdbcUserManager::update()");
+        if(this.manager.userExists(user.getUsername())) {
+            this.manager.updateUser(user.getUserDetails());
+
+            super.update(username, user, jdbcUserColumns, condition);
+        } else { // username changed so delete user then add user
+            this.remove(username);
+            this.add(user);
+        }
+        return user;
     }
 
     @Override

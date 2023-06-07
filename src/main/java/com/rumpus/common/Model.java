@@ -6,10 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.jdbc.support.KeyHolder;
+
 public abstract class Model<T extends RumpusObject> extends RumpusObject implements IModel<T> {
 
     protected static final String NAME = "rawModel";
-    protected String id;
+    @Id protected String id;
+    protected KeyHolder key;
     protected Map<String, String> attributes; // TODO: Map<String, String> : String should be abstracted
     protected Function<PreparedStatement, PreparedStatement> statement;
     protected Map<String, String> metaData;
@@ -43,6 +47,18 @@ public abstract class Model<T extends RumpusObject> extends RumpusObject impleme
 
     @Override
     public void setId(String id) {
+        this.attributes.put(ID, id);
+        this.id = id;
+    }
+
+    @Override
+    public KeyHolder getKey() {
+        return this.key;
+    }
+
+    @Override
+    public void setKey(KeyHolder key) {
+        // this.attributes.put(ID, id);
         this.id = id;
     }
 

@@ -77,10 +77,15 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
-    public T update(T model) {
+    public T update(String oldModelKey, T updatedModel) {
         LOG.info("Dao::update()");
-        // TODO Auto-generated method stub
-        return null;
+        return this.api.update(oldModelKey, updatedModel, "");
+    }
+
+    @Override
+    public T update(String oldModelKey, T updatedModel, String condition) {
+        LOG.info("Dao::update()");
+        return this.api.update(oldModelKey, updatedModel, condition);
     }
 
     @Override
