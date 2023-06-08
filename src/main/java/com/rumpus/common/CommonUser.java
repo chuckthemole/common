@@ -23,6 +23,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import com.rumpus.common.Builder.LogBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.TypeAdapter;
@@ -32,7 +33,7 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
     private static final String MODEL_NAME = "CommonUser";
     private static final String I_NEED_AUTHORITIES = "WHAT_AUTHORITY";
 
-    private UserBuilder userDetailsBuilder;
+    @Expose private UserBuilder userDetailsBuilder;
     private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     static private PasswordEncoder encoder;
     @Expose private String email;
@@ -195,6 +196,7 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
     @Override
     public boolean equals(Object o) {
+        LOG.info("CommonUser::equals()");
         if (o == this) {
             return true;
         } else if (!(o instanceof CommonUser)) {
@@ -203,23 +205,57 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
         @SuppressWarnings(UNCHECKED)
         CommonUser<USER> user = (CommonUser<USER>) o;
-        LOG.info("User Name: " + user.getUsername());
-        LOG.info("This User Name: " + this.getUsername());
-        if(user.getUsername().equals(this.getUsername())) {
-            LOG.info("User pass: " + user.getUserDetails().getPassword());
-            LOG.info("This User pass: " + this.getUserDetails().getPassword());
-            if(user.getUserDetails().getPassword().equals(this.getUserDetails().getPassword())) {
-                return true;
-            }
+
+        boolean flag = true;
+        if(!this.usernameIsEqual(user)) {
+            LogBuilder log = new LogBuilder("\nUsernames are not equal", "\nUser 1: ", this.getUsername(), "\nUser 2: ", user.getUsername());
+            log.info();
+            flag = false;
         }
-        LOG.info("User email: " + user.getEmail());
-        LOG.info("This User email: " + this.getEmail());
-        if(user.email.equals(this.email)) {
-            if(user.getUserDetails().getPassword().equals(this.getUserDetails().getPassword())) {
-                return true;
-            }
+        if(!this.idIsEqual(user)) {
+            LogBuilder log = new LogBuilder("\nIds are not equal", "\nUser 1: ", this.getId(), "\nUser 2: ", user.getId());
+            log.info();
+            flag = false;
         }
-        return false;
+        // TODO need to do some work with passwords. come back to this later for equality - chuck 6/8/2023
+        // if(!this.passwordIsEqual(user)) {
+        //     LogBuilder log = new LogBuilder("\nPasswords are not equal", "\nUser 1: ", this.getPassword(), "\nUser 2: ", user.getPassword());
+        //     log.info();
+        //     flag = false;
+        // }
+        if(!this.emailIsEqual(user)) {
+            LogBuilder log = new LogBuilder("\nEmails are not equal", "\nUser 1: ", this.getEmail(), "\nUser 2: ", user.getEmail());
+            log.info();
+            flag = false;
+        }
+        if(!this.userDetailsIsEqual(user)) {
+            LogBuilder log = new LogBuilder("\nUser Details are not equal", "\nUser 1: ", this.getUserDetails().toString(), "\nUser 2: ", user.getUserDetails().toString());
+            log.info();
+            flag = false;
+        }
+        return flag;
+    }
+
+    // member values to check for equality
+    private boolean usernameIsEqual(CommonUser<USER> user) {
+        return this.getUsername().equals(user.getUsername()) ? true : false;
+    }
+
+    private boolean idIsEqual(CommonUser<USER> user) {
+        return this.getId().equals(user.getId()) ? true : false;
+    }
+
+    // TODO check why I have 2 password getters/setters
+    private boolean passwordIsEqual(CommonUser<USER> user) {
+        return this.getPassword().equals(user.getPassword()) ? true : false;
+    }
+
+    private boolean emailIsEqual(CommonUser<USER> user) {
+        return this.getEmail().equals(user.getEmail()) ? true : false;
+    }
+
+    private boolean userDetailsIsEqual(CommonUser<USER> user) {
+        return this.getUserDetails().equals(user.getUserDetails()) ? true : false;
     }
 
     private Function<PreparedStatement, PreparedStatement> statement() {

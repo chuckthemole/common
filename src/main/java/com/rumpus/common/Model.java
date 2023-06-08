@@ -9,6 +9,8 @@ import java.util.function.Function;
 import org.springframework.data.annotation.Id;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.rumpus.common.Builder.LogBuilder;
+
 public abstract class Model<T extends RumpusObject> extends RumpusObject implements IModel<T> {
 
     protected static final String NAME = "rawModel";
@@ -72,12 +74,6 @@ public abstract class Model<T extends RumpusObject> extends RumpusObject impleme
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(NAME).append("  id: ").append(id);
-        return sb.toString();
-    }
-    @Override
     public Map<String, String> getAttributes() {
         return attributes;
     }
@@ -89,5 +85,38 @@ public abstract class Model<T extends RumpusObject> extends RumpusObject impleme
     @Override
     public Function<PreparedStatement, PreparedStatement> getStatement() {
         return this.statement;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(NAME).append("  id: ").append(id);
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        LOG.info("Model::equals()");
+        if (o == this) {
+            return true;
+        } else if (!(o instanceof Model)) {
+            return false;
+        }
+
+        @SuppressWarnings(UNCHECKED)
+        Model<T> model = (Model<T>) o;
+
+        boolean flag = true;
+        // TODO add more conditions for member variables as this class grows. - chuck
+        if(!this.idIsEqual(model)) {
+            LogBuilder log = new LogBuilder("\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
+            log.info();
+            flag = false;
+        }
+        return flag;
+    }
+
+    private boolean idIsEqual(Model<T> model) {
+        return this.getId().equals(model.getId()) ? true : false;
     }
 }
