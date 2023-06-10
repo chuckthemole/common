@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -26,7 +27,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     //     CommonJdbc.jdbcTemplate = new JdbcTemplate();
     // }
     protected CommonJdbc jdbc;
-    protected UniqueIdManager idManager;
+    protected UniqueIdManager idManager; // TODO: think about moving this. where do I want to keep my id manager? at what level?
     private static final int DEFAULT_ID_LENGTH = 10;
 
 
@@ -147,7 +148,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         // sb.append("SELECT * FROM ").append(table).append(";");
         // final String sql = sb.toString();
         LOG.info(sqlBuilder.toString());
-        List<MODEL> models = CommonJdbc.jdbcTemplate.query(sqlBuilder.toString(), mapper);
+        List<MODEL> models = CommonJdbc.jdbcTemplate.query(sqlBuilder.toString(), this.mapper);
         return models;
     }
 
@@ -200,6 +201,23 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
             model.setKey(null);
         }
         return model;
+    }
+
+    @Override
+    public MODEL onGet(final String sql) {
+        LOG.info("ApiDBJdbc::onGet()");
+        try{
+            return CommonJdbc.jdbcTemplate.queryForObject(sql, this.mapper);
+        } catch(DataAccessException e) {
+            LOG.info("Error retrieving entry from the db. Details below...");
+            LOG.info(e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public MODEL onGet(final String sql, final String name) {
+        return CommonJdbc.jdbcTemplate.queryForObject(sql, this.mapper, name);
     }
 
     @Override

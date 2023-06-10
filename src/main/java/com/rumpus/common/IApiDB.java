@@ -17,6 +17,8 @@ public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
     public MODEL update(String model, MODEL newModel);
     public MODEL update(String model, MODEL newModel, String condition);
     public MODEL onInsert(final MODEL model, final String sql);
+    public MODEL onGet(final String sql, final String name);
+    public MODEL onGet(final String sql);
 
     /**
      * 

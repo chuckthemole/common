@@ -88,10 +88,10 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     public USER get(int id) {
         LOG.info("JdbcUserManager::get()");
         USER user = super.get(id);
-        if(user == null) {
-            LOG.error("ERROR: ApiDBJdbc.get() could not get.");
-            return null;
-        }
+        // if(user == null) {
+        //     LOG.error("ERROR: ApiDBJdbc.get() could not get.");
+        //     return null;
+        // }
         // TODO implement get user by id for this.manager
         return user;
     }
@@ -99,14 +99,18 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     @Override
     public USER get(String name) {
         LOG.info("JdbcUserManager::get()");
-        USER user = super.get(name);
+        SQLBuilder sql = new SQLBuilder();
+        sql.selectUserByUsername(this.table, name);
+        sql.info();
+        USER user = super.onGet(sql.toString());
+        // USER user = super.get(name);
         if(user == null) {
-            LOG.error("ERROR: ApiDBJdbc.get() could not get.");
+            LOG.error("Error retrieving USER from db. returning null...");
             return user;
         }
         // CommonUserDetails details = new CommonUserDetails(this.manager.loadUserByUsername(name));
         UserDetails details = this.manager.loadUserByUsername(name);
-        user.setUserDetails(details);
+        user.setUserDetails(CommonUserDetails.createFromUserDetails(details));
         return user;
     }
 
@@ -142,8 +146,10 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         if(users != null && !users.isEmpty()) {
             users.stream().forEach((user) -> {
                 // CommonUserDetails details = new CommonUserDetails(this.manager.loadUserByUsername(user.getUsername()));
-                user.setUserDetails(this.manager.loadUserByUsername(user.getUsername()));
+                user.setUserDetails(CommonUserDetails.createFromUserDetails(this.manager.loadUserByUsername(user.getUsername())));
             });
+        } else {
+            LOG.info("Error: returned user list is empty or null.");
         }
         return users;
     }
@@ -167,7 +173,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         Map<String, String> columnValues = Map.of(
             "username", newUser.getUsername(),
             "email", newUser.getEmail(),
-            "id", this.idManager.add()
+            "id", newUser.getId().equals(NO_ID) ? this.idManager.add() : newUser.getId()
         );
         sqlBuilder.insert(this.table, columnValues);
         LOG.info(sqlBuilder.toString());

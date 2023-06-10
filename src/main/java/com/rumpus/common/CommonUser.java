@@ -18,6 +18,7 @@ import java.text.AttributedCharacterIterator.Attribute;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.google.gson.stream.JsonReader;
@@ -28,15 +29,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.TypeAdapter;
 
+// TODO: think about making this class abstract
 public class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
     private static final String MODEL_NAME = "CommonUser";
     private static final String I_NEED_AUTHORITIES = "WHAT_AUTHORITY";
 
-    @Expose private UserBuilder userDetailsBuilder;
+    // private UserBuilder userDetailsBuilder;
+    private CommonUserDetails userDetails; // holds username/password among others
     private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     static private PasswordEncoder encoder;
-    @Expose private String email;
+    private String email;
     private int authId;
 
     static {
@@ -68,7 +71,12 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
     public int init() {
         // this.userDetails = new CommonUserDetails();
         // CommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        this.userDetailsBuilder = User.withUsername(NO_NAME).password(NO_NAME).authorities(ROLE_USER, ROLE_EMPLOYEE); // maybe just give USER role to begin with
+        // this.userDetailsBuilder = User.withUsername(NO_NAME).password(NO_NAME).authorities(ROLE_USER, ROLE_EMPLOYEE); // maybe just give USER role to begin with
+        // this.userDetailsBuilder = User.builder().authorities(ROLE_USER, ROLE_EMPLOYEE);
+        // UserBuilder builder = User.builder().authorities(null);
+
+        this.userDetails = CommonUserDetails.createFromUsernamePasswordAuthority(NO_NAME, NO_PASS, null, true);
+        
         if(this.attributes == null || this.attributes.isEmpty()) {
             StringBuilder sbLogInfo = new StringBuilder();
             sbLogInfo.append("\nAttributeMap is empty\n").append("This may not be needed depending on the use.");
@@ -79,9 +87,10 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         }
         if(this.attributes.containsKey(USERNAME)) {
             // this.userDetails.setUserName(this.attributes.get(USERNAME));
-            this.userDetailsBuilder.username(this.attributes.get(USERNAME));
+            // this.userDetailsBuilder.username(this.attributes.get(USERNAME));
+            this.userDetails.setUsername(this.attributes.get(USERNAME));
         } else {
-            this.attributes.put(USERNAME, this.getUsername());
+            // this.attributes.put(USERNAME, this.getUsername());
             // this.userDetails.setUserName(NO_NAME); // don't need this else
         }
         if(this.attributes.containsKey(ID)) {
@@ -100,44 +109,52 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
             this.setEmail(NO_NAME);
         }
         if(this.attributes.containsKey(PASSWORD)) {
-            this.setPassword(this.attributes.get(PASSWORD));
+            this.userDetails.setPassword(this.attributes.get(PASSWORD));
+            this.setUserPassword(userPassword);
+            // this.setPassword(this.attributes.get(PASSWORD));
         } else {
-            this.setPassword(NO_NAME);
+            this.userDetails.setPassword(this.attributes.get(NO_PASS));
+            this.setUserPassword(NO_PASS);
+            // this.setPassword(NO_PASS);
         }
         this.setStatement(statement());
 
         // this.userDetails = new CommonUserDetails(detailsBuilder.build());
         return SUCCESS;
     }
-
-    // Can't instantiate if Abstract
-    // static factory methods
-    // public static CommonUser create(Map<String, String> attributes) {return new CommonUser(attributes);}
-    // public static CommonUser createWithName(String name) {
-    //     Map<String, String> map = new HashMap<>();
-    //     map.put(USERNAME, name);
-    //     return CommonUser.create(map);
-    // }
     
     // Getters Setters
-    public UserDetails getUserDetails() {
-        return this.userDetailsBuilder.build();
+
+    // public UserBuilder getUserBuilder() {
+    //     return this.userDetailsBuilder;
+    // }
+
+    // public void setUserBuilder(String username, String password) {
+    //     this.userDetailsBuilder = User.withUsername(username).password(password).authorities(ROLE_USER, ROLE_EMPLOYEE);
+    // }
+
+    public CommonUserDetails getUserDetails() {
+        // return this.userDetailsBuilder.build();
+        return this.userDetails;
     }
-    public void setUserDetails(UserDetails userDetails) {
+    public void setUserDetails(CommonUserDetails userDetails) {
         // if(userDetails.getAuthorities().isEmpty()) {
 
         // }
         // if(this.userDetailsBuilder.build().getAuthorities() == null || this.userDetailsBuilder.build().getAuthorities().isEmpty()) {
         //     this.userDetailsBuilder.authorities(I_NEED_AUTHORITIES);
         // }
-        this.userDetailsBuilder = User.withUsername(userDetails.getUsername()).password(userDetails.getPassword()).authorities(userDetails.getAuthorities());
+        // this.userDetailsBuilder = User.withUsername(userDetails.getUsername()).password(userDetails.getPassword()).authorities(userDetails.getAuthorities());
+        this.userDetails = userDetails;
     }
     public String getUsername() {
-        return this.userDetailsBuilder.build().getUsername();
+        // return this.userDetailsBuilder.build().getUsername();
+        return this.userDetails.getUsername();
     }
     public void setUsername(String name) {
         this.attributes.put(USERNAME, name);
-        this.userDetailsBuilder.username(name);
+        // this.userDetailsBuilder.username(name);
+        this.userDetails.setUsername(name);
     }
     public String getEmail() {
         return this.email;
@@ -147,7 +164,8 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         this.attributes.put(EMAIL, email);
     }
     public String getPassword() {
-        return this.userDetailsBuilder.build().getPassword();
+        // return this.userDetailsBuilder.build().getPassword();
+        return this.userDetails.getPassword();
     }
     public void setPassword(String password) {
         this.userPassword = password;
@@ -156,8 +174,11 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         // UserBuilder builder = User.withUserDetails(userDetails).password(CommonUser.encoder.encode(password));
 
         this.attributes.put(PASSWORD, strippedPass);
-        this.userDetailsBuilder.password(strippedPass);
+        // this.userDetailsBuilder.password(strippedPass);
+        this.userDetails.setPassword(strippedPass);
     }
+
+    // @JsonIgnore
     public String getUserPassword() {
         if(this.userPassword.equals(null) || this.userPassword.isEmpty()) {
             return String.valueOf("");
@@ -241,9 +262,9 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         return this.getUsername().equals(user.getUsername()) ? true : false;
     }
 
-    private boolean idIsEqual(CommonUser<USER> user) {
-        return this.getId().equals(user.getId()) ? true : false;
-    }
+    // private boolean idIsEqual(CommonUser<USER> user) {
+    //     return this.getId().equals(user.getId()) ? true : false;
+    // }
 
     // TODO check why I have 2 password getters/setters
     private boolean passwordIsEqual(CommonUser<USER> user) {
@@ -288,14 +309,18 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         return SUCCESS;
     }
 
+    // TODO: abstract this serializer class for models
     static private class UserGsonSerializer extends GsonSerializer<CommonUser<?>> {
 
         @Override
         public JsonElement serialize(CommonUser<?> user, Type typeOfSrc, JsonSerializationContext context) {
+            LOG.info("UserGsonSerializer::serialize()");
             JsonObject jsonObj = new JsonObject();
             jsonObj.addProperty(USERNAME, user.getUsername());
             jsonObj.addProperty(EMAIL, user.email);
             jsonObj.addProperty(PASSWORD, user.getPassword());
+            jsonObj.addProperty(ID, user.getId());
+            LOG.info(jsonObj.toString());
             return jsonObj;
         }
     }

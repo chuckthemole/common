@@ -2,6 +2,7 @@ package com.rumpus.common;
 
 import org.springframework.security.core.GrantedAuthority;
 
+// TODO should I list authorities in this class?
 public class CommonAuthority implements GrantedAuthority {
 
     private String authority;

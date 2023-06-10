@@ -17,6 +17,7 @@ abstract public class Rumpus {
     public final static String NO_ID = String.valueOf(-1);
 
     public final static String NO_NAME = String.valueOf("NO_NAME");
+    public final static String NO_PASS = String.valueOf("NO_PASS");
 
     public final static int SUCCESS = 1;
     public final static int ERROR = -1;

@@ -2,6 +2,9 @@ package com.rumpus.common;
 
 import java.util.List;
 
+// import org.springframework.stereotype.Service; TODO: maybe use this annotation here, if so, need to change name of class, since currently conflicts with same name
+
+// @Service
 public class Service<T extends Model<T>> extends RumpusObject implements IService<T> {
 
     protected static final String NAME = "rawService";

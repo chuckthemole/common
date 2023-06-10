@@ -24,6 +24,10 @@ abstract class Builder extends RumpusObject {
         this.builder = new StringBuilder();
     }
 
+    public void info() {
+        LOG.info(this.toString());
+    }
+
     @Override
     public String toString() {
         return this.builder.toString();

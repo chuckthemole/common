@@ -23,6 +23,10 @@ public class SQLBuilder extends Builder {
     private static final String COMMA = ",";
     private static final String SEMI = ";";
 
+    // private static final String USERNAME = "username";
+
+    private String columnNameValue; // TODO: look below at some usage. This should be set with setter and have default for all be *
+
     public SQLBuilder() {
         super(NAME);
     }
@@ -45,6 +49,52 @@ public class SQLBuilder extends Builder {
             .append(SPACE)
             .append(table)
             .append(SEMI);
+    }
+
+    /**
+     * 
+     * @param table
+     * @param constraint
+     */
+    public void select(final String table, final String constraint) {
+        this.builder
+            .append(SELECT)
+            .append(SPACE)
+            .append(STAR)
+            .append(SPACE)
+            .append(FROM)
+            .append(SPACE)
+            .append(table)
+            .append(SPACE)
+            .append(WHERE)
+            .append(SPACE)
+            .append(SEMI);
+
+    }
+
+    /**
+     * 
+     * @param table
+     * @param username
+     */
+    public void selectUserByUsername(final String table, final String username) {
+        this.builder
+            .append(SELECT)
+            .append(SPACE)
+            .append(STAR)
+            .append(SPACE)
+            .append(FROM)
+            .append(SPACE)
+            .append(table)
+            .append(SPACE)
+            .append(WHERE)
+            .append(SPACE)
+            .append(USERNAME)
+            .append(EQUALS)
+            .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
+            .append(SPACE)
+            .append(SEMI);
+
     }
     
     /**

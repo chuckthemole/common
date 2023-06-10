@@ -94,29 +94,29 @@ public abstract class Model<T extends RumpusObject> extends RumpusObject impleme
         return sb.toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        LOG.info("Model::equals()");
-        if (o == this) {
-            return true;
-        } else if (!(o instanceof Model)) {
-            return false;
-        }
+    // @Override
+    // public boolean equals(Object o) {
+    //     LOG.info("Model::equals()");
+    //     if (o == this) {
+    //         return true;
+    //     } else if (!(o instanceof Model)) {
+    //         return false;
+    //     }
 
-        @SuppressWarnings(UNCHECKED)
-        Model<T> model = (Model<T>) o;
+    //     @SuppressWarnings(UNCHECKED)
+    //     Model<T> model = (Model<T>) o;
 
-        boolean flag = true;
-        // TODO add more conditions for member variables as this class grows. - chuck
-        if(!this.idIsEqual(model)) {
-            LogBuilder log = new LogBuilder("\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
-            log.info();
-            flag = false;
-        }
-        return flag;
-    }
+    //     boolean flag = true;
+    //     // TODO add more conditions for member variables as this class grows. - chuck
+    //     if(!this.idIsEqual(model)) {
+    //         LogBuilder log = new LogBuilder("\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
+    //         log.info();
+    //         flag = false;
+    //     }
+    //     return flag;
+    // }
 
-    private boolean idIsEqual(Model<T> model) {
-        return this.getId().equals(model.getId()) ? true : false;
+    protected boolean idIsEqual(Model<T> model) {
+        return this.id.equals(model.id) ? true : false;
     }
 }
