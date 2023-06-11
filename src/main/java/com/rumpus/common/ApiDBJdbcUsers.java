@@ -160,6 +160,10 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         LOG.info("JdbcUserManager::add()");
         LOG.info(newUser.toString());
 
+        if(this.get(newUser.getUsername()) != null) { // check if user exists
+            LOG.info("User with username already exists in the db. Returning null...");
+            return null;
+        }
         // create user details in manager (user table). this saves username, password, and enabled.
         UserDetails details = newUser.getUserDetails();
         this.manager.createUser(details);
@@ -171,9 +175,9 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         // build sql for user meta table
         SQLBuilder sqlBuilder = new SQLBuilder();
         Map<String, String> columnValues = Map.of(
-            "username", newUser.getUsername(),
-            "email", newUser.getEmail(),
-            "id", newUser.getId().equals(NO_ID) ? this.idManager.add() : newUser.getId()
+            USERNAME, newUser.getUsername(),
+            EMAIL, newUser.getEmail(),
+            ID, newUser.getId().equals(NO_ID) ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
         );
         sqlBuilder.insert(this.table, columnValues);
         LOG.info(sqlBuilder.toString());
