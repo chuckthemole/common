@@ -2,6 +2,7 @@ package com.rumpus.common;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
@@ -12,14 +13,18 @@ import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.util.StringUtil;
 
 // TODO make this class abstract
-public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
+public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
 
     private final static String API_NAME = "ApiJdbcTemplate";
     // protected static JdbcTemplate CommonJdbc.jdbcTemplate;
@@ -27,6 +32,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     //     CommonJdbc.jdbcTemplate = new JdbcTemplate();
     // }
     protected CommonJdbc jdbc;
+    protected CommonSimpleJdbc<MODEL> simpleJdbc;
     protected UniqueIdManager idManager; // TODO: think about moving this. where do I want to keep my id manager? at what level?
     private static final int DEFAULT_ID_LENGTH = 10;
 
@@ -36,6 +42,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
         this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH); // TODO give ability to construct with different length, or setter.
+        this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
         // this.mapper = mapper;
         // this.add = add;
     }
@@ -44,6 +51,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
         this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH);
+        this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
         // this.mapper = mapper;
         // this.add = add;
     }
@@ -139,6 +147,13 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     }
 
     @Override
+    public MODEL getById(String id) {
+        SQLBuilder sql = new SQLBuilder();
+        sql.selectById(this.table, id);
+        return this.onGet(sql.toString());
+    }
+
+    @Override
     public List<MODEL> getAll() {
         LOG.info("Jdbc::getAll()");
         SQLBuilder sqlBuilder = new SQLBuilder();
@@ -190,7 +205,17 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     }
 
     @Override
-    public MODEL onInsert(final MODEL model, final String sql) {
+    public void insert(String sqlInsertStatement, Map<String, Object> modelMap) {
+        PreparedStatementCallback<Integer> ps = new PreparedStatementCallback<Integer>() {
+            public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+                return ps.executeUpdate();
+            }
+        };
+        CommonJdbc.namedParameterJdbcTemplate.execute(sqlInsertStatement, modelMap, ps);
+    }
+
+    @Override
+    public MODEL onInsert(MODEL model, final String sql) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder(); // TODO read more about this and see what to do with it. Keeping as member variable in Model. - chuck
         CommonJdbc.jdbcTemplate.update((Connection conn) -> {
             return conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -201,6 +226,26 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
             model.setKey(null);
         }
         return model;
+    }
+
+    public MODEL onSimpleInsert(MODEL model, Map<String, Object> parameters) {
+        //TODO need to look more into keyholder to do this.
+        // KeyHolder keyHolder;
+        // keyHolder = this.simpleJdbc.insert.executeAndReturnKeyHolder(parameters);
+        // if(keyHolder.getKey() != null) {
+        //     model.setKey(keyHolder);
+        // } else {
+        //     model.setKey(null);
+        // }
+        // return model;
+
+        this.simpleJdbc.insert.execute(parameters);
+        return model;
+    }
+
+    public Map<String, Object> onSelectById(String id) {
+        SqlParameterSource in =  new MapSqlParameterSource().addValue(GET_USER_BY_ID, id);
+        return this.simpleJdbc.call.execute(in);
     }
 
     @Override
@@ -218,6 +263,10 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     @Override
     public MODEL onGet(final String sql, final String name) {
         return CommonJdbc.jdbcTemplate.queryForObject(sql, this.mapper, name);
+    }
+
+    protected int onUpdate(final String sql, final Object... objects) {
+        return CommonJdbc.jdbcTemplate.update(sql, objects);
     }
 
     @Override
@@ -257,11 +306,11 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     }
 
     @Override
-    public MODEL update(String key, MODEL newModel, Set<String> columns, String condition) {
-        LOG.info("Jdbc::add()");
+    public MODEL update(String id, MODEL newModel, Set<String> columns, String condition) {
+        LOG.info("ApiDBJdbc::add()");
         // StringBuilder logBuilder = new StringBuilder();
         // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
-        LogBuilder log = new LogBuilder("Updating '", key, "' of type '", newModel.name(), "''.");
+        LogBuilder log = new LogBuilder("Updating '", id, "' of type '", newModel.name(), "''.");
         log.info();
 
         // filter necessary columns into map
@@ -282,12 +331,12 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
 
         LOG.info(sqlBuilder.toString());
 
-        MODEL model = this.get(key);
+        MODEL model = this.get(id);
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         CommonJdbc.jdbcTemplate.update((Connection conn) -> {
             PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
             if(!condition.isEmpty()) { // TODO think about how to alter this. We can have more than one under 'condition'. Will work for 'user' right now.
-                statement.setString(1, key);
+                statement.setString(1, id);
             }
             // return model.getStatement().apply(statement);
             return statement;
@@ -302,7 +351,7 @@ public class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
     }
 
     @Override
-    public MODEL update(String model, MODEL newModel) {
+    public MODEL update(String id, MODEL newModel) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }

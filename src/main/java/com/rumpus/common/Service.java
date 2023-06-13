@@ -28,6 +28,11 @@ public class Service<T extends Model<T>> extends RumpusObject implements IServic
     }
 
     @Override
+    public T getById(String id) {
+        return this.dao.getById(id);
+    }
+
+    @Override
     public List<T> getAll() {
         return this.dao.getAll();
     }
@@ -47,11 +52,11 @@ public class Service<T extends Model<T>> extends RumpusObject implements IServic
         return this.dao.remove(name);
     }
     @Override
-    public T update(String oldModelKey, T updatedModel) {
-        return this.dao.update(oldModelKey, updatedModel);
+    public T update(String id, T updatedModel) {
+        return this.dao.update(id, updatedModel);
     }
     @Override
-    public T update(String oldModelKey, T updatedModel, String condition) {
-        return this.dao.update(oldModelKey, updatedModel, condition);
+    public T update(String id, T updatedModel, String condition) {
+        return this.dao.update(id, updatedModel, condition);
     }
 }

@@ -7,6 +7,8 @@ import java.util.Map;
 // Right now the only one is ApiDBJdbc.java
 // Maybe make this a singleton?
 
+//TODO: think about moving orm layer stuff into a package
+
 abstract class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements IApiDB<MODEL> {
 
     protected boolean initialized;

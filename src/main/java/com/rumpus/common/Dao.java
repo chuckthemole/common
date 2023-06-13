@@ -65,6 +65,12 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
+    public T getById(String id) {
+        LOG.info("Dao::getById()");
+        return this.api.getById(id);
+    }
+
+    @Override
     public List<T> getAll() {
         LOG.info("Dao::getAll()");
         return this.api.isInitialized() ? this.api.getAll() : null;
@@ -77,15 +83,15 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
-    public T update(String oldModelKey, T updatedModel) {
+    public T update(String id, T updatedModel) {
         LOG.info("Dao::update()");
-        return this.api.update(oldModelKey, updatedModel, "");
+        return this.api.update(id, updatedModel, "");
     }
 
     @Override
-    public T update(String oldModelKey, T updatedModel, String condition) {
+    public T update(String id, T updatedModel, String condition) {
         LOG.info("Dao::update()");
-        return this.api.update(oldModelKey, updatedModel, condition);
+        return this.api.update(id, updatedModel, condition);
     }
 
     @Override

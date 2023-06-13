@@ -9,8 +9,6 @@ import java.util.function.Function;
 import org.springframework.data.annotation.Id;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.rumpus.common.Builder.LogBuilder;
-
 public abstract class Model<T extends RumpusObject> extends RumpusObject implements IModel<T> {
 
     protected static final String NAME = "rawModel";

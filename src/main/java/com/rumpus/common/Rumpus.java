@@ -50,6 +50,9 @@ abstract public class Rumpus {
     public final static String DELETE_USER_AUTHORITIES = "DELETE_USER_AUTHORITIES";
     public final static String DELETE_GROUP_AUTHORITIES = "DELETE_GROUP_AUTHORITIES";
 
+    // SQL stored procedures
+    protected final static String GET_USER_BY_ID = "get_user_by_id";
+
     // User
     protected static final String USERNAME = "username";
     protected static final String ID = "id";

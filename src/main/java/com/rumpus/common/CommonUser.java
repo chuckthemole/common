@@ -1,46 +1,29 @@
 package com.rumpus.common;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.User.UserBuilder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.AttributedCharacterIterator.Attribute;
-import java.io.IOException;
 import java.lang.reflect.Type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.JsonElement;
-import com.google.gson.annotations.Expose;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.Builder.LogBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.google.gson.TypeAdapter;
 
-// TODO: think about making this class abstract
-public class CommonUser<USER extends Model<USER>> extends Model<USER> {
+public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
     private static final String MODEL_NAME = "CommonUser";
-    private static final String I_NEED_AUTHORITIES = "WHAT_AUTHORITY";
 
-    // private UserBuilder userDetailsBuilder;
     private CommonUserDetails userDetails; // holds username/password among others
     private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     static private PasswordEncoder encoder;
     private String email;
-    private int authId;
 
     static {
         CommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -82,7 +65,7 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
             sbLogInfo.append("\nAttributeMap is empty\n").append("This may not be needed depending on the use.");
             LOG.info(sbLogInfo.toString());
             this.id = NO_ID; // TODO: give Ids?
-            this.authId = EMPTY; // TODO: do I need this?
+            // this.authId = EMPTY; // TODO: do I need this?
             return EMPTY;
         }
         if(this.attributes.containsKey(USERNAME)) {
@@ -97,11 +80,6 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
             this.setId(this.attributes.get(ID));
         } else {
             // todo maybe?
-        }
-        if(this.attributes.containsKey(AUTH_ID)) {
-            this.setAuth(Integer.parseInt(this.attributes.get(AUTH_ID)));
-        } else {
-            this.setAuth(EMPTY);
         }
         if(this.attributes.containsKey(EMAIL)) {
             this.setEmail(this.attributes.get(EMAIL));
@@ -122,38 +100,18 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         // this.userDetails = new CommonUserDetails(detailsBuilder.build());
         return SUCCESS;
     }
-    
-    // Getters Setters
-
-    // public UserBuilder getUserBuilder() {
-    //     return this.userDetailsBuilder;
-    // }
-
-    // public void setUserBuilder(String username, String password) {
-    //     this.userDetailsBuilder = User.withUsername(username).password(password).authorities(ROLE_USER, ROLE_EMPLOYEE);
-    // }
 
     public CommonUserDetails getUserDetails() {
-        // return this.userDetailsBuilder.build();
         return this.userDetails;
     }
     public void setUserDetails(CommonUserDetails userDetails) {
-        // if(userDetails.getAuthorities().isEmpty()) {
-
-        // }
-        // if(this.userDetailsBuilder.build().getAuthorities() == null || this.userDetailsBuilder.build().getAuthorities().isEmpty()) {
-        //     this.userDetailsBuilder.authorities(I_NEED_AUTHORITIES);
-        // }
-        // this.userDetailsBuilder = User.withUsername(userDetails.getUsername()).password(userDetails.getPassword()).authorities(userDetails.getAuthorities());
         this.userDetails = userDetails;
     }
     public String getUsername() {
-        // return this.userDetailsBuilder.build().getUsername();
         return this.userDetails.getUsername();
     }
     public void setUsername(String name) {
         this.attributes.put(USERNAME, name);
-        // this.userDetailsBuilder.username(name);
         this.userDetails.setUsername(name);
     }
     public String getEmail() {
@@ -164,17 +122,14 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         this.attributes.put(EMAIL, email);
     }
     public String getPassword() {
-        // return this.userDetailsBuilder.build().getPassword();
         return this.userDetails.getPassword();
     }
     public void setPassword(String password) {
         this.userPassword = password;
         String encodedPassword = CommonUser.encoder.encode(password);
         String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}", "");
-        // UserBuilder builder = User.withUserDetails(userDetails).password(CommonUser.encoder.encode(password));
 
         this.attributes.put(PASSWORD, strippedPass);
-        // this.userDetailsBuilder.password(strippedPass);
         this.userDetails.setPassword(strippedPass);
     }
 
@@ -188,13 +143,6 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
-    public int getAuth() {
-        return this.authId;
-    }
-    public void setAuth(int a) {
-        this.attributes.put(AUTH_ID, Integer.toString(a));
-        this.authId = a;
-    }
 
     @Override 
     public String toString() {
@@ -203,7 +151,7 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
             .append(" Email: ").append(this.email).append("\n")
             .append(" UserName: ").append(this.getUsername()).append("\n")
             .append(" Password: ").append(this.getPassword()).append("\n")
-            .append(" AuthId: ").append(this.authId).append("\n")
+            // .append(" AuthId: ").append(this.authId).append("\n")
             .append("  Attributes:\n");
             if(this.attributes == null || this.attributes.isEmpty()) {
                 sb.append("    No Attributes\n");
@@ -262,10 +210,6 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         return this.getUsername().equals(user.getUsername()) ? true : false;
     }
 
-    // private boolean idIsEqual(CommonUser<USER> user) {
-    //     return this.getId().equals(user.getId()) ? true : false;
-    // }
-
     // TODO check why I have 2 password getters/setters
     private boolean passwordIsEqual(CommonUser<USER> user) {
         return this.getPassword().equals(user.getPassword()) ? true : false;
@@ -283,7 +227,6 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
         return(
             (PreparedStatement statement) -> {
                 try {
-                    // debugUser();
                     // statement.setString(1, this.getUserDetails().getPassword());
                     statement.setString(1, this.email);
                     statement.setString(2, this.getUsername());
@@ -293,20 +236,6 @@ public class CommonUser<USER extends Model<USER>> extends Model<USER> {
                 return  statement;
             }
         );
-    }
-
-    private int debugUser() {
-        LOG.info("User statement()");
-        StringBuilder sb = new StringBuilder();
-        sb.append("  User name: ").append(this.getUsername());
-        LOG.info(sb.toString());
-        sb.setLength(0); // clear sb
-        sb.append("  User email: ").append(this.email);
-        LOG.info(sb.toString());
-        sb.setLength(0);
-        sb.append("  User password: ").append(this.getUserDetails().getPassword());
-        LOG.info(sb.toString());
-        return SUCCESS;
     }
 
     // TODO: abstract this serializer class for models

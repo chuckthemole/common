@@ -5,12 +5,18 @@ import java.util.Map;
 
 public interface IDao<T extends Model<T>> extends IRumpusObject {
     T get(String name);
+    /**
+     * 
+     * @param id to search 
+     * @return MODEl if found, null if not found
+     */
+    T getById(String id);
     T get(int id);
     List<T> get(Map<String, String> constraints);
     List<T> getAll();
     T add(T model); // maybe call create
-    T update(String oldModelKey, T updatedModel);
-    T update(String oldModelKey, T updatedModel, String condition);
+    T update(String id, T updatedModel);
+    T update(String id, T updatedModel, String condition);
     boolean remove(int id);
     boolean remove(String id);
     boolean removeAll();

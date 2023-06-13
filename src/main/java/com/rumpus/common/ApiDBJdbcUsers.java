@@ -1,5 +1,6 @@
 package com.rumpus.common;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +29,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USER> {
 
     public static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
+    private static final String UPDATE_USER = "UPDATE user SET username = ?, email = ? WHERE id = ?";
+    private static final String INSERT_USER = "INSERT INTO user VALUES(:id, :username, :email)";
 
     private final static String API_NAME = "CommonJdbcUserManager";
     private final static String USER_MANAGER_TABLE = "USERS";
@@ -36,6 +39,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     private AuthenticationManager authenticationManager;
     private DaoAuthenticationProvider authenticationProvider;
     private final static Set<String> jdbcUserColumns = new HashSet<>(Arrays.asList("username", "email")); // current columns in jdbc db
+    private CommonSimpleJdbc<USER> simpleUsersJdbc;
 
     public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, Mapper<USER> mapper) {
         super(manager.getDataSource(), table, mapper, API_NAME);
@@ -47,6 +51,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         BCryptPasswordEncoder e = new BCryptPasswordEncoder();
         this.authenticationProvider = new DaoAuthenticationProvider();
         this.setDefaultQueries();
+        this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
     }
     public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, Mapper<USER> mapper, Map<String, String> queries) {
         super(manager.getDataSource(), table, mapper, API_NAME);
@@ -58,6 +63,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
             this.setQueries(queries);
         }
         this.authenticationManager = new CommonAuthManager();
+        this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
     }
 
     @Override
@@ -113,6 +119,43 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         user.setUserDetails(CommonUserDetails.createFromUserDetails(details));
         return user;
     }
+
+    // @Override
+    // public List<USER> get(List<USER> users, String value, String column) {
+    //     LOG.info("JdbcUserManager::get(value, column)");
+
+    //     if(column.equals(ID)) {
+    //         Map<String, Object> out = super.onSelectById(value);
+    //         USER user;
+    //         user.setUsername((String) out.get(USERNAME));
+    //         user.setPassword((String) out.get(PASSWORD));
+    //         user.setEmail((String) out.get(EMAIL));
+    //         user.setId((String) out.get(ID));
+    //         users.add(user);
+    //     } else if(column.equals(PASSWORD)) {
+    //         // TODO
+    //         LOG.info("Get by password not implemented");
+    //     } else if(column.equals(EMAIL)) {
+    //         // TODO
+    //         LOG.info("Get by emmail not implemented");
+    //     } else if(column.equals(USERNAME)) {
+    //         this.get(value);
+    //     }
+
+    //     if(users == null) {
+    //         LOG.error("Error retrieving USERs from db. returning null...");
+    //         return null;
+    //     } else if(users.isEmpty()) {
+    //         LOG.info("No users found. returning null...");
+    //         return null;
+    //     }
+
+    //     for(USER user : users) {
+    //         UserDetails details = this.manager.loadUserByUsername(user.getUsername());
+    //         user.setUserDetails(CommonUserDetails.createFromUserDetails(details));
+    //     }
+    //     return users;
+    // }
 
     @Override
     public List<USER> get(Map<String, String> constraints) {
@@ -172,6 +215,14 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         final String password = newUser.attributes.get(PASSWORD);
         newUser.attributes.remove(PASSWORD);
 
+        newUser = this.simpleAddUser(newUser);
+
+        newUser.attributes.put(PASSWORD, password);
+
+        return newUser;
+    }
+
+    private USER addUser(USER newUser) {
         // build sql for user meta table
         SQLBuilder sqlBuilder = new SQLBuilder();
         Map<String, String> columnValues = Map.of(
@@ -187,7 +238,17 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         //     // TODO: maybe catch here
         // }
         
-        newUser.attributes.put(PASSWORD, password);
+        return newUser;
+    }
+
+    private USER simpleAddUser(USER newUser) {
+        Map<String, Object> columnValues = Map.of(
+            USERNAME, newUser.getUsername(),
+            EMAIL, newUser.getEmail(),
+            ID, newUser.getId().equals(NO_ID) ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
+        );
+
+        super.onSimpleInsert(newUser, columnValues);
         return newUser;
     }
 
@@ -204,6 +265,17 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         }
         return user;
     }
+
+    @Override
+	public USER update(String id, USER newUser) {
+        USER user = super.getById(id);
+        if(this.manager.userExists(user.getUsername())) {
+            this.manager.updateUser(newUser.getUserDetails());
+        }
+		// CommonJdbc.jdbcTemplate.update("UPDATE user SET username = ?, email = ? WHERE id = ?", new Object[] {newUser.getUsername(), newUser.getEmail(), id});
+        super.onUpdate(UPDATE_USER, new Object[] {newUser.getUsername(), newUser.getEmail(), id}); // TODO this returns number of rows affected, check that it is one. maybe change this method to return int instead.
+        return newUser;
+	}
 
     @Override
     public boolean removeAll() {

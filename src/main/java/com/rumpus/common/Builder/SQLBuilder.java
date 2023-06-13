@@ -96,6 +96,31 @@ public class SQLBuilder extends Builder {
             .append(SEMI);
 
     }
+
+    /**
+     * 
+     * @param table
+     * @param id
+     */
+    public void selectById(final String table, final String id) {
+        this.builder
+            .append(SELECT)
+            .append(SPACE)
+            .append(STAR)
+            .append(SPACE)
+            .append(FROM)
+            .append(SPACE)
+            .append(table)
+            .append(SPACE)
+            .append(WHERE)
+            .append(SPACE)
+            .append(ID)
+            .append(EQUALS)
+            .append(StringUtil.isQuoted(id) ? id : StringUtil.singleQuote(id))
+            .append(SPACE)
+            .append(SEMI);
+
+    }
     
     /**
      * 
