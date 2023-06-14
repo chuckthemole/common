@@ -58,7 +58,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public boolean remove(int id) {
-        LOG.info("Jdbc::remove()");
+        LOG.info("ApiDBJdbc::remove()");
         // TODO: Check dependencies to delete
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM ")
@@ -72,7 +72,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public boolean remove(String name) {
-        LOG.info("Jdbc::remove()");
+        LOG.info("ApiDBJdbc::remove()");
         // TODO: Check dependencies to delete
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM ")
@@ -91,7 +91,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public MODEL get(int id) {
-        LOG.info("Jdbc::get()");
+        LOG.info("ApiDBJdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -106,7 +106,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
     // TODO this is working for user. Need to abstract 'username' for other objects. Maybe add parameter of constraint.
     @Override
     public MODEL get(String name) {
-        LOG.info("Jdbc::get()");
+        LOG.info("ApiDBJdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -125,7 +125,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public List<MODEL> get(Map<String, String> constraints) {
-        LOG.info("Jdbc::get()");
+        LOG.info("ApiDBJdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -155,7 +155,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public List<MODEL> getAll() {
-        LOG.info("Jdbc::getAll()");
+        LOG.info("ApiDBJdbc::getAll()");
         SQLBuilder sqlBuilder = new SQLBuilder();
         sqlBuilder.selectAll(this.table);
 
@@ -169,7 +169,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     // @Override
     // public MODEL add(MODEL model) {
-    //     LOG.info("Jdbc::add()");
+    //     LOG.info("ApiDBJdbc::add()");
     //     LOG.info(model.toString());
 
     //     // Build sql
@@ -256,7 +256,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public MODEL onGet(final String sql) {
-        LOG.info("ApiDBJdbc::onGet()");
+        LOG.info("ApiDBApiDBJdbc::onGet()");
         try{
             return CommonJdbc.jdbcTemplate.queryForObject(sql, this.mapper);
         } catch(DataAccessException e) {
@@ -277,7 +277,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     // @Override
     // public MODEL update(String key, MODEL newModel, String condition) {
-    //     LOG.info("Jdbc::add()");
+    //     LOG.info("ApiDBJdbc::add()");
     //     // StringBuilder logBuilder = new StringBuilder();
     //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
     //     LogBuilder log = new LogBuilder("Updating '", key, "' of type '", newModel.name(), "''.");
@@ -313,7 +313,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     // @Override
     // public MODEL update(String id, MODEL newModel, Set<String> columns, String condition) {
-    //     LOG.info("ApiDBJdbc::add()");
+    //     LOG.info("ApiDBApiDBJdbc::add()");
     //     // StringBuilder logBuilder = new StringBuilder();
     //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
     //     LogBuilder log = new LogBuilder("Updating '", id, "' of type '", newModel.name(), "''.");

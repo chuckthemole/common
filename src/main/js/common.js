@@ -5,6 +5,7 @@ export const ROOT = '/';
 // Keywords
 export const EMPTY = '';
 export const USERNAME = 'username';
+export const ID = 'id';
 export const PASSWORD = 'password';
 export const EMAIL = 'email';
 

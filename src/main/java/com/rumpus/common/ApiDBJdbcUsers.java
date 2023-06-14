@@ -30,7 +30,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USER> {
 
     public static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
-    private static final String UPDATE_USER = "UPDATE user SET username = ?, email = ? WHERE id = ?";
+    private static final String UPDATE_USERS_TABLE = "update users set username = ?, password = ?, enabled = ? where username = ?";
+    private static final String UPDATE_USER_TABLE = "UPDATE user SET email = ? WHERE id = ?";
+    private static final String UPDATE_USER_AUTHORITIES = "UPDATE authorities SET username = ? WHERE username = ?";
     private static final String INSERT_USER = "INSERT INTO user VALUES(:id, :username, :email)";
 
     private final static String API_NAME = "ApiDBJdbcUsers";
@@ -271,17 +273,28 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     @Override
 	public USER update(String id, USER newUser) {
         LOG.info("ApiDBJdbcUsers::update()");
-        USER user = super.getById(id);
-        if(user == null) {
+        USER user = super.getById(id); // get user in db
+        if(user == null) { // if user not in db return null
             LogBuilder log = new LogBuilder("Error: Unable to update users with id: ", id, "  returning null...");
             log.info();
             return null;
         }
-        if(this.manager.userExists(user.getUsername())) {
-            this.manager.updateUser(newUser.getUserDetails());
+
+        // update user details (users table)
+        final String username = user.getUsername();
+        final String newUsername = newUser.getUsername();
+        if(this.manager.userExists(username)) {
+            if(username.equals(newUsername)) { // if we don't have to update username (PK) then go through manager
+                this.manager.updateUser(newUser.getUserDetails());
+            } else { // else pass sql. this will change 'user' table and 'authorities' table PK
+                super.onUpdate(UPDATE_USERS_TABLE, new Object[] {newUser.getUsername(), newUser.getPassword(), newUser.getUserDetails().isEnabled(), user.getUsername()});
+            }
         }
-		// CommonJdbc.jdbcTemplate.update("UPDATE user SET username = ?, email = ? WHERE id = ?", new Object[] {newUser.getUsername(), newUser.getEmail(), id});
-        super.onUpdate(UPDATE_USER, new Object[] {newUser.getUsername(), newUser.getEmail(), id}); // TODO this returns number of rows affected, check that it is one. maybe change this method to return int instead.
+        
+        // update user table
+        // username will be changed above if it is different
+        super.onUpdate(UPDATE_USER_TABLE, new Object[] {newUser.getEmail(), id}); // TODO this returns number of rows affected, check that it is one. maybe change this method to return int instead.
+
         return newUser;
 	}
 
