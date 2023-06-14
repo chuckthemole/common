@@ -3,26 +3,26 @@ package com.rumpus.common;
 import java.util.List;
 import java.util.Map;
 
-public interface IDao<T extends Model<T>> extends IRumpusObject {
-    T get(String name);
+public interface IDao<MODEL extends Model<MODEL>> extends IRumpusObject {
+    MODEL get(String name);
     /**
      * 
      * @param id to search 
      * @return MODEl if found, null if not found
      */
-    T getById(String id);
-    T get(int id);
-    List<T> get(Map<String, String> constraints);
-    List<T> getAll();
-    T add(T model); // maybe call create
-    T update(String id, T updatedModel);
-    T update(String id, T updatedModel, String condition);
+    MODEL getById(String id);
+    MODEL get(int id);
+    List<MODEL> get(Map<String, String> constraints);
+    List<MODEL> getAll();
+    MODEL add(MODEL model); // maybe call create
+    MODEL update(String id, MODEL updatedModel);
+    // MODEL update(String id, MODEL updatedModel, String condition);
     boolean remove(int id);
     boolean remove(String id);
     boolean removeAll();
     String getTable();
-    Mapper<T> getMapper();
-    public int setApiDB(IApiDB<T> api);
+    Mapper<MODEL> getMapper();
+    public int setApiDB(IApiDB<MODEL> api);
 
     /**
      * Method that returns the number of entries from a table that meet some
@@ -34,5 +34,5 @@ public interface IDao<T extends Model<T>> extends IRumpusObject {
      */
     long countAll(Map<String, Object> params);
     
-    // Function<T, T> getAddFunction();
+    // Function<MODEL, MODEL> getAddFunction();
 }

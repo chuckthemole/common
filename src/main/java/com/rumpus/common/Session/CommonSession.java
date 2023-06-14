@@ -31,6 +31,8 @@ public class CommonSession extends Model<CommonSession> implements Session {
     private Duration maxInactiveInterval;
     private boolean isExpired;
 
+    private Map<String, String> attributes; // TODO: added this member since deleting it in Model. idk how this affects this class. look into it - chuck 6/13/2023
+
     static {
         CommonSession.sessionIds = new HashSet<>();
     }

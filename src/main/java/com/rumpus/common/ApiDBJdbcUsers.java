@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
+import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     private static final String UPDATE_USER = "UPDATE user SET username = ?, email = ? WHERE id = ?";
     private static final String INSERT_USER = "INSERT INTO user VALUES(:id, :username, :email)";
 
-    private final static String API_NAME = "CommonJdbcUserManager";
+    private final static String API_NAME = "ApiDBJdbcUsers";
     private final static String USER_MANAGER_TABLE = "USERS";
 
     private JdbcUserDetailsManager manager;
@@ -68,7 +69,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
     @Override
     public boolean remove(int id) {
-        LOG.info("JdbcUserManager::remove()");
+        LOG.info("ApiDBJdbcUsers::remove()");
         // USER user = super.get(id); TODO: need an sql get user name here get user name for below.
         this.manager.deleteUser(name); // look at TODO above
         if(!super.remove(id)) {
@@ -81,7 +82,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     // May not need the super operation if we use ON DELETE CASCADE
     @Override
     public boolean remove(String name) {
-        LOG.info("JdbcUserManager::remove()");
+        LOG.info("ApiDBJdbcUsers::remove()");
         if(!super.remove(name)) {
             LOG.error("ERROR: ApiDBJdbc.remove() could not remove with name = '" + name + "'");
             return false;
@@ -92,7 +93,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
     @Override
     public USER get(int id) {
-        LOG.info("JdbcUserManager::get()");
+        LOG.info("ApiDBJdbcUsers::get()");
         USER user = super.get(id);
         // if(user == null) {
         //     LOG.error("ERROR: ApiDBJdbc.get() could not get.");
@@ -104,7 +105,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
     @Override
     public USER get(String name) {
-        LOG.info("JdbcUserManager::get()");
+        LOG.info("ApiDBJdbcUsers::get()");
         SQLBuilder sql = new SQLBuilder();
         sql.selectUserByUsername(this.table, name);
         sql.info();
@@ -122,7 +123,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
     // @Override
     // public List<USER> get(List<USER> users, String value, String column) {
-    //     LOG.info("JdbcUserManager::get(value, column)");
+    //     LOG.info("ApiDBJdbcUsers::get(value, column)");
 
     //     if(column.equals(ID)) {
     //         Map<String, Object> out = super.onSelectById(value);
@@ -161,7 +162,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     public List<USER> get(Map<String, String> constraints) {
         // TODO need to select users from details table too. Maybe use join sql to achieve.
 
-        LOG.info("JdbcUserManager::get()");
+        LOG.info("ApiDBJdbcUsers::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -184,7 +185,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
     @Override
     public List<USER> getAll() {
-        LOG.info("JdbcUserManager::getAll()");
+        LOG.info("ApiDBJdbcUsers::getAll()");
         List<USER> users = super.getAll();
         if(users != null && !users.isEmpty()) {
             users.stream().forEach((user) -> {
@@ -200,7 +201,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     @Override
     public USER add(USER newUser) {
         // debug
-        LOG.info("JdbcUserManager::add()");
+        LOG.info("ApiDBJdbcUsers::add()");
         LOG.info(newUser.toString());
 
         if(this.get(newUser.getUsername()) != null) { // check if user exists
@@ -212,12 +213,12 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         this.manager.createUser(details);
 
         // TODO check why I'm doing this, then comment. - chuck
-        final String password = newUser.attributes.get(PASSWORD);
-        newUser.attributes.remove(PASSWORD);
+        // final String password = newUser.attributes.get(PASSWORD);
+        // newUser.attributes.remove(PASSWORD);
 
         newUser = this.simpleAddUser(newUser);
 
-        newUser.attributes.put(PASSWORD, password);
+        // newUser.attributes.put(PASSWORD, password);
 
         return newUser;
     }
@@ -228,7 +229,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         Map<String, String> columnValues = Map.of(
             USERNAME, newUser.getUsername(),
             EMAIL, newUser.getEmail(),
-            ID, newUser.getId().equals(NO_ID) ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
+            ID, !newUser.hasId() ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
         );
         sqlBuilder.insert(this.table, columnValues);
         LOG.info(sqlBuilder.toString());
@@ -245,30 +246,37 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         Map<String, Object> columnValues = Map.of(
             USERNAME, newUser.getUsername(),
             EMAIL, newUser.getEmail(),
-            ID, newUser.getId().equals(NO_ID) ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
+            // should check id is in correct format too
+            ID, !newUser.hasId() ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
         );
 
         super.onSimpleInsert(newUser, columnValues);
         return newUser;
     }
 
-    @Override
-    public USER update(String username, USER user, String condition) {
-        LOG.info("JdbcUserManager::update()");
-        if(this.manager.userExists(user.getUsername())) {
-            this.manager.updateUser(user.getUserDetails());
+    // @Override
+    // public USER update(String username, USER user, String condition) {
+    //     LOG.info("ApiDBJdbcUsers::update()");
+    //     if(this.manager.userExists(user.getUsername())) {
+    //         this.manager.updateUser(user.getUserDetails());
 
-            super.update(username, user, jdbcUserColumns, condition);
-        } else { // username changed so delete user then add user
-            this.remove(username);
-            this.add(user);
-        }
-        return user;
-    }
+    //         super.update(username, user, jdbcUserColumns, condition);
+    //     } else { // username changed so delete user then add user
+    //         this.remove(username);
+    //         this.add(user);
+    //     }
+    //     return user;
+    // }
 
     @Override
 	public USER update(String id, USER newUser) {
+        LOG.info("ApiDBJdbcUsers::update()");
         USER user = super.getById(id);
+        if(user == null) {
+            LogBuilder log = new LogBuilder("Error: Unable to update users with id: ", id, "  returning null...");
+            log.info();
+            return null;
+        }
         if(this.manager.userExists(user.getUsername())) {
             this.manager.updateUser(newUser.getUserDetails());
         }

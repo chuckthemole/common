@@ -1,9 +1,8 @@
 package com.rumpus.common;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -12,15 +11,16 @@ import java.sql.SQLException;
 import java.lang.reflect.Type;
 
 import com.google.gson.JsonElement;
+import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Builder.LogBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
-    private static final String MODEL_NAME = "CommonUser";
+    private static final String NAME = "CommonUser";
 
-    private CommonUserDetails userDetails; // holds username/password among others
+    private CommonUserDetails userDetails; // holds username and password among others
     private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     static private PasswordEncoder encoder;
     private String email;
@@ -32,7 +32,7 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     
     // Ctors
     public CommonUser() {
-        super(MODEL_NAME);
+        super(NAME);
         super.statement = statement();
         init();
     }
@@ -41,64 +41,15 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
         super.statement = statement();
         init();
     }
-    public CommonUser(Map<String, String> attributes) {
-        super(MODEL_NAME, attributes);
-        init();
-    }
-    public CommonUser(String modelName, Map<String, String> attributes) {
-        super(modelName, attributes);
-        init();
-    }
 
-    @Override
-    public int init() {
-        // this.userDetails = new CommonUserDetails();
-        // CommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        // this.userDetailsBuilder = User.withUsername(NO_NAME).password(NO_NAME).authorities(ROLE_USER, ROLE_EMPLOYEE); // maybe just give USER role to begin with
-        // this.userDetailsBuilder = User.builder().authorities(ROLE_USER, ROLE_EMPLOYEE);
-        // UserBuilder builder = User.builder().authorities(null);
-
-        this.userDetails = CommonUserDetails.createFromUsernamePasswordAuthority(NO_NAME, NO_PASS, null, true);
-        
-        if(this.attributes == null || this.attributes.isEmpty()) {
-            StringBuilder sbLogInfo = new StringBuilder();
-            sbLogInfo.append("\nAttributeMap is empty\n").append("This may not be needed depending on the use.");
-            LOG.info(sbLogInfo.toString());
-            this.id = NO_ID; // TODO: give Ids?
-            // this.authId = EMPTY; // TODO: do I need this?
-            return EMPTY;
-        }
-        if(this.attributes.containsKey(USERNAME)) {
-            // this.userDetails.setUserName(this.attributes.get(USERNAME));
-            // this.userDetailsBuilder.username(this.attributes.get(USERNAME));
-            this.userDetails.setUsername(this.attributes.get(USERNAME));
-        } else {
-            // this.attributes.put(USERNAME, this.getUsername());
-            // this.userDetails.setUserName(NO_NAME); // don't need this else
-        }
-        if(this.attributes.containsKey(ID)) {
-            this.setId(this.attributes.get(ID));
-        } else {
-            // todo maybe?
-        }
-        if(this.attributes.containsKey(EMAIL)) {
-            this.setEmail(this.attributes.get(EMAIL));
-        } else {
-            this.setEmail(NO_NAME);
-        }
-        if(this.attributes.containsKey(PASSWORD)) {
-            this.userDetails.setPassword(this.attributes.get(PASSWORD));
-            this.setUserPassword(userPassword);
-            // this.setPassword(this.attributes.get(PASSWORD));
-        } else {
-            this.userDetails.setPassword(this.attributes.get(NO_PASS));
-            this.setUserPassword(NO_PASS);
-            // this.setPassword(NO_PASS);
-        }
-        this.setStatement(statement());
-
-        // this.userDetails = new CommonUserDetails(detailsBuilder.build());
-        return SUCCESS;
+    // init fields with empty values. caller should init using setter methods.
+    private void init() {
+        this.userDetails = CommonUserDetails.createFromUsernamePasswordAuthority(EMPTY_FIELD, EMPTY_FIELD, null, true);
+        this.email = EMPTY_FIELD;
+        this.id = EMPTY_FIELD;
+        // this.id = NO_ID;
+        this.key = new CommonKeyHolder(); // doing this for now. should take out later maybe. or set keys in setters
+        // this.setStatement(statement()); // do i need to do this?
     }
 
     public CommonUserDetails getUserDetails() {
@@ -111,7 +62,6 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
         return this.userDetails.getUsername();
     }
     public void setUsername(String name) {
-        this.attributes.put(USERNAME, name);
         this.userDetails.setUsername(name);
     }
     public String getEmail() {
@@ -119,7 +69,6 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     }
     public void setEmail(String email) {
         this.email = email;
-        this.attributes.put(EMAIL, email);
     }
     public String getPassword() {
         return this.userDetails.getPassword();
@@ -127,9 +76,7 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     public void setPassword(String password) {
         this.userPassword = password;
         String encodedPassword = CommonUser.encoder.encode(password);
-        String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}", "");
-
-        this.attributes.put(PASSWORD, strippedPass);
+        String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}", ""); // TODO: think about how to do this. maybe just compare with the bcrypt in front.
         this.userDetails.setPassword(strippedPass);
     }
 
@@ -146,21 +93,12 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
     @Override 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n Name: ").append(this.name).append("\n")
-            .append(" Email: ").append(this.email).append("\n")
-            .append(" UserName: ").append(this.getUsername()).append("\n")
-            .append(" Password: ").append(this.getPassword()).append("\n")
-            // .append(" AuthId: ").append(this.authId).append("\n")
-            .append("  Attributes:\n");
-            if(this.attributes == null || this.attributes.isEmpty()) {
-                sb.append("    No Attributes\n");
-            }
-            for(Map.Entry<String, String> entry : this.attributes.entrySet()) {
-                sb.append("    ").append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
-            }
-
-        return sb.toString();
+        return CommonStringBuilder.buildString(
+            "\n Name: ", this.name, "\n",
+            " Id: ", this.id, "\n",
+            " Username: ", this.getUsername(), "\n",
+            " Password: ", this.getPassword(), "\n",
+            " Email: ", this.email, "\n");
     }
 
     @Override

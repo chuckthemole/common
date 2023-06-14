@@ -16,6 +16,7 @@ abstract public class Rumpus {
 
     public final static String NO_ID = String.valueOf(-1);
 
+    public final static String EMPTY_FIELD = "EMPTY_FIELD";
     public final static String NO_NAME = String.valueOf("NO_NAME");
     public final static String NO_PASS = String.valueOf("NO_PASS");
 
@@ -58,6 +59,7 @@ abstract public class Rumpus {
     protected static final String ID = "id";
     protected static final String EMAIL = "email";
     protected static final String PASSWORD = "password";
+    protected static final String KEYHOLDER = "keyholder";
     protected static final String AUTH_ID = "auth_id";
     protected static final String USER_ID = "user_id";
     protected static final String EMPTY_AUTH_ID = String.valueOf(-1);

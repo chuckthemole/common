@@ -92,7 +92,6 @@ public class SQLBuilder extends Builder {
             .append(USERNAME)
             .append(EQUALS)
             .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
-            .append(SPACE)
             .append(SEMI);
 
     }

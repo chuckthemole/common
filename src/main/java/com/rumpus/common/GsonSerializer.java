@@ -13,8 +13,8 @@ public abstract class GsonSerializer<T extends Model<?>> implements JsonSerializ
     @Override
     public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObj = new JsonObject();
-        for(Map.Entry<String, String> entry : src.getAttributes().entrySet()) {
-            jsonObj.addProperty(entry.getKey(), entry.getValue());
+        for(Map.Entry<String, Object> entry : src.getModelAttributesMap().entrySet()) {
+            jsonObj.addProperty(entry.getKey(), entry.getValue().toString());
         }
         return jsonObj;
     }

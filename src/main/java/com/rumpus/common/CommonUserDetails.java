@@ -12,7 +12,7 @@ import com.google.gson.JsonSerializationContext;
 import com.rumpus.common.Builder.LogBuilder;
 
 // TODO: I don't think this should be a model. Remove its extention
-public class CommonUserDetails extends Model<CommonUserDetails> implements UserDetails {
+public class CommonUserDetails extends RumpusObject implements UserDetails {
 
     private static final String NAME = "CommonUserDetails";
     private static final GrantedAuthority USER = new CommonAuthority(ROLE_USER);

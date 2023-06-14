@@ -35,8 +35,14 @@ public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
     public MODEL getById(String id);
     public List<MODEL> getAll();
     public MODEL add(MODEL model);
+    /**
+     * 
+     * @param id the id of the model to update
+     * @param newModel the updated model
+     * @return
+     */
     public MODEL update(String id, MODEL newModel);
-    public MODEL update(String id, MODEL newModel, String condition);
+    // public MODEL update(String id, MODEL newModel, String condition);
     public MODEL onInsert(final MODEL model, final String sql);
     public MODEL onGet(final String sql, final String name);
     public MODEL onGet(final String sql);
@@ -56,7 +62,7 @@ public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
      * @param condition sql condition, eg username='mycoolusername'
      * @return updated model
      */
-    public MODEL update(String model, MODEL newModel, Set<String> columns, String condition);
+    // public MODEL update(String model, MODEL newModel, Set<String> columns, String condition);
     
     public Mapper<MODEL> getMapper();
 }

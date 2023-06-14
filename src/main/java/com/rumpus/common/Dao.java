@@ -3,25 +3,19 @@ package com.rumpus.common;
 import java.util.List;
 import java.util.Map;
 
-public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
+public abstract class Dao<MODEL extends Model<MODEL>> extends RumpusObject implements IDao<MODEL> {
 
-    private final static String NAME = "rawDao";
-    protected IApiDB<T> api;
+    protected IApiDB<MODEL> api;
     protected final String table;
     protected final String metaTable;
 
-    // public Dao() {
-    //     super(NAME);
-    //     this.api = new ApiDB<>();
-    //     this.table = NO_NAME;
-    // }
     public Dao(String table, String metaTable, String name) {
         super(name);
         this.api = null;
         this.table = table;
         this.metaTable = metaTable;
     }
-    public Dao(IApiDB<T> api, String table, String metaTable, String name) {
+    public Dao(IApiDB<MODEL> api, String table, String metaTable, String name) {
         super(name);
         this.api = api;
         this.table = table;
@@ -47,52 +41,52 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
-    public T get(int id) {
+    public MODEL get(int id) {
         LOG.info("Dao::get()");
         return this.api.isInitialized() ? this.api.get(id) : null;
     }
 
     @Override
-    public T get(String name) {
+    public MODEL get(String name) {
         LOG.info("Dao::get()");
         return this.api.isInitialized() ? this.api.get(name) : null;
     }
 
     @Override
-    public List<T> get(Map<String, String> constraints) {
+    public List<MODEL> get(Map<String, String> constraints) {
         LOG.info("Dao::get()");
         return this.api.isInitialized() ? this.api.get(constraints) : null;
     }
 
     @Override
-    public T getById(String id) {
+    public MODEL getById(String id) {
         LOG.info("Dao::getById()");
         return this.api.getById(id);
     }
 
     @Override
-    public List<T> getAll() {
+    public List<MODEL> getAll() {
         LOG.info("Dao::getAll()");
         return this.api.isInitialized() ? this.api.getAll() : null;
     }
 
     @Override
-    public T add(T model) {
+    public MODEL add(MODEL model) {
         LOG.info("Dao::add()");
         return this.api.isInitialized() ? this.api.add(model) : null;
     }
 
     @Override
-    public T update(String id, T updatedModel) {
+    public MODEL update(String id, MODEL updatedModel) {
         LOG.info("Dao::update()");
-        return this.api.update(id, updatedModel, "");
+        return this.api.update(id, updatedModel);
     }
 
-    @Override
-    public T update(String id, T updatedModel, String condition) {
-        LOG.info("Dao::update()");
-        return this.api.update(id, updatedModel, condition);
-    }
+    // @Override
+    // public MODEL update(String id, MODEL updatedModel, String condition) {
+    //     LOG.info("Dao::update()");
+    //     return this.api.update(id, updatedModel, condition);
+    // }
 
     @Override
     public long countAll(Map<String, Object> params) {
@@ -108,13 +102,13 @@ public class Dao<T extends Model<T>> extends RumpusObject implements IDao<T> {
     }
 
     @Override
-    public Mapper<T> getMapper() {
+    public Mapper<MODEL> getMapper() {
         LOG.info("Dao::getMapper()");
         return this.api.getMapper();
     }
 
     @Override
-    public int setApiDB(IApiDB<T> api) {
+    public int setApiDB(IApiDB<MODEL> api) {
         this.api = api;
         return SUCCESS;
     }

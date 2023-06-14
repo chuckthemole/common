@@ -1,43 +1,24 @@
 package com.rumpus.common;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.jdbc.support.KeyHolder;
 
-public abstract class Model<T extends RumpusObject> extends RumpusObject implements IModel<T> {
+import com.rumpus.common.Builder.LogBuilder;
 
-    protected static final String NAME = "rawModel";
+public abstract class Model<MODEL extends RumpusObject> extends RumpusObject implements IModel<MODEL> {
+
+    protected static final String NAME = "Model";
     @Id protected String id;
-    protected KeyHolder key;
-    protected Map<String, String> attributes; // TODO: Map<String, String> : String should be abstracted
+    protected CommonKeyHolder key;
     protected Function<PreparedStatement, PreparedStatement> statement;
-    protected Map<String, String> metaData;
 
     // Ctors
-    public Model(String name) {
+    public Model(final String name) {
         super(name);
-        this.attributes = new HashMap<>();
-        this.metaData = new HashMap<>();
-    }
-    public Model(String name, Map<String, String> attributes) {
-        super(name);
-        this.attributes = attributes;
-        this.metaData = new HashMap<>();
-    }
-    public Model(String name, Map<String, String> attributes, Map<String, String> metaData) {
-        super(name);
-        this.attributes = attributes;
-        this.metaData = metaData;
-    }
-
-    @Override
-    public int init() {
-        return NOT_INITIALIZED;
     }
 
     @Override
@@ -47,7 +28,6 @@ public abstract class Model<T extends RumpusObject> extends RumpusObject impleme
 
     @Override
     public void setId(String id) {
-        this.attributes.put(ID, id);
         this.id = id;
     }
 
@@ -57,29 +37,22 @@ public abstract class Model<T extends RumpusObject> extends RumpusObject impleme
     }
 
     @Override
-    public void setKey(KeyHolder key) {
-        // this.attributes.put(ID, id);
-        this.id = id;
+    public void setKey(CommonKeyHolder key) {
+        this.key = key;
     }
 
     @Override
-    public void setInitMap(Map<String, String> attributes) {
-        this.attributes = attributes;
+    public Map<String, Object> getModelAttributesMap() {
+        Map<String, Object> modelAttributesMap = Map.of(ID, this.id, KEYHOLDER, this.key);
+        return modelAttributesMap;
     }
 
-    @Override
-    public void map(ResultSet rs) {
-    }
-
-    @Override
-    public Map<String, String> getAttributes() {
-        return attributes;
-    }
     @Override
     public int setStatement(Function<PreparedStatement, PreparedStatement> statement) {
         this.statement = statement;
         return SUCCESS;
     }
+
     @Override
     public Function<PreparedStatement, PreparedStatement> getStatement() {
         return this.statement;
@@ -92,29 +65,31 @@ public abstract class Model<T extends RumpusObject> extends RumpusObject impleme
         return sb.toString();
     }
 
-    // @Override
-    // public boolean equals(Object o) {
-    //     LOG.info("Model::equals()");
-    //     if (o == this) {
-    //         return true;
-    //     } else if (!(o instanceof Model)) {
-    //         return false;
-    //     }
+    @Override
+    public boolean equals(Object o) {
+        LOG.info("Model::equals()");
+        if (o == this) {
+            return true;
+        } else if (!(o instanceof Model)) {
+            return false;
+        }
 
-    //     @SuppressWarnings(UNCHECKED)
-    //     Model<T> model = (Model<T>) o;
+        @SuppressWarnings(UNCHECKED)
+        Model<MODEL> model = (Model<MODEL>) o;
 
-    //     boolean flag = true;
-    //     // TODO add more conditions for member variables as this class grows. - chuck
-    //     if(!this.idIsEqual(model)) {
-    //         LogBuilder log = new LogBuilder("\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
-    //         log.info();
-    //         flag = false;
-    //     }
-    //     return flag;
-    // }
+        if(!this.id.equals(model.id)) {
+            LogBuilder log = new LogBuilder("\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
+            log.info();
+            return false;
+        }
+        return true;
+    }
 
-    protected boolean idIsEqual(Model<T> model) {
+    protected boolean idIsEqual(Model<MODEL> model) {
         return this.id.equals(model.id) ? true : false;
+    }
+
+    protected boolean hasId() {
+        return this.id == null || this.id == NO_ID || this.id == EMPTY_FIELD ? false : true;
     }
 }

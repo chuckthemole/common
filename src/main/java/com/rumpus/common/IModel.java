@@ -7,15 +7,34 @@ import java.util.function.Function;
 
 import org.springframework.jdbc.support.KeyHolder;
 
-public interface IModel<T extends IRumpusObject> extends IRumpusObject {
-    int init();
+public interface IModel<MODEL extends IRumpusObject> extends IRumpusObject {
+    /**
+     * 
+     * @return this model's id
+     */
     String getId();
+    /**
+     * 
+     * @param id set this model's id
+     */
     void setId(String id);
+    /**
+     * 
+     * @return the KeyHolder object for this model
+     */
     KeyHolder getKey();
-    void setKey(KeyHolder key);
-    void map(ResultSet rs);
-    void setInitMap(Map<String, String> attributeMap);
-    Map<String, String> getAttributes();
+    /**
+     * 
+     * @param key key to set as KeyHolder object for this model
+     */
+    void setKey(CommonKeyHolder key);
+    /**
+     * 
+     * @return the attributes (usually member variables) for this MODEL as a map
+     */
+    Map<String, Object> getModelAttributesMap();
+
+    // TODO  I don't think we need statement
     int setStatement(Function<PreparedStatement, PreparedStatement> statement);
     Function<PreparedStatement, PreparedStatement> getStatement();
 }

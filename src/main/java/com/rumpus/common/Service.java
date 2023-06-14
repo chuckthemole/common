@@ -55,8 +55,8 @@ public class Service<T extends Model<T>> extends RumpusObject implements IServic
     public T update(String id, T updatedModel) {
         return this.dao.update(id, updatedModel);
     }
-    @Override
-    public T update(String id, T updatedModel, String condition) {
-        return this.dao.update(id, updatedModel, condition);
-    }
+    // @Override
+    // public T update(String id, T updatedModel, String condition) {
+    //     return this.dao.update(id, updatedModel, condition);
+    // }
 }

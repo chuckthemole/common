@@ -167,42 +167,42 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
         return models;
     }
 
-    @Override
-    public MODEL add(MODEL model) {
-        LOG.info("Jdbc::add()");
-        LOG.info(model.toString());
+    // @Override
+    // public MODEL add(MODEL model) {
+    //     LOG.info("Jdbc::add()");
+    //     LOG.info(model.toString());
 
-        // Build sql
-        StringBuilder sbSql = new StringBuilder();
-        sbSql.append("INSERT INTO ").append(table).append("(");
-        for(Map.Entry<String, String> entry : model.getAttributes().entrySet()) {
-            sbSql.append(entry.getKey()).append(",");
-        }
-        sbSql.deleteCharAt(sbSql.length() - 1);
-        sbSql.append(") VALUES(");
-        for(Map.Entry<String, String> entry : model.getAttributes().entrySet()) {
-            sbSql.append("?,");
-        }
-        sbSql.deleteCharAt(sbSql.length() - 1);
-        sbSql.append(");");
-        final String sql = sbSql.toString();
-        LOG.info(sql);
+    //     // Build sql
+    //     StringBuilder sbSql = new StringBuilder();
+    //     sbSql.append("INSERT INTO ").append(table).append("(");
+    //     for(Map.Entry<String, String> entry : model.getAttributes().entrySet()) {
+    //         sbSql.append(entry.getKey()).append(",");
+    //     }
+    //     sbSql.deleteCharAt(sbSql.length() - 1);
+    //     sbSql.append(") VALUES(");
+    //     for(Map.Entry<String, String> entry : model.getAttributes().entrySet()) {
+    //         sbSql.append("?,");
+    //     }
+    //     sbSql.deleteCharAt(sbSql.length() - 1);
+    //     sbSql.append(");");
+    //     final String sql = sbSql.toString();
+    //     LOG.info(sql);
 
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        CommonJdbc.jdbcTemplate.update((Connection conn) -> {
-            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            return model.getStatement().apply(statement);
-        }, keyHolder);
-        if(keyHolder.getKey() != null) {
-            model.setId(keyHolder.getKey().toString());
-        } else {
-            model.setId(NO_ID);
-        }
+    //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+    //     CommonJdbc.jdbcTemplate.update((Connection conn) -> {
+    //         PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    //         return model.getStatement().apply(statement);
+    //     }, keyHolder);
+    //     if(keyHolder.getKey() != null) {
+    //         model.setId(keyHolder.getKey().toString());
+    //     } else {
+    //         model.setId(NO_ID);
+    //     }
 
-        return model;
+    //     return model;
 
-        // return add.apply(model);
-    }
+    //     // return add.apply(model);
+    // }
 
     @Override
     public void insert(String sqlInsertStatement, Map<String, Object> modelMap) {
@@ -216,15 +216,21 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public MODEL onInsert(MODEL model, final String sql) {
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder(); // TODO read more about this and see what to do with it. Keeping as member variable in Model. - chuck
+        CommonKeyHolder keyHolder = new CommonKeyHolder(); // TODO read more about this and see what to do with it. Keeping as member variable in Model. - chuck
         CommonJdbc.jdbcTemplate.update((Connection conn) -> {
             return conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         }, keyHolder);
+
+        // TODO:i don't think we need to get the key here. 
         if(keyHolder.getKey() != null) {
             model.setKey(keyHolder);
         } else {
             model.setKey(null);
         }
+
+        LogBuilder log = new LogBuilder("KeyHolder debug: ", keyHolder.getKeyAs(String.class));
+        log.info();
+        
         return model;
     }
 
@@ -269,92 +275,92 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
         return CommonJdbc.jdbcTemplate.update(sql, objects);
     }
 
-    @Override
-    public MODEL update(String key, MODEL newModel, String condition) {
-        LOG.info("Jdbc::add()");
-        // StringBuilder logBuilder = new StringBuilder();
-        // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
-        LogBuilder log = new LogBuilder("Updating '", key, "' of type '", newModel.name(), "''.");
-        log.info();
+    // @Override
+    // public MODEL update(String key, MODEL newModel, String condition) {
+    //     LOG.info("Jdbc::add()");
+    //     // StringBuilder logBuilder = new StringBuilder();
+    //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
+    //     LogBuilder log = new LogBuilder("Updating '", key, "' of type '", newModel.name(), "''.");
+    //     log.info();
 
-        SQLBuilder sqlBuilder = new SQLBuilder();
-        if(condition.isEmpty()) {
-            sqlBuilder.update(this.table, newModel.getAttributes());
-        } else {
-            sqlBuilder.update(this.table, newModel.getAttributes(), condition);
-        }
+    //     SQLBuilder sqlBuilder = new SQLBuilder();
+    //     if(condition.isEmpty()) {
+    //         sqlBuilder.update(this.table, newModel.getAttributes());
+    //     } else {
+    //         sqlBuilder.update(this.table, newModel.getAttributes(), condition);
+    //     }
 
-        LOG.info(sqlBuilder.toString());
+    //     LOG.info(sqlBuilder.toString());
 
-        MODEL model = this.get(key);
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        CommonJdbc.jdbcTemplate.update((Connection conn) -> {
-            PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
-            if(!condition.isEmpty()) { // TODO think about how to alter this. We can have more than one under 'condition'. Will work for 'user' right now.
-                statement.setString(1, key);
-            }
-            // return model.getStatement().apply(statement);
-            return statement;
-        }, keyHolder);
-        if(keyHolder.getKey() != null) {
-            model.setId(keyHolder.getKey().toString());
-        } else {
-            model.setId(NO_ID);
-        }
+    //     MODEL model = this.get(key);
+    //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+    //     CommonJdbc.jdbcTemplate.update((Connection conn) -> {
+    //         PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
+    //         if(!condition.isEmpty()) { // TODO think about how to alter this. We can have more than one under 'condition'. Will work for 'user' right now.
+    //             statement.setString(1, key);
+    //         }
+    //         // return model.getStatement().apply(statement);
+    //         return statement;
+    //     }, keyHolder);
+    //     if(keyHolder.getKey() != null) {
+    //         model.setId(keyHolder.getKey().toString());
+    //     } else {
+    //         model.setId(NO_ID);
+    //     }
 
-        return newModel;
-    }
+    //     return newModel;
+    // }
 
-    @Override
-    public MODEL update(String id, MODEL newModel, Set<String> columns, String condition) {
-        LOG.info("ApiDBJdbc::add()");
-        // StringBuilder logBuilder = new StringBuilder();
-        // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
-        LogBuilder log = new LogBuilder("Updating '", id, "' of type '", newModel.name(), "''.");
-        log.info();
+    // @Override
+    // public MODEL update(String id, MODEL newModel, Set<String> columns, String condition) {
+    //     LOG.info("ApiDBJdbc::add()");
+    //     // StringBuilder logBuilder = new StringBuilder();
+    //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
+    //     LogBuilder log = new LogBuilder("Updating '", id, "' of type '", newModel.name(), "''.");
+    //     log.info();
 
-        // filter necessary columns into map
-        Map<String, String> columnNamesAndValues = new HashMap<>();
-        Map<String, String> modelAttributes = newModel.getAttributes();
-        columns.forEach(column -> {
-            if(modelAttributes.containsKey(column)) {
-                columnNamesAndValues.put(column, modelAttributes.get(column));
-            }
-        });
+    //     // filter necessary columns into map
+    //     Map<String, String> columnNamesAndValues = new HashMap<>();
+    //     Map<String, String> modelAttributes = newModel.getAttributes();
+    //     columns.forEach(column -> {
+    //         if(modelAttributes.containsKey(column)) {
+    //             columnNamesAndValues.put(column, modelAttributes.get(column));
+    //         }
+    //     });
 
-        SQLBuilder sqlBuilder = new SQLBuilder();
-        if(condition.isEmpty()) {
-            sqlBuilder.update(this.table, columnNamesAndValues);
-        } else {
-            sqlBuilder.update(this.table, columnNamesAndValues, condition);
-        }
+    //     SQLBuilder sqlBuilder = new SQLBuilder();
+    //     if(condition.isEmpty()) {
+    //         sqlBuilder.update(this.table, columnNamesAndValues);
+    //     } else {
+    //         sqlBuilder.update(this.table, columnNamesAndValues, condition);
+    //     }
 
-        LOG.info(sqlBuilder.toString());
+    //     LOG.info(sqlBuilder.toString());
 
-        MODEL model = this.get(id);
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        CommonJdbc.jdbcTemplate.update((Connection conn) -> {
-            PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
-            if(!condition.isEmpty()) { // TODO think about how to alter this. We can have more than one under 'condition'. Will work for 'user' right now.
-                statement.setString(1, id);
-            }
-            // return model.getStatement().apply(statement);
-            return statement;
-        }, keyHolder);
-        if(keyHolder.getKey() != null) {
-            model.setId(keyHolder.getKey().toString());
-        } else {
-            model.setId(NO_ID);
-        }
+    //     MODEL model = this.get(id);
+    //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+    //     CommonJdbc.jdbcTemplate.update((Connection conn) -> {
+    //         PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
+    //         if(!condition.isEmpty()) { // TODO think about how to alter this. We can have more than one under 'condition'. Will work for 'user' right now.
+    //             statement.setString(1, id);
+    //         }
+    //         // return model.getStatement().apply(statement);
+    //         return statement;
+    //     }, keyHolder);
+    //     if(keyHolder.getKey() != null) {
+    //         model.setId(keyHolder.getKey().toString());
+    //     } else {
+    //         model.setId(NO_ID);
+    //     }
 
-        return newModel;
-    }
+    //     return newModel;
+    // }
 
-    @Override
-    public MODEL update(String id, MODEL newModel) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
+    // @Override
+    // public MODEL update(String id, MODEL newModel) {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'update'");
+    // }
 
     @Override
     public boolean isInitialized() {
