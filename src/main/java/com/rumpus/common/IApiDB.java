@@ -65,4 +65,23 @@ public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
     // public MODEL update(String model, MODEL newModel, Set<String> columns, String condition);
     
     public Mapper<MODEL> getMapper();
+
+    /**
+     * Creates a set that keeps track of ids for the given name
+     * this has a default length for ids, managed by UniqueIdManager
+     * 
+     * @param name the name of the set to register
+     */
+    public static void registerIdSet(final String name) {
+        ApiDB.idManager.createUniqueIdSetWithDefaultLength(name);
+    }
+    /**
+     * Creates a set that keeps track of ids for the given name
+     * 
+     * @param name the name of the set to register
+     * @param length the length of the ids in this set
+     */
+    public static void registerIdSet(final String name, final int length) {
+        ApiDB.idManager.createUniqueIdSetWithSetLength(name, length);
+    }
 }

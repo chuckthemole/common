@@ -1,7 +1,6 @@
 package com.rumpus.common;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Map;
 import java.util.function.Function;
 

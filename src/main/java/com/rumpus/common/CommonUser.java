@@ -2,7 +2,6 @@ package com.rumpus.common;
 
 import java.util.function.Function;
 
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

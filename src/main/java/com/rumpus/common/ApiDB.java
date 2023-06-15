@@ -14,6 +14,11 @@ abstract class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements
     protected boolean initialized;
     protected String table;
     protected Mapper<MODEL> mapper;
+    protected static IUniqueIdManager idManager;
+
+    static {
+        ApiDB.idManager = UniqueIdManager.getSingletonInstance();
+    }
 
     public ApiDB(String name, String table, Mapper<MODEL> mapper) {
         super(name);

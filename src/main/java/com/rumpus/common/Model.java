@@ -19,6 +19,8 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
     // Ctors
     public Model(final String name) {
         super(name);
+        // final String tempId = Model.idManager.add(name);
+        // this.id = tempId != null ? tempId : NO_ID;
     }
 
     @Override

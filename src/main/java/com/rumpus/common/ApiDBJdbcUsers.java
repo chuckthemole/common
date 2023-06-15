@@ -218,6 +218,10 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         // final String password = newUser.attributes.get(PASSWORD);
         // newUser.attributes.remove(PASSWORD);
 
+        // check if user has an id, if not assign.
+        if(!newUser.hasId()) {
+            newUser.setId(ApiDB.idManager.add(newUser.name));
+        }
         newUser = this.simpleAddUser(newUser);
 
         // newUser.attributes.put(PASSWORD, password);
@@ -231,7 +235,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         Map<String, String> columnValues = Map.of(
             USERNAME, newUser.getUsername(),
             EMAIL, newUser.getEmail(),
-            ID, !newUser.hasId() ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
+            ID, !newUser.hasId() ? NO_ID : newUser.getId() // TODO: should check that the id is unique if we getId() here
         );
         sqlBuilder.insert(this.table, columnValues);
         LOG.info(sqlBuilder.toString());
@@ -249,7 +253,8 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
             USERNAME, newUser.getUsername(),
             EMAIL, newUser.getEmail(),
             // should check id is in correct format too
-            ID, !newUser.hasId() ? this.idManager.add() : newUser.getId() // TODO: should check that the id is unique if we getId() here
+            // ID, newUser.hasId() ? newUser.getId() : ApiDB.idManager.add(newUser.name) // TODO: should check that the id is unique if we getId() here
+            ID, newUser.getId()
         );
 
         super.onSimpleInsert(newUser, columnValues);

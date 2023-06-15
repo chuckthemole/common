@@ -1,45 +1,133 @@
 package com.rumpus.common;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-
+import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.util.Random;
 
 // @Data
 // @Entity
 // @NoArgsConstructor
 // @AllArgsConstructor
-public class UniqueIdManager extends RumpusObject implements Serializable { // TODO should this be Serializable?
+/**
+ * Singleton class to keep track of each model's unique id. Each model's set is identified by its NAME
+ */
+public class UniqueIdManager extends RumpusObject implements IUniqueIdManager, Serializable { // TODO should this be Serializable?
 
     private static final String NAME = "UniqueIdManager";
-    private Set<String> uniqueIds;
-    private final int idLength;
-    private static final int DEFAULT_ID_LENGTH = 10;
+    private static UniqueIdManager singletonInstance = null;
+    private static Map<String, NodeOfIds> uniqueIds; // map of unique ids. holds name of unique id set and NodeOfIds (size and set)
 
-    public UniqueIdManager() {
+    private UniqueIdManager() {
         super(NAME);
-        this.uniqueIds = new HashSet<>();
-        this.idLength = DEFAULT_ID_LENGTH;
+        UniqueIdManager.uniqueIds = new HashMap<>();
     }
 
-    public UniqueIdManager(final int idLength) {
-        super(NAME);
-        this.uniqueIds = new HashSet<>();
-        this.idLength = idLength;
+    /**
+     * Factory static constructor
+     * 
+     * @return instance of this class
+     */
+    public static synchronized UniqueIdManager getSingletonInstance() {
+        return singletonInstance == null ? new UniqueIdManager() : singletonInstance;
     }
 
-    public String add() {
-        String id;
-        do {
-            id = Random.alphaNumericUpper(this.idLength);
-        } while(this.uniqueIds.contains(id));
-        return id;
+    /**
+     * 
+     * @param setName the name of the set to create
+     */
+    public void createUniqueIdSetWithDefaultLength(final String setName) {
+        if(!UniqueIdManager.uniqueIds.containsKey(setName)) {
+            UniqueIdManager.uniqueIds.put(setName, new NodeOfIds());
+        } else {
+            LogBuilder log = new LogBuilder("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
+            log.info();
+        }
+    }
+    /**
+     * 
+     * @param setName the name of the set to create
+     * @param length the length of the ids
+     */
+    public void createUniqueIdSetWithSetLength(final String setName, final int length) {
+        if(!UniqueIdManager.uniqueIds.containsKey(setName)) {
+            UniqueIdManager.uniqueIds.put(setName, new NodeOfIds(length));
+        } else {
+            LogBuilder log = new LogBuilder("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
+            log.info();
+        }
     }
 
-    public void remove(final String id) {
-        this.uniqueIds.remove(id);
+    /**
+     * 
+     * @param name the name of the set of ids to add to
+     * @return the generated id or null if there is an error
+     */
+    public String add(final String name) {
+        if(UniqueIdManager.uniqueIds.containsKey(name)) {
+            return UniqueIdManager.uniqueIds.get(name).add();
+        } else {
+            LogBuilder log = new LogBuilder("Set of ids with name '", name, "' does not exist.");
+            log.info();
+            return null;
+        }
+    }
+
+    /**
+     * 
+     * @param key key to check
+     * @return true if the id manager contains key
+     */
+    public boolean contains(final String key) {
+        return UniqueIdManager.uniqueIds.containsKey(key);
+    }
+
+    /**
+     * 
+     * @param name the name of the set of ids
+     * @param id the id to remove
+     * @return true if the set contained the element
+     */
+    public boolean remove(final String name, final String id) {
+        if(UniqueIdManager.uniqueIds.containsKey(name)) {
+            return UniqueIdManager.uniqueIds.get(name).remove(id);
+        } else {
+            LogBuilder log = new LogBuilder("Set of ids with name '", name, "' does not exist.");
+            log.info();
+            return false;
+        }
+    }
+
+    private class NodeOfIds {
+        private final int idLength;
+        private Set<String> ids;
+        private static final int DEFAULT_ID_LENGTH = 10;
+
+        private NodeOfIds() {
+            this.idLength = DEFAULT_ID_LENGTH;
+            this.ids = new HashSet<>();
+        }
+        private NodeOfIds(final int length) {
+            this.idLength = length;
+            this.ids = new HashSet<>();
+        }
+
+        private String add() {
+            String id;
+            do {
+                id = Random.alphaNumericUpper(this.idLength);
+            } while(this.ids.contains(id));
+            this.ids.add(id);
+            return id;
+        }
+
+        private boolean remove(final String id) {
+            return this.ids.remove(id);
+        }
+
     }
 }

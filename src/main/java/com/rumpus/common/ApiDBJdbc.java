@@ -33,7 +33,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
     // }
     protected CommonJdbc jdbc;
     protected CommonSimpleJdbc<MODEL> simpleJdbc;
-    protected UniqueIdManager idManager; // TODO: think about moving this. where do I want to keep my id manager? at what level?
+    // protected UniqueIdManager idManager; // TODO: think about moving this. where do I want to keep my id manager? at what level?
     private static final int DEFAULT_ID_LENGTH = 10;
 
 
@@ -41,7 +41,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
         super(API_NAME, table, mapper);
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
-        this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH); // TODO give ability to construct with different length, or setter.
+        // this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH); // TODO give ability to construct with different length, or setter.
         this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
         // this.mapper = mapper;
         // this.add = add;
@@ -50,7 +50,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
         super(apiName, table, mapper);
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
-        this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH);
+        // this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH);
         this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
         // this.mapper = mapper;
         // this.add = add;
@@ -206,6 +206,8 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
 
     @Override
     public void insert(String sqlInsertStatement, Map<String, Object> modelMap) {
+        LOG.info("ApiDBJdbc::insert()");
+        LOG.info(sqlInsertStatement);
         PreparedStatementCallback<Integer> ps = new PreparedStatementCallback<Integer>() {
             public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
                 return ps.executeUpdate();
