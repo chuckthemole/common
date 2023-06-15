@@ -9,10 +9,8 @@ import java.util.Set;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.util.Random;
 
-// @Data
-// @Entity
-// @NoArgsConstructor
-// @AllArgsConstructor
+// TODO: need to serialize this data when application ends and reload when application starts so we don't have dupes
+
 /**
  * Singleton class to keep track of each model's unique id. Each model's set is identified by its NAME
  */

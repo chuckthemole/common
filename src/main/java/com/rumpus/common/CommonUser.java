@@ -32,12 +32,10 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     // Ctors
     public CommonUser() {
         super(NAME);
-        super.statement = statement();
         init();
     }
     public CommonUser(String modelName) {
         super(modelName);
-        super.statement = statement();
         init();
     }
 
@@ -158,21 +156,6 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
     private boolean userDetailsIsEqual(CommonUser<USER> user) {
         return this.getUserDetails().equals(user.getUserDetails()) ? true : false;
-    }
-
-    private Function<PreparedStatement, PreparedStatement> statement() {
-        return(
-            (PreparedStatement statement) -> {
-                try {
-                    // statement.setString(1, this.getUserDetails().getPassword());
-                    statement.setString(1, this.email);
-                    statement.setString(2, this.getUsername());
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return  statement;
-            }
-        );
     }
 
     // TODO: abstract this serializer class for models

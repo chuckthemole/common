@@ -14,13 +14,10 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
     protected static final String NAME = "Model";
     @Id protected String id;
     protected CommonKeyHolder key;
-    protected Function<PreparedStatement, PreparedStatement> statement;
 
     // Ctors
     public Model(final String name) {
         super(name);
-        // final String tempId = Model.idManager.add(name);
-        // this.id = tempId != null ? tempId : NO_ID;
     }
 
     @Override
@@ -47,17 +44,6 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
     public Map<String, Object> getModelAttributesMap() {
         Map<String, Object> modelAttributesMap = Map.of(ID, this.id, KEYHOLDER, this.key);
         return modelAttributesMap;
-    }
-
-    @Override
-    public int setStatement(Function<PreparedStatement, PreparedStatement> statement) {
-        this.statement = statement;
-        return SUCCESS;
-    }
-
-    @Override
-    public Function<PreparedStatement, PreparedStatement> getStatement() {
-        return this.statement;
     }
 
     @Override

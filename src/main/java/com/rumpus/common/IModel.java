@@ -32,8 +32,4 @@ public interface IModel<MODEL extends IRumpusObject> extends IRumpusObject {
      * @return the attributes (usually member variables) for this MODEL as a map
      */
     Map<String, Object> getModelAttributesMap();
-
-    // TODO  I don't think we need statement
-    int setStatement(Function<PreparedStatement, PreparedStatement> statement);
-    Function<PreparedStatement, PreparedStatement> getStatement();
 }
