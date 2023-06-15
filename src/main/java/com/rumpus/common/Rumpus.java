@@ -60,9 +60,7 @@ abstract public class Rumpus {
     protected static final String EMAIL = "email";
     protected static final String PASSWORD = "password";
     protected static final String KEYHOLDER = "keyholder";
-    protected static final String AUTH_ID = "auth_id";
     protected static final String USER_ID = "user_id";
-    protected static final String EMPTY_AUTH_ID = String.valueOf(-1);
 
     // Paths
     protected static final String PATH_INDEX = "/";
