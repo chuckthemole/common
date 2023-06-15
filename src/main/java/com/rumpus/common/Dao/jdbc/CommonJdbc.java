@@ -1,9 +1,11 @@
-package com.rumpus.common;
+package com.rumpus.common.Dao.jdbc;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import com.rumpus.common.RumpusObject;
 
 // TODO: Maybe make this abstract class
 public class CommonJdbc extends RumpusObject {

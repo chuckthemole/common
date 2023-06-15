@@ -3,6 +3,8 @@ package com.rumpus.common;
 import java.io.Serializable;
 import java.util.Set;
 
+import com.rumpus.common.User.ActiveUserStore;
+
 import jakarta.servlet.http.HttpSessionBindingEvent;
 import jakarta.servlet.http.HttpSessionBindingListener;
 

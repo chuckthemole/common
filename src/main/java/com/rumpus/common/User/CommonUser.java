@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.User;
 
 import java.util.function.Function;
 
@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.lang.reflect.Type;
 
 import com.google.gson.JsonElement;
+import com.rumpus.common.CommonKeyHolder;
+import com.rumpus.common.GsonSerializer;
+import com.rumpus.common.Model;
 import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Builder.LogBuilder;
 import com.google.gson.JsonObject;

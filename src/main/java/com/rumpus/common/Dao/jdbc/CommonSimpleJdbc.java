@@ -1,6 +1,9 @@
-package com.rumpus.common;
+package com.rumpus.common.Dao.jdbc;
 
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+
+import com.rumpus.common.Model;
+import com.rumpus.common.RumpusObject;
 
 import java.util.HashMap;
 import java.util.Map;

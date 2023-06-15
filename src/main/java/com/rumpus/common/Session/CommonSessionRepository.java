@@ -1,8 +1,8 @@
 package com.rumpus.common.Session;
 
-import com.rumpus.common.Dao;
-
 import org.springframework.session.SessionRepository;
+
+import com.rumpus.common.Dao.Dao;
 
 public class CommonSessionRepository extends Dao<CommonSession> implements SessionRepository<CommonSession> {
 

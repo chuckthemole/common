@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.User;
 
 import java.util.HashSet;
 import java.util.Set;

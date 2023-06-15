@@ -1,3 +1,4 @@
+package com.rumpus.common.User;
 // package com.rumpus.common;
 
 // import org.springframework.context.annotation.Bean;

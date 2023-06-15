@@ -2,6 +2,8 @@ package com.rumpus.common;
 
 import java.util.List;
 
+import com.rumpus.common.Dao.IDao;
+
 // import org.springframework.stereotype.Service; TODO: maybe use this annotation here, if so, need to change name of class, since currently conflicts with same name
 
 // @Service

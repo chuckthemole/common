@@ -31,6 +31,11 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
     }
 
     @Override
+    public boolean hasId() {
+        return this.id == null || this.id == NO_ID || this.id == EMPTY_FIELD ? false : true;
+    }
+
+    @Override
     public KeyHolder getKey() {
         return this.key;
     }
@@ -75,9 +80,5 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
 
     protected boolean idIsEqual(Model<MODEL> model) {
         return this.id.equals(model.id) ? true : false;
-    }
-
-    protected boolean hasId() {
-        return this.id == null || this.id == NO_ID || this.id == EMPTY_FIELD ? false : true;
     }
 }

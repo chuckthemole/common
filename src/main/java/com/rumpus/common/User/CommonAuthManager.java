@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.User;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Dao.jdbc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,8 +12,13 @@ import javax.sql.DataSource;
 
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
+import com.rumpus.common.Mapper;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
+import com.rumpus.common.Dao.ApiDB;
+import com.rumpus.common.User.CommonAuthManager;
+import com.rumpus.common.User.CommonUser;
+import com.rumpus.common.User.CommonUserDetails;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -220,7 +225,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
 
         // check if user has an id, if not assign.
         if(!newUser.hasId()) {
-            newUser.setId(ApiDB.idManager.add(newUser.name));
+            newUser.setId(ApiDB.idManager.add(newUser.name()));
         }
         newUser = this.simpleAddUser(newUser);
 

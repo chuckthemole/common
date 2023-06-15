@@ -1,7 +1,11 @@
-package com.rumpus.common;
+package com.rumpus.common.Dao;
 
 import java.util.List;
 import java.util.Map;
+
+import com.rumpus.common.Mapper;
+import com.rumpus.common.Model;
+import com.rumpus.common.RumpusObject;
 
 public abstract class Dao<MODEL extends Model<MODEL>> extends RumpusObject implements IDao<MODEL> {
 

@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.User;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import com.rumpus.common.GsonSerializer;
+import com.rumpus.common.RumpusObject;
 import com.rumpus.common.Builder.LogBuilder;
 
 // TODO: I don't think this should be a model. Remove its extention

@@ -19,6 +19,11 @@ public interface IModel<MODEL extends IRumpusObject> extends IRumpusObject {
     void setId(String id);
     /**
      * 
+     * @return true if this model has an id, otherwise false. will check for null, NO_ID, and EMPTY_FIELD
+     */
+    boolean hasId();
+    /**
+     * 
      * @return the KeyHolder object for this model
      */
     KeyHolder getKey();

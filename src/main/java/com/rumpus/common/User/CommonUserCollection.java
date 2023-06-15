@@ -1,9 +1,11 @@
-package com.rumpus.common;
+package com.rumpus.common.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import com.rumpus.common.ModelsCollection;
 
 public abstract class CommonUserCollection<USER extends CommonUser<USER>, COLLECTION extends Collection<USER>> extends ModelsCollection<USER, COLLECTION> {
 

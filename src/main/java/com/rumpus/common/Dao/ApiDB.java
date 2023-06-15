@@ -1,7 +1,13 @@
-package com.rumpus.common;
+package com.rumpus.common.Dao;
 
 import java.util.List;
 import java.util.Map;
+
+import com.rumpus.common.IUniqueIdManager;
+import com.rumpus.common.Mapper;
+import com.rumpus.common.Model;
+import com.rumpus.common.RumpusObject;
+import com.rumpus.common.UniqueIdManager;
 
 // TODO have a list of registered ApiDBs
 // Right now the only one is ApiDBJdbc.java
@@ -9,7 +15,7 @@ import java.util.Map;
 
 //TODO: think about moving orm layer stuff into a package
 
-abstract class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements IApiDB<MODEL> {
+public abstract class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements IApiDB<MODEL> {
 
     protected boolean initialized;
     protected String table;

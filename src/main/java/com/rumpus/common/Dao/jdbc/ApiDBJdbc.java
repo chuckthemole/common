@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +19,12 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.rumpus.common.CommonKeyHolder;
+import com.rumpus.common.Mapper;
+import com.rumpus.common.Model;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
+import com.rumpus.common.Dao.ApiDB;
 import com.rumpus.common.util.StringUtil;
 
 // TODO make this class abstract
