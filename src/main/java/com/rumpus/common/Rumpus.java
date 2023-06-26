@@ -55,12 +55,13 @@ abstract public class Rumpus {
     protected final static String GET_USER_BY_ID = "get_user_by_id";
 
     // User
-    protected static final String USERNAME = "username";
-    protected static final String ID = "id";
-    protected static final String EMAIL = "email";
-    protected static final String PASSWORD = "password";
-    protected static final String KEYHOLDER = "keyholder";
-    protected static final String USER_ID = "user_id";
+    public static final String USERNAME = "username";
+    public static final String ID = "id";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
+    public static final String USER_META_DATA = "user_meta_data";
+    public static final String KEYHOLDER = "keyholder";
+    public static final String USER_ID = "user_id";
 
     // Paths
     protected static final String PATH_INDEX = "/";

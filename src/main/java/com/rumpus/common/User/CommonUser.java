@@ -1,5 +1,6 @@
 package com.rumpus.common.User;
 
+import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -7,8 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.io.IOException;
 import java.lang.reflect.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.JsonElement;
 import com.rumpus.common.CommonKeyHolder;
 import com.rumpus.common.GsonSerializer;
@@ -17,15 +21,19 @@ import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Builder.LogBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
 
     private static final String NAME = "CommonUser";
 
-    private CommonUserDetails userDetails; // holds username and password among others
     private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     static private PasswordEncoder encoder;
     private String email;
+    private CommonUserDetails userDetails; // holds username and password among others
+    @JsonIgnore private CommonUserMetaData<? extends CommonUser<?>> metaData;
 
     static {
         CommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -89,6 +97,14 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     }
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public CommonUserMetaData<? extends CommonUser<?>> getMetaData() {
+        return this.metaData;
+    }
+
+    public void setMetaData(CommonUserMetaData<? extends CommonUser<?>> metaData) {
+        this.metaData = metaData;
     }
 
     @Override 
@@ -179,53 +195,4 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     static public UserGsonSerializer getSerializer() {
         return new UserGsonSerializer();
     }
-
-    // public class CommonUserAdapter extends TypeAdapter<CommonUser<USER>> {
-
-    //     @Override
-    //     public void write(JsonWriter out, CommonUser<USER> user) throws IOException {
-    //         out.beginObject(); 
-    //         out.name(USERNAME);
-    //         out.value(user.getUsername());
-    //         out.name(EMAIL);
-    //         out.value(user.getEmail());
-    //         out.name(PASSWORD);
-    //         out.value(user.getPassword());
-    //         out.endObject();
-    //     }
-
-    //     @Override
-    //     public CommonUser<USER> read(JsonReader in) throws IOException {
-    //         CommonUser<USER> user = new CommonUser<>();
-    //         in.beginObject();
-    //         String fieldname = null;
-
-    //         while (in.hasNext()) {
-    //             JsonToken token = in.peek();
-                
-    //             if (token.equals(JsonToken.NAME)) {
-    //                 //get the current token 
-    //                 fieldname = in.nextName(); 
-    //             }
-                
-    //             if (USERNAME.equals(fieldname)) {
-    //                 //move to next token
-    //                 token = in.peek();
-    //                 user.setUsername(in.nextString());
-    //             }
-                
-    //             if(EMAIL.equals(fieldname)) {
-    //                 //move to next token
-    //                 token = in.peek();
-    //                 user.setEmail(in.nextString());
-    //             }
-    //         }
-    //         in.endObject();
-    //         return user;
-    //     }
-    // }
-
-    // private class Details extends CommonUserDetails {
-    //     Details() {super();}
-    // }
 }

@@ -1,12 +1,18 @@
 package com.rumpus.common;
 
+import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.TypeAdapter;
 import com.rumpus.common.Builder.LogBuilder;
 
 public abstract class Model<MODEL extends RumpusObject> extends RumpusObject implements IModel<MODEL> {
@@ -14,6 +20,7 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
     protected static final String NAME = "Model";
     @Id protected String id;
     protected CommonKeyHolder key;
+    private TypeAdapter<? extends IModel<MODEL>> typeAdapter;
 
     // Ctors
     public Model(final String name) {
@@ -43,6 +50,16 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
     @Override
     public void setKey(CommonKeyHolder key) {
         this.key = key;
+    }
+
+    @Override
+    public TypeAdapter<? extends IModel<MODEL>> getTypeAdapter() {
+        return this.typeAdapter;
+    }
+
+    @Override
+    public void setTypeAdapter(TypeAdapter<? extends IModel<MODEL>> typeAdapter) {
+        this.typeAdapter = typeAdapter;
     }
 
     @Override

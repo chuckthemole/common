@@ -1,10 +1,10 @@
 package com.rumpus.common;
 
-import java.sql.PreparedStatement;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.springframework.jdbc.support.KeyHolder;
+
+import com.google.gson.TypeAdapter;
 
 public interface IModel<MODEL extends IRumpusObject> extends IRumpusObject {
     /**
@@ -37,4 +37,14 @@ public interface IModel<MODEL extends IRumpusObject> extends IRumpusObject {
      * @return the attributes (usually member variables) for this MODEL as a map
      */
     Map<String, Object> getModelAttributesMap();
+    /**
+     * 
+     * @return
+     */
+    TypeAdapter<? extends IModel<MODEL>> getTypeAdapter();
+    /**
+     * 
+     * @param typeAdapter
+     */
+    void setTypeAdapter(TypeAdapter<? extends IModel<MODEL>> typeAdapter);
 }

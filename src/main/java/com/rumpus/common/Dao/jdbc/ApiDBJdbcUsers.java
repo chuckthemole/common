@@ -211,6 +211,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         LOG.info("ApiDBJdbcUsers::add()");
         LOG.info(newUser.toString());
 
+        LogBuilder.logBuilderFromStringArgs("Checking if user '", newUser.getUsername(), "' already exists.").info();
         if(this.get(newUser.getUsername()) != null) { // check if user exists
             LOG.info("User with username already exists in the db. Returning null...");
             return null;

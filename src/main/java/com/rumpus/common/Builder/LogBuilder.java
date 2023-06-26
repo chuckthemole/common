@@ -8,8 +8,14 @@ public class LogBuilder extends Builder {
         super(NAME, args);
     }
 
-    // TODO error, warn, etc
-    public void info() {
-        LOG.info(this.toString());
+    public static LogBuilder logBuilderFromStringArgs(String... args) {
+        return new LogBuilder(args);
+    }
+    public static LogBuilder logBuilderFromStackTraceElementArray(StackTraceElement[] stack) {
+        String[] elements = new String[stack.length];
+        for(int i = 0; i < stack.length; i++) {
+            elements[i] = new StringBuilder(stack[i].toString()).append("\n").toString();
+        }
+        return new LogBuilder(elements);
     }
 }
