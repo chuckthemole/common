@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.rumpus.common.ModelsCollection;
 
-public abstract class CommonUserCollection<USER extends CommonUser<USER>, COLLECTION extends Collection<USER>> extends ModelsCollection<USER, COLLECTION> {
+public abstract class CommonUserCollection<USER extends CommonUser<USER, ? extends CommonUserMetaData<?>>, COLLECTION extends Collection<USER>> extends ModelsCollection<USER, COLLECTION> {
 
     public CommonUserCollection(COLLECTION userCollection) {
         super(userCollection);

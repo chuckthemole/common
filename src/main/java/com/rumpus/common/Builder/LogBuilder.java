@@ -11,10 +11,12 @@ public class LogBuilder extends Builder {
     public static LogBuilder logBuilderFromStringArgs(String... args) {
         return new LogBuilder(args);
     }
-    public static LogBuilder logBuilderFromStackTraceElementArray(StackTraceElement[] stack) {
-        String[] elements = new String[stack.length];
-        for(int i = 0; i < stack.length; i++) {
-            elements[i] = new StringBuilder(stack[i].toString()).append("\n").toString();
+    public static LogBuilder logBuilderFromStackTraceElementArray(String message, StackTraceElement[] stack) {
+        String[] elements = new String[stack.length + 1];
+        StringBuilder sb = new StringBuilder();
+        elements[0] = sb.append(message).append("\n").toString();
+        for(int i = 1; i <= stack.length; i++) {
+            elements[i] = new StringBuilder(stack[i - 1].toString()).append("\n").toString();
         }
         return new LogBuilder(elements);
     }

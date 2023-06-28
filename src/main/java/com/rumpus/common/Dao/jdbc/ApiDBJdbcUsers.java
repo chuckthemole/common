@@ -1,24 +1,33 @@
 package com.rumpus.common.Dao.jdbc;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.util.SerializationUtils;
 
+import com.rumpus.common.CommonExceptionInterceptor;
 import com.rumpus.common.Mapper;
+import com.rumpus.common.Blob.AbstractBlob;
+import com.rumpus.common.Blob.JdbcBlob;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.ApiDB;
 import com.rumpus.common.User.CommonAuthManager;
 import com.rumpus.common.User.CommonUser;
 import com.rumpus.common.User.CommonUserDetails;
+import com.rumpus.common.User.CommonUserMetaData;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,7 +41,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * note: the member manager should be operated on before doing super operations. this is becsuse manager holds the parent table. possibly make the other the parent table. 
  */
-public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USER> {
+public class ApiDBJdbcUsers<USER extends CommonUser<USER, META>, META extends CommonUserMetaData<META>> extends ApiDBJdbc<USER> {
 
     public static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
     private static final String UPDATE_USERS_TABLE = "update users set username = ?, password = ?, enabled = ? where username = ?";
@@ -211,11 +220,13 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
         LOG.info("ApiDBJdbcUsers::add()");
         LOG.info(newUser.toString());
 
-        LogBuilder.logBuilderFromStringArgs("Checking if user '", newUser.getUsername(), "' already exists.").info();
-        if(this.get(newUser.getUsername()) != null) { // check if user exists
-            LOG.info("User with username already exists in the db. Returning null...");
+        // check if user exists
+        LogBuilder.logBuilderFromStringArgs("- - - Checking if user '", newUser.getUsername(), "' already exists.").info();
+        if(this.get(newUser.getUsername()) != null) {
+            LOG.info("- - - User with username already exists in the db. Returning null...");
             return null;
         }
+        LogBuilder.logBuilderFromStringArgs("- - - User with name '", newUser.getUsername(), "' does not exist, continuing.").info();
         // create user details in manager (user table). this saves username, password, and enabled.
         UserDetails details = newUser.getUserDetails();
         this.manager.createUser(details);
@@ -255,16 +266,37 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER>> extends ApiDBJdbc<USE
     }
 
     private USER simpleAddUser(USER newUser) {
+        LOG.info("ApiDBJdbcUsers::simpleAddUser()");
+        @SuppressWarnings(value = {UNCHECKED})
         Map<String, Object> columnValues = Map.of(
             USERNAME, newUser.getUsername(),
             EMAIL, newUser.getEmail(),
             // should check id is in correct format too
             // ID, newUser.hasId() ? newUser.getId() : ApiDB.idManager.add(newUser.name) // TODO: should check that the id is unique if we getId() here
-            ID, newUser.getId()
+            ID, newUser.getId(),
+            USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithCommonBlob((META) newUser.getMetaData())
+            // USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithClassSerializer((META) newUser.getMetaData())
         );
 
         super.onSimpleInsert(newUser, columnValues);
         return newUser;
+    }
+
+    private java.sql.Blob serializeUserMetaWithCommonBlob(META meta) {
+        LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()", meta.toString()).info();
+        byte[] byteArray = AbstractBlob.serialize(meta);
+        return new JdbcBlob(byteArray);
+    }
+
+    private java.sql.Blob serializeUserMetaWithClassSerializer(META meta) {
+        LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithClassSerializer()", meta.toString()).info();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            meta.serialize(meta, byteArrayOutputStream);
+        } catch (IOException e) {
+            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+        }
+        return new JdbcBlob(byteArrayOutputStream.toByteArray());
     }
 
     // @Override

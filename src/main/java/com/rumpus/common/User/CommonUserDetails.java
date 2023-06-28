@@ -181,10 +181,10 @@ public class CommonUserDetails extends RumpusObject implements UserDetails {
         }
     }
 
-    static private class UserDetailsGsonSerializer extends GsonSerializer<CommonUser<?>> {
+    static private class UserDetailsGsonSerializer extends GsonSerializer<CommonUser<?, ?>> {
 
         @Override
-        public JsonElement serialize(CommonUser<?> user, Type typeOfSrc, JsonSerializationContext context) {
+        public JsonElement serialize(CommonUser<?, ?> user, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject jsonObj = new JsonObject();
             jsonObj.addProperty(USERNAME, user.getUsername());
             jsonObj.addProperty(PASSWORD, user.getPassword());

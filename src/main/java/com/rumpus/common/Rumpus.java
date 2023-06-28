@@ -87,6 +87,12 @@ abstract public class Rumpus {
     // MISC
     protected static final String UNCHECKED = "unchecked";
 
+    // Class UID     look here: https://stackoverflow.com/questions/10378855/java-io-invalidclassexception-local-class-incompatible
+    // Some of these should be moved into rumpus directory, as they're not common
+    protected final static Long RUMPUS_USER_META_DATA_UID = Long.valueOf(11);
+    protected final static Long USER_META_DATA_UID = Long.valueOf(12);
+    protected final static Long META_DATA_UID = Long.valueOf(13);
+
     // @Autowired
     // public Rumpus() {
     // io = new RumpusIO();

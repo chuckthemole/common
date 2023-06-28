@@ -1,5 +1,7 @@
 package com.rumpus.common.Session;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
@@ -12,6 +14,7 @@ import java.util.Set;
 
 import org.springframework.session.Session;
 
+import com.google.gson.TypeAdapter;
 import com.rumpus.common.Model;
 import com.rumpus.common.util.Random;
 
@@ -252,5 +255,20 @@ public class CommonSession extends Model<CommonSession> implements Session {
             }
         }
         return tempId;
+    }
+    @Override
+    public void serialize(CommonSession object, OutputStream outputStream) throws IOException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'serialize'");
+    }
+    @Override
+    public Map<String, Object> getModelAttributesMap() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getModelAttributesMap'");
+    }
+    @Override
+    public TypeAdapter<CommonSession> createTypeAdapter() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createTypeAdapter'");
     }
 }

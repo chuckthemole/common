@@ -25,7 +25,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
+public abstract class CommonUser<USER extends Model<USER>, META extends CommonUserMetaData<META>> extends Model<USER> {
 
     private static final String NAME = "CommonUser";
 
@@ -33,7 +33,7 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     static private PasswordEncoder encoder;
     private String email;
     private CommonUserDetails userDetails; // holds username and password among others
-    @JsonIgnore private CommonUserMetaData<? extends CommonUser<?>> metaData;
+    @JsonIgnore private CommonUserMetaData<META> metaData;
 
     static {
         CommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -99,11 +99,11 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
         this.userPassword = userPassword;
     }
 
-    public CommonUserMetaData<? extends CommonUser<?>> getMetaData() {
+    public CommonUserMetaData<META> getMetaData() {
         return this.metaData;
     }
 
-    public void setMetaData(CommonUserMetaData<? extends CommonUser<?>> metaData) {
+    public void setMetaData(CommonUserMetaData<META> metaData) {
         this.metaData = metaData;
     }
 
@@ -127,7 +127,7 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
         }
 
         @SuppressWarnings(UNCHECKED)
-        CommonUser<USER> user = (CommonUser<USER>) o;
+        CommonUser<USER, META> user = (CommonUser<USER, META>) o;
 
         boolean flag = true;
         if(!this.usernameIsEqual(user)) {
@@ -160,39 +160,39 @@ public abstract class CommonUser<USER extends Model<USER>> extends Model<USER> {
     }
 
     // member values to check for equality
-    private boolean usernameIsEqual(CommonUser<USER> user) {
+    private boolean usernameIsEqual(CommonUser<USER, META> user) {
         return this.getUsername().equals(user.getUsername()) ? true : false;
     }
 
     // TODO check why I have 2 password getters/setters
-    private boolean passwordIsEqual(CommonUser<USER> user) {
+    private boolean passwordIsEqual(CommonUser<USER, META> user) {
         return this.getPassword().equals(user.getPassword()) ? true : false;
     }
 
-    private boolean emailIsEqual(CommonUser<USER> user) {
+    private boolean emailIsEqual(CommonUser<USER, META> user) {
         return this.getEmail().equals(user.getEmail()) ? true : false;
     }
 
-    private boolean userDetailsIsEqual(CommonUser<USER> user) {
+    private boolean userDetailsIsEqual(CommonUser<USER, META> user) {
         return this.getUserDetails().equals(user.getUserDetails()) ? true : false;
     }
 
     // TODO: abstract this serializer class for models
-    static private class UserGsonSerializer extends GsonSerializer<CommonUser<?>> {
+    // static private class UserGsonSerializer extends GsonSerializer<CommonUser<?, ?>> {
 
-        @Override
-        public JsonElement serialize(CommonUser<?> user, Type typeOfSrc, JsonSerializationContext context) {
-            LOG.info("UserGsonSerializer::serialize()");
-            JsonObject jsonObj = new JsonObject();
-            jsonObj.addProperty(USERNAME, user.getUsername());
-            jsonObj.addProperty(EMAIL, user.email);
-            jsonObj.addProperty(PASSWORD, user.getPassword());
-            jsonObj.addProperty(ID, user.getId());
-            LOG.info(jsonObj.toString());
-            return jsonObj;
-        }
-    }
-    static public UserGsonSerializer getSerializer() {
-        return new UserGsonSerializer();
-    }
+    //     @Override
+    //     public JsonElement serialize(CommonUser<?, ?> user, Type typeOfSrc, JsonSerializationContext context) {
+    //         LOG.info("UserGsonSerializer::serialize()");
+    //         JsonObject jsonObj = new JsonObject();
+    //         jsonObj.addProperty(USERNAME, user.getUsername());
+    //         jsonObj.addProperty(EMAIL, user.email);
+    //         jsonObj.addProperty(PASSWORD, user.getPassword());
+    //         jsonObj.addProperty(ID, user.getId());
+    //         LOG.info(jsonObj.toString());
+    //         return jsonObj;
+    //     }
+    // }
+    // static public UserGsonSerializer getSerializer() {
+    //     return new UserGsonSerializer();
+    // }
 }
