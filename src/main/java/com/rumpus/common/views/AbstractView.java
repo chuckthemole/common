@@ -1,8 +1,8 @@
 package com.rumpus.common.views;
 
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.AbstractCommonObject;
 
-public abstract class AbstractView extends RumpusObject {
+public abstract class AbstractView extends AbstractCommonObject {
 
     public AbstractView(String name) {
         super(name);

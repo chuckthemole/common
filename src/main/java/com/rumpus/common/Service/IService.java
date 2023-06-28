@@ -1,8 +1,10 @@
-package com.rumpus.common;
+package com.rumpus.common.Service;
 
 import java.util.List;
 
-public interface IService<T extends AbstractModel<T>> extends IRumpusObject {
+import com.rumpus.common.Model.AbstractModel;
+
+public interface IService<T extends AbstractModel<T>> {
     T get(int id);
     T get(String name);
     /**

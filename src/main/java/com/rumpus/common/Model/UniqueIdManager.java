@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Model;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.util.Random;
 
@@ -14,7 +15,7 @@ import com.rumpus.common.util.Random;
 /**
  * Singleton class to keep track of each model's unique id. Each model's set is identified by its NAME
  */
-public class UniqueIdManager extends RumpusObject implements IUniqueIdManager, Serializable { // TODO should this be Serializable?
+public class UniqueIdManager extends AbstractCommonObject implements IUniqueIdManager, Serializable { // TODO should this be Serializable?
 
     private static final String NAME = "UniqueIdManager";
     private static UniqueIdManager singletonInstance = null;

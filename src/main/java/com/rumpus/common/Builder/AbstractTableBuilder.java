@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Builder;
 
 import j2html.TagCreator;
 import j2html.Config;

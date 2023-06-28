@@ -17,13 +17,12 @@ import javax.sql.DataSource;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.util.SerializationUtils;
 
-import com.rumpus.common.CommonExceptionInterceptor;
-import com.rumpus.common.Mapper;
 import com.rumpus.common.Blob.AbstractBlob;
 import com.rumpus.common.Blob.JdbcBlob;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractApiDB;
+import com.rumpus.common.Log.CommonExceptionInterceptor;
 import com.rumpus.common.User.CommonAuthManager;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.CommonUserDetails;

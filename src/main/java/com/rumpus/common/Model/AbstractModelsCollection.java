@@ -1,10 +1,12 @@
-package com.rumpus.common;
+package com.rumpus.common.Model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import com.rumpus.common.AbstractCommonObject;
 
 // A collection of models. creating this to sort models
 // TODO: see if we can abstract the Collections.sort() to make generating sortBy methods easier.
@@ -14,7 +16,7 @@ import java.util.List;
  * mainly used to sort collections
  * to use: subclass this and create sortBy method similar to sortById()
  */
-public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL>, COLLECTION extends Collection<MODEL>> extends RumpusObject implements Collection<MODEL> {
+public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL>, COLLECTION extends Collection<MODEL>> extends AbstractCommonObject implements Collection<MODEL> {
 
     private static final String NAME = "ModelsCollection";
     protected COLLECTION collection;

@@ -1,9 +1,7 @@
-package com.rumpus.common;
+package com.rumpus.common.User;
 
 import java.io.Serializable;
 import java.util.Set;
-
-import com.rumpus.common.User.ActiveUserStore;
 
 import jakarta.servlet.http.HttpSessionBindingEvent;
 import jakarta.servlet.http.HttpSessionBindingListener;

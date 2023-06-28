@@ -3,16 +3,12 @@ package com.rumpus.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
 
-// @Component
-abstract public class Rumpus {
+abstract public class AbstractCommon {
     protected IRumpusIO io = new RumpusIO();
-    protected static final Logger LOG = LoggerFactory.getLogger(Rumpus.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(AbstractCommon.class);
 
     public final static String NO_ID = String.valueOf(-1);
 

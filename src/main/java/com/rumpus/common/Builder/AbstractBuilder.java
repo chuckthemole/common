@@ -1,8 +1,8 @@
 package com.rumpus.common.Builder;
 
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.AbstractCommonObject;
 
-abstract class AbstractBuilder extends RumpusObject {
+abstract class AbstractBuilder extends AbstractCommonObject {
 
     // public static final String NAME = "Builder";
     protected StringBuilder builder;

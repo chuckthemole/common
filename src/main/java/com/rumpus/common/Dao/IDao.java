@@ -3,11 +3,10 @@ package com.rumpus.common.Dao;
 import java.util.List;
 import java.util.Map;
 
-import com.rumpus.common.IRumpusObject;
-import com.rumpus.common.Mapper;
-import com.rumpus.common.AbstractModel;
+import com.rumpus.common.Dao.jdbc.Mapper;
+import com.rumpus.common.Model.AbstractModel;
 
-public interface IDao<MODEL extends AbstractModel<MODEL>> extends IRumpusObject {
+public interface IDao<MODEL extends AbstractModel<MODEL>> {
     MODEL get(String name);
     /**
      * 

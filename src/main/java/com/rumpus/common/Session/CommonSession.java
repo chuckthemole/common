@@ -15,7 +15,7 @@ import java.util.Set;
 import org.springframework.session.Session;
 
 import com.google.gson.TypeAdapter;
-import com.rumpus.common.AbstractModel;
+import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.util.Random;
 
 import jakarta.servlet.http.HttpSession;

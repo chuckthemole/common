@@ -4,9 +4,9 @@ import org.springframework.session.Session;
 import org.springframework.session.events.SessionCreatedEvent;
 import org.springframework.session.events.SessionDestroyedEvent;
 
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.AbstractCommonObject;
 
-public class SessionEvent extends RumpusObject {
+public class SessionEvent extends AbstractCommonObject {
 
     private static final String NAME = "SessionEvent";
 

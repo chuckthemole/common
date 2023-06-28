@@ -1,18 +1,17 @@
 package com.rumpus.common;
 
-abstract public class RumpusObject extends Rumpus implements IRumpusObject {
+abstract public class AbstractCommonObject extends AbstractCommon {
     
     private final static String NAME = "RumpusObject";
     protected final String name;
 
-    public RumpusObject() {
+    public AbstractCommonObject() {
         this.name = NAME;
     }
-    public RumpusObject(String name) {
+    public AbstractCommonObject(String name) {
         this.name = name;
     }
 
-    @Override
     public String name() {
         return this.name;
     }

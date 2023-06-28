@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Dao.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 
+import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.util.Pair;
 
 public class Mapper<T extends AbstractModel<T>> implements RowMapper<T> {

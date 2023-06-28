@@ -1,10 +1,10 @@
-package com.rumpus.common;
+package com.rumpus.common.Model;
 
 /**
  * Class to keep track of ids of models. 
  * Right now we are keeping a singleton instance in ApiDB, registering a new id set in a model's dao, and adding ids on db insert.
  */
-public interface IUniqueIdManager extends IRumpusObject {
+public interface IUniqueIdManager {
     /**
      * 
      * @param setName the name of the set to create

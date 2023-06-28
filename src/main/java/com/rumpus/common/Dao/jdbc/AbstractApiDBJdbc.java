@@ -19,12 +19,11 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.rumpus.common.CommonKeyHolder;
-import com.rumpus.common.Mapper;
-import com.rumpus.common.AbstractModel;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractApiDB;
+import com.rumpus.common.Model.AbstractModel;
+import com.rumpus.common.Model.CommonKeyHolder;
 import com.rumpus.common.util.StringUtil;
 
 // TODO make this class abstract

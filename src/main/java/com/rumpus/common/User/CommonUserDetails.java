@@ -1,19 +1,19 @@
 package com.rumpus.common.User;
 
-import java.lang.reflect.Type;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.rumpus.common.AbstractGsonSerializer;
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
-public class CommonUserDetails extends RumpusObject implements UserDetails {
+/**
+ * CommonUserDetails class implementing UserDetails
+ * 
+ * note: UserDetails already implements Serializable
+ */
+public class CommonUserDetails extends AbstractCommonObject implements UserDetails {
 
     private static final String NAME = "CommonUserDetails";
     private static final GrantedAuthority USER = new CommonAuthority(ROLE_USER);
@@ -178,20 +178,6 @@ public class CommonUserDetails extends RumpusObject implements UserDetails {
         if(this.authorities == null || this.authorities.isEmpty()) {
             this.authorities.add(USER);
         }
-    }
-
-    static private class UserDetailsGsonSerializer extends AbstractGsonSerializer<AbstractCommonUser<?, ?>> {
-
-        @Override
-        public JsonElement serialize(AbstractCommonUser<?, ?> user, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject jsonObj = new JsonObject();
-            jsonObj.addProperty(USERNAME, user.getUsername());
-            jsonObj.addProperty(PASSWORD, user.getPassword());
-            return jsonObj;
-        }
-    }
-    static public UserDetailsGsonSerializer getSerializer() {
-        return new UserDetailsGsonSerializer();
     }
 
     @Override 

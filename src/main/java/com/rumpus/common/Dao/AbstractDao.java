@@ -3,11 +3,11 @@ package com.rumpus.common.Dao;
 import java.util.List;
 import java.util.Map;
 
-import com.rumpus.common.Mapper;
-import com.rumpus.common.AbstractModel;
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.Model.AbstractModel;
+import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Dao.jdbc.Mapper;
 
-public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends RumpusObject implements IDao<MODEL> {
+public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IDao<MODEL> {
 
     protected IApiDB<MODEL> api;
     protected final String table;

@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Model;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.core.serializer.Serializer;
 
 import com.google.gson.TypeAdapter;
+import com.rumpus.common.AbstractCommonObject;
 
 /**
  * Abstract class for Model meta data. This holds some of the common member variables, like creationTime, and interface that each Model shares.
@@ -17,7 +18,7 @@ import com.google.gson.TypeAdapter;
  * Child class should override Serializer<META> serialize() method.
  * 
  */
-public abstract class AbstractMetaData<META extends AbstractMetaData<META>> extends RumpusObject implements Serializable, Serializer<META> {
+public abstract class AbstractMetaData<META extends AbstractMetaData<META>> extends AbstractCommonObject implements Serializable, Serializer<META> {
 
     private static final long serialVersionUID = META_DATA_UID;
 

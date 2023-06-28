@@ -1,8 +1,8 @@
 package com.rumpus.common.views;
 
-import com.rumpus.common.ITableBuilder;
-import com.rumpus.common.RumpusObject;
-import com.rumpus.common.AbstractTableBuilder;
+import com.rumpus.common.Builder.AbstractTableBuilder;
+import com.rumpus.common.Builder.ITableBuilder;
+import com.rumpus.common.AbstractCommonObject;
 
 /**
  * @author Charles Thomas
@@ -10,7 +10,7 @@ import com.rumpus.common.AbstractTableBuilder;
  * Views used for webpage. As of now (2023/3/23) only contains footer. You can add other views here.
  * You must implement the views when using.
  */
-public abstract class AbstractViewLoader extends RumpusObject implements IViewLoader {
+public abstract class AbstractViewLoader extends AbstractCommonObject implements IViewLoader {
     
     protected Footer footer;
     protected ITableBuilder userTable;

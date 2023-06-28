@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Model;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -9,9 +9,10 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
-public abstract class AbstractModel<MODEL extends RumpusObject> extends RumpusObject implements Serializable, Serializer<MODEL> {
+public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends AbstractCommonObject implements Serializable, Serializer<MODEL> {
 
     protected static final String NAME = "Model";
     @Id protected String id;

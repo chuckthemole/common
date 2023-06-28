@@ -1,6 +1,6 @@
 package com.rumpus.common;
 
-public abstract class AbstractCommonController extends RumpusObject {
+public abstract class AbstractCommonController extends AbstractCommonObject {
 
     private static final String NAME = "CommonController";
 

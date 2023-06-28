@@ -1,6 +1,6 @@
 package com.rumpus.common.Blob;
 
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +20,7 @@ import java.util.Map;
  * Abstract helper class for blob handling (serialization). 
  * Keeping the member variable blob here for now to be able to subclass if needed
  */
-public abstract class AbstractBlob extends RumpusObject implements Blob {
+public abstract class AbstractBlob extends AbstractCommonObject implements Blob {
 
     protected Blob blob;
 

@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Config;
 
 import javax.sql.DataSource;
 
@@ -11,13 +11,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
+import com.rumpus.common.AbstractCommon;
+
 /**
  * @author Chuck Thomas
  * 
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.
  * TODO: think about making this into an annotation.
  */
-public abstract class AbstractCommonConfig extends Rumpus {
+public abstract class AbstractCommonConfig extends AbstractCommon {
 
     @Autowired
 	protected Environment environment;

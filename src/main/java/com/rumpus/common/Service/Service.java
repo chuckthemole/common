@@ -1,13 +1,15 @@
-package com.rumpus.common;
+package com.rumpus.common.Service;
 
 import java.util.List;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDao;
+import com.rumpus.common.Model.AbstractModel;
 
 // import org.springframework.stereotype.Service; TODO: maybe use this annotation here, if so, need to change name of class, since currently conflicts with same name
 
 // @Service
-public class Service<T extends AbstractModel<T>> extends RumpusObject implements IService<T> {
+abstract public class Service<T extends AbstractModel<T>> extends AbstractCommonObject {
 
     protected static final String NAME = "rawService";
 
@@ -19,41 +21,34 @@ public class Service<T extends AbstractModel<T>> extends RumpusObject implements
         this.dao = dao;
     }
 
-    @Override
     public T get(int id) {
         return this.dao.get(id);
     }
 
-    @Override
     public T get(String name) {
         return this.dao.get(name);
     }
 
-    @Override
     public T getById(String id) {
         return this.dao.getById(id);
     }
 
-    @Override
     public List<T> getAll() {
         return this.dao.getAll();
     }
 
-    @Override
     public T add(T rumpusModel) {
         return this.dao.add(rumpusModel);
     }
 
-    @Override
     public boolean remove(int id) {
         return this.dao.remove(id);
     }
 
-    @Override
     public boolean remove(String name) {
         return this.dao.remove(name);
     }
-    @Override
+
     public T update(String id, T updatedModel) {
         return this.dao.update(id, updatedModel);
     }

@@ -1,10 +1,12 @@
-package com.rumpus.common;
+package com.rumpus.common.Builder;
+
+import com.rumpus.common.AbstractCommonObject;
 
 // import static j2html.TagCreator.*;
 
 import j2html.TagCreator;
 
-abstract class AbstractHtmlBuilder extends RumpusObject implements IHtmlBuilder {
+abstract class AbstractHtmlBuilder extends AbstractCommonObject implements IHtmlBuilder {
 
     protected static TagCreator tagCreator;
     private CSS cssFramework;

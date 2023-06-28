@@ -9,15 +9,15 @@ import java.util.Properties;
 
 import com.mysql.cj.exceptions.ExceptionInterceptor;
 import com.mysql.cj.jdbc.Blob;
-import com.rumpus.common.CommonExceptionInterceptor;
+import com.rumpus.common.Log.CommonExceptionInterceptor;
+import com.rumpus.common.Log.CommonLog;
 
 public class JdbcBlob extends AbstractBlob {
 
     private static final String NAME = "JdbcBlob";
-    private ExceptionInterceptor exceptionInterceptor = new CommonExceptionInterceptor();
 
     public JdbcBlob(byte[] data) {
-        super(NAME, new Blob(data, new CommonExceptionInterceptor().init(new Properties(), null)));
+        super(NAME, new Blob(data, new CommonExceptionInterceptor().init(new Properties(), new CommonLog())));
     }
 
     public JdbcBlob(byte[] data, ExceptionInterceptor exceptionInterceptor) {
@@ -108,7 +108,7 @@ public class JdbcBlob extends AbstractBlob {
         //     }
             
         // };
-        ExceptionInterceptor exceptionInterceptor = new CommonExceptionInterceptor().init(new Properties(), null);
+        ExceptionInterceptor exceptionInterceptor = new CommonExceptionInterceptor().init(new Properties(), new CommonLog());
         return new Blob(serialize(params), exceptionInterceptor);
         // return null;
         // res.setBytes(1, serialize(params));

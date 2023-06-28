@@ -5,10 +5,10 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.AbstractCommonObject;
 
 // TODO: Maybe make this abstract class
-public class CommonJdbc extends RumpusObject {
+public class CommonJdbc extends AbstractCommonObject {
     
     private static CommonJdbc commonJdbcSingleton = null;
     private final static String NAME = "JdbcTemplate";

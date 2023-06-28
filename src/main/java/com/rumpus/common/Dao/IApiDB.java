@@ -2,13 +2,11 @@ package com.rumpus.common.Dao;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import com.rumpus.common.IRumpusObject;
-import com.rumpus.common.Mapper;
-import com.rumpus.common.AbstractModel;
+import com.rumpus.common.Dao.jdbc.Mapper;
+import com.rumpus.common.Model.AbstractModel;
 
-public interface IApiDB<MODEL extends AbstractModel<MODEL>> extends IRumpusObject {
+public interface IApiDB<MODEL extends AbstractModel<MODEL>> {
     public boolean isInitialized();
     public boolean remove(int id);
     public boolean remove(String id);

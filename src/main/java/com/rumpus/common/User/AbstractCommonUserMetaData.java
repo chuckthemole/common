@@ -1,7 +1,7 @@
 package com.rumpus.common.User;
 
-import com.rumpus.common.AbstractMetaData;
 import com.rumpus.common.Builder.StringBuilderHelper;
+import com.rumpus.common.Model.AbstractMetaData;
 
 /**
  * 

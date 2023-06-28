@@ -3,11 +3,11 @@ package com.rumpus.common.util;
 import java.util.Comparator;
 import java.util.function.Function;
 
-import com.rumpus.common.RumpusObject;
+import com.rumpus.common.AbstractCommonObject;
 
 // Using to have a sortable models collection
 // not using now. Using ModelsCollection instead - chuck
-public class CommonComparator extends RumpusObject {
+public class CommonComparator extends AbstractCommonObject {
 
     private static final String NAME = "CommonComparator";
     protected Comparator<?> comparator; 

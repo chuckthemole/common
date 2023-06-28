@@ -1,4 +1,4 @@
-package com.rumpus.common;
+package com.rumpus.common.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +8,14 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.rumpus.common.AbstractCommonObject;
+
 
 // TODO think about adding protected methods, addKey setKey etc. would this be benificial?
 /**
  * Wrapper around KeyHolder
  */
-public class CommonKeyHolder extends RumpusObject implements KeyHolder {
+public class CommonKeyHolder extends AbstractCommonObject implements KeyHolder {
 
     public static final String NAME = "CommonKeyHolder";
     private GeneratedKeyHolder key;

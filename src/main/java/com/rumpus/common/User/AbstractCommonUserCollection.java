@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.rumpus.common.AbstractModelsCollection;
+import com.rumpus.common.Model.AbstractModelsCollection;
 
 public abstract class AbstractCommonUserCollection<USER extends AbstractCommonUser<USER, ? extends AbstractCommonUserMetaData<?>>, COLLECTION extends Collection<USER>> extends AbstractModelsCollection<USER, COLLECTION> {
 

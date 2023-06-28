@@ -4,10 +4,10 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rumpus.common.CommonKeyHolder;
-import com.rumpus.common.AbstractModel;
 import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Model.AbstractModel;
+import com.rumpus.common.Model.CommonKeyHolder;
 
 public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META extends AbstractCommonUserMetaData<META>> extends AbstractModel<USER> {
 

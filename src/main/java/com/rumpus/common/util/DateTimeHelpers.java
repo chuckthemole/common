@@ -4,10 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.rumpus.common.Rumpus;
+import com.rumpus.common.AbstractCommon;
 
 // TODO expand this helper 
-public class DateTimeHelpers extends Rumpus {
+public class DateTimeHelpers extends AbstractCommon {
 
     /**
      * 
