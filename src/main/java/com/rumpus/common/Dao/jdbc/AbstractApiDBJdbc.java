@@ -21,14 +21,14 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import com.rumpus.common.CommonKeyHolder;
 import com.rumpus.common.Mapper;
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
-import com.rumpus.common.Dao.ApiDB;
+import com.rumpus.common.Dao.AbstractApiDB;
 import com.rumpus.common.util.StringUtil;
 
 // TODO make this class abstract
-public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL> {
+public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> extends AbstractApiDB<MODEL> {
 
     private final static String API_NAME = "ApiJdbcTemplate";
     // protected static JdbcTemplate CommonJdbc.jdbcTemplate;
@@ -41,7 +41,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
     private static final int DEFAULT_ID_LENGTH = 10;
 
 
-    public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
+    public AbstractApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
         super(API_NAME, table, mapper);
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
@@ -50,7 +50,7 @@ public abstract class ApiDBJdbc<MODEL extends Model<MODEL>> extends ApiDB<MODEL>
         // this.mapper = mapper;
         // this.add = add;
     }
-    public ApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper, String apiName) {
+    public AbstractApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper, String apiName) {
         super(apiName, table, mapper);
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);

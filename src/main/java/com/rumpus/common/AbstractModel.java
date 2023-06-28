@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
 import com.rumpus.common.Builder.LogBuilder;
 
-public abstract class Model<MODEL extends RumpusObject> extends RumpusObject implements Serializable, Serializer<MODEL> {
+public abstract class AbstractModel<MODEL extends RumpusObject> extends RumpusObject implements Serializable, Serializer<MODEL> {
 
     protected static final String NAME = "Model";
     @Id protected String id;
@@ -19,8 +19,8 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
     @JsonIgnore transient private TypeAdapter<MODEL> typeAdapter;
 
     // Ctors
-    public Model() { super(NAME); }
-    public Model(final String name) {
+    public AbstractModel() { super(NAME); }
+    public AbstractModel(final String name) {
         super(name);
     }
 
@@ -79,12 +79,12 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
         LOG.info("Model::equals()");
         if (o == this) {
             return true;
-        } else if (!(o instanceof Model)) {
+        } else if (!(o instanceof AbstractModel)) {
             return false;
         }
 
         @SuppressWarnings(UNCHECKED)
-        Model<MODEL> model = (Model<MODEL>) o;
+        AbstractModel<MODEL> model = (AbstractModel<MODEL>) o;
 
         if(!this.id.equals(model.id)) {
             LogBuilder log = new LogBuilder("\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
@@ -94,7 +94,7 @@ public abstract class Model<MODEL extends RumpusObject> extends RumpusObject imp
         return true;
     }
 
-    protected boolean idIsEqual(Model<MODEL> model) {
+    protected boolean idIsEqual(AbstractModel<MODEL> model) {
         return this.id.equals(model.id) ? true : false;
     }
 }

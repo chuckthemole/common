@@ -17,7 +17,7 @@ import com.google.gson.TypeAdapter;
  * Child class should override Serializer<META> serialize() method.
  * 
  */
-public abstract class MetaData<META extends MetaData<META>> extends RumpusObject implements Serializable, Serializer<META> {
+public abstract class AbstractMetaData<META extends AbstractMetaData<META>> extends RumpusObject implements Serializable, Serializer<META> {
 
     private static final long serialVersionUID = META_DATA_UID;
 
@@ -28,10 +28,10 @@ public abstract class MetaData<META extends MetaData<META>> extends RumpusObject
     protected String creationTime;
     transient private TypeAdapter<META> typeAdapter; // keep this transient or will not serialize
 
-    public MetaData() {
+    public AbstractMetaData() {
         super(NAME);
     }
-    public MetaData(String name) {
+    public AbstractMetaData(String name) {
         super(name);
         this.creationTime = String.valueOf(Instant.now().toEpochMilli());
     }

@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public abstract class GsonSerializer<T extends Model<?>> implements JsonSerializer<T> {
+public abstract class AbstractGsonSerializer<T extends AbstractModel<?>> implements JsonSerializer<T> {
 
     @Override
     public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {

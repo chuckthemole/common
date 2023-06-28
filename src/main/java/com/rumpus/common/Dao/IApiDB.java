@@ -6,9 +6,9 @@ import java.util.Set;
 
 import com.rumpus.common.IRumpusObject;
 import com.rumpus.common.Mapper;
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 
-public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
+public interface IApiDB<MODEL extends AbstractModel<MODEL>> extends IRumpusObject {
     public boolean isInitialized();
     public boolean remove(int id);
     public boolean remove(String id);
@@ -77,7 +77,7 @@ public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
      * @param name the name of the set to register
      */
     public static void registerIdSet(final String name) {
-        ApiDB.idManager.createUniqueIdSetWithDefaultLength(name);
+        AbstractApiDB.idManager.createUniqueIdSetWithDefaultLength(name);
     }
     /**
      * Creates a set that keeps track of ids for the given name
@@ -86,6 +86,6 @@ public interface IApiDB<MODEL extends Model<MODEL>> extends IRumpusObject {
      * @param length the length of the ids in this set
      */
     public static void registerIdSet(final String name, final int length) {
-        ApiDB.idManager.createUniqueIdSetWithSetLength(name, length);
+        AbstractApiDB.idManager.createUniqueIdSetWithSetLength(name, length);
     }
 }

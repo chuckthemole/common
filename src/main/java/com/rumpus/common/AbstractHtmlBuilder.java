@@ -4,12 +4,12 @@ package com.rumpus.common;
 
 import j2html.TagCreator;
 
-abstract class HtmlBuilder extends RumpusObject implements IHtmlBuilder {
+abstract class AbstractHtmlBuilder extends RumpusObject implements IHtmlBuilder {
 
     protected static TagCreator tagCreator;
     private CSS cssFramework;
 
-    public HtmlBuilder(String name) {
+    public AbstractHtmlBuilder(String name) {
         super(name);
         this.cssFramework = CSS.NONE;
     }

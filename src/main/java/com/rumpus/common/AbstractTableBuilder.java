@@ -3,19 +3,19 @@ package com.rumpus.common;
 import j2html.TagCreator;
 import j2html.Config;
 
-public abstract class TableBuilder extends HtmlBuilder implements ITableBuilder {
+public abstract class AbstractTableBuilder extends AbstractHtmlBuilder implements ITableBuilder {
 
     private int columns;
     private int rows;
     private static String margin;
 
 
-    HtmlBuilder builder;
+    AbstractHtmlBuilder builder;
 
-    public TableBuilder(String name) {
+    public AbstractTableBuilder(String name) {
         super(name);
     }
-    public TableBuilder(String name, String css) {
+    public AbstractTableBuilder(String name, String css) {
         super(name);
         setCssFramework(css);
     }
@@ -23,7 +23,7 @@ public abstract class TableBuilder extends HtmlBuilder implements ITableBuilder 
     private int init() {
         this.columns = 0;
         this.rows = 0;
-        TableBuilder.margin = "";
+        AbstractTableBuilder.margin = "";
         return SUCCESS;
     }
 

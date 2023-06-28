@@ -2,17 +2,17 @@ package com.rumpus.common.Builder;
 
 import com.rumpus.common.RumpusObject;
 
-abstract class Builder extends RumpusObject {
+abstract class AbstractBuilder extends RumpusObject {
 
     // public static final String NAME = "Builder";
     protected StringBuilder builder;
 
-    public Builder(String name) {
+    public AbstractBuilder(String name) {
         super(name);
         this.builder = new StringBuilder();
     }
 
-    public Builder(String name, String... args) {
+    public AbstractBuilder(String name, String... args) {
         super(name);
         this.builder = new StringBuilder();
         for(String arg : args) {

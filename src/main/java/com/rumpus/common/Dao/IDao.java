@@ -5,9 +5,9 @@ import java.util.Map;
 
 import com.rumpus.common.IRumpusObject;
 import com.rumpus.common.Mapper;
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 
-public interface IDao<MODEL extends Model<MODEL>> extends IRumpusObject {
+public interface IDao<MODEL extends AbstractModel<MODEL>> extends IRumpusObject {
     MODEL get(String name);
     /**
      * 

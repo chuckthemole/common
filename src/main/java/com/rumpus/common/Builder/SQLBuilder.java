@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.rumpus.common.util.StringUtil;
 
-public class SQLBuilder extends Builder {
+public class SQLBuilder extends AbstractBuilder {
 
     private static final String NAME = "SQLBuilder";
 

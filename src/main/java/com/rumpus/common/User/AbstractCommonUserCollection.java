@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.rumpus.common.ModelsCollection;
+import com.rumpus.common.AbstractModelsCollection;
 
-public abstract class CommonUserCollection<USER extends CommonUser<USER, ? extends CommonUserMetaData<?>>, COLLECTION extends Collection<USER>> extends ModelsCollection<USER, COLLECTION> {
+public abstract class AbstractCommonUserCollection<USER extends AbstractCommonUser<USER, ? extends AbstractCommonUserMetaData<?>>, COLLECTION extends Collection<USER>> extends AbstractModelsCollection<USER, COLLECTION> {
 
-    public CommonUserCollection(COLLECTION userCollection) {
+    public AbstractCommonUserCollection(COLLECTION userCollection) {
         super(userCollection);
     }
 

@@ -1,6 +1,6 @@
 package com.rumpus.common.Builder;
 
-public class LogBuilder extends Builder {
+public class LogBuilder extends AbstractBuilder {
 
     public static final String NAME = "LogBuilder";
 

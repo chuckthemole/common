@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * Footer view
  */
-public class Footer extends View {
+public class Footer extends AbstractView {
 
     private static final String NAME = "footer";
     private List<Column> columns;

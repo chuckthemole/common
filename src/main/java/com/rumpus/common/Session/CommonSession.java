@@ -15,12 +15,12 @@ import java.util.Set;
 import org.springframework.session.Session;
 
 import com.google.gson.TypeAdapter;
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 import com.rumpus.common.util.Random;
 
 import jakarta.servlet.http.HttpSession;
 
-public class CommonSession extends Model<CommonSession> implements Session {
+public class CommonSession extends AbstractModel<CommonSession> implements Session {
 
     private static final String NAME = "CommonSession";
     private static final String NO_ID = "-1";

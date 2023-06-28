@@ -4,22 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 import com.rumpus.common.Mapper;
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 import com.rumpus.common.RumpusObject;
 
-public abstract class Dao<MODEL extends Model<MODEL>> extends RumpusObject implements IDao<MODEL> {
+public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends RumpusObject implements IDao<MODEL> {
 
     protected IApiDB<MODEL> api;
     protected final String table;
     protected final String metaTable;
 
-    public Dao(String table, String metaTable, String name) {
+    public AbstractDao(String table, String metaTable, String name) {
         super(name);
         this.api = null;
         this.table = table;
         this.metaTable = metaTable;
     }
-    public Dao(IApiDB<MODEL> api, String table, String metaTable, String name) {
+    public AbstractDao(IApiDB<MODEL> api, String table, String metaTable, String name) {
         super(name);
         this.api = api;
         this.table = table;

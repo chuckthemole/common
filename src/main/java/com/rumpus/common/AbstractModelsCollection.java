@@ -14,12 +14,12 @@ import java.util.List;
  * mainly used to sort collections
  * to use: subclass this and create sortBy method similar to sortById()
  */
-public abstract class ModelsCollection<MODEL extends Model<MODEL>, COLLECTION extends Collection<MODEL>> extends RumpusObject implements Collection<MODEL> {
+public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL>, COLLECTION extends Collection<MODEL>> extends RumpusObject implements Collection<MODEL> {
 
     private static final String NAME = "ModelsCollection";
     protected COLLECTION collection;
 
-    public ModelsCollection(COLLECTION collection) {
+    public AbstractModelsCollection(COLLECTION collection) {
         super(NAME);
         this.collection = collection;
         // this.modelsList = new ArrayList<>();

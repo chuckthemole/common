@@ -23,11 +23,11 @@ import com.rumpus.common.Blob.AbstractBlob;
 import com.rumpus.common.Blob.JdbcBlob;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
-import com.rumpus.common.Dao.ApiDB;
+import com.rumpus.common.Dao.AbstractApiDB;
 import com.rumpus.common.User.CommonAuthManager;
-import com.rumpus.common.User.CommonUser;
+import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.CommonUserDetails;
-import com.rumpus.common.User.CommonUserMetaData;
+import com.rumpus.common.User.AbstractCommonUserMetaData;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,7 +41,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * note: the member manager should be operated on before doing super operations. this is becsuse manager holds the parent table. possibly make the other the parent table. 
  */
-public class ApiDBJdbcUsers<USER extends CommonUser<USER, META>, META extends CommonUserMetaData<META>> extends ApiDBJdbc<USER> {
+public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>> extends AbstractApiDBJdbc<USER> {
 
     public static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
     private static final String UPDATE_USERS_TABLE = "update users set username = ?, password = ?, enabled = ? where username = ?";
@@ -237,7 +237,7 @@ public class ApiDBJdbcUsers<USER extends CommonUser<USER, META>, META extends Co
 
         // check if user has an id, if not assign.
         if(!newUser.hasId()) {
-            newUser.setId(ApiDB.idManager.add(newUser.name()));
+            newUser.setId(AbstractApiDB.idManager.add(newUser.name()));
         }
         newUser = this.simpleAddUser(newUser);
 

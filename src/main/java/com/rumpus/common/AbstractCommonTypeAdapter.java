@@ -6,4 +6,4 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-public abstract class CommonTypeAdapter<MODEL extends Model<MODEL>> extends TypeAdapter<MODEL> {}
+public abstract class AbstractCommonTypeAdapter<MODEL extends AbstractModel<MODEL>> extends TypeAdapter<MODEL> {}

@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 
 import com.rumpus.common.util.Pair;
 
-public class Mapper<T extends Model<T>> implements RowMapper<T> {
+public class Mapper<T extends AbstractModel<T>> implements RowMapper<T> {
     Function<Pair<ResultSet, Integer>, T> mapFunction;
 
     public Mapper() {}

@@ -6,7 +6,7 @@ import j2html.Config;
 /**
  * Wrapper for j2html
  */
-public abstract class HTMLTagCreator {
+public abstract class AbstractHTMLTagCreator {
 
     private static final String NAME = "J2HTML";
     protected Config config;

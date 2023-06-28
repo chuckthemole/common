@@ -1,12 +1,12 @@
 package com.rumpus.common.User;
 
-import com.rumpus.common.MetaData;
+import com.rumpus.common.AbstractMetaData;
 import com.rumpus.common.Builder.StringBuilderHelper;
 
 /**
  * 
  */
-public abstract class CommonUserMetaData<USER_META extends CommonUserMetaData<USER_META>> extends MetaData<USER_META> {
+public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommonUserMetaData<USER_META>> extends AbstractMetaData<USER_META> {
 
     private static final long serialVersionUID = USER_META_DATA_UID;
 
@@ -17,10 +17,10 @@ public abstract class CommonUserMetaData<USER_META extends CommonUserMetaData<US
     protected String photoLink;
     protected String aboutMe;
     
-    public CommonUserMetaData() {
+    public AbstractCommonUserMetaData() {
         super(NAME);
     }
-    public CommonUserMetaData(String name) {
+    public AbstractCommonUserMetaData(String name) {
         super(name);
         this.init();
     }

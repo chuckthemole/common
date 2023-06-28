@@ -17,7 +17,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.
  * TODO: think about making this into an annotation.
  */
-public abstract class CommonConfig extends Rumpus {
+public abstract class AbstractCommonConfig extends Rumpus {
 
     @Autowired
 	protected Environment environment;

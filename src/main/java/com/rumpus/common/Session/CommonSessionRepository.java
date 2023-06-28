@@ -2,9 +2,9 @@ package com.rumpus.common.Session;
 
 import org.springframework.session.SessionRepository;
 
-import com.rumpus.common.Dao.Dao;
+import com.rumpus.common.Dao.AbstractDao;
 
-public class CommonSessionRepository extends Dao<CommonSession> implements SessionRepository<CommonSession> {
+public class CommonSessionRepository extends AbstractDao<CommonSession> implements SessionRepository<CommonSession> {
 
     private static final String NAME = "CommonSessionRepository";
     private static final String TABLE = "CommonSession";

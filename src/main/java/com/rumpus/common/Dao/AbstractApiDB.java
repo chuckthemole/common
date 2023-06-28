@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.rumpus.common.IUniqueIdManager;
 import com.rumpus.common.Mapper;
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 import com.rumpus.common.RumpusObject;
 import com.rumpus.common.UniqueIdManager;
 
@@ -15,7 +15,7 @@ import com.rumpus.common.UniqueIdManager;
 
 //TODO: think about moving orm layer stuff into a package
 
-public abstract class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject implements IApiDB<MODEL> {
+public abstract class AbstractApiDB<MODEL extends AbstractModel<MODEL>> extends RumpusObject implements IApiDB<MODEL> {
 
     protected boolean initialized;
     protected String table;
@@ -23,10 +23,10 @@ public abstract class ApiDB<MODEL extends Model<MODEL>> extends RumpusObject imp
     protected static IUniqueIdManager idManager;
 
     static {
-        ApiDB.idManager = UniqueIdManager.getSingletonInstance();
+        AbstractApiDB.idManager = UniqueIdManager.getSingletonInstance();
     }
 
-    public ApiDB(String name, String table, Mapper<MODEL> mapper) {
+    public AbstractApiDB(String name, String table, Mapper<MODEL> mapper) {
         super(name);
         this.table = table;
         this.mapper = mapper;

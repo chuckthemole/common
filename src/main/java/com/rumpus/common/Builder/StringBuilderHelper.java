@@ -1,6 +1,6 @@
 package com.rumpus.common.Builder;
 
-public class StringBuilderHelper extends Builder {
+public class StringBuilderHelper extends AbstractBuilder {
 
     public StringBuilderHelper(String name) {
         super(name);

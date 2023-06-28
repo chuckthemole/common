@@ -1,31 +1,15 @@
 package com.rumpus.common.User;
 
-import java.util.Map;
-import java.util.function.Function;
-
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.io.IOException;
-import java.lang.reflect.Type;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.JsonElement;
 import com.rumpus.common.CommonKeyHolder;
-import com.rumpus.common.GsonSerializer;
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Builder.LogBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-public abstract class CommonUser<USER extends Model<USER>, META extends CommonUserMetaData<META>> extends Model<USER> {
+public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META extends AbstractCommonUserMetaData<META>> extends AbstractModel<USER> {
 
     private static final String NAME = "CommonUser";
 
@@ -33,19 +17,19 @@ public abstract class CommonUser<USER extends Model<USER>, META extends CommonUs
     static private PasswordEncoder encoder;
     private String email;
     private CommonUserDetails userDetails; // holds username and password among others
-    @JsonIgnore private CommonUserMetaData<META> metaData;
+    @JsonIgnore private AbstractCommonUserMetaData<META> metaData;
 
     static {
-        CommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        AbstractCommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         // CommonUser.encoder = new BCryptPasswordEncoder()
     }
     
     // Ctors
-    public CommonUser() {
+    public AbstractCommonUser() {
         super(NAME);
         init();
     }
-    public CommonUser(String modelName) {
+    public AbstractCommonUser(String modelName) {
         super(modelName);
         init();
     }
@@ -83,7 +67,7 @@ public abstract class CommonUser<USER extends Model<USER>, META extends CommonUs
     }
     public void setPassword(String password) {
         this.userPassword = password;
-        String encodedPassword = CommonUser.encoder.encode(password);
+        String encodedPassword = AbstractCommonUser.encoder.encode(password);
         String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}", ""); // TODO: think about how to do this. maybe just compare with the bcrypt in front.
         this.userDetails.setPassword(strippedPass);
     }
@@ -99,11 +83,11 @@ public abstract class CommonUser<USER extends Model<USER>, META extends CommonUs
         this.userPassword = userPassword;
     }
 
-    public CommonUserMetaData<META> getMetaData() {
+    public AbstractCommonUserMetaData<META> getMetaData() {
         return this.metaData;
     }
 
-    public void setMetaData(CommonUserMetaData<META> metaData) {
+    public void setMetaData(AbstractCommonUserMetaData<META> metaData) {
         this.metaData = metaData;
     }
 
@@ -122,12 +106,12 @@ public abstract class CommonUser<USER extends Model<USER>, META extends CommonUs
         LOG.info("CommonUser::equals()");
         if (o == this) {
             return true;
-        } else if (!(o instanceof CommonUser)) {
+        } else if (!(o instanceof AbstractCommonUser)) {
             return false;
         }
 
         @SuppressWarnings(UNCHECKED)
-        CommonUser<USER, META> user = (CommonUser<USER, META>) o;
+        AbstractCommonUser<USER, META> user = (AbstractCommonUser<USER, META>) o;
 
         boolean flag = true;
         if(!this.usernameIsEqual(user)) {
@@ -160,39 +144,20 @@ public abstract class CommonUser<USER extends Model<USER>, META extends CommonUs
     }
 
     // member values to check for equality
-    private boolean usernameIsEqual(CommonUser<USER, META> user) {
+    private boolean usernameIsEqual(AbstractCommonUser<USER, META> user) {
         return this.getUsername().equals(user.getUsername()) ? true : false;
     }
 
     // TODO check why I have 2 password getters/setters
-    private boolean passwordIsEqual(CommonUser<USER, META> user) {
+    private boolean passwordIsEqual(AbstractCommonUser<USER, META> user) {
         return this.getPassword().equals(user.getPassword()) ? true : false;
     }
 
-    private boolean emailIsEqual(CommonUser<USER, META> user) {
+    private boolean emailIsEqual(AbstractCommonUser<USER, META> user) {
         return this.getEmail().equals(user.getEmail()) ? true : false;
     }
 
-    private boolean userDetailsIsEqual(CommonUser<USER, META> user) {
+    private boolean userDetailsIsEqual(AbstractCommonUser<USER, META> user) {
         return this.getUserDetails().equals(user.getUserDetails()) ? true : false;
     }
-
-    // TODO: abstract this serializer class for models
-    // static private class UserGsonSerializer extends GsonSerializer<CommonUser<?, ?>> {
-
-    //     @Override
-    //     public JsonElement serialize(CommonUser<?, ?> user, Type typeOfSrc, JsonSerializationContext context) {
-    //         LOG.info("UserGsonSerializer::serialize()");
-    //         JsonObject jsonObj = new JsonObject();
-    //         jsonObj.addProperty(USERNAME, user.getUsername());
-    //         jsonObj.addProperty(EMAIL, user.email);
-    //         jsonObj.addProperty(PASSWORD, user.getPassword());
-    //         jsonObj.addProperty(ID, user.getId());
-    //         LOG.info(jsonObj.toString());
-    //         return jsonObj;
-    //     }
-    // }
-    // static public UserGsonSerializer getSerializer() {
-    //     return new UserGsonSerializer();
-    // }
 }

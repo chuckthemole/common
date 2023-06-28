@@ -2,7 +2,7 @@ package com.rumpus.common.Dao.jdbc;
 
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import com.rumpus.common.Model;
+import com.rumpus.common.AbstractModel;
 import com.rumpus.common.RumpusObject;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
  * 
  * CommonJdbc should have an instance in ApiDB initiated before this.
  */
-public class CommonSimpleJdbc<MODEL extends Model<MODEL>> extends RumpusObject {
+public class CommonSimpleJdbc<MODEL extends AbstractModel<MODEL>> extends RumpusObject {
 
     private final static String NAME = "JdbcTemplate";
     protected SimpleJdbcInsert insert;

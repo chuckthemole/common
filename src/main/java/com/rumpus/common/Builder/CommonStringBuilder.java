@@ -1,6 +1,6 @@
 package com.rumpus.common.Builder;
 
-public class CommonStringBuilder extends Builder {
+public class CommonStringBuilder extends AbstractBuilder {
 
     private static final String NAME = "CommonStringBuilder";
 

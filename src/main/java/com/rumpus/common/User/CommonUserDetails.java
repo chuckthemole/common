@@ -9,11 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.rumpus.common.GsonSerializer;
+import com.rumpus.common.AbstractGsonSerializer;
 import com.rumpus.common.RumpusObject;
 import com.rumpus.common.Builder.LogBuilder;
 
-// TODO: I don't think this should be a model. Remove its extention
 public class CommonUserDetails extends RumpusObject implements UserDetails {
 
     private static final String NAME = "CommonUserDetails";
@@ -181,10 +180,10 @@ public class CommonUserDetails extends RumpusObject implements UserDetails {
         }
     }
 
-    static private class UserDetailsGsonSerializer extends GsonSerializer<CommonUser<?, ?>> {
+    static private class UserDetailsGsonSerializer extends AbstractGsonSerializer<AbstractCommonUser<?, ?>> {
 
         @Override
-        public JsonElement serialize(CommonUser<?, ?> user, Type typeOfSrc, JsonSerializationContext context) {
+        public JsonElement serialize(AbstractCommonUser<?, ?> user, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject jsonObj = new JsonObject();
             jsonObj.addProperty(USERNAME, user.getUsername());
             jsonObj.addProperty(PASSWORD, user.getPassword());
