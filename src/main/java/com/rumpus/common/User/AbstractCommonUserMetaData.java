@@ -1,5 +1,7 @@
 package com.rumpus.common.User;
 
+import java.io.IOException;
+
 import com.rumpus.common.Builder.StringBuilderHelper;
 import com.rumpus.common.Model.AbstractMetaData;
 
@@ -44,6 +46,16 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
 
     public String getAboutMe() {
         return this.aboutMe;
+    }
+
+    // overriding these serializer methods here. right now just using defaults but can customize as commented out below. 2023/6/28
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        LOG.info("AbstractCommonUserMetaData::writeObject()");
+        out.defaultWriteObject();
+    }
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        LOG.info("AbstractCommonUserMetaData::readObject()");
+        in.defaultReadObject();
     }
 
     @Override 

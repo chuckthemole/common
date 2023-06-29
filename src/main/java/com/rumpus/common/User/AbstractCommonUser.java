@@ -17,7 +17,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
     static private PasswordEncoder encoder;
     private String email;
     private CommonUserDetails userDetails; // holds username and password among others
-    @JsonIgnore private AbstractCommonUserMetaData<META> metaData;
+    private AbstractCommonUserMetaData<META> metaData;
 
     static {
         AbstractCommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();

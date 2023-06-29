@@ -1,5 +1,6 @@
 package com.rumpus.common.Model;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.core.serializer.Serializer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
 import com.rumpus.common.AbstractCommonObject;
 
@@ -42,7 +44,7 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
      * 
      * @return type adapter for this MetaData class
      */
-    abstract public TypeAdapter<META> createTypeAdapter();
+    @JsonIgnore abstract public TypeAdapter<META> createTypeAdapter();
 
     /**
      * Abstract method for return this MetaData's attributes as a map
@@ -52,13 +54,13 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
      *   return metaAttributesMap;
      * }
      */
-    abstract public Map<String, Object> getMetaAttributesMap();
+    @JsonIgnore abstract public Map<String, Object> getMetaAttributesMap();
 
     /**
      * 
      * @return this type adapter
      */
-    public TypeAdapter<META> getTypeAdapter() {
+    @JsonIgnore public TypeAdapter<META> getTypeAdapter() {
         return this.typeAdapter;
     }
 
@@ -66,7 +68,7 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
      * 
      * @param typeAdapter
      */
-    public void setTypeAdapter(TypeAdapter<META> typeAdapter) {
+    @JsonIgnore public void setTypeAdapter(TypeAdapter<META> typeAdapter) {
         this.typeAdapter = typeAdapter;
     }
 
@@ -93,5 +95,15 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
     public final String getStandardFormattedCreationTime() {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.valueOf(this.creationTime)), ZoneOffset.UTC).toString();
         // return LocalDateTime.ofInstant(this.creationTime, ZoneOffset.UTC).toString();
+    }
+
+    // overriding these serializer methods here. right now just using defaults but can customize as commented out below. 2023/6/28
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        LOG.info("AbstractMetaData::writeObject()");
+        out.defaultWriteObject();
+    }
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        LOG.info("AbstractMetaData::readObject()");
+        in.defaultReadObject();
     }
 }
