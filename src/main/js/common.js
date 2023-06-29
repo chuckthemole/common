@@ -64,3 +64,13 @@ function CloseOnBackgroundClick(backgroundClass, modalClass) {
         });
     }
 }
+
+export function GetClientTimeZoneOffset() {
+    const globalDate = new Date();
+    let diffZone = globalDate.getTimezoneOffset();
+    console.log("offset: " + diffZone);
+}
+
+export function ConvertEpochToDate(epochTime) {
+    return new Date(parseInt(epochTime));
+}

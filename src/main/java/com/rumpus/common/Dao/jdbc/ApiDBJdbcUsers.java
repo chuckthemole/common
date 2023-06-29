@@ -284,9 +284,10 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     private java.sql.Blob serializeUserMetaWithCommonBlob(META meta) {
         LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()", meta.toString()).info();
         byte[] byteArray = AbstractBlob.serialize(meta);
-        return new JdbcBlob(byteArray);
+        return JdbcBlob.createFromByteArray(byteArray);
     }
 
+    // TODO: this needs to be tested more. I don't think it was working correctly last I tried. - chuck 2023/6/29
     private java.sql.Blob serializeUserMetaWithClassSerializer(META meta) {
         LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithClassSerializer()", meta.toString()).info();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -295,7 +296,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
         } catch (IOException e) {
             LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
         }
-        return new JdbcBlob(byteArrayOutputStream.toByteArray());
+        return JdbcBlob.createFromByteArray(byteArrayOutputStream.toByteArray());
     }
 
     // @Override

@@ -98,7 +98,8 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
             " Id: ", this.id, "\n",
             " Username: ", this.getUsername(), "\n",
             " Password: ", this.getPassword(), "\n",
-            " Email: ", this.email, "\n");
+            " Email: ", this.email, "\n",
+            this.metaData.toString());
     }
 
     @Override

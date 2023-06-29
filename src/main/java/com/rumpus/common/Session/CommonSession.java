@@ -23,6 +23,10 @@ import jakarta.servlet.http.HttpSession;
 public class CommonSession extends AbstractModel<CommonSession> implements Session {
 
     private static final String NAME = "CommonSession";
+
+    // common attributes
+    public static final String UTC_TIME_DIFFERENCE = "UTC_TIME_DIFFERENCE";
+
     private static final String NO_ID = "-1";
     private static final short ID_LENGTH = 10;
     private static final long DEFAULT_MAX_INACTIVE_INTERVAL = 30;

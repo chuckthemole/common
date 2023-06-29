@@ -27,16 +27,20 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
     private static final String NAME = "MetaData";
     public static final String USER_CREATION_DATE_TIME = "user_creation_datetime";
 
-    // protected Instant creationTime;
-    protected String creationTime;
+    protected String creationTime; // using epoch 1970
     transient private TypeAdapter<META> typeAdapter; // keep this transient or will not serialize
 
     public AbstractMetaData() {
         super(NAME);
+        this.creationTime = String.valueOf(Instant.now().toEpochMilli());
     }
     public AbstractMetaData(String name) {
         super(name);
         this.creationTime = String.valueOf(Instant.now().toEpochMilli());
+    }
+    public AbstractMetaData(String name, String creationTime) {
+        super(name);
+        this.creationTime = creationTime;
     }
 
     /**
@@ -97,7 +101,7 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
         // return LocalDateTime.ofInstant(this.creationTime, ZoneOffset.UTC).toString();
     }
 
-    // overriding these serializer methods here. right now just using defaults but can customize as commented out below. 2023/6/28
+    // overriding these serializer methods here. right now just using defaults but can customize
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         LOG.info("AbstractMetaData::writeObject()");
         out.defaultWriteObject();

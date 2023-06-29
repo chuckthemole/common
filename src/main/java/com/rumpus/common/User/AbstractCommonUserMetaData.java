@@ -21,9 +21,14 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
     
     public AbstractCommonUserMetaData() {
         super(NAME);
+        this.init();
     }
     public AbstractCommonUserMetaData(String name) {
         super(name);
+        this.init();
+    }
+    public AbstractCommonUserMetaData(String name, String creationTime) {
+        super(name, creationTime);
         this.init();
     }
 

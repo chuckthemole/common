@@ -3,25 +3,32 @@ package com.rumpus.common.Blob;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import com.mysql.cj.exceptions.ExceptionInterceptor;
 import com.mysql.cj.jdbc.Blob;
 import com.rumpus.common.Log.CommonExceptionInterceptor;
 import com.rumpus.common.Log.CommonLog;
+import com.rumpus.common.Model.AbstractMetaData;
 
-public class JdbcBlob extends AbstractBlob {
+public class JdbcBlob<META extends AbstractMetaData<?>> extends AbstractBlob<META> {
 
     private static final String NAME = "JdbcBlob";
 
-    public JdbcBlob(byte[] data) {
+    // ctors
+    private JdbcBlob(byte[] data) {
         super(NAME, new Blob(data, new CommonExceptionInterceptor().init(new Properties(), new CommonLog())));
     }
-
-    public JdbcBlob(byte[] data, ExceptionInterceptor exceptionInterceptor) {
+    private JdbcBlob(byte[] data, ExceptionInterceptor exceptionInterceptor) {
         super(NAME, new Blob(data, exceptionInterceptor));
+    }
+
+    // public static factory
+    public static <META extends AbstractMetaData<?>> JdbcBlob<META> createFromByteArray(byte[] data) {
+        return new JdbcBlob<>(data);
+    }
+    public static <META extends AbstractMetaData<?>> JdbcBlob<META> createFromByteArrayAndInterceptor(byte[] data, ExceptionInterceptor exceptionInterceptor) {
+        return new JdbcBlob<>(data, exceptionInterceptor);
     }
 
     @Override
@@ -81,38 +88,10 @@ public class JdbcBlob extends AbstractBlob {
 
     @Override
     public java.sql.Blob updatedParamField(java.sql.Blob blob, String paramName, String fieldName, String value) {
-        
-        List<Map<String, String>> params = getParams(blob);
-        Map<String, String> param = getParam(params, paramName);
-        param.put(fieldName, value);
-        
-        // oracle.sql.BLOB res = oracle.sql.BLOB.createTemporary(blob.getOracleConnection(), true, oracle.sql.BLOB.DURATION_CALL);
-        // ExceptionInterceptor interceptor = new ExceptionInterceptor() {
-
-        //     @Override
-        //     public ExceptionInterceptor init(Properties props, Log log) {
-        //         // TODO Auto-generated method stub
-        //         throw new UnsupportedOperationException("Unimplemented method 'init'");
-        //     }
-
-        //     @Override
-        //     public void destroy() {
-        //         // TODO Auto-generated method stub
-        //         throw new UnsupportedOperationException("Unimplemented method 'destroy'");
-        //     }
-
-        //     @Override
-        //     public Exception interceptException(Exception sqlEx) {
-        //         // TODO Auto-generated method stub
-        //         throw new UnsupportedOperationException("Unimplemented method 'interceptException'");
-        //     }
-            
-        // };
+        @SuppressWarnings(UNCHECKED) META meta = (META) AbstractBlob.getObjectFromBlob(blob);
+        // TODO: need to update the param. have not implemented a solution for this yet. this is just returning the same blob right now.
         ExceptionInterceptor exceptionInterceptor = new CommonExceptionInterceptor().init(new Properties(), new CommonLog());
-        return new Blob(serialize(params), exceptionInterceptor);
-        // return null;
-        // res.setBytes(1, serialize(params));
-        // return res;
+        return new Blob(AbstractBlob.serialize(meta), exceptionInterceptor);
     }
     
 }
