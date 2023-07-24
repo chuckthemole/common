@@ -13,6 +13,7 @@ public class SQLBuilder extends AbstractBuilder {
     private static final String INSERT_INTO = "INSERT INTO";
     private static final String VALUES = "VALUES";
     private static final String UPDATE = "UPDATE";
+    private static final String DELETE = "DELETE";
     private static final String WHERE = "WHERE";
     private static final String SET = "SET";
     private static final String STAR = "*";
@@ -102,6 +103,80 @@ public class SQLBuilder extends AbstractBuilder {
      * @param id
      */
     public void selectById(final String table, final String id) {
+        this.builder
+            .append(SELECT)
+            .append(SPACE)
+            .append(STAR)
+            .append(SPACE)
+            .append(FROM)
+            .append(SPACE)
+            .append(table)
+            .append(SPACE)
+            .append(WHERE)
+            .append(SPACE)
+            .append(ID)
+            .append(EQUALS)
+            .append(StringUtil.isQuoted(id) ? id : StringUtil.singleQuote(id))
+            .append(SPACE)
+            .append(SEMI);
+
+    }
+
+    /**
+     * DELETE FROM 'table' WHERE username = ?;
+     * 
+     * @param table user table to use
+     * @param username user to delete
+     */
+    public void deleteByUsername(final String table, final String username) {
+        this.builder
+            .append(DELETE)
+            .append(SPACE)
+            .append(FROM)
+            .append(SPACE)
+            .append(table)
+            .append(SPACE)
+            .append(WHERE)
+            .append(SPACE)
+            .append(USERNAME)
+            .append(EQUALS)
+            .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
+            .append(SEMI);
+
+    }
+
+    /**
+     * DELETE FROM user WHERE username = ?;
+     * 
+     * Same as deleteByUsername but for 'user' table specifically
+     * 
+     * @param username user to delete
+     */
+    public void deleteUserByUsername(final String username) {
+        final String table = "user";
+        this.builder
+            .append(DELETE)
+            .append(SPACE)
+            .append(FROM)
+            .append(SPACE)
+            .append(table)
+            .append(SPACE)
+            .append(WHERE)
+            .append(SPACE)
+            .append(USERNAME)
+            .append(EQUALS)
+            .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
+            .append(SEMI);
+
+    }
+
+    /**
+     * DELETE FROM 'table' WHERE 'id' = ?;
+     * 
+     * @param table table to use
+     * @param id identifier to delete
+     */
+    public void deleteById(final String table, final String id) {
         this.builder
             .append(SELECT)
             .append(SPACE)

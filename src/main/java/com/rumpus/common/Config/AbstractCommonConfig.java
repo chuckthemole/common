@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -52,6 +53,7 @@ public abstract class AbstractCommonConfig extends AbstractCommon {
 	}
     
     @Bean
+    @DependsOn("jdbcUserDetailsManager")
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(jdbcUserDetailsManager());

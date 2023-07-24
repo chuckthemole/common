@@ -1,5 +1,7 @@
 package com.rumpus.common.User;
 
+import java.util.Map;
+
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,7 +15,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
 
     private static final String NAME = "CommonUser";
 
-    private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
+    @JsonIgnore private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     static private PasswordEncoder encoder;
     private String email;
     private CommonUserDetails userDetails; // holds username and password among others
@@ -142,6 +144,13 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
             flag = false;
         }
         return flag;
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributesMap() {
+        LOG.info("AbstractCommonUser::getModelAttributesMap()");
+        Map<String, Object> modelAttributesMap = Map.of(ID, this.id, EMAIL, this.getEmail());
+        return modelAttributesMap;
     }
 
     // member values to check for equality

@@ -267,8 +267,10 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
     }
     @Override
     public Map<String, Object> getModelAttributesMap() {
+        LOG.info("CommonSession::getModelAtrributesMap()");
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getModelAttributesMap'");
+        LOG.info("Unimplemented method 'getModelAttributesMap'");
+        return Map.of();
     }
     @Override
     public TypeAdapter<CommonSession> createTypeAdapter() {

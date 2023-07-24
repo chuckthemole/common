@@ -77,19 +77,11 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     public boolean remove(String name) {
         LOG.info("ApiDBJdbc::remove()");
         // TODO: Check dependencies to delete
-        StringBuilder sb = new StringBuilder();
-        sb.append("DELETE FROM ")
-            .append(table)
-            .append(" WHERE username");
-        // if(StringUtil.isQuoted(name) {
-        //     sb.append(name);
-        // } else {
-        //     sb.append("\"").append(name).append("\"");
-        // }
-        sb.append(" = ?;");
-        final String sql = sb.toString();
-        LOG.info("\n" + sql + "\n ? = " + name);
-        return CommonJdbc.jdbcTemplate.update(sql, name) > 0;
+        SQLBuilder sqlBuilder = new SQLBuilder();
+        sqlBuilder.deleteUserByUsername(name);
+        final String sql = sqlBuilder.toString();
+        LOG.info(sql);
+        return CommonJdbc.jdbcTemplate.update(sql) > 0;
     }
 
     @Override

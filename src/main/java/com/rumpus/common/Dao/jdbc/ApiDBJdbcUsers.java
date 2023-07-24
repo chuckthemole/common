@@ -23,7 +23,7 @@ import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractApiDB;
 import com.rumpus.common.Log.CommonExceptionInterceptor;
-import com.rumpus.common.User.CommonAuthManager;
+import com.rumpus.common.User.AbstractCommonAuthManager;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.CommonUserDetails;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
@@ -52,7 +52,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     private final static String USER_MANAGER_TABLE = "USERS";
 
     private JdbcUserDetailsManager manager;
-    private AuthenticationManager authenticationManager;
+    // private AuthenticationManager authenticationManager;
     private DaoAuthenticationProvider authenticationProvider;
     private final static Set<String> jdbcUserColumns = new HashSet<>(Arrays.asList("username", "email")); // current columns in jdbc db
     private CommonSimpleJdbc<USER> simpleUsersJdbc;
@@ -62,7 +62,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
         this.manager = manager;
         this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
         // this.manager.setEnableAuthorities(enableAuthorities);
-        this.authenticationManager = new CommonAuthManager();
+        // this.authenticationManager = new AbstractCommonAuthManager();
         // this.encoder = new BCryptPasswordEncoder();
         BCryptPasswordEncoder e = new BCryptPasswordEncoder();
         this.authenticationProvider = new DaoAuthenticationProvider();
@@ -78,7 +78,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
         if(queries != null && !queries.isEmpty()) {
             this.setQueries(queries);
         }
-        this.authenticationManager = new CommonAuthManager();
+        // this.authenticationManager = new AbstractCommonAuthManager();
         this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
     }
 

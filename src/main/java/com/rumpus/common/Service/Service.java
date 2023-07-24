@@ -22,34 +22,42 @@ abstract public class Service<T extends AbstractModel<T>> extends AbstractCommon
     }
 
     public T get(int id) {
+        LOG.info("Service::get(id)");
         return this.dao.get(id);
     }
 
     public T get(String name) {
+        LOG.info("Service::get(name)");
         return this.dao.get(name);
     }
 
     public T getById(String id) {
+        LOG.info("Service::getById(id)");
         return this.dao.getById(id);
     }
 
     public List<T> getAll() {
+        LOG.info("Service::getAll()");
         return this.dao.getAll();
     }
 
     public T add(T rumpusModel) {
+        LOG.info("Service::add()");
         return this.dao.add(rumpusModel);
     }
 
     public boolean remove(int id) {
+        LOG.info("Service::remove(id)");
         return this.dao.remove(id);
     }
 
     public boolean remove(String name) {
+        LOG.info("Service::remove(name)");
         return this.dao.remove(name);
     }
 
     public T update(String id, T updatedModel) {
+        LOG.info("Service::update()");
         return this.dao.update(id, updatedModel);
     }
     // @Override
