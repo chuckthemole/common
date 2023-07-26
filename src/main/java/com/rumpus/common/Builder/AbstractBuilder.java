@@ -31,6 +31,16 @@ abstract class AbstractBuilder extends AbstractCommonObject {
         LOG.error(this.toString());
     }
 
+    public void append(String... appendees) {
+        for(String appendee : appendees) {
+            this.builder.append(appendee);
+        }
+    }
+
+    public StringBuilder getStringBuilder() {
+        return this.builder;
+    }
+
     @Override
     public String toString() {
         return this.builder.toString();
