@@ -222,9 +222,15 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
         // check if user exists
         LogBuilder.logBuilderFromStringArgs("- - - Checking if user '", newUser.getUsername(), "' already exists.").info();
         if(this.get(newUser.getUsername()) != null) {
-            LOG.info("- - - User with username already exists in the db. Returning null...");
+            LogBuilder.logBuilderFromStringArgs("- - - User with username '", newUser.getUsername(), "' already exists in the db. Returning null...").info();
             return null;
         }
+        if(this.getById(newUser.getId()) != null) {
+            LogBuilder.logBuilderFromStringArgs("- - - User with id '", newUser.getId(), "' already exists in the db. Returning null...").info();
+            return null;
+        }
+
+        // does not exist with id or name given, continue...
         LogBuilder.logBuilderFromStringArgs("- - - User with name '", newUser.getUsername(), "' does not exist, continuing.").info();
         // create user details in manager (user table). this saves username, password, and enabled.
         UserDetails details = newUser.getUserDetails();
