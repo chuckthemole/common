@@ -33,3 +33,17 @@ export function setModalActive() {
 export function setModalInactive() {
     is_modal_active = false;
 }
+
+export const modal_style = {
+    overlay: {
+        backgroundColor: 'rgba(93, 93, 93, .5)',
+    },
+    content: {
+        // top: '50%',
+        // left: '50%',
+        // right: 'auto',
+        // bottom: 'auto',
+        // marginRight: '-50%',
+        transform: 'translate(0%, 70%)',
+    },
+};

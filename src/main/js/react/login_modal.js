@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { EMPTY } from './common';
-import { isModalActive, setModalActive, setModalInactive } from './modal_manager';
+import { isModalActive, modal_style, setModalActive, setModalInactive } from './modal_manager';
 
 export default function LoginModal() {
-
-    const customStyles = {
-        content: {
-            // top: '50%',
-            // left: '50%',
-            // right: 'auto',
-            // bottom: 'auto',
-            // marginRight: '-50%',
-            transform: 'translate(0%, 70%)',
-        },
-    };
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -52,7 +41,7 @@ export default function LoginModal() {
                 onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 className='modal-content'
-                style={customStyles}
+                style={modal_style}
                 contentLabel="Example Modal"
             >
                 <div className="modal-content">
