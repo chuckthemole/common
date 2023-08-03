@@ -27,7 +27,13 @@ export default function Footer({footer_path}) {
         fetcher
     );
 
-    if (error) return <div className='container m-6'><div className='notification is-primary'><p>An error occurred</p></div></div>;
+    if (error) return(
+        <div className='columns is-centered has-text-centered'>
+            <div className='column is-half notification is-warning'>
+                <p>An error occurred with footer</p>
+            </div>
+        </div>
+    );
 
     if (!data) return(
         <div className='container m-6'>
@@ -39,9 +45,9 @@ export default function Footer({footer_path}) {
     )
    
     return (
-        <div className='columns is-centered'>
+        <div className='columns is-centered has-text-centered'>
             <div className='column is-half'>
-                <div className="columns">
+                <div className="columns is-centered">
                     {data.columns.map(({items, title}) => (
                         <div className="column" key={title}>
                             <div>{title}</div>
