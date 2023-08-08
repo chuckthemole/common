@@ -2,11 +2,13 @@ const React = require('react');
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-export default function RumpusQuill() {
+export default function RumpusQuill({modules, formats, placeholder}) {
 
     const [value, setValue] = React.useState('');
 
-    const modules = {
+    const default_placeholder = 'Compose an epic...';
+
+    const default_modules = {
         toolbar: [
             [{ 'header': [1, 2, false] }],
             ['bold', 'italic', 'underline','strike', 'blockquote'],
@@ -14,14 +16,14 @@ export default function RumpusQuill() {
             ['link', 'image'],
             ['clean']
         ],
-    }
+    };
     
-    const formats = [
+    const default_formats = [
         'header',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
         'link', 'image'
-    ]
+    ];
 
     let quill = React.createElement(
 
@@ -40,9 +42,9 @@ export default function RumpusQuill() {
             theme='snow'
             value={value}
             onChange={setValue}
-            placeholder='Compose an epic...'
-            modules={modules}
-            formats={formats}
+            placeholder={placeholder !== undefined ? placeholder : default_placeholder}
+            modules={modules !== undefined ? modules : default_modules}
+            formats={formats !== undefined ? formats : default_formats}
         />
     );
 
