@@ -26,6 +26,8 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
 
     private static final String NAME = "MetaData";
     public static final String USER_CREATION_DATE_TIME = "user_creation_datetime";
+    protected static final String NAME_KEY = "name";
+    protected static final String CREATION_TIME_KEY = "creationTime";
 
     protected String creationTime; // using epoch 1970
     transient private TypeAdapter<META> typeAdapter; // keep this transient or will not serialize
@@ -41,6 +43,16 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
     public AbstractMetaData(String name, String creationTime) {
         super(name);
         this.creationTime = creationTime;
+    }
+
+    /**
+     * Be sure to have NAME_KEY and CREATION_TIME_KEY as keys in your map if you use this
+     * 
+     * @param attributesMap
+     */
+    public AbstractMetaData(Map<String, Object> attributesMap) {
+        super((String) attributesMap.get(NAME_KEY));
+        this.creationTime = (String) attributesMap.get(CREATION_TIME_KEY);
     }
 
     /**
