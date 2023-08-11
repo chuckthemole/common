@@ -72,6 +72,21 @@ public class ForumPost extends AbstractModel<ForumPost> {
         throw new UnsupportedOperationException("Unimplemented method 'createTypeAdapter'");
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb
+            .append("\nForumPost:\n")
+            .append("  User ID: ")
+            .append(this.userId)
+            .append("\n")
+            .append("  Creation time: ")
+            .append(this.metaData.getCreationTime())
+            .append("\n")
+            .append(this.body);
+        return sb.toString();
+    }
+
     public class ForumPostMeta extends AbstractMetaData<ForumPostMeta> {
 
         final static private String NAME = "ForumPostMeta";
@@ -99,6 +114,5 @@ public class ForumPost extends AbstractModel<ForumPost> {
         public Map<String, Object> getMetaAttributesMap() {
             return Map.of(AbstractMetaData.NAME_KEY, NAME, AbstractMetaData.USER_CREATION_DATE_TIME, this.getCreationTime());
         }
-
     }
 }

@@ -2,9 +2,22 @@ const React = require('react');
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
+let text_editor_body;
+
+export function getQuillContents() {
+    if(text_editor_body !== undefined) {
+        return text_editor_body;
+    }
+    return '';
+}
+
 export default function RumpusQuill({modules, formats, placeholder}) {
 
     const [value, setValue] = React.useState('');
+
+    React.useEffect(() => {
+        text_editor_body = value;
+    }, [value]);
 
     const default_placeholder = 'Compose an epic...';
 
