@@ -1,25 +1,28 @@
 package com.rumpus.common.Forum;
 
-import java.util.List;
-
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.Structures.AbstractGraph;
 
 /**
  * Used as a map to track {@link ForumPost}s
  */
-public class ForumThread extends AbstractCommon {
+public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> {
     
-    // final private String pageIdentifier; // id of page
-    // final private Node head;
+    private String pageID; // id of page
 
-    // private class Node<T> {
+    private ForumThread(ForumPostNode head, String pageID) {
+        super(head);
+        this.pageID = pageID;
+    }
 
-    //     private T data;
-    //     private List<Node> children;
-    //     private 
+    public static ForumThread create(ForumPostNode head, String pageID) {
+        return new ForumThread(head, pageID);
+    }
 
-    //     private Node() {
+    public void setPageID(String pageID) {
+        this.pageID = pageID;
+    }
 
-    //     }
-    // }
+    public String getPageID() {
+        return this.pageID;
+    }
 }
