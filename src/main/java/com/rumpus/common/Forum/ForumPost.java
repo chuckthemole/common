@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.Map;
 
 import com.google.gson.TypeAdapter;
+import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractMetaData;
 import com.rumpus.common.Model.AbstractModel;
 
@@ -87,6 +88,35 @@ public class ForumPost extends AbstractModel<ForumPost> {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ForumPost)) {
+            return false;
+        }
+
+        ForumPost forumPost = (ForumPost) o;
+
+        boolean isEqual = true;
+        if(!this.userId.equals(forumPost.userId)) {
+            LogBuilder.logBuilderFromStringArgs("\nForumPost's are not equal:\n  user IDs are not equal: ", this.userId, " not equal to ", forumPost.userId).info();
+            isEqual = false;
+        }
+        if(!this.body.equals(forumPost.body)) {
+            LogBuilder.logBuilderFromStringArgs("\nForumPost's are not equal:\n  bodys are not equal: ", this.body, " not equal to ", forumPost.body).info();
+            isEqual = false;
+        }
+        if(!this.metaData.equals(forumPost.metaData)) {
+            LogBuilder.logBuilderFromStringArgs("\nForumPost's are not equal:\n  meta data is not equal: ", this.metaData.toString(), " not equal to ", forumPost.metaData.toString()).info();
+            isEqual = false;
+        }
+
+        return isEqual;
+    }
+
     public class ForumPostMeta extends AbstractMetaData<ForumPostMeta> {
 
         final static private String NAME = "ForumPostMeta";
@@ -112,7 +142,7 @@ public class ForumPost extends AbstractModel<ForumPost> {
 
         @Override
         public Map<String, Object> getMetaAttributesMap() {
-            return Map.of(AbstractMetaData.NAME_KEY, NAME, AbstractMetaData.USER_CREATION_DATE_TIME, this.getCreationTime());
+            return Map.of(AbstractMetaData.NAME_KEY, NAME, AbstractMetaData.CREATION_TIME_KEY, this.getCreationTime());
         }
     }
 }

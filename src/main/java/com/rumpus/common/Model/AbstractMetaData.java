@@ -6,12 +6,16 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.springframework.core.serializer.Serializer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Forum.ForumPost;
 
 /**
  * Abstract class for Model meta data. This holds some of the common member variables, like creationTime, and interface that each Model shares.
@@ -121,5 +125,41 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         LOG.info("AbstractMetaData::readObject()");
         in.defaultReadObject();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ForumPost)) {
+            return false;
+        }
+
+        AbstractMetaData<META> meta = (AbstractMetaData<META>) o;
+
+        boolean isEqual = true;
+        Map<String, Object> thisAttributeMap = this.getMetaAttributesMap();
+        Map<String, Object> otherAttributeMap = meta.getMetaAttributesMap();
+        if(thisAttributeMap.size() != otherAttributeMap.size()) {
+            LogBuilder.logBuilderFromStringArgs("Meta data not equal: different sizes ( ", String.valueOf(thisAttributeMap.size()), " : ", String.valueOf(otherAttributeMap.size()), " )").info();
+            isEqual = false;
+        } else {
+            for(Entry<String, Object> entrySet : thisAttributeMap.entrySet())  {
+                final String key = entrySet.getKey();
+                final Object value = entrySet.getValue();
+                if(!otherAttributeMap.containsKey(key)) {
+                    LogBuilder.logBuilderFromStringArgs("Meta data not equal: doesn't contain key ( ", key, " )").info();
+                    isEqual = false;
+                } else {
+                    if(!value.equals(otherAttributeMap.get(key))) {
+                        LogBuilder.logBuilderFromStringArgs("Meta data not equal: values not equal ( ", value.toString(), " : ", otherAttributeMap.get(key).toString(), " )").info();
+                        isEqual = false;
+                    }
+                }
+            }
+        }
+        return isEqual;
     }
 }
