@@ -8,7 +8,10 @@ public class ForumPostNode extends AbstractNode<ForumPost, ForumPostNode> {
         super(data);
     }
 
-    public static ForumPostNode createNode(String userId, String body) {
+    public static ForumPostNode createNodeFromForumPost(ForumPost post) {
+        return new ForumPostNode(post);
+    }
+    public static ForumPostNode createNodeFromBody(String userId, String body) {
         return new ForumPostNode(ForumPost.create(userId, body));
     }
 }
