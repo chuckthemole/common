@@ -25,8 +25,15 @@ public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> {
         return new ForumThread(head, pageID);
     }
 
+    /**
+     * This will clear out previous object and set new head and tail to head param
+     * 
+     * @param head head to init new ForumThread
+     * @param pageID page ID of new ForumThread
+     */
     public void init(ForumPostNode head, String pageID) {
         this.setHead(head);
+        this.setTail(head);
         this.pageID = pageID;
     }
 

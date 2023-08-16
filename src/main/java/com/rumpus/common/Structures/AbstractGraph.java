@@ -2,6 +2,9 @@ package com.rumpus.common.Structures;
 
 import com.rumpus.common.AbstractCommon;
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Forum.ForumPost;
+import com.rumpus.common.Model.IUniqueIdManager;
+import com.rumpus.common.Model.UniqueIdManager;
 
 /**
  * Graph of nodes in sequential order. Each node in the sequence can have children nodes.
@@ -10,6 +13,7 @@ import com.rumpus.common.AbstractCommonObject;
  */
 abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE extends AbstractNode<OBJECT, NODE>> extends AbstractCommon {
 
+    private IUniqueIdManager idManager; // TODO: look at import com.rumpus.common.Model.IUniqueIdManager; and abstract IUniqueIdManager
     private NODE head;
     private NODE current;
     private NODE tail;
@@ -18,6 +22,7 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
         this.head = head;
         this.current = head;
         this.tail = head;
+        this.idManager = UniqueIdManager.getSingletonInstance();
     }
 
     public void addToSequence(NODE node) {
@@ -75,6 +80,21 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
             return this.current;
         }
         return null;
+    }
+
+    /**
+     * Note: returns size of sequential nodes, does not count child nodes
+     * 
+     * @return size of sequential nodes
+     */
+    public int size() {
+        NODE current = this.head;
+        int count = 0;
+        while(current != null) {
+            current = current.getNext();
+            count++;
+        }
+        return count;
     }
 
     // - - - getters/setters - - -

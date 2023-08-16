@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.rumpus.common.Builder.LogBuilder;
+
 import org.junit.jupiter.api.Order;
 
 public class ForumPostTest {
@@ -90,7 +92,17 @@ public class ForumPostTest {
         // System.out.println("The difference: " + difference);
         // System.out.println("The other difference: " + ForumPostTest.differenceInTime);
 
-        assertTrue(difference.compareTo(BigDecimal.ZERO) == 1 && difference.compareTo(BigDecimal.valueOf(100)) == -1);
-        assertEquals(ForumPostTest.differenceInTime, difference);
+        final String message = LogBuilder.logBuilderFromStringArgs(
+            "ForumPostTest::testGetMetaData() creation time: ",
+            String.valueOf(post1CreationTime),
+            " expected creation time: ",
+            String.valueOf(expectedCreationTime),
+            " difference: ",
+            String.valueOf(difference),
+            " differenceInTime: ",
+            String.valueOf(differenceInTime))
+            .getStringBuilder().toString();
+        assertTrue(message, difference.abs().compareTo(BigDecimal.valueOf(100)) == -1);
+        assertEquals(ForumPostTest.differenceInTime, difference, message);
     }
 }

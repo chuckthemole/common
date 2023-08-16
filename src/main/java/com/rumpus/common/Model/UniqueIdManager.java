@@ -11,6 +11,7 @@ import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.util.Random;
 
 // TODO: need to serialize this data when application ends and reload when application starts so we don't have dupes
+// TODO: need to take this out of Model directory. this should be a common utility and be extended in here
 
 /**
  * Singleton class to keep track of each model's unique id. Each model's set is identified by its NAME
