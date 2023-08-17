@@ -44,4 +44,17 @@ public class CommonForumTest extends CommonTest {
             ForumPostNode.createNodeFromBody("4", "4body"),
             ForumPostNode.createNodeFromBody("5", "5body")
         );
+    
+    protected static void initForumPosts() {
+        CommonForumTest.post1 = ForumPost.create(userId1, body1);
+        CommonForumTest.post2 = ForumPost.create(userId2, body2);
+        CommonForumTest.post3 = ForumPost.create(userId3, body3);
+        CommonForumTest.post4 = ForumPost.create(userId4, body4);
+    }
+
+    protected static void initThreads() {
+        CommonForumTest.thread1 = ForumThread.create(ForumPostNode.createNodeFromForumPost(CommonForumTest.post1), CommonForumTest.TEST_PAGE_ID1);
+        CommonForumTest.thread2 = ForumThread.create(ForumPostNode.createNodeFromForumPost(CommonForumTest.post2), CommonForumTest.TEST_PAGE_ID2);
+        CommonForumTest.thread3 = ForumThread.createEmpty();
+    }
 }

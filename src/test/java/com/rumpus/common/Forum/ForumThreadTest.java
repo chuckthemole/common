@@ -1,11 +1,7 @@
 package com.rumpus.common.Forum;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -25,15 +21,7 @@ public class ForumThreadTest extends CommonForumTest {
 
     @BeforeAll
     public static void setUpClass() {
-        // CommonForumTest.postNode1 = ForumPostNode.createNodeFromForumPost(post1);
-        // CommonForumTest.postNode2 = ForumPostNode.createNodeFromForumPost(post2);
-        // CommonForumTest.postNode3 = ForumPostNode.createNodeFromForumPost(post3);
-        // CommonForumTest.postNode4 = ForumPostNode.createNodeFromForumPost(post4);
-
-        CommonForumTest.post1 = ForumPost.create(userId1, body1);
-        CommonForumTest.post2 = ForumPost.create(userId2, body2);
-        CommonForumTest.post3 = ForumPost.create(userId3, body3);
-        CommonForumTest.post4 = ForumPost.create(userId4, body4);
+        CommonForumTest.initForumPosts();
     }
 
     @AfterAll
@@ -42,9 +30,7 @@ public class ForumThreadTest extends CommonForumTest {
 
     @BeforeEach
     public void setUp() {
-        CommonForumTest.thread1 = ForumThread.create(ForumPostNode.createNodeFromForumPost(CommonForumTest.post1), CommonForumTest.TEST_PAGE_ID1);
-        CommonForumTest.thread2 = ForumThread.create(ForumPostNode.createNodeFromForumPost(CommonForumTest.post2), CommonForumTest.TEST_PAGE_ID2);
-        CommonForumTest.thread3 = ForumThread.createEmpty();
+        CommonForumTest.initThreads();
     }
 
     @AfterEach
@@ -73,21 +59,56 @@ public class ForumThreadTest extends CommonForumTest {
 
         // test thread1
         this.testAddToSequenceThread1();
+
+        // TODO create tests for rest of threads
     }
 
     @Test
     @Order(2)
-    void testSetGetNext() {
+    void testNextAndPrevioud() {
+        this.addThreeNodesToSequenceInThread1();
+        CommonForumTest.thread1.next().next(); // move to third node
+        ForumPost currentPost = CommonForumTest.thread1.getCurrent().getData();
+        // test we are on correct node
+        assertEquals(CommonForumTest.post3.getBody(), currentPost.getBody());
+        assertEquals(CommonForumTest.post3.getUserId(), currentPost.getUserId());
+        CommonForumTest.thread1.previous(); // move back one
+        currentPost = CommonForumTest.thread1.getCurrent().getData();
+        // test we are on correct node
+        assertEquals(CommonForumTest.post2.getBody(), currentPost.getBody());
+        assertEquals(CommonForumTest.post2.getUserId(), currentPost.getUserId());
+        CommonForumTest.thread1.previous().previous().previous().previous(); // move back too far, should make current null
+        assertEquals(null, CommonForumTest.thread1.getCurrent());
+        CommonForumTest.thread1.setCurrent(CommonForumTest.thread1.getHead()); // set head back to current
+        CommonForumTest.thread1.next().next().next().next().next().next(); // move back up far, should make current null
+        assertEquals(null, CommonForumTest.thread1.getCurrent());
     }
 
     @Test
     @Order(3)
-    void testSetGetPrevious() {
+    void testChildren() {
+        this.addThreeNodesToSequenceInThread1();
+        assertEquals(false, CommonForumTest.thread1.hasChildren()); // expect that current node has no children
+        CommonForumTest.thread1.next();
+        assertEquals(false, CommonForumTest.thread1.hasChildren()); // expect that current node has no children
+        CommonForumTest.thread1.addChildrenToCurrentNode(CommonForumTest.expectedChildren);
+        assertEquals(true, CommonForumTest.thread1.hasChildren()); // expect that current node has children
+        // test children
+        assertEquals(CommonForumTest.expectedChildren.get(0), CommonForumTest.thread1.child().getCurrent());
+        assertEquals(CommonForumTest.expectedChildren.get(1), CommonForumTest.thread1.next().getCurrent());
+        assertEquals(CommonForumTest.expectedChildren.get(2), CommonForumTest.thread1.next().getCurrent());
+        assertEquals(CommonForumTest.expectedChildren.get(3), CommonForumTest.thread1.next().getCurrent());
     }
 
     @Test
     @Order(4)
-    void testSetGetHeadChild() {
+    void testSize() {
+        this.addThreeNodesToSequenceInThread1();
+        this.addTwoNodesToSequenceInThread2();
+        this.initThenAddOneNodeToSequenceInThread3();
+        assertEquals(4, CommonForumTest.thread1.size());
+        assertEquals(3, CommonForumTest.thread2.size());
+        assertEquals(2, CommonForumTest.thread3.size());
     }
 
     @Test
@@ -95,6 +116,8 @@ public class ForumThreadTest extends CommonForumTest {
     void testAddChildAndChildrenSize() {
     }
 
+
+    // - -  private methods - - 
     private void addThreeNodesToSequenceInThread1() {
         CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post2));
         CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post3));
@@ -148,7 +171,7 @@ public class ForumThreadTest extends CommonForumTest {
             }
 
             // increment
-            current = CommonForumTest.thread1.next();
+            current = CommonForumTest.thread1.next().getCurrent();
             count++;
         }
         assertEquals(4, count);

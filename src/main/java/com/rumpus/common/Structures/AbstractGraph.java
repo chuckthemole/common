@@ -1,5 +1,7 @@
 package com.rumpus.common.Structures;
 
+import java.util.List;
+
 import com.rumpus.common.AbstractCommon;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Forum.ForumPost;
@@ -35,29 +37,34 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
         this.current.addChild(node);
     }
 
+    public void addChildrenToCurrentNode(List<NODE> nodes) {
+        for(NODE node : nodes) {
+            this.addChildToCurrentNode(node);
+        }
+    }
+
     /**
      * Set current node to next. If null stay on current and return null.
      * 
-     * @return next node if it exists. null if not.
+     * @return this instance in order to chain
      */
-    public NODE next() {
+    public AbstractGraph<OBJECT, NODE> next() {
         if(this.current != null) {
             this.current = this.current.getNext();
         }
-        return this.current;
+        return this;
     }
 
     /**
      * Set current not to previous. If previous is null stay on current and return null.
      * 
-     * @return previous node if it exists, null if not.
+     * @return this instance in order to chain
      */
-    public NODE previous() {
-        if(this.current.getPrevious() != null) {
+    public AbstractGraph<OBJECT, NODE> previous() {
+        if(this.current != null) {
             this.current = this.current.getPrevious();
-            return this.current;
         }
-        return null;
+        return this;
     }
 
     /**
@@ -71,14 +78,13 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
     /**
      * Set current node to head child node. If null stay on current and return null.
      * 
-     * @return head child node if exists, null if not.
+     * @return this instance in order to chain
      */
-    public NODE child() {
-        if(this.current.getHeadChild() != null) {
+    public AbstractGraph<OBJECT, NODE> child() {
+        if(this.current != null) {
             this.current = this.current.getHeadChild();
-            return this.current;
         }
-        return null;
+        return this;
     }
 
     /**
