@@ -19,22 +19,22 @@ public class CommonForumTest extends CommonTest {
     protected static ForumPost post1;
     protected static ForumPostNode postNode1;
     protected static final String userId1 = "userId1";
-    protected static final String body1 = "this is a cool body";
+    protected static final String body1 = "this is a cool body 1111";
 
     protected static ForumPostNode postNode2;
     protected static ForumPost post2;
     protected static final String userId2 = "userId2";
-    protected static final String body2 = "this is a cooler body";
+    protected static final String body2 = "this is a cooler body 22222";
 
     protected static ForumPost post3;
     protected static ForumPostNode postNode3;
     protected static final String userId3 = "userId3";
-    protected static final String body3 = "this is a cool body";
+    protected static final String body3 = "this is a cool body 33333";
 
     protected static ForumPostNode postNode4;
     protected static ForumPost post4;
-    protected static final String userId4 = "userId2";
-    protected static final String body4 = "this is a cooler body";
+    protected static final String userId4 = "userId4";
+    protected static final String body4 = "this is a cooler body 444444";
 
     protected final static List<ForumPostNode> expectedChildren =
         List.of(

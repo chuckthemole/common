@@ -41,11 +41,10 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
      * @return next node if it exists. null if not.
      */
     public NODE next() {
-        if(this.current.getNext() != null) {
+        if(this.current != null) {
             this.current = this.current.getNext();
-            return this.current;
         }
-        return null;
+        return this.current;
     }
 
     /**

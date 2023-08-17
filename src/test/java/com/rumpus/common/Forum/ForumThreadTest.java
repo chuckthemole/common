@@ -56,62 +56,23 @@ public class ForumThreadTest extends CommonForumTest {
     @Order(1)
     void testAddToSequence() {
 
-        // check sizes
+        // check sizes before adding to sequence
         assertEquals(1, CommonForumTest.thread1.size());
         assertEquals(1, CommonForumTest.thread2.size());
         assertEquals(0, CommonForumTest.thread3.size());
 
-        CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post2));
-        CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post3));
-        CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post4));
+        // add to each thread
+        this.addThreeNodesToSequenceInThread1();
+        this.addTwoNodesToSequenceInThread2();
+        this.initThenAddOneNodeToSequenceInThread3();
+
+        // check sizes after adding to sequence
         assertEquals(4, CommonForumTest.thread1.size());
-
-        CommonForumTest.thread2.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post1));
-        CommonForumTest.thread2.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post3));
         assertEquals(3, CommonForumTest.thread2.size());
-
-        CommonForumTest.thread3.init(ForumPostNode.createNodeFromForumPost(CommonForumTest.post3), TEST_PAGE_ID3);
-        CommonForumTest.thread3.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post2));
         assertEquals(2, CommonForumTest.thread3.size());
 
         // test thread1
-        ForumPostNode current = CommonForumTest.thread1.getCurrent();
-        assertNotEquals("Error: ForumPostNode current equal to null", null, current);
-        int count = 0;
-        while(current != null) { // check each node for correctness
-            final String message = LogBuilder.logBuilderFromStringArgs(
-                "Error with next: \n~ ~ ~ Current ~ ~ ~\n",
-                current.toString(),
-                "\n- - Next - - \n",
-                current.getNext() != null ? current.getNext().toString() : "null",
-                "\n* * Previous * * \n", current.getPrevious() != null ? current.getPrevious().toString() : "null")
-                .getStringBuilder().toString(); // common error message
-            if(count == 0) {
-                assertEquals(CommonForumTest.userId2, current.getNext().getData().getUserId(), message);
-                assertEquals(CommonForumTest.body2, current.getNext().getData().getBody());
-                assertEquals(null, current.getPrevious()); // this is head. previous should be null.
-            } else if(count == 1) {
-                assertEquals(CommonForumTest.userId3, current.getNext().getData().getUserId(), message);
-                assertEquals(CommonForumTest.body3, current.getNext().getData().getBody());
-                assertEquals(CommonForumTest.userId1, current.getPrevious().getData().getUserId());
-                assertEquals(CommonForumTest.body1, current.getPrevious().getData().getBody());
-            } else if(count == 2) {
-                assertEquals(CommonForumTest.userId4, current.getNext().getData().getUserId(), message);
-                assertEquals(CommonForumTest.body4, current.getNext().getData().getBody());
-                assertEquals(CommonForumTest.userId2, current.getPrevious().getData().getUserId());
-                assertEquals(CommonForumTest.body2, current.getPrevious().getData().getBody());
-            } else if(count == 3) {
-                assertEquals(null, current.getNext(), message); // is tail so null.
-                assertEquals(CommonForumTest.userId3, current.getPrevious().getData().getUserId());
-                assertEquals(CommonForumTest.body3, current.getPrevious().getData().getBody());
-            }
-            current = current.getNext();
-            count++;
-            if(count > 10) {
-                break;
-            }
-        }
-        assertEquals(4, count);
+        this.testAddToSequenceThread1();
     }
 
     @Test
@@ -132,5 +93,64 @@ public class ForumThreadTest extends CommonForumTest {
     @Test
     @Order(5)
     void testAddChildAndChildrenSize() {
+    }
+
+    private void addThreeNodesToSequenceInThread1() {
+        CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post2));
+        CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post3));
+        CommonForumTest.thread1.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post4));
+    }
+
+    private void addTwoNodesToSequenceInThread2() {
+        CommonForumTest.thread2.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post1));
+        CommonForumTest.thread2.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post3));
+    }
+
+    private void initThenAddOneNodeToSequenceInThread3() {
+        CommonForumTest.thread3.init(ForumPostNode.createNodeFromForumPost(CommonForumTest.post3), TEST_PAGE_ID3);
+        CommonForumTest.thread3.addToSequence(ForumPostNode.createNodeFromForumPost(CommonForumTest.post2));
+    }
+
+    private void testAddToSequenceThread1() {
+        ForumPostNode current = CommonForumTest.thread1.getCurrent(); // current node
+        assertNotEquals("Error: ForumPostNode current equal to null", null, current); // should not be equal to null
+        int count = 0; // keep track of size
+        while(current != null) { // check each node for correctness
+
+            // build message
+            final String message = LogBuilder.logBuilderFromStringArgs(
+                "Error with next: \n~ ~ ~ Current ~ ~ ~\n",
+                current.toString(),
+                "\n- - Next - - \n",
+                current.getNext() != null ? current.getNext().toString() : "null",
+                "\n* * Previous * * \n", current.getPrevious() != null ? current.getPrevious().toString() : "null")
+                .getStringBuilder().toString(); // common error message
+
+            // depending on the index, assertEquals that node to expected
+            if(count == 0) {
+                assertEquals(CommonForumTest.userId2, current.getNext().getData().getUserId(), message);
+                assertEquals(CommonForumTest.body2, current.getNext().getData().getBody());
+                assertEquals(null, current.getPrevious()); // this is head. previous should be null.
+            } else if(count == 1) {
+                assertEquals(CommonForumTest.userId3, current.getNext().getData().getUserId(), message);
+                assertEquals(CommonForumTest.body3, current.getNext().getData().getBody());
+                assertEquals(CommonForumTest.userId1, current.getPrevious().getData().getUserId());
+                assertEquals(CommonForumTest.body1, current.getPrevious().getData().getBody());
+            } else if(count == 2) {
+                assertEquals(CommonForumTest.userId4, current.getNext().getData().getUserId(), message);
+                assertEquals(CommonForumTest.body4, current.getNext().getData().getBody());
+                assertEquals(CommonForumTest.userId2, current.getPrevious().getData().getUserId());
+                assertEquals(CommonForumTest.body2, current.getPrevious().getData().getBody());
+            } else if(count == 3) {
+                assertEquals(null, current.getNext(), message); // is tail so null.
+                assertEquals(CommonForumTest.userId3, current.getPrevious().getData().getUserId());
+                assertEquals(CommonForumTest.body3, current.getPrevious().getData().getBody());
+            }
+
+            // increment
+            current = CommonForumTest.thread1.next();
+            count++;
+        }
+        assertEquals(4, count);
     }
 }
