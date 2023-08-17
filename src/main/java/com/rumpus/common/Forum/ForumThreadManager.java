@@ -3,9 +3,9 @@ package com.rumpus.common.Forum;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.Manager.AbstractCommonManager;
 
-public class ForumThreadManager extends AbstractCommon {
+public class ForumThreadManager extends AbstractCommonManager<ForumThread> {
 
     protected Map<String, ForumThread> forumMap; // key: id  value: ForumThread
 
@@ -25,4 +25,5 @@ public class ForumThreadManager extends AbstractCommon {
     public static ForumThreadManager createWithForumThreads(String... forumThreadIds) {
         return new ForumThreadManager(forumThreadIds);
     }
+    
 }

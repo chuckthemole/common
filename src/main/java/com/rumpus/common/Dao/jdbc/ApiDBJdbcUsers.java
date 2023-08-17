@@ -272,6 +272,10 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
     private USER simpleAddUser(USER newUser) {
         LOG.info("ApiDBJdbcUsers::simpleAddUser()");
+        if(newUser == null) {
+            LogBuilder.logBuilderFromStringArgs("Given user is null, returning null.").error();
+            return null;
+        }
         @SuppressWarnings(value = {UNCHECKED})
         Map<String, Object> columnValues = Map.of(
             USERNAME, newUser.getUsername(),

@@ -1,11 +1,12 @@
 package com.rumpus.common.Forum;
 
+import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.Structures.AbstractGraph;
 
 /**
  * Used as a map to track {@link ForumPost}s
  */
-public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> {
+public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> implements IManageable {
     
     private String pageID; // id of page
 

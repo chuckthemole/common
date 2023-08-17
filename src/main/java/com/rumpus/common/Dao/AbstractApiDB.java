@@ -6,8 +6,8 @@ import java.util.Map;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.jdbc.Mapper;
 import com.rumpus.common.Model.AbstractModel;
-import com.rumpus.common.Model.IUniqueIdManager;
 import com.rumpus.common.Model.UniqueIdManager;
+import com.rumpus.common.util.IUniqueIdManager;
 
 // TODO have a list of registered ApiDBs
 // Right now the only one is ApiDBJdbc.java
@@ -20,7 +20,7 @@ public abstract class AbstractApiDB<MODEL extends AbstractModel<MODEL>> extends 
     protected boolean initialized;
     protected String table;
     protected Mapper<MODEL> mapper;
-    protected static IUniqueIdManager idManager;
+    protected static UniqueIdManager idManager;
 
     static {
         AbstractApiDB.idManager = UniqueIdManager.getSingletonInstance();
