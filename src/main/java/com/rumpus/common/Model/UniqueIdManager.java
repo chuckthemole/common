@@ -2,7 +2,7 @@ package com.rumpus.common.Model;
 
 import java.io.Serializable;
 
-import com.rumpus.common.util.AbstractUniqueIdManager;
+import com.rumpus.common.util.UniqueId.AbstractUniqueIdManager;
 
 // TODO: need to serialize this data when application ends and reload when application starts so we don't have dupes
 

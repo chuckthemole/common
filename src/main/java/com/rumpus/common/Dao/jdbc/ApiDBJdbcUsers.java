@@ -242,7 +242,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
         // check if user has an id, if not assign.
         if(!newUser.hasId()) {
-            newUser.setId(AbstractApiDB.idManager.add(newUser.name()));
+            newUser.setId(AbstractApiDB.idManager.generateAndReceiveIdForGivenSet(newUser.name()));
         }
         newUser = this.simpleAddUser(newUser);
 
@@ -281,7 +281,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
             USERNAME, newUser.getUsername(),
             EMAIL, newUser.getEmail(),
             // should check id is in correct format too
-            // ID, newUser.hasId() ? newUser.getId() : ApiDB.idManager.add(newUser.name) // TODO: should check that the id is unique if we getId() here
+            // ID, newUser.hasId() ? newUser.getId() : ApiDB.idManager.generateAndReceiveIdForGivenSet(newUser.name) // TODO: should check that the id is unique if we getId() here
             ID, newUser.getId(),
             USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithCommonBlob((META) newUser.getMetaData())
             // USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithClassSerializer((META) newUser.getMetaData())

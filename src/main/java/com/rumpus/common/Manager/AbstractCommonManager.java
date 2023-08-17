@@ -14,7 +14,8 @@ public abstract class AbstractCommonManager<MANAGEE extends IManageable> extends
 
     private Map<String, MANAGEE> manageeMap; // map of: (key: managee id, value: managee)
 
-    public AbstractCommonManager() {
+    public AbstractCommonManager(String name) {
+        super(name);
         this.manageeMap = new HashMap<>();
     }
 

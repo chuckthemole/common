@@ -1,21 +1,17 @@
-package com.rumpus.common.util;
+package com.rumpus.common.util.UniqueId;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
-
-// TODO: need to serialize this data when application ends and reload when application starts so we don't have dupes
+import com.rumpus.common.Manager.AbstractCommonManager;
 
 /**
  * Class to keep track of collection's unique ids. Each object's set is identified by its NAME
  */
-public class AbstractUniqueIdManager extends AbstractCommonObject {
+public class AbstractUniqueIdManager extends AbstractCommonManager<IdSet> {
 
-    private static Map<String, NodeOfIds> uniqueIds; // map of unique ids. holds name of unique id set and NodeOfIds (size and set)
+    private static Map<String, IdSet> uniqueIds; // map of unique ids. holds name of unique id set and IdSet (size and set)
 
     public AbstractUniqueIdManager(String name) {
         super(name);
@@ -29,7 +25,7 @@ public class AbstractUniqueIdManager extends AbstractCommonObject {
     public void createUniqueIdSetWithDefaultLength(final String setName) {
         if(!AbstractUniqueIdManager.uniqueIds.containsKey(setName)) {
             LogBuilder.logBuilderFromStringArgs("Creating set of ids with name: '", setName, "'").info();
-            AbstractUniqueIdManager.uniqueIds.put(setName, new NodeOfIds());
+            AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.setWithDefaultLength());
         } else {
             LogBuilder log = new LogBuilder("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
             log.info();
@@ -43,7 +39,7 @@ public class AbstractUniqueIdManager extends AbstractCommonObject {
     public void createUniqueIdSetWithSetLength(final String setName, final int length) {
         if(!AbstractUniqueIdManager.uniqueIds.containsKey(setName)) {
             LogBuilder.logBuilderFromStringArgs("Creating set of ids with name: '", setName, "'").info();
-            AbstractUniqueIdManager.uniqueIds.put(setName, new NodeOfIds(length));
+            AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.setWithLength(length));
         } else {
             LogBuilder log = new LogBuilder("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
             log.info();
@@ -55,8 +51,8 @@ public class AbstractUniqueIdManager extends AbstractCommonObject {
      * @param name the name of the set of ids to add to
      * @return the generated id or null if there is an error
      */
-    public String add(final String name) {
-        LogBuilder.logBuilderFromStringArgs("AbstractUniqueIdManager::add()").info();
+    public String generateAndReceiveIdForGivenSet(final String name) {
+        LogBuilder.logBuilderFromStringArgs("AbstractUniqueIdManager::generateAndReceiveIdForGivenSet()").info();
         LogBuilder.logBuilderFromStringArgs("Looking for unique id set with name: '", name, "'").info();
         if(AbstractUniqueIdManager.uniqueIds.containsKey(name)) {
             LogBuilder.logBuilderFromStringArgs("Found set!").info();
@@ -78,20 +74,11 @@ public class AbstractUniqueIdManager extends AbstractCommonObject {
 
     /**
      * 
-     * @param key key to check
-     * @return true if the id manager contains key
-     */
-    public boolean contains(final String key) {
-        return AbstractUniqueIdManager.uniqueIds.containsKey(key);
-    }
-
-    /**
-     * 
      * @param name the name of the set of ids
      * @param id the id to remove
      * @return true if the set contained the element
      */
-    public boolean remove(final String name, final String id) {
+    public boolean removeIdFromSet(final String name, final String id) {
         if(AbstractUniqueIdManager.uniqueIds.containsKey(name)) {
             return AbstractUniqueIdManager.uniqueIds.get(name).remove(id);
         } else {
@@ -99,34 +86,5 @@ public class AbstractUniqueIdManager extends AbstractCommonObject {
             log.info();
             return false;
         }
-    }
-
-    private class NodeOfIds {
-        private final int idLength;
-        private Set<String> ids;
-        private static final int DEFAULT_ID_LENGTH = 10;
-
-        private NodeOfIds() {
-            this.idLength = DEFAULT_ID_LENGTH;
-            this.ids = new HashSet<>();
-        }
-        private NodeOfIds(final int length) {
-            this.idLength = length;
-            this.ids = new HashSet<>();
-        }
-
-        private String add() {
-            String id;
-            do {
-                id = Random.alphaNumericUpper(this.idLength);
-            } while(this.ids.contains(id));
-            this.ids.add(id);
-            return id;
-        }
-
-        private boolean remove(final String id) {
-            return this.ids.remove(id);
-        }
-
     }
 }

@@ -1,13 +1,9 @@
 package com.rumpus.common.Dao;
 
-import java.util.List;
-import java.util.Map;
-
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.jdbc.Mapper;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Model.UniqueIdManager;
-import com.rumpus.common.util.IUniqueIdManager;
 
 // TODO have a list of registered ApiDBs
 // Right now the only one is ApiDBJdbc.java
