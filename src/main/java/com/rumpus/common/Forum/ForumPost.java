@@ -14,6 +14,8 @@ import com.rumpus.common.Model.AbstractModel;
  */
 public class ForumPost extends AbstractModel<ForumPost> {
 
+    private static final String GHOST_ID = "GHOST_ID";
+    private static final String GHOST_BODY = "GHOST_BODY";
     private final String userId; // id of user that makes post
     private ForumPostMeta metaData;
     private String body;
@@ -28,6 +30,9 @@ public class ForumPost extends AbstractModel<ForumPost> {
 
     public static ForumPost create(String userId, String body) {
         return new ForumPost(userId, body);
+    }
+    public static ForumPost createGhost() {
+        return new ForumPost(GHOST_ID, GHOST_BODY);
     }
 
     public void setBody(String body) {
@@ -63,8 +68,14 @@ public class ForumPost extends AbstractModel<ForumPost> {
     @Override
     public Map<String, Object> getModelAttributesMap() {
         LOG.info("ForumPost::getModelAtrributesMap()");
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getModelAttributesMap'");
+        return(
+            Map.of(
+                "post_id", this.id != null ? this.id : EMPTY_FIELD, // id of this forum post
+                "user_id", this.userId != null ? this.userId : EMPTY_FIELD, // id of user that created this forum post
+                // "meta", this.metaData, // ForumPostMeta
+                "body", this.body != null ? this.body : EMPTY_FIELD // forum post content
+            )
+        );
     }
 
     @Override

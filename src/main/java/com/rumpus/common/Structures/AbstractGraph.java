@@ -1,5 +1,6 @@
 package com.rumpus.common.Structures;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.rumpus.common.AbstractCommon;
@@ -16,17 +17,31 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
     private NODE head;
     private NODE current;
     private NODE tail;
+    private int level; // TODO: need to think about this more. What if head is set and level is unknown?
+
+    public AbstractGraph() {
+        this.init(null);
+    }
 
     public AbstractGraph(NODE head) {
-        this.head = head;
-        this.current = head;
-        this.tail = head;
+        this.init(head);
+    }
+
+    private void init(NODE node) {
+        this.head = node;
+        this.current = node;
+        this.tail = node;
+        this.level = node != null ? 0 : -1; // set to 0 if node exists, else set to -1 as there are no nodes
     }
 
     public void addToSequence(NODE node) {
-        node.setPrevious(this.tail);
-        this.tail.setNext(node);
-        this.tail = node;
+        if(this.head == null) { // lost head or hasn't been initialized, so set this node being added to head.
+            this.init(node);
+        } else {
+            node.setPrevious(this.tail);
+            this.tail.setNext(node);
+            this.tail = node;
+        }
     }
 
     public void addChildToCurrentNode(NODE node) {
@@ -79,8 +94,25 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
     public AbstractGraph<OBJECT, NODE> child() {
         if(this.current != null) {
             this.current = this.current.getHeadChild();
+            this.level++;
         }
         return this;
+    }
+
+    /**
+     * Return a list of sequential OBJECTs. This does not include children.
+     * Note this returns OBJECTS and not NODES
+     * 
+     * @return list of OBJECTS
+     */
+    public List<OBJECT> toListOfTopLevel() {
+        List<OBJECT> nodeList = new LinkedList<>();
+        NODE current = this.head;
+        while(current != null) {
+            nodeList.add(current.getData());
+            current = current.next;
+        }
+        return nodeList;
     }
 
     /**

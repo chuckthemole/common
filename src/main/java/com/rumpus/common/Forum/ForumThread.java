@@ -11,7 +11,7 @@ public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> impleme
     private String pageID; // id of page
 
     private ForumThread() {
-        super(null);
+        super();
         this.pageID = null;
     }
     private ForumThread(ForumPostNode head, String pageID) {
@@ -22,8 +22,14 @@ public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> impleme
     public static ForumThread createEmpty() {
         return new ForumThread();
     }
+    public static ForumThread createWithPageId(String pageId) {
+        return new ForumThread(null, pageId);
+    }
     public static ForumThread create(ForumPostNode head, String pageID) {
         return new ForumThread(head, pageID);
+    }
+    public static ForumThread createWithGhostHead(String pageID) {
+        return new ForumThread(ForumPostNode.createNodeFromForumPost(ForumPost.createGhost()), pageID);
     }
 
     /**

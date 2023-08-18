@@ -1,5 +1,8 @@
 package com.rumpus.common.Structures;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.google.gson.JsonObject;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
@@ -20,11 +23,15 @@ abstract public class AbstractNode<OBJECT extends AbstractCommonObject, NODE ext
             this.headChild = null;
         }
 
+        /**
+         * 
+         * @param node child to add to this NODE
+         */
         public void addChild(NODE node) {
             NODE current = (NODE) this.headChild;
             if(current != null) {
                 while(current.getNext() != null) {
-                    current = current.getNext();
+                    current = current.next;
                 }
                 current.setNext(node);
                 node.setPrevious(current);
@@ -33,18 +40,40 @@ abstract public class AbstractNode<OBJECT extends AbstractCommonObject, NODE ext
             }
         }
 
+        /**
+         * 
+         * @return count of this NODE's children
+         */
         public int childrenSize() {
             NODE current = (NODE) this.headChild;
             int count = 0;
             while(current != null) {
                 count++;
-                current = current.getNext();
+                current = current.next;
             }
             return count;
         }
 
+        /**
+         * 
+         * @return true if this node has children
+         */
         public boolean hasChildren() {
             return this.headChild != null ? true : false;
+        }
+
+        /**
+         * 
+         * @return a list of this NODE's children
+         */
+        public List<NODE> childList() {
+            List<NODE> children = new LinkedList<>();
+            NODE current = this.headChild;
+            while(current != null) {
+                children.add(current);
+                current = current.next;
+            }
+            return children;
         }
 
         // - - - getters setters - - -

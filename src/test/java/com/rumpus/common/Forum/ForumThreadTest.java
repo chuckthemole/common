@@ -3,6 +3,8 @@ package com.rumpus.common.Forum;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -113,7 +115,13 @@ public class ForumThreadTest extends CommonForumTest {
 
     @Test
     @Order(5)
-    void testAddChildAndChildrenSize() {
+    void testToListTopLevel() {
+        this.addThreeNodesToSequenceInThread1();
+        List<ForumPost> forumPosts = CommonForumTest.thread1.toListOfTopLevel();
+        assertEquals(CommonForumTest.post1, forumPosts.get(0));
+        assertEquals(CommonForumTest.post2, forumPosts.get(1));
+        assertEquals(CommonForumTest.post3, forumPosts.get(2));
+        assertEquals(CommonForumTest.post4, forumPosts.get(3));
     }
 
 
