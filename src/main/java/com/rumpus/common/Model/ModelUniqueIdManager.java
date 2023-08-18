@@ -9,12 +9,12 @@ import com.rumpus.common.util.UniqueId.AbstractUniqueIdManager;
 /**
  * Singleton class to keep track of each model's unique id. Each model's set is identified by its NAME
  */
-public class UniqueIdManager extends AbstractUniqueIdManager implements Serializable { // TODO should this be Serializable?
+public class ModelUniqueIdManager extends AbstractUniqueIdManager implements Serializable { // TODO should this be Serializable?
 
     private static final String NAME = "UniqueIdManager";
-    private static UniqueIdManager singletonInstance = null; // TODO: was geting some bugs with getSingletonInstatnce(), look into
+    private static ModelUniqueIdManager singletonInstance = null; // TODO: was geting some bugs with getSingletonInstatnce(), look into
 
-    private UniqueIdManager() {
+    private ModelUniqueIdManager() {
         super(NAME);
     }
 
@@ -23,7 +23,7 @@ public class UniqueIdManager extends AbstractUniqueIdManager implements Serializ
      * 
      * @return instance of this class
      */
-    public static synchronized UniqueIdManager getSingletonInstance() {
-        return singletonInstance == null ? new UniqueIdManager() : singletonInstance;
+    public static synchronized ModelUniqueIdManager getSingletonInstance() {
+        return singletonInstance == null ? new ModelUniqueIdManager() : singletonInstance;
     }
 }

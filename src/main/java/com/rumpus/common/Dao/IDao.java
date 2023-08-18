@@ -25,7 +25,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL>> {
     boolean removeAll();
     String getTable();
     Mapper<MODEL> getMapper();
-    public int setApiDB(IApiDB<MODEL> api);
+    // public int setApiDB(IApiDB<MODEL> api);
 
     /**
      * Method that returns the number of entries from a table that meet some
@@ -35,7 +35,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL>> {
      *            sql parameters
      * @return the number of records meeting the criteria
      */
-    long countAll(Map<String, Object> params);
+    // long countAll(Map<String, Object> params);
     
     // Function<MODEL, MODEL> getAddFunction();
 }

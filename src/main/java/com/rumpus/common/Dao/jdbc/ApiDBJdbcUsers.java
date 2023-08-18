@@ -2,43 +2,30 @@ package com.rumpus.common.Dao.jdbc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
-import javax.sql.DataSource;
-
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.util.SerializationUtils;
 
 import com.rumpus.common.Blob.AbstractBlob;
 import com.rumpus.common.Blob.JdbcBlob;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractApiDB;
-import com.rumpus.common.Log.CommonExceptionInterceptor;
-import com.rumpus.common.User.AbstractCommonAuthManager;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.CommonUserDetails;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 // TODO: in many of these I'm operating with 'manager' first. Many operations don't return status. Need to figure out how to abort if the manager fails.
 
 /**
- * note: the member manager should be operated on before doing super operations. this is becsuse manager holds the parent table. possibly make the other the parent table. 
+ * note: the member manager should be operated on before doing super operations. this is becsuse manager holds the parent table. possibly make the other the parent table.
  */
 public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>> extends AbstractApiDBJdbc<USER> {
 
@@ -58,19 +45,18 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     private CommonSimpleJdbc<USER> simpleUsersJdbc;
 
     public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, Mapper<USER> mapper) {
-        super(manager.getDataSource(), table, mapper, API_NAME);
+        super(API_NAME, manager.getDataSource(), table, mapper);
         this.manager = manager;
         this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
         // this.manager.setEnableAuthorities(enableAuthorities);
         // this.authenticationManager = new AbstractCommonAuthManager();
         // this.encoder = new BCryptPasswordEncoder();
-        BCryptPasswordEncoder e = new BCryptPasswordEncoder();
         this.authenticationProvider = new DaoAuthenticationProvider();
         this.setDefaultQueries();
         this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
     }
     public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, Mapper<USER> mapper, Map<String, String> queries) {
-        super(manager.getDataSource(), table, mapper, API_NAME);
+        super(API_NAME, manager.getDataSource(), table, mapper);
         this.manager = manager;
         this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
         // this.manager.setEnableAuthorities(enableAuthorities);

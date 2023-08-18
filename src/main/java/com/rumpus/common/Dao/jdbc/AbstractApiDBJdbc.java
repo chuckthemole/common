@@ -4,59 +4,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
-import com.rumpus.common.Dao.AbstractApiDB;
+import com.rumpus.common.Dao.AbstractDao;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Model.CommonKeyHolder;
-import com.rumpus.common.util.StringUtil;
 
-// TODO make this class abstract
-public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> extends AbstractApiDB<MODEL> {
+public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> extends AbstractDao<MODEL> {
 
-    private final static String API_NAME = "ApiJdbcTemplate";
-    // protected static JdbcTemplate CommonJdbc.jdbcTemplate;
-    // static {
-    //     CommonJdbc.jdbcTemplate = new JdbcTemplate();
-    // }
     protected CommonJdbc jdbc;
     protected CommonSimpleJdbc<MODEL> simpleJdbc;
-    // protected UniqueIdManager idManager; // TODO: think about moving this. where do I want to keep my id manager? at what level?
-    private static final int DEFAULT_ID_LENGTH = 10;
 
-
-    public AbstractApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper) {
-        super(API_NAME, table, mapper);
+    public AbstractApiDBJdbc(String name, DataSource dataSource, String table, Mapper<MODEL> mapper) {
+        super(name, table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to handle in future.
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
-        // this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH); // TODO give ability to construct with different length, or setter.
         this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
-        // this.mapper = mapper;
-        // this.add = add;
-    }
-    public AbstractApiDBJdbc(DataSource dataSource, String table, Mapper<MODEL> mapper, String apiName) {
-        super(apiName, table, mapper);
-        this.jdbc = CommonJdbc.create();
-        this.jdbc.setDataSource(dataSource);
-        // this.idManager = new UniqueIdManager(DEFAULT_ID_LENGTH);
-        this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
-        // this.mapper = mapper;
-        // this.add = add;
     }
 
     @Override
@@ -358,11 +331,6 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     //     // TODO Auto-generated method stub
     //     throw new UnsupportedOperationException("Unimplemented method 'update'");
     // }
-
-    @Override
-    public boolean isInitialized() {
-        return super.initialized;
-    }
 
     @Override
     public boolean removeAll() {
