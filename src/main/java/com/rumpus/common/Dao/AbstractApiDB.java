@@ -9,6 +9,9 @@ import com.rumpus.common.Model.ModelUniqueIdManager;
 // Right now the only one is ApiDBJdbc.java
 // Maybe make this a singleton?
 
+/**
+ * Parent of AbstractDao. This is the persistent layer for the db of choice. TODO: think about how this can abstract different dbs
+ */
 public abstract class AbstractApiDB<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject {
 
     protected boolean initialized;

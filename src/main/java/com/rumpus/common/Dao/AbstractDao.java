@@ -6,6 +6,9 @@ import java.util.Map;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Dao.jdbc.Mapper;
 
+/**
+ * Abstract Data Access Object (Dao)
+ */
 public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends AbstractApiDB<MODEL> {
 
     public AbstractDao(String name, String table, String metaTable, Mapper<MODEL> mapper) {
