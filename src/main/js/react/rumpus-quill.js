@@ -2,22 +2,20 @@ const React = require('react');
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-let text_editor_body;
-
-export function getQuillContents() {
-    if(text_editor_body !== undefined) {
-        return text_editor_body;
-    }
-    return '';
-}
-
-export default function RumpusQuill({modules, formats, placeholder}) {
-
-    const [value, setValue] = React.useState('');
-
-    React.useEffect(() => {
-        text_editor_body = value;
-    }, [value]);
+/**
+ * A wrapper around ReactQuill that provides default values for modules, formats, and placeholder.
+ * 
+ * @param {Object} modules - The modules to pass to ReactQuill. Defaults to a toolbar with basic formatting options.
+ * @param {Array} formats - The formats to pass to ReactQuill. Defaults to basic formatting options.
+ * @param {String} placeholder - The placeholder to pass to ReactQuill. Defaults to 'Compose an epic...'.
+ * @param {String} value - The value to pass to ReactQuill. Defaults to ''.
+ * @param {Function} setValue - The setValue function to pass to ReactQuill. Defaults to a function that does nothing.
+ * @param {Object} editor_ref - The editor_ref to pass to ReactQuill. Defaults to null.
+ * @returns {ReactElement} A ReactElement that wraps ReactQuill.
+ * 
+ * To clear the editor, call editor_ref.current.getEditor().setContents('').
+ */
+export default function RumpusQuill({modules, formats, placeholder, value, setValue, editor_ref}) {
 
     const default_placeholder = 'Compose an epic...';
 
@@ -55,6 +53,7 @@ export default function RumpusQuill({modules, formats, placeholder}) {
             theme='snow'
             value={value}
             onChange={setValue}
+            ref={editor_ref}
             placeholder={placeholder !== undefined ? placeholder : default_placeholder}
             modules={modules !== undefined ? modules : default_modules}
             formats={formats !== undefined ? formats : default_formats}
