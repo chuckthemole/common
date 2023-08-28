@@ -80,8 +80,12 @@ public class LogItem extends AbstractModel<LogItem> {
     }
     @Override
     public Map<String, Object> getModelAttributesMap() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getModelAttributesMap'");
+        return Map.of(
+            "logName", this.logName,
+            "time", this.time,
+            "username", this.username,
+            "userId", this.userId,
+            "action", this.action);
     }
 
     @Override

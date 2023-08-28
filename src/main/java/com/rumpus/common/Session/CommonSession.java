@@ -197,7 +197,7 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         return attribute != null ? attribute : "";
     }
 
-    public Map<String, String> getAttibutes() {
+    public Map<String, String> getAttributes() {
         return this.attributes;
     }
 
