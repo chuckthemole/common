@@ -36,6 +36,34 @@ export function ActivateModalNoButton(modal) {
     CloseOnBackgroundClick('modal-background', 'modal');
 }
 
+/**
+ * 
+ * @param {string} logName
+ * @param {string} time
+ * @param {string} action
+ * @param {string} userId
+ * @param {string} username
+ * @returns {LogItem}
+ * 
+ * Creates a request to add a log item to the database
+ */
+export function CreateLogItemRequest(logName, action, userId, username) {
+    const log_item = {};
+    log_item['logName'] = logName;
+    log_item['time'] = new Date().toLocaleString();
+    log_item['action'] = action;
+    log_item['userId'] = userId;
+    log_item['username'] = username;
+    const log_action_request_options = {
+        method: POST,
+        // redirect: "follow",
+        entity: log_item,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(log_item)
+    };
+    return log_action_request_options;
+}
+
 function AddActiveClipped(modal) {
     modal.classList.add("is-active");
     modal.classList.add("is-clipped");
