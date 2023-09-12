@@ -16,7 +16,7 @@ abstract class AbstractBuilder extends AbstractCommonObject {
         super(name);
         this.builder = new StringBuilder();
         for(String arg : args) {
-            builder.append(arg);
+            this.builder.append(arg).append(" ");
         }
     }
 

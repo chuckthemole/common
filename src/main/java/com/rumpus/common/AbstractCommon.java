@@ -7,7 +7,7 @@ import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
 
 abstract public class AbstractCommon {
-    protected IRumpusIO io = new RumpusIO();
+    protected static IRumpusIO io = new RumpusIO();
     protected static final Logger LOG = LoggerFactory.getLogger(AbstractCommon.class);
 
     public final static String NO_ID = String.valueOf(-1);
@@ -19,6 +19,7 @@ abstract public class AbstractCommon {
     public final static int SUCCESS = 1;
     public final static int ERROR = -1;
     public final static int EMPTY = -2;
+    public final static int DOES_NOT_EXIST = -3;
     public final static int NOT_INITIALIZED = -10;
     public final static int NOT_IMPLEMENTED = -11;
 
@@ -82,6 +83,14 @@ abstract public class AbstractCommon {
 
     // MISC
     protected static final String UNCHECKED = "unchecked";
+
+    // PYTHON
+    protected static final String PYTHON_HOME_PATH = "./../rumpusenv/bin/python3.11";
+    protected static final String PYTHON_PATH_PATH = "./../rumpusenv/lib";
+    protected static final String PYTHON_HOME = "python.home";
+    protected static final String JYTHON_HOME = "jython.home";
+    protected static final String PYTHON_PATH = "python.path";
+    protected static final String JYTHON_PATH = "jython.path";
 
     // Class UID     look here: https://stackoverflow.com/questions/10378855/java-io-invalidclassexception-local-class-incompatible
     // Some of these should be moved into rumpus directory, as they're not common
