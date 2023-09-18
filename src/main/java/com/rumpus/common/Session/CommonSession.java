@@ -176,6 +176,9 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         }
         return session;
     }
+    public static CommonSession createFromHttpSession(HttpSession session) {
+        return new CommonSession(session);
+    }
 
     @Override
     public String changeSessionId() {
