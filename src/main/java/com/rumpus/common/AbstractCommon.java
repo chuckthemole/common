@@ -98,6 +98,9 @@ abstract public class AbstractCommon {
     protected final static Long USER_META_DATA_UID = Long.valueOf(12);
     protected final static Long META_DATA_UID = Long.valueOf(13);
 
+    // Ports
+    protected final static String PYCOMMON_PORT = "8000";
+
     // @Autowired
     // public Rumpus() {
     // io = new RumpusIO();

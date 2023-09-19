@@ -39,4 +39,8 @@ public class FileUtil extends AbstractCommon {
         catch (Exception exception) {}
         return output;
     }
+
+    public static String getCurrentWorkingDirectory() {
+        return System.getProperty("user.dir");
+    }
 }

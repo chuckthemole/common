@@ -2,6 +2,7 @@ package com.rumpus.common.Python;
 
 import java.io.IOException;
 
+import org.python.jline.internal.Log;
 import org.python.util.PythonInterpreter;
 
 import com.rumpus.common.CommonOutputStream;
@@ -80,6 +81,8 @@ public class PycommonServer extends AbstractServer {
     }
 
     private boolean runWithBashScript() {
+        LogBuilder.logBuilderFromStringArgs("PycommonServer::runWithbashScript()").info();
+        LogBuilder.logBuilderFromStringArgs("Current working directory (before execution of django start script): ", FileUtil.getCurrentWorkingDirectory()).info();
         if(FileUtil.doesPathExist(DJANGO_START_PATH) == DOES_NOT_EXIST) {
             LOG.info("Working Directory = " + System.getProperty("user.dir"));
             LOG.error("Django bash script does not exist: " + DJANGO_START_PATH);
@@ -89,6 +92,7 @@ public class PycommonServer extends AbstractServer {
 
         try {
             Process process = processBuilder.start();
+            LogBuilder.logBuilderFromStringArgs("Current working directory (after execution of django start script): ", FileUtil.getCurrentWorkingDirectory()).info();
             // int waitCounter = 0;
             // while(process.isAlive()) {
             //     Thread.sleep(1000);
@@ -136,6 +140,8 @@ public class PycommonServer extends AbstractServer {
     }
 
     private boolean onStopWithBashScript() {
+        LogBuilder.logBuilderFromStringArgs("PycommonServer::onStopWithBashScript()").info();
+        LogBuilder.logBuilderFromStringArgs("Current working directory (before execution of django stop script): ", FileUtil.getCurrentWorkingDirectory()).info();
         if(FileUtil.doesPathExist(DJANGO_STOP_PATH) == DOES_NOT_EXIST) {
             LOG.info("Working Directory = " + System.getProperty("user.dir"));
             LOG.error("Django bash script does not exist: " + DJANGO_STOP_PATH);
@@ -158,6 +164,7 @@ public class PycommonServer extends AbstractServer {
             if(!process.isAlive()) {
                 LOG.info("Kill script process stopped.");
             }
+            LogBuilder.logBuilderFromStringArgs("Current working directory (after execution of django stop script): ", FileUtil.getCurrentWorkingDirectory()).info();
             LogBuilder.logBuilderFromStringArgs("Exit value: ", String.valueOf(exitValue), "OutputStream: \n", process.getOutputStream().toString()).info();
         } catch (IOException e) {
             LOG.error("Could not start process: " + processBuilder.toString());

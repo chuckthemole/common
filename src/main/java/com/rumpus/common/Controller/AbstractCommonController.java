@@ -1,4 +1,6 @@
-package com.rumpus.common;
+package com.rumpus.common.Controller;
+
+import com.rumpus.common.AbstractCommonObject;
 
 public abstract class AbstractCommonController extends AbstractCommonObject {
 
