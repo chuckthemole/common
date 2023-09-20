@@ -13,4 +13,7 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
         super(name);
     }
     
+    protected String getWebPage(String uri) {
+        return "TODO - getWebPage()";
+    }
 }
