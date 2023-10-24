@@ -27,13 +27,16 @@ export default function Footer({footer_path}) {
         fetcher
     );
 
-    if (error) return(
-        <div className='columns is-centered has-text-centered'>
-            <div className='column is-half notification is-warning'>
-                <p>An error occurred with footer</p>
+    if (error) {
+        console.log(error);
+        return(
+            <div className='columns is-centered has-text-centered'>
+                <div className='column is-half notification is-warning'>
+                    <p>An error occurred with footer</p>
+                </div>
             </div>
-        </div>
-    );
+        )
+    }
 
     if (!data) return(
         <div className='container m-6'>
