@@ -4,8 +4,17 @@ import UserIcon from './user_icon';
 import SignupModal from './signup_modal';
 import LoginModal from './login_modal';
 import Logout from './logout';
-
-export default function Header({user_path, current_user_authorities, is_current_user_authenticated, create_path}) {
+/**
+ * 
+ * @param {*} user_path path to user icon
+ * @param {*} current_user_authorities authorities of current user
+ * @param {*} is_current_user_authenticated is current user authenticated
+ * @param {*} create_path path to create user
+ * @param {*} header_logo logo path for header
+ * 
+ * @returns 
+ */
+export default function Header({user_path, current_user_authorities, is_current_user_authenticated, create_path, header_logo}) {
 
     // buttons and icons, empty by default.
     let user_icon = '';
@@ -15,17 +24,19 @@ export default function Header({user_path, current_user_authorities, is_current_
     let signup = '';
 
     // set button and icon visibility depending on user's authentication status and/or state (ie logged in or logged out)
-    let is_user_authenticated = is_current_user_authenticated;
-    let authorities = current_user_authorities;
-    if(!is_user_authenticated.isAuthenticated && !is_user_authenticated.isLoading) {
-        login = <LoginModal />;
-        signup = <SignupModal create_user_path={create_path}/>;
-    } else if(is_user_authenticated.isAuthenticated) {
-        user_icon = <UserIcon current_user_path={user_path}/>;
-        if(authorities.includes('ROLE_ADMIN')) {
-            admin = <Link to={`/admin`} className="adminBtn button is-info"><strong>Admin</strong></Link>;
+    if(is_current_user_authenticated !== undefined && is_current_user_authenticated !== null && is_current_user_authenticated !== '' && is_current_user_authenticated !== false) { // only do if curretn user is authenticated otherwise leave empty
+        let is_user_authenticated = is_current_user_authenticated;
+        let authorities = current_user_authorities;
+        if(!is_user_authenticated.isAuthenticated && !is_user_authenticated.isLoading) {
+            login = <LoginModal />;
+            signup = <SignupModal create_user_path={create_path}/>;
+        } else if(is_user_authenticated.isAuthenticated) {
+            user_icon = <UserIcon current_user_path={user_path}/>;
+            if(authorities.includes('ROLE_ADMIN')) {
+                admin = <Link to={`/admin`} className="adminBtn button is-info"><strong>Admin</strong></Link>;
+            }
+            signout = <Logout />;
         }
-        signout = <Logout />;
     }
    
     return (
