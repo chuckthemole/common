@@ -13,6 +13,7 @@ import com.rumpus.common.AbstractCommonObject;
 public abstract class AbstractViewLoader extends AbstractCommonObject implements IViewLoader {
     
     protected Footer footer;
+    protected Header header;
     protected ITableBuilder userTable;
 
 	public AbstractViewLoader(String name) {
@@ -51,6 +52,17 @@ public abstract class AbstractViewLoader extends AbstractCommonObject implements
     @Override
     public int setFooter(Footer footer) {
         this.footer = footer;
+        return SUCCESS;
+    }
+
+    @Override
+    public Header getHeader() {
+        return this.header;
+    }
+
+    @Override
+    public int setHeader(Header header) {
+        this.header = header;
         return SUCCESS;
     }
 

@@ -4,6 +4,10 @@ import UserIcon from './user_icon';
 import SignupModal from './signup_modal';
 import LoginModal from './login_modal';
 import Logout from './logout';
+import useSWR from 'swr';
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
 /**
  * 
  * @param {*} user_path path to user icon
@@ -15,6 +19,20 @@ import Logout from './logout';
  * @returns 
  */
 export default function Header({user_path, current_user_authorities, is_current_user_authenticated, create_path, header_logo}) {
+
+    const { data, error } = useSWR(
+        '/view/header',
+        fetcher
+    );
+
+    console.log(data);
+    if (error) {
+        console.log(error);
+    }
+
+    if (!data) {
+        console.log('loading header');
+    }
 
     // buttons and icons, empty by default.
     let user_icon = '';
