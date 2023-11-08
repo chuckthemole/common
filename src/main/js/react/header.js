@@ -1,4 +1,6 @@
 const React = require('react');
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRadiation } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import UserIcon from './user_icon';
 import SignupModal from './signup_modal';
@@ -26,13 +28,39 @@ export default function Header({user_path, current_user_authorities, is_current_
     );
 
     console.log(data);
+    if(data !== undefined && data !== null && data !== '') {
+        console.log(typeof data);
+    }
     if (error) {
+        // TODO: add some animation here
         console.log(error);
     }
 
     if (!data) {
+        // TODO: add some animation here
         console.log('loading header');
     }
+
+    // Navbar brand
+    let navbar_brand = '';
+    const missing_navbar_brand = navbar_brand = <Link to={`/`} className="navbar-item"><FontAwesomeIcon icon={faRadiation} color='red' /></Link>;
+    if(data !== undefined && data !== null && data !== '') {
+        if(data.navbarBrand !== undefined && data.navbarBrand !== null && data.navbarBrand !== '') {
+            if(data.navbarBrand.itemType === 'BRAND') {
+                navbar_brand = <Link to={data.navbarBrand.href} className="navbar-item"><img src={data.navbarBrand.image} width="112" height="28" /></Link>;
+            } else {
+                console.log('data.navbarBrand.itemType is undefined');
+                navbar_brand = missing_navbar_brand;
+            }
+        } else {
+            console.log('data.navbarBrand is undefined');
+            navbar_brand = missing_navbar_brand;
+        }
+    } else {
+        console.log('data is undefined for navbarBrand');
+        navbar_brand = missing_navbar_brand;
+    }
+
 
     // buttons and icons, empty by default.
     let user_icon = '';
@@ -60,10 +88,7 @@ export default function Header({user_path, current_user_authorities, is_current_
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
-                <Link to={`/`} className="navbar-item">
-                    <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
-                </Link>
-        
+                {navbar_brand}
                 <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>

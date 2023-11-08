@@ -3,12 +3,15 @@ package com.rumpus.common.views;
 import java.util.List;
 import java.util.Map;
 
+import org.python.antlr.ast.Str;
+
 public class NavbarItem extends AbstractView {
 
     private static final String NAME = "NavbarItem";
 
     private String name;
     private String href;
+    private String image;
     private boolean active;
     private List<NavbarItem> dropdown;
     private ItemType itemType;
@@ -17,29 +20,34 @@ public class NavbarItem extends AbstractView {
     // TODO think about this. maybe use meta data class.
     private Map<String, String> meta;
 
-    private NavbarItem(String name, String href, boolean active, List<NavbarItem> dropdown, ItemType itemType, String reactComponent) {
+    private NavbarItem(String name, String href, boolean active, List<NavbarItem> dropdown, ItemType itemType, String reactComponent, String image) {
         super(NAME);
-        this.init(name, href, active, dropdown, itemType, reactComponent);
+        this.init(name, href, active, dropdown, itemType, reactComponent, image);
     }
 
-    private void init(String name, String href, boolean active, List<NavbarItem> dropdown, ItemType itemType, String reactComponent) {
+    private void init(String name, String href, boolean active, List<NavbarItem> dropdown, ItemType itemType, String reactComponent, String image) {
         this.name = name;
         this.href = href;
         this.active = active;
         this.dropdown = dropdown;
         this.itemType = itemType;
+        this.image = image;
     }
 
     public static NavbarItem create(String name, String href, boolean active, ItemType itemType) {
-        return new NavbarItem(name, href, active, null, itemType, null);
+        return new NavbarItem(name, href, active, null, itemType, null, null);
     }
 
     public static NavbarItem createAsReactComponent(String name, String reactComponent, boolean active) {
-        return new NavbarItem(name, null, active, null, ItemType.REACT_COMPONENT, reactComponent);
+        return new NavbarItem(name, null, active, null, ItemType.REACT_COMPONENT, reactComponent, null);
     }
 
     public static NavbarItem createAsDropdown(String name, String href, boolean active, List<NavbarItem> dropdown) {
-        return new NavbarItem(name, href, active, dropdown, ItemType.DROPDOWN, null);
+        return new NavbarItem(name, href, active, dropdown, ItemType.DROPDOWN, null, null);
+    }
+
+    public static NavbarItem createWithImage(String name, String href, boolean active, String image) {
+        return new NavbarItem(name, href, active, null, ItemType.BRAND, null, image);
     }
 
     public String getName() {
@@ -95,6 +103,16 @@ public class NavbarItem extends AbstractView {
     public void setReactComponent(String reactComponent) {
         if (reactComponent != null) {
             this.reactComponent = reactComponent;
+        }
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        if (image != null) {
+            this.image = image;
         }
     }
 
