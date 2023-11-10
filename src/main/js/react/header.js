@@ -41,10 +41,13 @@ export default function Header({user_path, current_user_authorities, is_current_
         console.log('loading header');
     }
 
-    // Navbar brand
     let navbar_brand = '';
     const missing_navbar_brand = navbar_brand = <Link to={`/`} className="navbar-item"><FontAwesomeIcon icon={faRadiation} color='red' /></Link>;
+    let navbar_items_start = [];
+
     if(data !== undefined && data !== null && data !== '') {
+
+        // Navbar brand
         if(data.navbarBrand !== undefined && data.navbarBrand !== null && data.navbarBrand !== '') {
             if(data.navbarBrand.itemType === 'BRAND') {
                 navbar_brand = <Link to={data.navbarBrand.href} className="navbar-item"><img src={data.navbarBrand.image} width="112" height="28" /></Link>;
@@ -52,9 +55,64 @@ export default function Header({user_path, current_user_authorities, is_current_
                 console.log('data.navbarBrand.itemType is undefined');
                 navbar_brand = missing_navbar_brand;
             }
+            // TODO add more item types
         } else {
             console.log('data.navbarBrand is undefined');
             navbar_brand = missing_navbar_brand;
+        }
+
+        // Navbar beginning
+        if(data.navbarItemsStart !== undefined && data.navbarItemsStart !== null && data.navbarItemsStart !== '' && data.navbarItemsStart.length > 0) {
+            for(let i = 0; i < data.navbarItemsStart.length; i++) {
+                if(data.navbarItemsStart[i].itemType === 'LINK') {
+                    console.log('data.navbarItemsStart[i].itemType is LINK');
+                    console.log(data.navbarItemsStart[i]);
+                    navbar_items_start.push(
+                        <Link
+                            key={data.navbarItemsStart[i].name}
+                            to={data.navbarItemsStart[i].href}
+                            className="navbar-item">
+                                {data.navbarItemsStart[i].name}
+                        </Link>
+                    );
+                } else if(data.navbarItemsStart[i].itemType === 'DROPDOWN') {
+                    console.log('data.navbarItemsStart[i].itemType is DROPDOWN');
+                    console.log(data.navbarItemsStart[i]);
+                    if(data.navbarItemsStart[i].dropdown !== undefined && data.navbarItemsStart[i].dropdown !== null && data.navbarItemsStart[i].dropdown !== '' && data.navbarItemsStart[i].dropdown.length > 0) {
+                        let dropdown_items = [];
+                        for(let j = 0; j < data.navbarItemsStart[i].dropdown.length; j++) {
+                            if(data.navbarItemsStart[i].dropdown[j].itemType === 'LINK') {
+                                dropdown_items.push(
+                                    <Link
+                                        key={data.navbarItemsStart[i].name + data.navbarItemsStart[i].dropdown[j].name}
+                                        to={data.navbarItemsStart[i].dropdown[j].href}
+                                        className="navbar-item">
+                                            {data.navbarItemsStart[i].dropdown[j].name}
+                                    </Link>
+                                );
+                            } else if(data.navbarItemsStart[i].dropdown[j].itemType === 'DROPDOWN_DIVIDER') {
+                                dropdown_items.push(
+                                    <hr key={data.navbarItemsStart[i].name + data.navbarItemsStart[i].dropdown[j].name} className="navbar-divider" />
+                                );
+                            }
+                        }
+                        navbar_items_start.push(
+                            <div key={data.navbarItemsStart[i].name} className="navbar-item has-dropdown is-hoverable">
+                                <a className="navbar-link">
+                                    {data.navbarItemsStart[i].name}
+                                </a>
+                                <div className="navbar-dropdown">
+                                    {dropdown_items}
+                                </div>
+                            </div>
+                        );
+
+                    }
+                }
+                // TODO: add more item types
+            }
+        } else {
+            console.log('data.navbarItemsStart is undefined');
         }
     } else {
         console.log('data is undefined for navbarBrand');
@@ -98,7 +156,8 @@ export default function Header({user_path, current_user_authorities, is_current_
         
             <div id="navbarBasicExample" className="navbar-menu">
                 <div className="navbar-start">
-                    <Link to={`/`} className="navbar-item">
+                    {navbar_items_start}
+                    {/* <Link to={`/`} className="navbar-item">
                         Home
                     </Link>
         
@@ -126,7 +185,7 @@ export default function Header({user_path, current_user_authorities, is_current_
                                 Report an issue
                             </a>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
         
                 <div className="navbar-end">

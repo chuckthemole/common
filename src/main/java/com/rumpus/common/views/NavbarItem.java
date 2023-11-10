@@ -50,6 +50,10 @@ public class NavbarItem extends AbstractView {
         return new NavbarItem(name, href, active, null, ItemType.BRAND, null, image);
     }
 
+    public static NavbarItem createDropdownDivider(String name, boolean active) {
+        return new NavbarItem(name, null, active, null, ItemType.DROPDOWN_DIVIDER, null, null);
+    }
+
     public String getName() {
         return name;
     }
@@ -122,6 +126,7 @@ public class NavbarItem extends AbstractView {
         LINK("link"),
         ICON("icon"),
         DROPDOWN("dropdown"),
+        DROPDOWN_DIVIDER("dropdown_divider"),
         BUTTON("button"),
         REACT_COMPONENT("react-component");
 
