@@ -32,6 +32,7 @@ public class NavbarItem extends AbstractView {
         this.dropdown = dropdown;
         this.itemType = itemType;
         this.image = image;
+        this.reactComponent = reactComponent;
     }
 
     public static NavbarItem create(String name, String href, boolean active, ItemType itemType) {

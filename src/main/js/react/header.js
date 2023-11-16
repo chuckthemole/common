@@ -7,6 +7,7 @@ import SignupModal from './signup_modal';
 import LoginModal from './login_modal';
 import Logout from './logout';
 import useSWR from 'swr';
+import Component from './abstract_component';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -20,7 +21,7 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
  * 
  * @returns 
  */
-export default function Header({user_path, current_user_authorities, is_current_user_authenticated, create_path, header_logo}) {
+export default function Header({user_path, current_user_authorities, is_current_user_authenticated, create_path, header_logo, is_app_with_users}) {
 
     const { data, error } = useSWR(
         '/view/header',
@@ -41,16 +42,29 @@ export default function Header({user_path, current_user_authorities, is_current_
         console.log('loading header');
     }
 
+    // Navbar items
+    // TODO: think more about active switch for elements
     let navbar_brand = '';
-    const missing_navbar_brand = navbar_brand = <Link to={`/`} className="navbar-item"><FontAwesomeIcon icon={faRadiation} color='red' /></Link>;
+    const missing_navbar_brand = navbar_brand =
+        <Link
+            to={`/`}
+            className="navbar-item">
+                <FontAwesomeIcon icon={faRadiation} color='red' />
+        </Link>;
     let navbar_items_start = [];
+    let navbar_items_end = [];
 
     if(data !== undefined && data !== null && data !== '') {
 
         // Navbar brand
         if(data.navbarBrand !== undefined && data.navbarBrand !== null && data.navbarBrand !== '') {
             if(data.navbarBrand.itemType === 'BRAND') {
-                navbar_brand = <Link to={data.navbarBrand.href} className="navbar-item"><img src={data.navbarBrand.image} width="112" height="28" /></Link>;
+                navbar_brand =
+                    <Link
+                        to={data.navbarBrand.href}
+                        className="navbar-item">
+                            <img src={data.navbarBrand.image} width="112" height="28" />
+                    </Link>;
             } else {
                 console.log('data.navbarBrand.itemType is undefined');
                 navbar_brand = missing_navbar_brand;
@@ -114,6 +128,59 @@ export default function Header({user_path, current_user_authorities, is_current_
         } else {
             console.log('data.navbarItemsStart is undefined');
         }
+
+        // Navbar end
+        if(data.navbarItemsEnd !== undefined && data.navbarItemsEnd !== null && data.navbarItemsEnd !== '' && data.navbarItemsEnd.length > 0) {
+            for(let i = 0; i < data.navbarItemsEnd.length; i++) {
+                if(data.navbarItemsEnd[i].itemType === 'LINK') {
+                    console.log('data.navbarItemsEnd[i].itemType is LINK');
+                    console.log(data.navbarItemsEnd[i]);
+                    navbar_items_end.push(
+                        <Link
+                            key={data.navbarItemsEnd[i].name}
+                            to={data.navbarItemsEnd[i].href}
+                            className="navbar-item">
+                                {data.navbarItemsEnd[i].name}
+                        </Link>
+                    );
+                } else if(data.navbarItemsEnd[i].itemType === 'DROPDOWN') {
+                    console.log('data.navbarItemsEnd[i].itemType is DROPDOWN');
+                    console.log(data.navbarItemsEnd[i]);
+                    if(data.navbarItemsEnd[i].dropdown !== undefined && data.navbarItemsEnd[i].dropdown !== null && data.navbarItemsEnd[i].dropdown !== '' && data.navbarItemsEnd[i].dropdown.length > 0) {
+                        let dropdown_items = [];
+                        for(let j = 0; j < data.navbarItemsEnd[i].dropdown.length; j++) {
+                            if(data.navbarItemsEnd[i].dropdown[j].itemType === 'LINK') {
+                                dropdown_items.push(
+                                    <Link
+                                        key={data.navbarItemsEnd[i].name + data.navbarItemsEnd[i].dropdown[j].name}
+                                        to={data.navbarItemsEnd[i].dropdown[j].href}
+                                        className="navbar-item">
+                                            {data.navbarItemsEnd[i].dropdown[j].name}
+                                    </Link>
+                                );
+                            }
+                        }
+                    }
+                } else if(data.navbarItemsEnd[i].itemType === 'REACT_COMPONENT') {
+                    navbar_items_end.push(
+                            <Component 
+                                react_component={data.navbarItemsEnd[i].reactComponent} 
+                                key={data.navbarItemsEnd[i].name}
+                                className="navbar-item">
+                            </Component>
+                    );
+                }
+            }
+        } else {
+            console.log('data.navbarItemsEnd is undefined');
+        }
+
+        // do i need????
+        if(is_app_with_users) {
+            // TODO if this is an app with users, think about what to do!!!
+            // should get rid of paramaters and use them here possibly
+        }
+
     } else {
         console.log('data is undefined for navbarBrand');
         navbar_brand = missing_navbar_brand;
@@ -157,45 +224,17 @@ export default function Header({user_path, current_user_authorities, is_current_
             <div id="navbarBasicExample" className="navbar-menu">
                 <div className="navbar-start">
                     {navbar_items_start}
-                    {/* <Link to={`/`} className="navbar-item">
-                        Home
-                    </Link>
-        
-                    <a className="navbar-item">
-                        Documentation
-                    </a>
-
-                    <div className="navbar-item has-dropdown is-hoverable">
-                        <a className="navbar-link">
-                            More
-                        </a>
-        
-                        <div className="navbar-dropdown">
-                            <a className="navbar-item">
-                                About
-                            </a>
-                            <a className="navbar-item">
-                                Jobs
-                            </a>
-                            <a className="navbar-item">
-                                Contact
-                            </a>
-                            <hr className="navbar-divider" />
-                            <a className="navbar-item">
-                                Report an issue
-                            </a>
-                        </div>
-                    </div> */}
                 </div>
         
                 <div className="navbar-end">
                     {user_icon}
                     <div className="navbar-item">
                         <div className="buttons">
-                            {admin}
+                            {navbar_items_end}
+                            {/* {admin}
                             {signup}
                             {login}
-                            {signout}
+                            {signout} */}
                         </div>
                     </div>
                 </div>

@@ -34,7 +34,9 @@ export default function LoginModal() {
 
     return (
         <>
-            <a onClick={openModal} className="loginBtn button is-light">Login</a>
+            <a onClick={openModal} className="loginBtn button is-light">
+                Login
+            </a>
 
             <Modal
                 isOpen={modalIsOpen}
