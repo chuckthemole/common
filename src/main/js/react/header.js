@@ -53,6 +53,7 @@ export default function Header({user_path, current_user_authorities, is_current_
         </Link>;
     let navbar_items_start = [];
     let navbar_items_end = [];
+    let navbar_user_icon = ''; // TODO: not using this now. think about having a separate array for icons and buttons
 
     if(data !== undefined && data !== null && data !== '') {
 
@@ -79,8 +80,6 @@ export default function Header({user_path, current_user_authorities, is_current_
         if(data.navbarItemsStart !== undefined && data.navbarItemsStart !== null && data.navbarItemsStart !== '' && data.navbarItemsStart.length > 0) {
             for(let i = 0; i < data.navbarItemsStart.length; i++) {
                 if(data.navbarItemsStart[i].itemType === 'LINK') {
-                    console.log('data.navbarItemsStart[i].itemType is LINK');
-                    console.log(data.navbarItemsStart[i]);
                     navbar_items_start.push(
                         <Link
                             key={data.navbarItemsStart[i].name}
@@ -90,8 +89,6 @@ export default function Header({user_path, current_user_authorities, is_current_
                         </Link>
                     );
                 } else if(data.navbarItemsStart[i].itemType === 'DROPDOWN') {
-                    console.log('data.navbarItemsStart[i].itemType is DROPDOWN');
-                    console.log(data.navbarItemsStart[i]);
                     if(data.navbarItemsStart[i].dropdown !== undefined && data.navbarItemsStart[i].dropdown !== null && data.navbarItemsStart[i].dropdown !== '' && data.navbarItemsStart[i].dropdown.length > 0) {
                         let dropdown_items = [];
                         for(let j = 0; j < data.navbarItemsStart[i].dropdown.length; j++) {
@@ -133,8 +130,6 @@ export default function Header({user_path, current_user_authorities, is_current_
         if(data.navbarItemsEnd !== undefined && data.navbarItemsEnd !== null && data.navbarItemsEnd !== '' && data.navbarItemsEnd.length > 0) {
             for(let i = 0; i < data.navbarItemsEnd.length; i++) {
                 if(data.navbarItemsEnd[i].itemType === 'LINK') {
-                    console.log('data.navbarItemsEnd[i].itemType is LINK');
-                    console.log(data.navbarItemsEnd[i]);
                     navbar_items_end.push(
                         <Link
                             key={data.navbarItemsEnd[i].name}
@@ -144,8 +139,6 @@ export default function Header({user_path, current_user_authorities, is_current_
                         </Link>
                     );
                 } else if(data.navbarItemsEnd[i].itemType === 'DROPDOWN') {
-                    console.log('data.navbarItemsEnd[i].itemType is DROPDOWN');
-                    console.log(data.navbarItemsEnd[i]);
                     if(data.navbarItemsEnd[i].dropdown !== undefined && data.navbarItemsEnd[i].dropdown !== null && data.navbarItemsEnd[i].dropdown !== '' && data.navbarItemsEnd[i].dropdown.length > 0) {
                         let dropdown_items = [];
                         for(let j = 0; j < data.navbarItemsEnd[i].dropdown.length; j++) {
@@ -163,8 +156,8 @@ export default function Header({user_path, current_user_authorities, is_current_
                     }
                 } else if(data.navbarItemsEnd[i].itemType === 'REACT_COMPONENT') {
                     navbar_items_end.push(
-                            <Component 
-                                react_component={data.navbarItemsEnd[i].reactComponent} 
+                            <Component
+                                react_component={data.navbarItemsEnd[i].reactComponent}
                                 key={data.navbarItemsEnd[i].name}
                                 className="navbar-item">
                             </Component>
@@ -173,12 +166,6 @@ export default function Header({user_path, current_user_authorities, is_current_
             }
         } else {
             console.log('data.navbarItemsEnd is undefined');
-        }
-
-        // do i need????
-        if(is_app_with_users) {
-            // TODO if this is an app with users, think about what to do!!!
-            // should get rid of paramaters and use them here possibly
         }
 
     } else {
@@ -227,14 +214,9 @@ export default function Header({user_path, current_user_authorities, is_current_
                 </div>
         
                 <div className="navbar-end">
-                    {user_icon}
                     <div className="navbar-item">
                         <div className="buttons">
                             {navbar_items_end}
-                            {/* {admin}
-                            {signup}
-                            {login}
-                            {signout} */}
                         </div>
                     </div>
                 </div>

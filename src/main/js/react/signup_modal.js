@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { useFetcher } from 'react-router-dom';
 import { USERNAME, PASSWORD, EMAIL, EMPTY, POST } from './common';
 import { isModalActive, modal_style, setModalActive, setModalInactive } from './modal_manager';
+import { isCurrentUserAuthenticated } from '../rumpus'; // TODO: this is a problem. need to fix. - chuck
 
 export default function SignupModal({btn, create_user_path}) {
 
@@ -16,6 +17,7 @@ export default function SignupModal({btn, create_user_path}) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [is_user_authenticated, setIsUserAuthenticated] = useState(isCurrentUserAuthenticated());
 
     const fetcher = useFetcher();
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -65,65 +67,69 @@ export default function SignupModal({btn, create_user_path}) {
         setPassword(EMPTY);
     }
 
-    return (
-        <>
+    if(is_user_authenticated.isAuthenticated || is_user_authenticated.isLoading) {
+        return (<></>);
+    } else {
+        return (
+            <>
 
-            <a onClick={openModal} className="signupBtn button is-light is-success">{button}</a>
+                <a onClick={openModal} className="signupBtn button is-light is-success">{button}</a>
 
-            <Modal
-                isOpen={modalIsOpen}
-                onAfterOpen={afterOpenModal}
-                onRequestClose={closeModal}
-                className='modal-content'
-                style={modal_style}
-                contentLabel="Example Modal"
-            >
-                <div className="modal-content">
-                    <fetcher.Form reloadDocument method='post' onSubmit={handleSubmit} className="box">
-                        <div className="field">
-                            <label htmlFor="" className="label">Username</label>
-                            <div className="control has-icons-left">
-                                <input name='username' type="username" placeholder="e.g. coolguy" className="input" value={username} onChange={e => setUsername(e.target.value)} required />
-                                <span className="icon is-small is-left">
-                                    <i className="fa fa-envelope"></i>
-                                </span>
+                <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={closeModal}
+                    className='modal-content'
+                    style={modal_style}
+                    contentLabel="Example Modal"
+                >
+                    <div className="modal-content">
+                        <fetcher.Form reloadDocument method='post' onSubmit={handleSubmit} className="box">
+                            <div className="field">
+                                <label htmlFor="" className="label">Username</label>
+                                <div className="control has-icons-left">
+                                    <input name='username' type="username" placeholder="e.g. coolguy" className="input" value={username} onChange={e => setUsername(e.target.value)} required />
+                                    <span className="icon is-small is-left">
+                                        <i className="fa fa-envelope"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="field">
-                            <label htmlFor="" className="label">Email</label>
-                            <div className="control has-icons-left">
-                                <input name='email' type="email" placeholder="e.g. bobsmith@gmail.com" className="input" value={email} onChange={e => setEmail(e.target.value)} required />
-                                <span className="icon is-small is-left">
-                                    <i className="fa fa-envelope"></i>
-                                </span>
+                            <div className="field">
+                                <label htmlFor="" className="label">Email</label>
+                                <div className="control has-icons-left">
+                                    <input name='email' type="email" placeholder="e.g. bobsmith@gmail.com" className="input" value={email} onChange={e => setEmail(e.target.value)} required />
+                                    <span className="icon is-small is-left">
+                                        <i className="fa fa-envelope"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="field">
-                            <label htmlFor="" className="label">Password</label>
-                            <div className="control has-icons-left">
-                                <input name='password' type="password" placeholder="*******" className="input" value={password} onChange={e => setPassword(e.target.value)} required />
-                                <span className="icon is-small is-left">
-                                    <i className="fa fa-lock"></i>
-                                </span>
+                            <div className="field">
+                                <label htmlFor="" className="label">Password</label>
+                                <div className="control has-icons-left">
+                                    <input name='password' type="password" placeholder="*******" className="input" value={password} onChange={e => setPassword(e.target.value)} required />
+                                    <span className="icon is-small is-left">
+                                        <i className="fa fa-lock"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        {/* <!-- <div className="field">
-                            <label htmlFor="" className="label">Confirm Password</label>
-                            <div className="control has-icons-left">
-                                <input type="confirm_password" placeholder="*******" className="input" required>
-                                <span className="icon is-small is-left">
-                                    <i className="fa fa-lock"></i>
-                                </span>
+                            {/* <!-- <div className="field">
+                                <label htmlFor="" className="label">Confirm Password</label>
+                                <div className="control has-icons-left">
+                                    <input type="confirm_password" placeholder="*******" className="input" required>
+                                    <span className="icon is-small is-left">
+                                        <i className="fa fa-lock"></i>
+                                    </span>
+                                </div>
+                            </div> --> */}
+                            <div className="field">
+                                <button id="signupSubmit" type="submit" value="Signup" className="button is-success">
+                                    Submit
+                                </button>
                             </div>
-                        </div> --> */}
-                        <div className="field">
-                            <button id="signupSubmit" type="submit" value="Signup" className="button is-success">
-                                Submit
-                            </button>
-                        </div>
-                    </fetcher.Form>
-                </div>
-            </Modal>
-        </>
-    );
+                        </fetcher.Form>
+                    </div>
+                </Modal>
+            </>
+        );
+    }
 }

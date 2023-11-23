@@ -1,7 +1,8 @@
-import * as React from 'react';
-
-const logout = <form method="post" action="/logout"><button className="logoutBtn button is-danger" type="submit" value="Sign Out">Sign Out</button></form>;
+import React, { useState } from 'react';
+import { isCurrentUserAuthenticated } from '../rumpus'; // TODO: this is a problem. need to fix. - chuck
 
 export default function Logout() {
-    return logout;
+    const logout = <form method="post" action="/logout"><button className="logoutBtn button is-danger" type="submit" value="Sign Out">Sign Out</button></form>;
+    const [is_user_authenticated, setIsUserAuthenticated] = useState(isCurrentUserAuthenticated());
+    return is_user_authenticated.isAuthenticated ? logout : <></>;
 }
