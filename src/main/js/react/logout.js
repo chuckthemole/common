@@ -3,6 +3,6 @@ import { isCurrentUserAuthenticated } from '../rumpus'; // TODO: this is a probl
 
 export default function Logout() {
     const logout = <form method="post" action="/logout"><button className="logoutBtn button is-danger" type="submit" value="Sign Out">Sign Out</button></form>;
-    const [is_user_authenticated, setIsUserAuthenticated] = useState(isCurrentUserAuthenticated());
+    const is_user_authenticated = isCurrentUserAuthenticated();
     return is_user_authenticated.isAuthenticated ? logout : <></>;
 }

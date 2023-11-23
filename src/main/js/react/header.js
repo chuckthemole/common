@@ -21,7 +21,7 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
  * 
  * @returns 
  */
-export default function Header({user_path, current_user_authorities, is_current_user_authenticated, create_path, header_logo, is_app_with_users}) {
+export default function Header() {
 
     const { data, error } = useSWR(
         '/view/header',
@@ -171,30 +171,6 @@ export default function Header({user_path, current_user_authorities, is_current_
     } else {
         console.log('data is undefined for navbarBrand');
         navbar_brand = missing_navbar_brand;
-    }
-
-
-    // buttons and icons, empty by default.
-    let user_icon = '';
-    let admin = '';
-    let signout = '';
-    let login = '';
-    let signup = '';
-
-    // set button and icon visibility depending on user's authentication status and/or state (ie logged in or logged out)
-    if(is_current_user_authenticated !== undefined && is_current_user_authenticated !== null && is_current_user_authenticated !== '' && is_current_user_authenticated !== false) { // only do if curretn user is authenticated otherwise leave empty
-        let is_user_authenticated = is_current_user_authenticated;
-        let authorities = current_user_authorities;
-        if(!is_user_authenticated.isAuthenticated && !is_user_authenticated.isLoading) {
-            login = <LoginModal />;
-            signup = <SignupModal create_user_path={create_path}/>;
-        } else if(is_user_authenticated.isAuthenticated) {
-            user_icon = <UserIcon current_user_path={user_path}/>;
-            if(authorities.includes('ROLE_ADMIN')) {
-                admin = <Link to={`/admin`} className="adminBtn button is-info"><strong>Admin</strong></Link>;
-            }
-            signout = <Logout />;
-        }
     }
    
     return (

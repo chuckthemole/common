@@ -17,7 +17,7 @@ export default function SignupModal({btn, create_user_path}) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [is_user_authenticated, setIsUserAuthenticated] = useState(isCurrentUserAuthenticated());
+    const is_user_authenticated = isCurrentUserAuthenticated();
 
     const fetcher = useFetcher();
     const [modalIsOpen, setIsOpen] = React.useState(false);

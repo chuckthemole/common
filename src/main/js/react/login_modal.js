@@ -8,7 +8,7 @@ export default function LoginModal() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [is_user_authenticated, setIsUserAuthenticated] = useState(isCurrentUserAuthenticated());
+    const is_user_authenticated = isCurrentUserAuthenticated();
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -35,6 +35,7 @@ export default function LoginModal() {
     }
 
     if(is_user_authenticated.isLoading) {
+        console.log('LOADING LOGIN BUTTON');
         return ( // TODO: think about a progress wheel here. maybe return loading value to signal to header - chuck
             <>
                 <progress className="progress is-small is-primary" max="100">15%</progress>

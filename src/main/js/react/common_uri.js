@@ -4,10 +4,24 @@ import useSWR from 'swr';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
+export const common_fetcher = async url => {
+    const res = await fetch(url)
+    // If the status code is not in the range 200-299,
+    // still try to parse and throw it.
+    if (!res.ok) {
+      const error = new Error('An error occurred while fetching the data.')
+      // Attach extra info to the error object.
+      error.info = await res.json()
+      error.status = res.status
+      throw error
+    }
+    return res.json()
+}
+
 export function getCommonPaths() {
     const { data, error, isLoading } = useSWR(
         "/common/api/paths",
-        fetcher
+        common_fetcher
     );
 
     return {
@@ -20,7 +34,7 @@ export function getCommonPaths() {
 export function getPathsFromBasePath(base_path) {
     const { data, error, isLoading } = useSWR(
         "common/api/paths" + base_path,
-        fetcher
+        common_fetcher
     );
     return {
         common_paths: data,
@@ -33,7 +47,7 @@ export function getPathsFromBasePath(base_path) {
 export function isCurrentUserAuthenticatedCommon() {
     const { data, error, isLoading } = useSWR(
         "/common/api/is_authenticated",
-        fetcher, {
+        common_fetcher, {
             // revalidateOnFocus: false,
             // revalidateOnReconnect: false,
             // refreshWhenOffline: false,
@@ -52,7 +66,7 @@ export function isCurrentUserAuthenticatedCommon() {
 export function currentUserInfo({get_user_info_path}) {
     const { data, error, isLoading } = useSWR(
         get_user_info_path,
-        fetcher
+        common_fetcher
     );
     return {
         user_info: data,

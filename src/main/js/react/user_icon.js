@@ -13,10 +13,9 @@ export default function UserIcon({current_user_path}) {
     const paths_rumpus = getPathsFromBasePath(base_path);
     const [current_user_info_path, setCurrentUserInfoPath] = useState('');
     const user_info = currentUserInfo({get_user_info_path: current_user_info_path});
-    const [is_user_authenticated, setIsUserAuthenticated] = useState(isCurrentUserAuthenticated());
+    const is_user_authenticated = isCurrentUserAuthenticated();
 
-    if(!is_user_authenticated.isAuthenticated) {
-        console.log('User is not authenticated!');
+    if(!is_user_authenticated.isAuthenticated) { // no icon to display if user is not authenticated
         return (<></>);
     } else if(paths_rumpus === undefined || paths_rumpus.common_paths === undefined || paths_rumpus.common_paths.CurrentUserInfo === undefined) {
         console.log('Error finding user icon!');

@@ -5,10 +5,10 @@ import { isCurrentUserAuthenticated, getCurrentUserAuthorities } from '../rumpus
 
 export default function Admin() {
 
-    const [is_user_authenticated, setIsUserAuthenticated] = useState(isCurrentUserAuthenticated());
+    const is_user_authenticated = isCurrentUserAuthenticated();
+    const user_authorities = getCurrentUserAuthorities();
 
     if(is_user_authenticated.isAuthenticated) {
-        const user_authorities = getCurrentUserAuthorities();
         return user_authorities.includes('ROLE_ADMIN') ? <Link to={`/admin`} className="adminBtn button is-info"><strong>Admin</strong></Link> : <></>;
     } else {
         return <></>;
