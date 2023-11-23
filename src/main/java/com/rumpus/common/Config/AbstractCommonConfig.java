@@ -3,6 +3,7 @@ package com.rumpus.common.Config;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
@@ -22,8 +23,9 @@ import com.rumpus.common.AbstractCommon;
  */
 public abstract class AbstractCommonConfig extends AbstractCommon {
 
-    @Autowired
-	protected Environment environment;
+    @Autowired protected Environment environment;
+    @Autowired protected ApplicationContext applicationContext;
+
 
     protected final String URL = "url";
 	protected final String USER = "username";
