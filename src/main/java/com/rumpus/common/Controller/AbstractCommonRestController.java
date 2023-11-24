@@ -1,11 +1,9 @@
 package com.rumpus.common.Controller;
 
-import org.springframework.http.HttpStatus;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 abstract public class AbstractCommonRestController extends AbstractCommonController {
     
@@ -19,6 +17,25 @@ abstract public class AbstractCommonRestController extends AbstractCommonControl
         public AbstractCommonRestController(String name) {
             super(name);
         }
-    
-        abstract protected ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication);
+
+        /**
+         * @brief Set the default current base path
+         * set a default current base path for your controller
+         */
+        abstract public void setDefaultCurrentBasePath();
+
+
+        // CRUD - Create, Read, Update, Delete
+        /**
+         * @brief GET the current base path
+         * @return the current base path
+         */
+        abstract public ResponseEntity<Map<String, String>> currentBasePath(); // TODO: can maybe not use Map in future
+
+        /**
+         * 
+         * @param authentication
+         * @return
+         */
+        abstract public ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication);
 }

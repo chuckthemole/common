@@ -14,6 +14,8 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
 
     public static final String COMMON_REST_API_PATH = "/common/api";
 
+    protected String currentBasePath;
+
     static protected ICommonPaths commonPaths = null;
 
     public AbstractCommonController() {
@@ -29,6 +31,15 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
         if(AbstractCommonController.commonPaths == null) {
             AbstractCommonController.commonPaths = CommonPaths.getInstance();
         }
+        this.currentBasePath = AbstractCommonController.COMMON_REST_API_PATH;
+    }
+
+    public String getCurrentBasePath() {
+        return this.currentBasePath;
+    }
+
+    public String setCurrentBasePath(String currentBasePath) {
+        return this.currentBasePath = currentBasePath;
     }
     
     protected String getWebPage(String uri) {
