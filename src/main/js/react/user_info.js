@@ -3,8 +3,7 @@ import useSWR from 'swr';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle, faUser } from '@fortawesome/free-solid-svg-icons';
-import { isCurrentUserAuthenticated } from '../rumpus'; // TODO: this is a problem. need to fix. check out CommonRestController.java - chuck
-import { CommonURI, getCommonPaths, isCurrentUserAuthenticatedCommon } from './common_uri';
+import { getCommonPaths, isCurrentUserAuthenticated } from './common_requests';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 

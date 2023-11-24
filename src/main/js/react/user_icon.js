@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle, faUser } from '@fortawesome/free-solid-svg-icons';
-import { getPathsFromBasePath, isCurrentUserAuthenticated, currentUserInfo, getCurrentBasePath } from './common_uri';
+import { getPathsFromBasePath, isCurrentUserAuthenticated, currentUserInfo, getCurrentBasePath } from './common_requests';
 
 export default function UserIcon() {
     const current_base_path = getCurrentBasePath(); // the current base path

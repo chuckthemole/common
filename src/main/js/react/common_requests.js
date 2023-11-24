@@ -77,6 +77,22 @@ export function isCurrentUserAuthenticated() {
     }
 }
 
+export function getCurrentUserAuthorities({get_user_auth_path}) {
+    const { data, error, isLoading } = useSWR(
+        get_user_auth_path,
+        fetcher
+    );
+
+    let authorities = [];
+    if(!error && data !== undefined) {
+        for(let i = 0; i < data.userDetails.authorities.length; i++) {
+            authorities.push(data.userDetails.authorities[i].authority);
+        }
+    }
+
+    return authorities;
+}
+
 export function currentUserInfo({get_user_info_path}) {
     const { data, error, isLoading } = useSWR(
         get_user_info_path,

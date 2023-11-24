@@ -53,7 +53,6 @@ export default function Header() {
         </Link>;
     let navbar_items_start = [];
     let navbar_items_end = [];
-    let navbar_user_icon = ''; // TODO: not using this now. think about having a separate array for icons and buttons
 
     if(data !== undefined && data !== null && data !== '') {
 

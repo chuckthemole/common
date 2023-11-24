@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { EMPTY } from './common';
 import { isModalActive, modal_style, setModalActive, setModalInactive } from './modal_manager';
-import { isCurrentUserAuthenticated } from '../rumpus'; // TODO: this is a problem. need to fix. - chuck
+import { isCurrentUserAuthenticated } from './common_requests';
 
 export default function LoginModal() {
 
