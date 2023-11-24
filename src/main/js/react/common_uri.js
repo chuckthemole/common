@@ -18,6 +18,20 @@ export const common_fetcher = async url => {
     return res.json()
 }
 
+export function getCurrentBasePath() {
+    const { data, error, isLoading } = useSWR(
+        "/common/api/current_base_path",
+        common_fetcher
+    );
+
+    return {
+        current_base_path: data,
+        isLoading,
+        isError: error
+    }
+
+}
+
 export function getCommonPaths() {
     const { data, error, isLoading } = useSWR(
         "/common/api/paths",
@@ -44,7 +58,7 @@ export function getPathsFromBasePath(base_path) {
 
 }
 
-export function isCurrentUserAuthenticatedCommon() {
+export function isCurrentUserAuthenticated() {
     const { data, error, isLoading } = useSWR(
         "/common/api/is_authenticated",
         common_fetcher, {
