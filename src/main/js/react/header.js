@@ -2,14 +2,9 @@ const React = require('react');
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRadiation } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import UserIcon from './user_icon';
-import SignupModal from './signup_modal';
-import LoginModal from './login_modal';
-import Logout from './logout';
 import useSWR from 'swr';
-import Component from './abstract_component';
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+import ReactComponent from './react_component';
+import { common_fetcher } from './common_requests';
 
 /**
  * 
@@ -25,21 +20,18 @@ export default function Header() {
 
     const { data, error } = useSWR(
         '/view/header',
-        fetcher
+        common_fetcher
     );
 
-    console.log(data);
-    if(data !== undefined && data !== null && data !== '') {
-        console.log(typeof data);
-    }
     if (error) {
         // TODO: add some animation here
         console.log(error);
+        console.log('TODO: maybe add animation here... for above error');
     }
 
     if (!data) {
         // TODO: add some animation here
-        console.log('loading header');
+        console.log('TODO: maybe add animation here... loading header');
     }
 
     // Navbar items
@@ -155,11 +147,11 @@ export default function Header() {
                     }
                 } else if(data.navbarItemsEnd[i].itemType === 'REACT_COMPONENT') {
                     navbar_items_end.push(
-                            <Component
-                                react_component={data.navbarItemsEnd[i].reactComponent}
+                            <ReactComponent
+                                component_name={data.navbarItemsEnd[i].reactComponent}
                                 key={data.navbarItemsEnd[i].name}
                                 className="navbar-item">
-                            </Component>
+                            </ReactComponent>
                     );
                 }
             }

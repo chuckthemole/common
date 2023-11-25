@@ -80,7 +80,7 @@ export function isCurrentUserAuthenticated() {
 export function getCurrentUserAuthorities({get_user_auth_path}) {
     const { data, error, isLoading } = useSWR(
         get_user_auth_path,
-        fetcher
+        common_fetcher
     );
 
     let authorities = [];

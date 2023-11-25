@@ -10,19 +10,19 @@ import Admin from './admin';
  * @param {*} param0 
  * @returns 
  */
-export default function Component({react_component}) {
+export default function ReactComponent({component_name}) {
 
-    if(react_component === 'SignupModal') {
+    if(component_name === 'SignupModal') {
         return (<SignupModal />);
-    } else if(react_component === 'LoginModal') {
+    } else if(component_name === 'LoginModal') {
         return (<LoginModal />);
-    } else if(react_component === 'Logout') {
+    } else if(component_name === 'Logout') {
         return (<Logout />);
-    } else if(react_component === 'UserIcon') {
+    } else if(component_name === 'UserIcon') {
         return (<UserIcon />);
-    } else if(react_component === 'Admin') {
+    } else if(component_name === 'Admin') {
         return (<Admin />);
     } else {
-        console.log('No component match found for ' + react_component);
+        console.log('No component match found for ' + component_name);
     }
 }
