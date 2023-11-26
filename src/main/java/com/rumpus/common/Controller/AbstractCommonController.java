@@ -14,6 +14,11 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
 
     public static final String COMMON_REST_API_PATH = "/common/api";
 
+    // Paths for views
+    protected static final String PATH_FOOTER = "/footer";
+    protected static final String PATH_HEADER = "/header";
+    protected static final String PATH_USER_TABLE = "/user_table";
+
     protected String currentBasePath;
 
     static protected ICommonPaths commonPaths = null;

@@ -16,10 +16,10 @@ import { common_fetcher } from './common_requests';
  * 
  * @returns 
  */
-export default function Header() {
+export default function Header({header_path}) {
 
     const { data, error } = useSWR(
-        '/view/header',
+        header_path,
         common_fetcher
     );
 
