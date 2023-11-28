@@ -3,8 +3,6 @@ package com.rumpus.common.views;
 import java.util.List;
 import java.util.Map;
 
-import org.python.antlr.ast.Str;
-
 public class NavbarItem extends AbstractView {
 
     private static final String NAME = "NavbarItem";

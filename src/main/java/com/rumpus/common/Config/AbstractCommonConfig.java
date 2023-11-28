@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,8 +25,17 @@ import com.rumpus.common.AbstractCommon;
 public abstract class AbstractCommonConfig extends AbstractCommon {
 
     @Autowired protected Environment environment;
-    @Autowired protected ApplicationContext applicationContext;
+    @Autowired protected static ApplicationContext applicationContext;
 
+    // Scopes: https://www.baeldung.com/spring-bean-scopes
+    /**
+     * The container will create a single instance of this bean.
+     */
+    protected final String SCOPE_SINGLETON = "singleton";
+    /**
+     * The container will create a new instance of the bean each time a request for that specific bean is made.
+     */
+    protected final String SCOPE_PROTOTYPE = "prototype";
 
     protected final String URL = "url";
 	protected final String USER = "username";
@@ -33,6 +43,7 @@ public abstract class AbstractCommonConfig extends AbstractCommon {
 	protected final String PASSWORD = "password";
 
     @Bean
+    @Scope(SCOPE_SINGLETON)
 	protected DataSource dataSource() {
 		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 		driverManagerDataSource.setUrl(environment.getProperty(URL));
@@ -43,6 +54,7 @@ public abstract class AbstractCommonConfig extends AbstractCommon {
 	}
 
     @Bean
+    @Scope(SCOPE_SINGLETON)
 	public JdbcUserDetailsManager jdbcUserDetailsManager() {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
 
@@ -55,6 +67,7 @@ public abstract class AbstractCommonConfig extends AbstractCommon {
 	}
     
     @Bean
+    @Scope(SCOPE_SINGLETON)
     @DependsOn("jdbcUserDetailsManager")
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -64,6 +77,7 @@ public abstract class AbstractCommonConfig extends AbstractCommon {
     }
 
     @Bean
+    @Scope(SCOPE_SINGLETON)
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

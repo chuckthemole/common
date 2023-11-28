@@ -1,8 +1,6 @@
 package com.rumpus.common.views;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Header extends AbstractView {
 
