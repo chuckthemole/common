@@ -160,7 +160,7 @@ export default function Header({header_path}) {
         }
 
     } else {
-        console.log('data is undefined for navbarBrand');
+        console.log('Error retrieving header data');
         navbar_brand = missing_navbar_brand;
     }
    
