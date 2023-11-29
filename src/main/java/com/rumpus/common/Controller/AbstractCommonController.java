@@ -12,6 +12,9 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
     protected static final String PATH_FOOTER = "/footer";
     protected static final String PATH_HEADER = "/header";
     protected static final String PATH_USER_TABLE = "/user_table";
+    protected static final String PATH_RESOURCES = "/resources";
+    protected static final String PATH_RESOURCE_BY_NAME = "/resource/{resource_name}";
+    protected static final String PATH_VARIABLE_RESOURCE_BY_NAME = "resource_name";
 
     protected String currentBasePath;
 

@@ -1,6 +1,9 @@
 package com.rumpus.common.views;
 
 import com.rumpus.common.Builder.ITableBuilder;
+
+import java.util.List;
+
 import com.rumpus.common.AbstractCommonObject;
 
 /**
@@ -9,21 +12,23 @@ import com.rumpus.common.AbstractCommonObject;
  * Views used for webpage. As of now (2023/3/23) only contains footer. You can add other views here.
  * You must implement the views when using.
  */
-public abstract class AbstractViewLoader extends AbstractCommonObject  {
+public abstract class AbstractViews extends AbstractCommonObject  {
     
     protected Footer footer;
     protected Header header;
     protected ITableBuilder userTable;
+    protected ResourceManager resourceManager;
 
-	public AbstractViewLoader(String name) {
+	public AbstractViews(String name) {
         super(name);
-        // init();
+        // init(); // TODO - should I uncomment and call init() here? instead of calling init() in constructor of child class?
 	}
 
     protected int init() {
         initFooter();
         initHeader();
         initUserTable();
+        initResourceManager();
         return SUCCESS;
     }
 
@@ -42,6 +47,11 @@ public abstract class AbstractViewLoader extends AbstractCommonObject  {
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initUserTable();
+    /**
+     * Init resource manager
+     * @return SUCCESS if successful, otherwise FAILURE
+     */
+    abstract protected int initResourceManager();
 
     public Footer getFooter() {
         return this.footer;
@@ -68,5 +78,20 @@ public abstract class AbstractViewLoader extends AbstractCommonObject  {
     public int setUserTable(ITableBuilder table) {
         this.userTable = table;
         return SUCCESS;
+    }
+
+    public List<Resource> getResources() {
+        return this.resourceManager.getResources();
+    }
+
+    /**
+     * Get a particular resource by name
+     * 
+     * @param name the name of the resource
+     * @return the resource or null if not found
+     * @see Map.get()
+     */
+    public Resource getResourceByName(String name) {
+        return this.resourceManager.get(name);
     }
 }
