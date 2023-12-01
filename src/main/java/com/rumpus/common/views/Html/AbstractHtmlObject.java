@@ -165,6 +165,7 @@ public abstract class AbstractHtmlObject extends AbstractView {
     private List<AbstractHtmlObject> children; // TODO: reorder children?
     private String body;
     private HtmlTagType htmlTagType;
+    private String htmlTagTypeValue;
     private Map<String, String> htmlTagAttributes;
 
     public AbstractHtmlObject(String name, HtmlTagType htmlTagType, String body) {
@@ -250,6 +251,11 @@ public abstract class AbstractHtmlObject extends AbstractView {
         return htmlTagType;
     }
 
+    public String getHtmlTagTypeValue() {
+        return htmlTagType.getHtmlTagType();
+    }
+
+    // TODO: delete this?
     public void setClassName(HtmlTagType htmlTagType) {
         if (htmlTagType != null) {
             this.htmlTagType = htmlTagType;
