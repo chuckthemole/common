@@ -57,9 +57,9 @@ export default function Section({section_path}) {
             }
 
             if(currentObject.children !== undefined && currentObject.children.length > 0) {
-                return `${htmlTag}${currentObject.children.map(child => constructHtmlContent(child))}</${currentObject.htmlTagTypeValue}>`; // TODO: this is adding a comma somewhere when there are multiple children
+                return (`${htmlTag}${currentObject.children.map(child => constructHtmlContent(child)).join('')}</${currentObject.htmlTagTypeValue}>`);
             } else {
-                return `${htmlTag}</${currentObject.htmlTagTypeValue}>`;
+                return (`${htmlTag}</${currentObject.htmlTagTypeValue}>`);
             }
         }
         return '';
