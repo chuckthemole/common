@@ -79,4 +79,33 @@ public class Resource extends AbstractCommonObject implements IManageable {
     public String getUrl() {
         return this.url;
     }
+
+    @Override
+    public String toString() {
+        return "Resource [name=" + this.name + ", resourceType=" + this.resourceType + ", storageType=" + this.storageType + ", url=" + this.url + "]";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) {
+            return false;
+        }
+        if(!Resource.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        final Resource other = (Resource) obj;
+        if((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if(this.resourceType != other.resourceType) {
+            return false;
+        }
+        if(this.storageType != other.storageType) {
+            return false;
+        }
+        if((this.url == null) ? (other.url != null) : !this.url.equals(other.url)) {
+            return false;
+        }
+        return true;
+    }
 }

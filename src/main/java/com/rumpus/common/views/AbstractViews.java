@@ -18,6 +18,7 @@ public abstract class AbstractViews extends AbstractCommonObject  {
     protected Header header;
     protected ITableBuilder userTable;
     protected ResourceManager resourceManager;
+    protected SectionManager sectionManager;
 
 	public AbstractViews(String name) {
         super(name);
@@ -25,6 +26,8 @@ public abstract class AbstractViews extends AbstractCommonObject  {
 	}
 
     protected int init() {
+        this.sectionManager = SectionManager.createEmptyManager();
+        initSections();
         initFooter();
         initHeader();
         initUserTable();
@@ -52,6 +55,12 @@ public abstract class AbstractViews extends AbstractCommonObject  {
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initResourceManager();
+    /**
+     * Init sections
+     * @return SUCCESS if successful, otherwise FAILURE
+     * @see {@link SectionManager} and {@link Section}
+     */
+    abstract protected int initSections();
 
     public Footer getFooter() {
         return this.footer;
@@ -78,6 +87,10 @@ public abstract class AbstractViews extends AbstractCommonObject  {
     public int setUserTable(ITableBuilder table) {
         this.userTable = table;
         return SUCCESS;
+    }
+
+    public Section getSection(String name) {
+        return this.sectionManager.get(name);
     }
 
     public List<Resource> getResources() {

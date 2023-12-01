@@ -13,6 +13,7 @@ import com.rumpus.common.views.Footer;
 import com.rumpus.common.views.Header;
 import com.rumpus.common.views.Resource;
 import com.rumpus.common.views.ResourceManager;
+import com.rumpus.common.views.Section;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -79,5 +80,10 @@ public abstract class AbstractViewController extends AbstractCommonController {
     public ResponseEntity<Resource> getResourceByName(@PathVariable(AbstractCommonController.PATH_VARIABLE_RESOURCE_BY_NAME) String name, HttpServletRequest request) {
         Resource resource = viewLoader.getResourceByName(name);
         return new ResponseEntity<Resource>(resource != null ? resource : ResourceManager.getEmptyResource(), HttpStatusCode.valueOf(200));
+    }
+
+    @GetMapping(AbstractCommonController.PATH_SECTION_BY_NAME)
+    public ResponseEntity<Section> getSection(@PathVariable(AbstractCommonController.PATH_VARIABLE_SECTION_BY_NAME) String sectionName, HttpServletRequest request) {
+        return new ResponseEntity<Section>(viewLoader.getSection(sectionName), HttpStatusCode.valueOf(200));
     }
 }
