@@ -90,4 +90,16 @@ public class ServerManager extends AbstractCommonManager<ManageableServerThread>
         }
         return "Server not found: " + name;
     }
+
+    @Override
+    public ManageableServerThread createEmptyManagee() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+
+    @Override
+    public ManageableServerThread createEmptyManagee(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
 }

@@ -1,4 +1,4 @@
-package com.rumpus.common.views.Framework.Bulma;
+package com.rumpus.common.views.CSSFramework.Bulma;
 
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 

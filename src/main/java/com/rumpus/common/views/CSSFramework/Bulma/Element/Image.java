@@ -1,4 +1,4 @@
-package com.rumpus.common.views.Framework.Bulma.Element;
+package com.rumpus.common.views.CSSFramework.Bulma.Element;
 
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
@@ -8,7 +8,7 @@ public class Image extends AbstractBulmaElement {
     private static final AbstractHtmlObject.HtmlTagType HTML_TAG_TYPE = AbstractHtmlObject.HtmlTagType.FIGURE;
 
     // TODO: maybe member of image src too?
-    
+
     public enum ImageSize {
         SIZE_16_BY_16("is-16x16"),
         SIZE_24_BY_24("is-24x24"),

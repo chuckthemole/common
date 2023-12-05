@@ -30,8 +30,15 @@ public class ResourceManager extends AbstractCommonManager<Resource> {
     public static ResourceManager createFromMap(Map<String, Resource> resourceMap) {
         return new ResourceManager(resourceMap);
     }
-    public static Resource getEmptyResource() {
-        return new Resource(NO_NAME, ResourceType.EMPTY, StorageType.EMPTY, "");
+
+    @Override
+    public Resource createEmptyManagee() {
+        return new Resource("", ResourceType.EMPTY, StorageType.EMPTY, "");
+    }
+
+    @Override
+    public Resource createEmptyManagee(String name) {
+        return this.addResource(name, ResourceType.EMPTY, StorageType.EMPTY, "");
     }
 
     /**

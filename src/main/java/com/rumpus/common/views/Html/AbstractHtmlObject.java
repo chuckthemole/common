@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rumpus.common.views.AbstractView;
-import com.rumpus.common.views.Framework.Bulma.AbstractBulmaObject;
+import com.rumpus.common.views.CSSFramework.Bulma.AbstractBulmaObject;
 
 public abstract class AbstractHtmlObject extends AbstractView {
 
@@ -167,6 +167,10 @@ public abstract class AbstractHtmlObject extends AbstractView {
     private HtmlTagType htmlTagType;
     private String htmlTagTypeValue;
     private Map<String, String> htmlTagAttributes;
+
+    // TODO: add an abstract class for the type of html object (e.g. Bulma, Bootstrap, Component, etc.)
+    // maybe make this a breadcrumb trail of the object's parents?
+    // this will help when knowing how to render the object in the front end
 
     public AbstractHtmlObject(String name, HtmlTagType htmlTagType, String body) {
         super(name);

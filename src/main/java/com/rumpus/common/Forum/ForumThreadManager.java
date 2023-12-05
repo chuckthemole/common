@@ -29,5 +29,15 @@ public class ForumThreadManager extends AbstractCommonManager<ForumThread> {
     public static ForumThreadManager createWithForumThreads(String... forumThreadIds) {
         return new ForumThreadManager(forumThreadIds);
     }
+    @Override
+    public ForumThread createEmptyManagee() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+    @Override
+    public ForumThread createEmptyManagee(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
     
 }

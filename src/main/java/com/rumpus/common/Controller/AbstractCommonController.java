@@ -1,6 +1,7 @@
 package com.rumpus.common.Controller;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.views.ResourceManager;
 
 public abstract class AbstractCommonController extends AbstractCommonObject {
 
@@ -19,6 +20,7 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
     protected static final String PATH_VARIABLE_SECTION_BY_NAME = "section_name";
 
     protected String currentBasePath;
+    protected ResourceManager resourceManager;
 
     static protected ICommonPaths commonPaths = null;
 
@@ -36,6 +38,7 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
             AbstractCommonController.commonPaths = CommonPaths.getInstance();
         }
         this.currentBasePath = AbstractCommonController.COMMON_REST_API_PATH;
+        this.resourceManager = ResourceManager.createEmptyManager();
     }
 
     public String getCurrentBasePath() {

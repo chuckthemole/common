@@ -18,6 +18,24 @@ export const common_fetcher = async url => {
     return res.json()
 }
 
+/**
+ * Common loader for all common requests
+ * 
+ * @param {string} path path to GET request
+ * @returns {object} {data, error, isLoading}
+ */
+export function common_loader(path) {
+    const { data, error, isLoading } = useSWR(
+        path,
+        common_fetcher
+    );
+    return {
+        data: data,
+        error: error,
+        isLoading: isLoading
+    }
+}
+
 export function getCurrentBasePath() {
     const { data, error, isLoading } = useSWR(
         "/common/api/current_base_path",

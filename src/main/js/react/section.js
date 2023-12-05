@@ -40,6 +40,7 @@ export default function Section({section_path}) {
 
     // TODO: data.resources think about what to do...
 
+    // recursive function to construct the html content from parent object
     function constructHtmlContent(currentObject) {
         if(currentObject !== undefined) {
             console.log(currentObject.body);

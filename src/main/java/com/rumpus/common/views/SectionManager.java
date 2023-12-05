@@ -66,4 +66,14 @@ public class SectionManager extends AbstractCommonManager<Section> {
     public List<Section> getSections() {
         return List.of(this.values().toArray(new Section[this.size()]));
     }
+    @Override
+    public Section createEmptyManagee() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+    @Override
+    public Section createEmptyManagee(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
 }

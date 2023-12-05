@@ -79,7 +79,7 @@ public abstract class AbstractViewController extends AbstractCommonController {
     @GetMapping(AbstractCommonController.PATH_RESOURCE_BY_NAME)
     public ResponseEntity<Resource> getResourceByName(@PathVariable(AbstractCommonController.PATH_VARIABLE_RESOURCE_BY_NAME) String name, HttpServletRequest request) {
         Resource resource = viewLoader.getResourceByName(name);
-        return new ResponseEntity<Resource>(resource != null ? resource : ResourceManager.getEmptyResource(), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<Resource>(resource != null ? resource : this.resourceManager.createEmptyManagee(), HttpStatusCode.valueOf(200));
     }
 
     @GetMapping(AbstractCommonController.PATH_SECTION_BY_NAME)

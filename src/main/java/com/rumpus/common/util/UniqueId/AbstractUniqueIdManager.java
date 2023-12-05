@@ -87,4 +87,16 @@ public class AbstractUniqueIdManager extends AbstractCommonManager<IdSet> {
             return false;
         }
     }
+
+    @Override
+    public IdSet createEmptyManagee() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+
+    @Override
+    public IdSet createEmptyManagee(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
 }

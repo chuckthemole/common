@@ -41,4 +41,16 @@ public class LogManager extends AbstractCommonManager<LogCollection> {
             LogBuilder.logBuilderFromStringArgs("LogItem is null").error();
         }
     }
+
+    @Override
+    public LogCollection createEmptyManagee() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+
+    @Override
+    public LogCollection createEmptyManagee(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
 }

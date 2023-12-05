@@ -41,6 +41,20 @@ public abstract class AbstractCommonManager<MANAGEE extends IManageable> extends
     //     throw new UnsupportedOperationException("Unimplemented method 'add'");
     // }
 
+    /**
+     * Create an empty managee.
+     * 
+     * @return The created managee.
+     */
+    public abstract MANAGEE createEmptyManagee();
+    /**
+     * Create a managee with the given name and add it to the manageeMap.
+     * 
+     * @param name The name of the managee to create.
+     * @return The created managee.
+     */
+    public abstract MANAGEE createEmptyManagee(String name);
+
     @Override
     public int size() {
         return this.manageeMap.size();
