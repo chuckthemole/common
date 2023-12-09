@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-import com.rumpus.common.views.CSSFramework.Bulma.Element.Block;
+import com.rumpus.common.views.CSSFramework.Bulma.CSS.Element.Block;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
 /**

@@ -17,7 +17,7 @@ public class Section extends AbstractView implements IManageable {
 
     public static final String NAME = "Section";
     private Set<String> resources; // names of resources that can be found in resource manager
-    private AbstractHtmlObject htmlParentObject;
+    private AbstractHtmlObject htmlParentObject; // TODO: maybe this shold be an AbstractTemplate?
 
     protected Section(AbstractHtmlObject htmlParentObject) {
         super(NAME);

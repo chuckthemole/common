@@ -22,7 +22,7 @@ public abstract class AbstractViews extends AbstractCommonObject  {
 
 	public AbstractViews(String name) {
         super(name);
-        // init(); // TODO - should I uncomment and call init() here? instead of calling init() in constructor of child class?
+        this.init();
 	}
 
     protected int init() {
