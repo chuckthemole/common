@@ -12,7 +12,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  * Aside html object. A menu for navigating a website.
  * This is implementing {@link Map} so that a groups title and list of items can be added to the aside.
  */
-public abstract class AbstractAside extends AbstractHtmlObject { // TODO: should this be managed?
+public abstract class AbstractAside extends AbstractComponent { // TODO: should this be managed?
 
     public static final String DEFAULT_DELIMITER = ",";
     public static final String START_ASIDE_CHILD_LIST = "start-aside-child-list";
@@ -36,8 +36,6 @@ public abstract class AbstractAside extends AbstractHtmlObject { // TODO: should
      */
     protected String itemsHtmlTagAttibutes;
 
-    private boolean isSubAside; // used locally to flag if this is a sub aside, TODO: may not need
-
     // a map of groups in the aside. key: group title, value: list of items.
     private TreeMap<String, List<AbstractHtmlObject>> mapOfAsideGroups_title_listOfItems;
 
@@ -46,18 +44,12 @@ public abstract class AbstractAside extends AbstractHtmlObject { // TODO: should
         super(name, HtmlTagType.ASIDE, "");
         this.titleHtmlTagAttributes = "";
         this.itemsHtmlTagAttibutes = "";
-        this.isSubAside = false;
     }
     public AbstractAside(String name, String asideGroups, String titleHtmlTagAttributes, String itemsHtmlTagAttibutes) {
         super(name, HtmlTagType.ASIDE, "");
-        this.init(asideGroups, titleHtmlTagAttributes, itemsHtmlTagAttibutes, false);
+        this.init(asideGroups, titleHtmlTagAttributes, itemsHtmlTagAttibutes);
     }
-    private AbstractAside(String name, String asideGroups) { // this ctor is used locally to create a sub aside
-        super(name, HtmlTagType.DIV, ""); // setting type to div rn. this may need to be changed later TODO
-        this.init(asideGroups, "", "", true);
-    }
-    private void init(String asideGroups, String titleHtmlTagAttributes, String itemsHtmlTagAttibutes, boolean isSubAside) {
-        this.isSubAside = isSubAside;
+    private void init(String asideGroups, String titleHtmlTagAttributes, String itemsHtmlTagAttibutes) {
         this.mapOfAsideGroups_title_listOfItems = new TreeMap<String, List<AbstractHtmlObject>>();
         this.itemsHtmlTagAttibutes = itemsHtmlTagAttibutes;
         this.titleHtmlTagAttributes = titleHtmlTagAttributes;
@@ -76,7 +68,9 @@ public abstract class AbstractAside extends AbstractHtmlObject { // TODO: should
     }
 
     private static AbstractAside createSubAside(String name, String asideGroups) {
-        return new AbstractAside("", asideGroups) {};
+        AbstractAside aside = new AbstractAside(name, asideGroups, "", "") {};
+        aside.setHtmlTagType(HtmlTagType.DIV); // setting type to div rn. this may need to be changed later TODO
+        return aside;
     }
 
     /**
@@ -174,8 +168,7 @@ public abstract class AbstractAside extends AbstractHtmlObject { // TODO: should
                 List<AbstractHtmlObject> asideGroupHtmlObjectList = new ArrayList<AbstractHtmlObject>();
                 for(int asideGroupArrayIndex = 1; asideGroupArrayIndex < asideGroupArray.length; asideGroupArrayIndex++) { // starting from index 1, because index 0 is the title
                     String groupItem = asideGroupArray[asideGroupArrayIndex].strip();
-                    AbstractHtmlObject asideComponent = AbstractHtmlObject.createEmptyAbstractHtmlObject(); // abstractHtmlObject to add to asideGroupHtmlObjectList
-                    asideComponent.setBody("THIS IS A TEST");
+                    AbstractHtmlObject asideComponent = null; // abstractHtmlObject to add to asideGroupHtmlObjectList
                     if(groupItem.equals(START_ASIDE_CHILD_LIST)) {
                         asideComponent = AbstractAsideComponent.createAsideEmbeddedList();
 
