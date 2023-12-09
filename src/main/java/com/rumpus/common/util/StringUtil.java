@@ -56,6 +56,46 @@ public class StringUtil extends AbstractCommon {
     }
 
     /**
+     * @brief remove surrounding String sequence. 
+     * 
+     * @param trimmee string to trim
+     * @param trimmer string to trim
+     * @return string without surrounding String, if string is surrounded by given String, otherwise returns original string
+     */
+    public static String trimStartAndEnd(String trimee, String trimmer) {
+        char[] chars = trimmer.toCharArray();
+        // trim char by char using loop. if the string is not returned trim break the loop and return original string.
+        String modifiedString = String.valueOf(trimee);
+        int charsLength = chars.length;
+        for(int i = 0; i < charsLength; i++) {
+            // LOG.info("Trimming char: " + chars[i] + " from string: " + modifiedString + ".");
+            String previous = String.valueOf(modifiedString);
+            modifiedString = StringUtil.trimStartAndEnd(modifiedString, chars[i], chars[charsLength - 1 - i]);
+            if(previous.equals(modifiedString)) {
+                LOG.info("String is not surrounded by given chars. Returning original string.");
+                return trimee;
+            }
+        }
+        return modifiedString;
+    }
+
+    // trimStartOrEnd will trim the start or end of the string if it starts or ends with the given char.
+    public static String trimStartOrEnd(String inputString, char inputChar) {
+        if(StringUtil.isStringNullOrEmpty(inputString)) {
+            return inputString;
+        }
+        return trimEnd(trimBegin(inputString, inputChar), inputChar);
+    }
+
+    // trimStartOrEnd same as above but uses String instead of char
+    public static String trimStartOrEnd(String inputString, String inputStringToTrim) {
+        if(StringUtil.isStringNullOrEmpty(inputString)) {
+            return inputString;
+        }
+        return trimEnd(trimBegin(inputString, inputStringToTrim), inputStringToTrim);
+    }
+
+    /**
      * @brief remove beginning char
      * 
      * @return string without beginning char, if string starts with given char, otherwise returns original string
@@ -72,6 +112,22 @@ public class StringUtil extends AbstractCommon {
     }
 
     /**
+     * @brief remove beginning String
+     * 
+     * @return string without beginning String, if string starts with given String, otherwise returns original string
+     */
+    public static String trimBegin(String inputString, String inputStringToTrim) {
+        if(StringUtil.isStringNullOrEmpty(inputString)) {
+            return inputString;
+        }
+        if(!inputString.startsWith(inputStringToTrim)) {
+            LOG.info("Input string does not start with given String. Returning original string.");
+            return inputString;
+        }
+        return inputString.substring(inputStringToTrim.length());
+    }
+
+    /**
      * @brief remove end char
      * @param inpuString string to trim
      * @return string without end char, if string ends with given char, otherwise returns original string
@@ -85,6 +141,22 @@ public class StringUtil extends AbstractCommon {
             return inpuString;
         }
         return inpuString.substring(0, inpuString.length() - 1);
+    }
+
+    /**
+     * @brief remove end String
+     * @param inpuString string to trim
+     * @return string without end String, if string ends with given String, otherwise returns original string
+     */
+    public static String trimEnd(String inpuString, String inputStringToTrim) {
+        if(StringUtil.isStringNullOrEmpty(inpuString)) {
+            return inpuString;
+        }
+        if(!inpuString.endsWith(inputStringToTrim)) {
+            LOG.info("Input string does not end with given String. Returning original string.");
+            return inpuString;
+        }
+        return inpuString.substring(0, inpuString.length() - inputStringToTrim.length());
     }
 
     /**
@@ -155,5 +227,14 @@ public class StringUtil extends AbstractCommon {
             return true;
         }
         return false;
+    }
+
+    //////////////////////////////////////////////
+    ///////// JSON UTILITIES /////////////////////
+    //////////////////////////////////////////////
+    public static String prettyPrintJson(String json) {
+        com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
+        com.google.gson.JsonElement je = com.google.gson.JsonParser.parseString(json);
+        return gson.toJson(je);
     }
 }
