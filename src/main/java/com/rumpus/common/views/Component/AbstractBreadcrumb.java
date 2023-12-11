@@ -1,93 +1,80 @@
 package com.rumpus.common.views.Component;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+public abstract class AbstractBreadcrumb extends AbstractComponent {
 
-import com.rumpus.common.Manager.IManageable;
-import com.rumpus.common.views.Html.AbstractHtmlObject;
+    public static final String LINK_DELIMITER = " >< ";
+    private String breadcrumbs;
+    private String navContainerAttributes;
 
-public abstract class AbstractBreadcrumb extends AbstractHtmlObject implements IManageable, Map<String, String> {
-
-    private Map<String, String> crumbs; // key: name of the breadcrumb, value: url of the breadcrumb
-    private String isActive; // marks the active breadcrumb // TODO: can maybe just be done in js?
-    protected AbstractHtmlObject ul;
-
-    public AbstractBreadcrumb(String name) {
-        super(name, HtmlTagType.NAV, "");
-        this.init();
-    }
-
-    private void init() {
-        this.crumbs = new HashMap<String, String>();
-        this.ul = AbstractHtmlObject.createEmptyAbstractHtmlObject();
-        this.ul.setHtmlTagType(AbstractHtmlObject.HtmlTagType.UL);
-    }
-
-    /**
-     * Sets the children of AbstractHtmlObject from crumbs. Use this method to set the children of the Breadcrumb, after adding crumbs.
-     * TODO: shoulds Map be cleared after setting children?
-     */
-    abstract public void setChildrenFromCrumbs();
-
-    @Override
-    public int size() {
-        return this.crumbs.size();
+    public AbstractBreadcrumb(String name, String breadcrumbs, String navContainerAttributes) {
+        super(name, HtmlTagType.NAV, "", AbstractComponent.ComponentType.BREADCRUMB, java.util.List.of(breadcrumbs, navContainerAttributes).toArray(new String[2]));
     }
 
     @Override
-    public boolean isEmpty() {
-        return this.crumbs.isEmpty();
+    protected int init(String... args) {
+        for (String arg : args) {
+            LOG.info("arg: " + arg);
+        }
+        LOG.info("Default delim" + super.defaultDelimiter);
+        this.breadcrumbs = args[0];
+        this.navContainerAttributes = args[1];
+        return SUCCESS;
     }
 
     @Override
-    public boolean containsKey(Object key) {
-        return this.crumbs.containsKey(key);
+    public void setChildrenForComponent() {
+        com.rumpus.common.views.Html.AbstractHtmlObject breadcrumbList = AbstractBreadcrumbComponent.createBreadcrumbList(); // breadcrumb list
+
+        // create breadcrumb list items
+        String[] crumbArray = this.breadcrumbs.split(super.defaultDelimiter);
+        LOG.info("crumbArray length: " + crumbArray.length);
+        for(String crumb : crumbArray) {
+            LOG.info("crumb1: " + crumb);
+        }
+        for (int crumbArrayIndex = 0; crumbArrayIndex < crumbArray.length; crumbArrayIndex++) {
+            String[] crumbAndLink = crumbArray[crumbArrayIndex].split(AbstractBreadcrumb.LINK_DELIMITER);
+            LOG.info("crumbAndLink length: " + crumbAndLink.length);
+            for(String crumb : crumbAndLink) {
+                LOG.info("crumb: " + crumb);
+            }
+            if (crumbAndLink.length == 1) { // crumbs without links
+                breadcrumbList.addChild(AbstractBreadcrumbComponent.createBreadcrumbListItem(crumbAndLink[0].strip())); // TODO: maybe add a container for spacing. rendering looks a little weird
+                // TODO update maybe set as link and use is-active for active
+            } else if (crumbAndLink.length == 2) { // crumbs with links
+                final com.rumpus.common.views.Html.AbstractHtmlObject crumbAndLinkHtmlObject = AbstractBreadcrumbComponent.createBreadcrumbLink(crumbAndLink[0].strip(), crumbAndLink[1].strip());
+                breadcrumbList.addChild(AbstractBreadcrumbComponent.createBreadcrumbListItem("").addChild(crumbAndLinkHtmlObject));
+            } else { // invalid crumbs
+                LOG.error("Invalid breadcrumb: " + crumbArray[crumbArrayIndex]);
+                continue;
+            }
+        }
+        this.addChild(breadcrumbList);
+
+        // add tag attributes to the nav container
+        String[] navContainerAttributesArray = this.navContainerAttributes.split(super.defaultDelimiter);
+        for(String attribute : navContainerAttributesArray) {
+            String[] attributePropAndValue = attribute.split("=");
+            if(attributePropAndValue.length == 2) {
+                this.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
+            } else {
+                LOG.error("Invalid nav container attribute: " + attribute);
+            }
+        }
     }
 
-    @Override
-    public boolean containsValue(Object value) {
-        return this.crumbs.containsValue(value);
+    public String getBreadcrumbs() {
+        return breadcrumbs;
     }
 
-    @Override
-    public String get(Object key) {
-        return this.crumbs.get(key);
+    public void setBreadcrumbs(String breadcrumbs) {
+        this.breadcrumbs = breadcrumbs;
     }
 
-    @Override
-    public String put(String key, String value) {
-        return this.crumbs.put(key, value);
+    public String getNavContainerAttributes() {
+        return navContainerAttributes;
     }
 
-    @Override
-    public String remove(Object key) {
-        return this.crumbs.remove(key);
-    }
-
-    @Override
-    public void putAll(Map<? extends String, ? extends String> m) {
-        this.crumbs.putAll(m);
-    }
-
-    @Override
-    public void clear() {
-        this.crumbs.clear();
-    }
-
-    @Override
-    public Set<String> keySet() {
-        return this.crumbs.keySet();
-    }
-
-    @Override
-    public Collection<String> values() {
-        return this.crumbs.values();
-    }
-
-    @Override
-    public Set<Entry<String, String>> entrySet() {
-        return this.crumbs.entrySet();
+    public void setNavContainerAttributes(String navContainerAttributes) {
+        this.navContainerAttributes = navContainerAttributes;
     }
 }

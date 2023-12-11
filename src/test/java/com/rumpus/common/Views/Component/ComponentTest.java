@@ -15,8 +15,10 @@ import org.junit.jupiter.api.Test;
 import com.rumpus.common.CommonTest;
 import com.rumpus.common.views.CSSFramework.Bulma.CSS.Element.Block;
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside;
+import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaBreadcrumb;
 import com.rumpus.common.views.Component.AbstractAside;
 import com.rumpus.common.views.Component.AbstractAsideComponent;
+import com.rumpus.common.views.Component.AbstractBreadcrumb;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
 /**
@@ -24,7 +26,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  * 
  * TODO: this isn't testing anything rn.. just using to debug in console
  */
-public class AsideComponentTest extends CommonTest {
+public class ComponentTest extends CommonTest {
     
     private AbstractHtmlObject actualAbstractHtmlObject;
     private AbstractHtmlObject expectedAbstractHtmlObject;
@@ -86,7 +88,20 @@ public class AsideComponentTest extends CommonTest {
     }
 
     @Test
-    @Order(3)
-    void testBlockWithBodyAndAttributes() {
+    @Order(4)
+    void testBreadcrumbComponent() {
+        LOG.info("- - testBreadcrumbComponent - - ");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Bulma");
+        sb.append(AbstractBreadcrumb.LINK_DELIMITER);
+        sb.append("www.google.com,");
+        sb.append("Another Bulma Page");
+        sb.append(AbstractBreadcrumb.LINK_DELIMITER);
+        sb.append("www.google.com,");
+        sb.append("Current Page");
+        sb.append(AbstractBreadcrumb.LINK_DELIMITER);
+        sb.append("www.yahoo.com");
+        AbstractHtmlObject breadcrumb = BulmaBreadcrumb.create(sb.toString());
+        LOG.info(breadcrumb.toString());
     }
 }

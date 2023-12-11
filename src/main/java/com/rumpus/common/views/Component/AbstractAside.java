@@ -58,7 +58,6 @@ public abstract class AbstractAside extends AbstractComponent {
         this.asideGroupsString = args[0];
         this.itemsHtmlTagAttibutes = args[1];
         this.titleHtmlTagAttributes = args[2];
-        super.defaultDelimiter = AbstractComponent.DEFAULT_DELIMITER;
         return SUCCESS;
     }
 
