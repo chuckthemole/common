@@ -54,29 +54,10 @@ public class AsideComponentTest extends CommonTest {
         assertEquals(expectedAbstractHtmlObject, actualAbstractHtmlObject);
     }
 
-    // test setChildrenFromGroups
     @Test
     @Order(2)
-    void testSetChildrenFromGroups() {
-        // LOG.info("- - testSetChildrenFromGroups 1 - - ");
-        // String asideGroups1 = "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2";
-        // AbstractHtmlObject actualGroups1 = new AbstractBulmaAside(asideGroups1) {};
-        // LOG.info(actualGroups1.toString());
-
-        // create 4 abstract html objects. 2 for each group
-        AbstractHtmlObject group1Object1 = Block.createWithBody("body1");
-        AbstractHtmlObject group1Object2 = Block.createWithBody("body2");
-        AbstractHtmlObject group2Object1 = Block.createWithBody("body3");
-        AbstractHtmlObject group2Object2 = Block.createWithBody("body4");
-        // Map<String, List<AbstractHtmlObject>> expectedGroups1 = Map.of("group1", List.of(group1Object1, group1Object2), "group2", List.of(group2Object1, group2Object2));
-        TreeMap<String, List<AbstractHtmlObject>> expectedGroups1 = new TreeMap<>();
-        expectedGroups1.put("group1", List.of(group1Object1, group1Object2));
-        expectedGroups1.put("group2", List.of(group2Object1, group2Object2));
-        AbstractAside expectedAbstractHtmlObject1 = new AbstractAside("Test1") {};
-        expectedAbstractHtmlObject1.setMapOfAsideGroups_title_listOfItems(expectedGroups1);
-        expectedAbstractHtmlObject1.setChildrenFromGroups();
-        LOG.info(expectedAbstractHtmlObject1.toString());
-        // assertEquals(0, 1);
+    void testSetChildrenForComponent() {
+        // TODO: create AbstractHtmlObject and test setChildrenFromGroups against it
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.rumpus.common.views.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 import com.rumpus.common.util.StringUtil;
@@ -10,11 +9,11 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 
 /**
  * Aside html object. A menu for navigating a website.
- * This is implementing {@link Map} so that a groups title and list of items can be added to the aside.
+ * <p>
+ * This extends {@link AbstractComponent} mainly using its setChildrenForComponent method.
  */
-public abstract class AbstractAside extends AbstractComponent { // TODO: should this be managed?
+public abstract class AbstractAside extends AbstractComponent {
 
-    public static final String DEFAULT_DELIMITER = ",";
     public static final String START_ASIDE_CHILD_LIST = "start-aside-child-list";
     public static final String END_ASIDE_CHILD_LIST = "end-aside-child-list";
     public static final String GROUP_DELIMITER = "group-delimiter";
@@ -35,40 +34,47 @@ public abstract class AbstractAside extends AbstractComponent { // TODO: should 
      * For example: "class=menu-label, id=menu-label-id"
      */
     protected String itemsHtmlTagAttibutes;
-
-    // a map of groups in the aside. key: group title, value: list of items.
-    private TreeMap<String, List<AbstractHtmlObject>> mapOfAsideGroups_title_listOfItems;
+    /**
+     * A comma delimited string of groups for the aside.
+     * <p>
+     * Example: "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2"
+     * <p>
+     * Example with sub aside: "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2,group-delimiter,start-aside-child-list,groupChildList, child-item1, child-item2,end-aside-child-list,group-delimiter,group3, group3-item1, group3-item2"
+     */
+    private String asideGroupsString;
 
     // Ctor
     public AbstractAside(String name) { // using for testing
-        super(name, HtmlTagType.ASIDE, "");
+        super(name, HtmlTagType.ASIDE, "", AbstractComponent.ComponentType.ASIDE, "");
         this.titleHtmlTagAttributes = "";
         this.itemsHtmlTagAttibutes = "";
     }
     public AbstractAside(String name, String asideGroups, String titleHtmlTagAttributes, String itemsHtmlTagAttibutes) {
-        super(name, HtmlTagType.ASIDE, "");
-        this.init(asideGroups, titleHtmlTagAttributes, itemsHtmlTagAttibutes);
-    }
-    private void init(String asideGroups, String titleHtmlTagAttributes, String itemsHtmlTagAttibutes) {
-        this.mapOfAsideGroups_title_listOfItems = new TreeMap<String, List<AbstractHtmlObject>>();
-        this.itemsHtmlTagAttibutes = itemsHtmlTagAttibutes;
-        this.titleHtmlTagAttributes = titleHtmlTagAttributes;
-
-        // use createGroupsFromStrings to create groups from asideGroups
-        // String[] asideGroupsArray = asideGroups.split(GROUP_DELIMITER);
-        // for (String asideGroup : asideGroupsArray) { // strip white space on each item in the group
-        //     asideGroup = asideGroup.strip();
-        // }
-        if(createGroupsFromStrings(asideGroups) == SUCCESS) {
-            this.setChildrenFromGroups();
-        } else {
-            LOG.error("AbstractAside() - Failed to create groups from strings.");
-            LOG.info(asideGroups);
-        }
+        super(name, HtmlTagType.ASIDE, "", AbstractComponent.ComponentType.ASIDE, List.of(asideGroups, titleHtmlTagAttributes, itemsHtmlTagAttibutes).toArray(new String[3])); // TODO: is there a better way to do this?
     }
 
+    @Override
+    protected int init(String... args) {
+        this.asideGroupsString = args[0];
+        this.itemsHtmlTagAttibutes = args[1];
+        this.titleHtmlTagAttributes = args[2];
+        super.defaultDelimiter = AbstractComponent.DEFAULT_DELIMITER;
+        return SUCCESS;
+    }
+
+    /**
+     * Factory static method for creating a sub aside. Used locally only right now.
+     * @param name name of the sub aside
+     * @param asideGroups groups of the sub aside
+     * @return the sub aside
+     */
     private static AbstractAside createSubAside(String name, String asideGroups) {
-        AbstractAside aside = new AbstractAside(name, asideGroups, "", "") {};
+        AbstractAside aside = new AbstractAside(name, asideGroups, "", "") {
+            @Override
+            public void setChildrenForComponent() {
+                super.setChildrenForComponent();
+            }
+        };
         aside.setHtmlTagType(HtmlTagType.DIV); // setting type to div rn. this may need to be changed later TODO
         return aside;
     }
@@ -84,14 +90,15 @@ public abstract class AbstractAside extends AbstractComponent { // TODO: should 
      * 
      * @param groups key: group title, value: list of items.
      */
-    public void setChildrenFromGroups() {
+    @Override
+    public void setChildrenForComponent() {
 
-        this.mapOfAsideGroups_title_listOfItems.forEach((titleKey, listOfItems) -> {
+        this.createGroupsFromStrings(this.asideGroupsString).forEach((titleKey, listOfItems) -> {
             if(titleKey != null && !titleKey.equals("")) { // check if titleKey is null or empty, this should never happen, you should have a title for each group
                 // add title
                 AbstractHtmlObject titleHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
                 titleHtmlObject.setHtmlTagType(AbstractHtmlObject.HtmlTagType.P);
-                String[] titleHtmlAttributes = this.titleHtmlTagAttributes.split(DEFAULT_DELIMITER);
+                String[] titleHtmlAttributes = this.titleHtmlTagAttributes.split(super.defaultDelimiter);
                 for(String attribute : titleHtmlAttributes) {
                     attribute = attribute.strip();
                     if(attribute != null && !attribute.equals("")) {
@@ -110,7 +117,7 @@ public abstract class AbstractAside extends AbstractComponent { // TODO: should 
                 // add items
                 AbstractHtmlObject menuListHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
                 menuListHtmlObject.setHtmlTagType(AbstractHtmlObject.HtmlTagType.UL);
-                String[] itemsHtmlAttributes = this.itemsHtmlTagAttibutes.split(DEFAULT_DELIMITER);
+                String[] itemsHtmlAttributes = this.itemsHtmlTagAttibutes.split(super.defaultDelimiter);
                 for(String attribute : itemsHtmlAttributes) {
                     if(attribute != null && !attribute.equals("")) {
                         attribute = attribute.strip();
@@ -142,24 +149,30 @@ public abstract class AbstractAside extends AbstractComponent { // TODO: should 
 
     }
 
-
-
-    private int createGroupsFromStrings(String asideGroups) {
+    /**
+     * Helper method for creating groups (Map<String, List>) from a string.
+     * 
+     * @param asideGroups string of groups
+     * @return map of groups (key: group title, value: list of items)
+     */
+    private TreeMap<String, List<AbstractHtmlObject>> createGroupsFromStrings(String asideGroups) {
         String[] asideGroupsArray = asideGroups.split(GROUP_DELIMITER);
         // for each element in asideGroupsArray, trim ending and beginning white space, and trim GROUP_DELIMITER from ending and beginning.
-        for (int i = 0; i < asideGroupsArray.length; i++) { // strip white space on each item in the group and remove DEFAULT_DELIMITER from beginning and/or end
-            asideGroupsArray[i] = StringUtil.trimStartOrEnd(asideGroupsArray[i].strip(), DEFAULT_DELIMITER).strip();
+        for (int i = 0; i < asideGroupsArray.length; i++) { // strip white space on each item in the group and remove super.defaultDelimiter from beginning and/or end
+            asideGroupsArray[i] = StringUtil.trimStartOrEnd(asideGroupsArray[i].strip(), super.defaultDelimiter).strip();
         }
         return createGroupsFromStringsHelper(asideGroupsArray);
     }
 
-    private int createGroupsFromStringsHelper(String[] asideGroups) {
+    private TreeMap<String, List<AbstractHtmlObject>> createGroupsFromStringsHelper(String[] asideGroups) {
+
+        TreeMap<String, List<AbstractHtmlObject>> mapOfAsideGroups_title_listOfItems = new TreeMap<String, List<AbstractHtmlObject>>();
 
         // iterate through asideGroupsArray, creating groups as a list
         for(int asideGroupsIndex = 0; asideGroupsIndex < asideGroups.length; asideGroupsIndex++) {
 
             // create array of each element in asideGroupString
-            String[] asideGroupArray = asideGroups[asideGroupsIndex].split(DEFAULT_DELIMITER);
+            String[] asideGroupArray = asideGroups[asideGroupsIndex].split(super.defaultDelimiter);
 
             // get the title from the first element in asideGroupList
             final String title = asideGroupArray[0].strip();
@@ -177,7 +190,7 @@ public abstract class AbstractAside extends AbstractComponent { // TODO: should 
                         for(int i = asideGroupArrayIndex + 1; i < asideGroupArray.length; i++) {
                             subStringArray[i - asideGroupArrayIndex - 1] = asideGroupArray[i];
                         }
-                        String subList = String.join(DEFAULT_DELIMITER, subStringArray);
+                        String subList = String.join(super.defaultDelimiter, subStringArray);
                         final AbstractHtmlObject subAside = AbstractAside.createSubAside(this.name, subList);
                         asideComponent.addChild(subAside);
                         // increment till we find END_ASIDE_CHILD_LIST
@@ -194,19 +207,10 @@ public abstract class AbstractAside extends AbstractComponent { // TODO: should 
                     asideGroupHtmlObjectList.add(asideComponent);
                 }
 
-                this.mapOfAsideGroups_title_listOfItems.put(title, asideGroupHtmlObjectList);
+                mapOfAsideGroups_title_listOfItems.put(title, asideGroupHtmlObjectList);
             }
         }
 
-        return SUCCESS;
-    }
-
-    // getters setters
-    public Map<String, List<AbstractHtmlObject>> getMapOfAsideGroups_title_listOfItems() {
-        return this.mapOfAsideGroups_title_listOfItems;
-    }
-
-    public void setMapOfAsideGroups_title_listOfItems(TreeMap<String, List<AbstractHtmlObject>> mapOfAsideGroups_title_listOfItems) {
-        this.mapOfAsideGroups_title_listOfItems = mapOfAsideGroups_title_listOfItems;
+        return mapOfAsideGroups_title_listOfItems;
     }
 }

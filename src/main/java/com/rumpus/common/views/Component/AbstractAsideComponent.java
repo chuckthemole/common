@@ -33,7 +33,7 @@ public abstract class AbstractAsideComponent extends AbstractHtmlObject {
 
     }
 
-    public class AsideTitle extends AbstractAsideComponent {
+    private static class AsideTitle extends AbstractAsideComponent {
 
         private static final String NAME = "AsideTitle";
 
@@ -42,7 +42,7 @@ public abstract class AbstractAsideComponent extends AbstractHtmlObject {
         }
     }
 
-    public class AsideListItem extends AbstractAsideComponent {
+    private static class AsideListItem extends AbstractAsideComponent {
 
         private static final String NAME = "AsideListItem";
 
@@ -51,7 +51,7 @@ public abstract class AbstractAsideComponent extends AbstractHtmlObject {
         }
     }
 
-    public class AsideList extends AbstractAsideComponent {
+    private static class AsideList extends AbstractAsideComponent {
 
         private static final String NAME = "AsideList";
 
@@ -60,25 +60,27 @@ public abstract class AbstractAsideComponent extends AbstractHtmlObject {
         }
     }
 
-    public class AsideLink extends AbstractAsideComponent {
+    private static class AsideLink extends AbstractAsideComponent {
 
         private static final String NAME = "AsideLink";
 
-        public AsideLink(String body) {
+        public AsideLink(String body, String link) {
             super(NAME, AsideComponentType.LINK, body);
+            this.setLink(link);
         }
     }
 
-    public class AsideLinks extends AbstractAsideComponent {
+    // TODO: do we need this?
+    // private static class AsideLinks extends AbstractAsideComponent {
 
-        private static final String NAME = "AsideLinks";
+    //     private static final String NAME = "AsideLinks";
 
-        public AsideLinks(String body) {
-            super(NAME, AsideComponentType.LINKS, body);
-        }
-    }
+    //     public AsideLinks(String body) {
+    //         super(NAME, AsideComponentType.LINKS, body);
+    //     }
+    // }
 
-    public class AsideEmbeddedList extends AbstractAsideComponent {
+    private static class AsideEmbeddedList extends AbstractAsideComponent {
 
         private static final String NAME = "AsideEmbeddedList";
 
@@ -92,42 +94,41 @@ public abstract class AbstractAsideComponent extends AbstractHtmlObject {
     ///////////////////////////////////////////
     private AsideComponentType asideComponentType;
     
-    public AbstractAsideComponent(String name, AsideComponentType asideComponentType, String body) {
+    private AbstractAsideComponent(String name, AsideComponentType asideComponentType, String body) {
         super(name, HtmlTagType.DIV, body); // use div as default but will be changed in setHtmlTagTypeBasedOnAsidecomponentType()
         this.asideComponentType = asideComponentType;
-        this.setHtmlTagTypeBasedOnAsidecomponentType();
+        this.setHtmlTagTypeBasedOnAsidecomponentType(); // TODO: this may be redundant
     }
 
-    public AbstractAsideComponent(String name, AsideComponentType asideComponentType, AbstractHtmlObject htmlObject) {
+    private AbstractAsideComponent(String name, AsideComponentType asideComponentType, AbstractHtmlObject htmlObject) {
         super(name, htmlObject);
         this.asideComponentType = asideComponentType;
-        this.setHtmlTagTypeBasedOnAsidecomponentType();
+        this.setHtmlTagTypeBasedOnAsidecomponentType(); // TODO: this may be redundant
     }
 
     public static AbstractAsideComponent createAsideTitle(String body) {
-        return new AbstractAsideComponent(AsideTitle.NAME, AsideComponentType.TITLE, body){};
+        return new AsideTitle(body);
     }
 
     public static AbstractAsideComponent createAsideListItem(String body) {
-        return new AbstractAsideComponent(AsideListItem.NAME, AsideComponentType.LIST_ITEM, body){};
+        return new AsideListItem(body);
     }
 
     public static AbstractAsideComponent createAsideList(String body) {
-        return new AbstractAsideComponent(AsideList.NAME, AsideComponentType.LIST, body){};
+        return new AsideList(body);
     }
 
     public static AbstractAsideComponent createAsideLink(String body, String link) {
-        AbstractAsideComponent htmlObject = new AbstractAsideComponent(AsideLink.NAME, AsideComponentType.LINK, body){};
-        htmlObject.setLink(link);
-        return htmlObject;
+        return new AsideLink(body, link);
     }
 
-    public static AbstractAsideComponent createAsideLinks(String body) {
-        return new AbstractAsideComponent(AsideLinks.NAME, AsideComponentType.LINKS, body){};
-    }
+    // see above
+    // public static AbstractAsideComponent createAsideLinks(String body) {
+    //     return new AbstractAsideComponent(AsideLinks.NAME, AsideComponentType.LINKS, body){};
+    // }
 
     public static AbstractAsideComponent createAsideEmbeddedList() {
-        return new AbstractAsideComponent(AsideEmbeddedList.NAME, AsideComponentType.EMBEDDED_LIST, ""){};
+        return new AsideEmbeddedList();
     }
 
     public AsideComponentType getAsideComponentType() {
