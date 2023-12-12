@@ -27,7 +27,7 @@ public abstract class AbstractAdmin extends AbstractTemplate {
     public void setComponents() {
         this.aside = this.initAside();
         this.breadcrumb = this.initBreadcrumb();
-        this.initWelcome();
+        this.welcome = this.initWelcome();
     }
 
     /**

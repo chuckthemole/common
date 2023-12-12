@@ -1,82 +1,303 @@
 package com.rumpus.common.views.Component;
 
-import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
-public abstract class AbstractWelcome extends AbstractHtmlObject implements IManageable {
+/**
+ * AbstractWelcome is an {@link AbstractComponent} that represents the welcome of a page.
+ * <p>
+ * Provide a string delimited by the delimiter containing the welcome components.
+ * <p>
+ * Example: "Hello, Someone! >< this is a sub header >< this is a sub sub header"
+ * <p>
+ * <p>
+ * Implementation should provide a list of the tag attributes to be used for the welcome. Should be six at most. Reference member variables for order.
+ * <p>
+ * They should be given in the following order:
+ * <p>
+ * 1. sectionHtmlTagAttributes
+ * <p>
+ * 2. divHtmlTagAttributes
+ * <p>
+ * 3. containerHtmlTagAttributes
+ * <p>
+ * 4. h1HtmlTagAttributes
+ * <p>
+ * 5. subHeaderTagAttributes
+ * <p>
+ * 6. subSubHeaderTagAttributes
+ * <p>
+ * Example: "class=hero is-info welcome is-small, class=hero-body, class=container, class=title, class=subtitle, class=subtitle"
+ */
+public abstract class AbstractWelcome extends AbstractComponent {
 
-    protected String h1;
-    protected String h2;
-    protected String h3;
-    protected String h4;
-    protected String h5;
-    protected String h6;
-    protected AbstractHtmlObject div; // first container child of the Welcome
+    public static final String TITLE = "ABSTRACT_WELCOME_TITLE";
+    public static final String SUBTITLE = "ABSTRACT_WELCOME_SUBTITLE";
+    public static final String SUBSUBTITLE = "ABSTRACT_WELCOME_SUBSUBTITLE";
 
-    public AbstractWelcome(String name) {
-        super(name, HtmlTagType.SECTION, "");
-        this.init();
+    public static final String WELCOME_DEFAULT_DELIMITER = "--"; // this is the default delimiter for the welcome components, Example: "h1><Hello, Someone! --- h2><this is a sub header --- h3><this is a sub sub header"
+    public static final String WELCOME_COMPONENT_DELIMITER = "><"; // this is the delimiter for the welcome components, Example: "h1><Hello, Someone! --- h2><this is a sub header --- h3><this is a sub sub header"
+
+    public abstract class AbstractWelcomeComponent extends AbstractComponentPart {
+        public AbstractWelcomeComponent(String name, AbstractComponentPart.ComponentPartType partType, String body) {
+            super(name, partType, body);
+        }
+
+        public static AbstractComponentPart createH1(String body) {
+            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH1", body);
+            part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H1);
+            return part;
+        }
+
+        public static AbstractComponentPart createH2(String body) {
+            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH2", body);
+            part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H2);
+            return part;
+        }
+
+        public static AbstractComponentPart createH3(String body) {
+            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH3", body);
+            part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H3);
+            return part;
+        }
+
+        public static AbstractComponentPart createH4(String body) {
+            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH4", body);
+            part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H4);
+            return part;
+        }
+
+        public static AbstractComponentPart createH5(String body) {
+            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH5", body);
+            part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H5);
+            return part;
+        }
+
+        public static AbstractComponentPart createH6(String body) {
+            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH6", body);
+            part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H6);
+            return part;
+        }
     }
 
-    private void init() {
-        this.h1 = "";
-        this.h2 = "";
-        this.h3 = "";
-        this.h4 = "";
-        this.h5 = "";
-        this.h6 = "";
-    }
+    /////////////////////
+    // AbstractWelcome //
+    /////////////////////
 
     /**
-     * Sets the children of AbstractHtmlObject from headers. Use this method to set the children of the Welcome, after adding headers.
+     * A string delimited by the delimiter containing the welcome components.
+     * <p>
+     * Example: "Hello, Someone! >< this is a sub header >< this is a sub sub header"
      */
-    abstract public void setChildrenFromHeaders();
+    private String welcomeComponents;
 
-    public void setH1(String h1) {
-        this.h1 = h1;
+    /**
+     * This is the top level html container of the welcome.
+     * <p>
+     * The welcom object is structured as follows:
+     * 
+     *<section class="hero is-info welcome is-small">
+     *  <div class="hero-body">
+     *    <div class="container">
+     *      <h1 class="title">
+     *        Hello, Someone!
+     *      </h1>
+     *      <h2 class="subtitle">
+     *        this is a sub header
+     *      </h2>
+     *    </div>
+     *  </div>
+     *</section>
+     */
+    private String sectionHtmlTagAttributes;
+    /**
+     * This is the second level html container of the welcome.
+     * <p>
+     * The welcom object is structured as follows:
+     * 
+     *<section class="hero is-info welcome is-small">
+     *  <div class="hero-body">
+     *    <div class="container">
+     *      <h1 class="title">
+     *        Hello, Someone!
+     *      </h1>
+     *      <h2 class="subtitle">
+     *        this is a sub header
+     *      </h2>
+     *    </div>
+     *  </div>
+     *</section>
+     */
+    private String divHtmlTagAttributes;
+    /**
+     * This is the third level html container of the welcome.
+     * <p>
+     * The welcom object is structured as follows:
+     * 
+     *<section class="hero is-info welcome is-small">
+     *  <div class="hero-body">
+     *    <div class="container">
+     *      <h1 class="title">
+     *        Hello, Someone!
+     *      </h1>
+     *      <h2 class="subtitle">
+     *        this is a sub header
+     *      </h2>
+     *    </div>
+     *  </div>
+     *</section>
+     */
+    private String containerHtmlTagAttributes;
+    /**
+     * These are the attributes for the first h1 tag of the welcome.
+     * <p>
+     * The welcom object is structured as follows:
+     * 
+     *<section class="hero is-info welcome is-small">
+     *  <div class="hero-body">
+     *    <div class="container">
+     *      <h1 class="title">
+     *        Hello, Someone!
+     *      </h1>
+     *      <h2 class="subtitle">
+     *        this is a sub header
+     *      </h2>
+     *    </div>
+     *  </div>
+     *</section>
+     */
+    private String h1HtmlTagAttributes;
+    /**
+     * These are the attributes for the second h2 tag of the welcome, and any other sub header tags.
+     * <p>
+     * The welcom object is structured as follows:
+     * 
+     *<section class="hero is-info welcome is-small">
+     *  <div class="hero-body">
+     *    <div class="container">
+     *      <h1 class="title">
+     *        Hello, Someone!
+     *      </h1>
+     *      <h2 class="subtitle">
+     *        this is a sub header
+     *      </h2>
+     *    </div>
+     *  </div>
+     *</section>
+     */
+    private String subHeaderTagAttributes;
+    /**
+     * These are the attributes for the third h3 tag of the welcome, and any other sub sub header tags.
+     * <p>
+     * The welcom object is structured as follows:
+     * 
+     *<section class="hero is-info welcome is-small">
+     *  <div class="hero-body">
+     *    <div class="container">
+     *      <h1 class="title">
+     *        Hello, Someone!
+     *      </h1>
+     *      <h2 class="subtitle">
+     *        this is a sub header
+     *      </h2>
+     *    </div>
+     *  </div>
+     *</section>
+     */
+    private String subSubHeaderTagAttributes;
+
+    /**
+     * @param name the name of the component being created
+     * @param welcomeComponents a string delimited by the delimiter containing the welcome components.
+     * @param args a list of the tag attributes to be used for the welcome. Should be six at most. Reference member variables for order. They should be given in the following order:
+     * <p>
+     * 1. sectionHtmlTagAttributes
+     * <p>
+     * 2. divHtmlTagAttributes
+     * <p>
+     * 3. containerHtmlTagAttributes
+     * <p>
+     * 4. h1HtmlTagAttributes
+     * <p>
+     * 5. subHeaderTagAttributes
+     * <p>
+     * 6. subSubHeaderTagAttributes
+     * <p>
+     * Example: "class=hero is-info welcome is-small, class=hero-body, class=container, class=title, class=subtitle, class=subtitle"
+     */
+    public AbstractWelcome(String name, String welcomeComponents, String sectionHtmlTagAttributes, String divHtmlTagAttributes, String containerHtmlTagAttributes, String h1HtmlTagAttributes, String subHeaderTagAttributes, String subSubHeaderTagAttributes) {
+        super(name,AbstractHtmlObject.HtmlTagType.DIV, "", AbstractComponent.ComponentType.WELCOME, "--", java.util.List.of(welcomeComponents, sectionHtmlTagAttributes, divHtmlTagAttributes, containerHtmlTagAttributes, h1HtmlTagAttributes, subHeaderTagAttributes, subSubHeaderTagAttributes).toArray(new String[7]));
+    }
+    @Override
+    protected int init(String... args) {
+        if(args.length == 7) {
+            this.welcomeComponents = args[0] != null ? args[0] : "";
+            this.sectionHtmlTagAttributes = args[1] != null ? args[1] : "";
+            this.divHtmlTagAttributes = args[2] != null ? args[2] : "";
+            this.containerHtmlTagAttributes = args[3] != null ? args[3] : "";
+            this.h1HtmlTagAttributes = args[4] != null ? args[4] : "";
+            this.subHeaderTagAttributes = args[5] != null ? args[5] : "";
+            this.subSubHeaderTagAttributes = args[6] != null ? args[6] : "";
+        } else {
+            LOG.error("Sufficient arguments not provided. Expected 7, got " + args.length + ".");
+            return ERROR;
+        }
+        return SUCCESS;
     }
 
-    public void setH2(String h2) {
-        this.h2 = h2;
-    }
+    @Override
+    public void setChildrenForComponent() {
 
-    public void setH3(String h3) {
-        this.h3 = h3;
-    }
+        com.rumpus.common.views.Html.AbstractHtmlObject containerDiv = com.rumpus.common.views.Html.AbstractHtmlObject.createEmptyAbstractHtmlObject();
+        containerDiv.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
 
-    public void setH4(String h4) {
-        this.h4 = h4;
-    }
+        // parse welcomeComponents for h1, h2, h3, h4, h5, h6, etc and add them to the container div
+        String[] welcomeComponentsArray = this.welcomeComponents.split(super.defaultDelimiter);
+        for(int welcomeComponentsArrayIndex = 0; welcomeComponentsArrayIndex < welcomeComponentsArray.length; welcomeComponentsArrayIndex++) {
+            String[] welcomeComponentHTypeAndBody = welcomeComponentsArray[welcomeComponentsArrayIndex].split(AbstractWelcome.WELCOME_COMPONENT_DELIMITER);
+            if(welcomeComponentHTypeAndBody.length == 2) {
+                final String hType = welcomeComponentHTypeAndBody[0].strip().toLowerCase();
+                final String body = welcomeComponentHTypeAndBody[1].strip();
+                if(hType.equals("h1")) {
+                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH1(body), this.h1HtmlTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                } else if(hType.equals("h2")) {
+                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH2(body), this.subHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                } else if(hType.equals("h3")) {
+                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH3(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                } else if(hType.equals("h4")) {
+                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH4(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                } else if(hType.equals("h5")) {
+                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH5(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                } else if(hType.equals("h6")) {
+                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH6(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                } else {
+                    LOG.error("Invalid welcome component h type: " + hType);
+                    continue;
+                }
+            } else {
+                LOG.info("Invalid welcome component: " + welcomeComponentsArray[welcomeComponentsArrayIndex]);
+                continue;
+            }
+        }
 
-    public void setH5(String h5) {
-        this.h5 = h5;
-    }
+        // create first level div to add to this component
+        com.rumpus.common.views.Html.AbstractHtmlObject firstLevelDiv = com.rumpus.common.views.Html.AbstractHtmlObject.createEmptyAbstractHtmlObject();
+        firstLevelDiv.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
+        firstLevelDiv = AbstractHtmlObject.getAndSetAttributesForHtmlObject(firstLevelDiv, this.divHtmlTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
+        containerDiv = AbstractHtmlObject.getAndSetAttributesForHtmlObject(containerDiv, this.containerHtmlTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
+        firstLevelDiv.addChild(containerDiv);
+        this.addChild(firstLevelDiv);
+        this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.SECTION);
 
-    public void setH6(String h6) {
-        this.h6 = h6;
-    }
-
-    public String getH1() {
-        return h1;
-    }
-
-    public String getH2() {
-        return h2;
-    }
-
-    public String getH3() {
-        return h3;
-    }
-
-    public String getH4() {
-        return h4;
-    }
-
-    public String getH5() {
-        return h5;
-    }
-
-    public String getH6() {
-        return h6;
+        // Cannot use getAndSetAttributesForHtmlObject because of pass by value
+        // TODO: look at this more and see if we can make getAndSetAttributesForHtmlObject pass by reference some how
+        String[] attributesArray = this.sectionHtmlTagAttributes.split(AbstractComponent.DEFAULT_DELIMITER);
+        for(String attribute : attributesArray) {
+            String[] attributePropAndValue = attribute.split("=");
+            if(attributePropAndValue.length == 2) {
+                this.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
+            } else {
+                LOG.error("Invalid attribute: " + attribute);
+            }
+        }
     }
 }

@@ -7,15 +7,11 @@ public abstract class AbstractBreadcrumb extends AbstractComponent {
     private String navContainerAttributes;
 
     public AbstractBreadcrumb(String name, String breadcrumbs, String navContainerAttributes) {
-        super(name, HtmlTagType.NAV, "", AbstractComponent.ComponentType.BREADCRUMB, java.util.List.of(breadcrumbs, navContainerAttributes).toArray(new String[2]));
+        super(name, HtmlTagType.NAV, "", AbstractComponent.ComponentType.BREADCRUMB, "", java.util.List.of(breadcrumbs, navContainerAttributes).toArray(new String[2]));
     }
 
     @Override
     protected int init(String... args) {
-        for (String arg : args) {
-            LOG.info("arg: " + arg);
-        }
-        LOG.info("Default delim" + super.defaultDelimiter);
         this.breadcrumbs = args[0];
         this.navContainerAttributes = args[1];
         return SUCCESS;
@@ -27,16 +23,8 @@ public abstract class AbstractBreadcrumb extends AbstractComponent {
 
         // create breadcrumb list items
         String[] crumbArray = this.breadcrumbs.split(super.defaultDelimiter);
-        LOG.info("crumbArray length: " + crumbArray.length);
-        for(String crumb : crumbArray) {
-            LOG.info("crumb1: " + crumb);
-        }
         for (int crumbArrayIndex = 0; crumbArrayIndex < crumbArray.length; crumbArrayIndex++) {
             String[] crumbAndLink = crumbArray[crumbArrayIndex].split(AbstractBreadcrumb.LINK_DELIMITER);
-            LOG.info("crumbAndLink length: " + crumbAndLink.length);
-            for(String crumb : crumbAndLink) {
-                LOG.info("crumb: " + crumb);
-            }
             if (crumbAndLink.length == 1) { // crumbs without links
                 breadcrumbList.addChild(AbstractBreadcrumbComponent.createBreadcrumbListItem(crumbAndLink[0].strip())); // TODO: maybe add a container for spacing. rendering looks a little weird
                 // TODO update maybe set as link and use is-active for active

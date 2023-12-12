@@ -201,6 +201,36 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         return EmptyHtmlObject.create();
     }
 
+    ///////////////////////
+    // Helper Methods    //
+    ///////////////////////
+
+    /**
+     * Get and set the attributes for the given html object.
+     * <p>
+     * Example: <code>getAndSetAttributesForHtmlObject(hTypeHtmlObject, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     * 
+     * @param hTypeHtmlObject the html object to set the attributes for
+     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
+     * @param delimiter the delimiter to use to separate the attributes
+     * @return the html object with the attributes set
+     */
+    public static AbstractHtmlObject getAndSetAttributesForHtmlObject(AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
+        String[] attributesArray = attributes.split(delimiter);
+        for(String attribute : attributesArray) {
+            String[] attributePropAndValue = attribute.split("=");
+            if(attributePropAndValue.length == 2) {
+                hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
+            } else {
+                LOG.error("Invalid attribute: " + attribute);
+            }
+        }
+        return hTypeHtmlObject;
+    }
+
+    ///////////////////////
+    // End Helper Methods//
+    ///////////////////////
 
     public List<AbstractHtmlObject> getChildren() {
         return children;

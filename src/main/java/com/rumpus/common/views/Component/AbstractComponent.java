@@ -39,9 +39,9 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
     private ComponentType componentType;
     protected String defaultDelimiter;
 
-    public AbstractComponent(String name, HtmlTagType htmlTagType, String body, ComponentType componentType, String... args) {
+    public AbstractComponent(String name, HtmlTagType htmlTagType, String body, ComponentType componentType, String delimiter, String... args) {
         super(name, htmlTagType, body);
-        this.defaultDelimiter = AbstractComponent.DEFAULT_DELIMITER;
+        this.defaultDelimiter = delimiter.isEmpty() ? AbstractComponent.DEFAULT_DELIMITER : delimiter;
         this.componentType = componentType;
         this.init(args);
         this.setChildrenForComponent();
@@ -54,7 +54,7 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      * Use this method to set member variables, call setters, and initialize delimiters, etc.
      * 
      * @param args the arguments to initialize the component with
-     * @return SUCCESS or FAILURE
+     * @return SUCCESS or ERROR
      */
     abstract protected int init(String... args);
 
@@ -67,6 +67,10 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
 
     public void setDefaultDelimiter(String defaultDelimiter) {
         this.defaultDelimiter = defaultDelimiter;
+    }
+
+    public String getDefaultDelimiter() {
+        return this.defaultDelimiter;
     }
 
     public ComponentType getComponentType() {

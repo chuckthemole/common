@@ -50,7 +50,7 @@ public abstract class AbstractAside extends AbstractComponent {
         this.itemsHtmlTagAttibutes = "";
     }
     public AbstractAside(String name, String asideGroups, String titleHtmlTagAttributes, String itemsHtmlTagAttibutes) {
-        super(name, HtmlTagType.ASIDE, "", AbstractComponent.ComponentType.ASIDE, List.of(asideGroups, titleHtmlTagAttributes, itemsHtmlTagAttibutes).toArray(new String[3])); // TODO: is there a better way to do this?
+        super(name, HtmlTagType.ASIDE, "", AbstractComponent.ComponentType.ASIDE, "", List.of(asideGroups, titleHtmlTagAttributes, itemsHtmlTagAttibutes).toArray(new String[3])); // TODO: is there a better way to do this?
     }
 
     @Override
