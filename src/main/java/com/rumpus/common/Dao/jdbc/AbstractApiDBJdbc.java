@@ -198,7 +198,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
             model.setKey(null);
         }
 
-        LogBuilder log = new LogBuilder("KeyHolder debug: ", keyHolder.getKeyAs(String.class));
+        LogBuilder log = new LogBuilder(true, "KeyHolder debug: ", keyHolder.getKeyAs(String.class));
         log.info();
         
         return model;
@@ -250,7 +250,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     //     LOG.info("ApiDBJdbc::add()");
     //     // StringBuilder logBuilder = new StringBuilder();
     //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
-    //     LogBuilder log = new LogBuilder("Updating '", key, "' of type '", newModel.name(), "''.");
+    //     LogBuilder log = new LogBuilder(true, "Updating '", key, "' of type '", newModel.name(), "''.");
     //     log.info();
 
     //     SQLBuilder sqlBuilder = new SQLBuilder();
@@ -286,7 +286,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     //     LOG.info("ApiDBApiDBJdbc::add()");
     //     // StringBuilder logBuilder = new StringBuilder();
     //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
-    //     LogBuilder log = new LogBuilder("Updating '", id, "' of type '", newModel.name(), "''.");
+    //     LogBuilder log = new LogBuilder(true, "Updating '", id, "' of type '", newModel.name(), "''.");
     //     log.info();
 
     //     // filter necessary columns into map

@@ -88,7 +88,7 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends 
         AbstractModel<MODEL> model = (AbstractModel<MODEL>) o;
 
         if(!this.id.equals(model.id)) {
-            LogBuilder log = new LogBuilder("\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
+            LogBuilder log = new LogBuilder(true, "\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
             log.info();
             return false;
         }

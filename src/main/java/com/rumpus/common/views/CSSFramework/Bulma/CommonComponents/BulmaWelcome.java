@@ -14,9 +14,10 @@ public class BulmaWelcome extends AbstractWelcome {
     private static final String TITLE_HTML_ATTRIBUTES = "class=title";
     private static final String SUBTITLE_HTML_ATTRIBUTES = "class=subtitle";
 
-    private BulmaWelcome(String welcomeComponents) {
+    private BulmaWelcome(String componentName, String welcomeComponents) {
         super(
             NAME,
+            componentName,
             welcomeComponents,
             SECTION_HTML_ATTRIBUTES,
             FIRST_LEVEL_DIV_HTML_ATTRIBUTES,
@@ -27,7 +28,7 @@ public class BulmaWelcome extends AbstractWelcome {
         );
     }
 
-    public static BulmaWelcome create(String welcomeComponents) {
-        return new BulmaWelcome(welcomeComponents);
+    public static BulmaWelcome create(String componentName, String welcomeComponents) {
+        return new BulmaWelcome(componentName, welcomeComponents);
     }
 }

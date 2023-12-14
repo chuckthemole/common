@@ -1,33 +1,31 @@
 package com.rumpus.common.views;
 
 import com.rumpus.common.Builder.ITableBuilder;
+import com.rumpus.common.Manager.AbstractCommonManager;
+import com.rumpus.common.views.Template.AbstractTemplate;
 
 import java.util.List;
-
-import com.rumpus.common.AbstractCommonObject;
 
 /**
  * @author Charles Thomas
  * 
- * Views used for webpage. As of now (2023/3/23) only contains footer. You can add other views here.
- * You must implement the views when using.
+ * This class is the base class for all views. It acts as a manager of {@link AbstractTemplate}s.
  */
-public abstract class AbstractViews extends AbstractCommonObject  {
+public abstract class AbstractViews extends AbstractCommonManager<AbstractTemplate>  {
     
     protected Footer footer;
     protected Header header;
     protected ITableBuilder userTable;
     protected ResourceManager resourceManager;
-    protected SectionManager sectionManager;
 
 	public AbstractViews(String name) {
-        super(name);
+        super(name, false);
         this.init();
 	}
 
-    protected int init() {
-        this.sectionManager = SectionManager.createEmptyManager();
-        initSections();
+    protected int init() { // TODO: make private?
+        this.resourceManager = ResourceManager.createEmptyManager();
+        initTemplates();
         initFooter();
         initHeader();
         initUserTable();
@@ -56,11 +54,11 @@ public abstract class AbstractViews extends AbstractCommonObject  {
      */
     abstract protected int initResourceManager();
     /**
-     * Init sections
+     * Init templates for views
      * @return SUCCESS if successful, otherwise FAILURE
-     * @see {@link SectionManager} and {@link Section}
+     * @see {@link AbstractTemplate}
      */
-    abstract protected int initSections();
+    abstract protected int initTemplates();
 
     public Footer getFooter() {
         return this.footer;
@@ -89,10 +87,6 @@ public abstract class AbstractViews extends AbstractCommonObject  {
         return SUCCESS;
     }
 
-    public Section getSection(String name) {
-        return this.sectionManager.get(name);
-    }
-
     public List<Resource> getResources() {
         return this.resourceManager.getResources();
     }
@@ -106,5 +100,16 @@ public abstract class AbstractViews extends AbstractCommonObject  {
      */
     public Resource getResourceByName(String name) {
         return this.resourceManager.get(name);
+    }
+
+    @Override
+    public AbstractTemplate createEmptyManagee() {
+        return AbstractTemplate.createEmptyTemplate();
+    }
+
+    @Override
+    public AbstractTemplate createEmptyManagee(String name) {
+        AbstractTemplate template = AbstractTemplate.createEmptyTemplate();
+        return this.put(name, template);
     }
 }

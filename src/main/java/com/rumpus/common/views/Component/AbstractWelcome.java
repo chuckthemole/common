@@ -37,43 +37,43 @@ public abstract class AbstractWelcome extends AbstractComponent {
     public static final String WELCOME_DEFAULT_DELIMITER = "--"; // this is the default delimiter for the welcome components, Example: "h1><Hello, Someone! --- h2><this is a sub header --- h3><this is a sub sub header"
     public static final String WELCOME_COMPONENT_DELIMITER = "><"; // this is the delimiter for the welcome components, Example: "h1><Hello, Someone! --- h2><this is a sub header --- h3><this is a sub sub header"
 
-    public abstract class AbstractWelcomeComponent extends AbstractComponentPart {
-        public AbstractWelcomeComponent(String name, AbstractComponentPart.ComponentPartType partType, String body) {
+    public abstract class AbstractWelcomeComponentPart extends AbstractComponentPart {
+        public AbstractWelcomeComponentPart(String name, AbstractComponentPart.ComponentPartType partType, String body) {
             super(name, partType, body);
         }
 
         public static AbstractComponentPart createH1(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH1", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH1", body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H1);
             return part;
         }
 
         public static AbstractComponentPart createH2(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH2", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH2", body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H2);
             return part;
         }
 
         public static AbstractComponentPart createH3(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH3", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH3", body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H3);
             return part;
         }
 
         public static AbstractComponentPart createH4(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH4", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH4", body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H4);
             return part;
         }
 
         public static AbstractComponentPart createH5(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH5", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH5", body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H5);
             return part;
         }
 
         public static AbstractComponentPart createH6(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponent.Title("WelcomeH6", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH6", body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H6);
             return part;
         }
@@ -224,9 +224,46 @@ public abstract class AbstractWelcome extends AbstractComponent {
      * <p>
      * Example: "class=hero is-info welcome is-small, class=hero-body, class=container, class=title, class=subtitle, class=subtitle"
      */
-    public AbstractWelcome(String name, String welcomeComponents, String sectionHtmlTagAttributes, String divHtmlTagAttributes, String containerHtmlTagAttributes, String h1HtmlTagAttributes, String subHeaderTagAttributes, String subSubHeaderTagAttributes) {
-        super(name,AbstractHtmlObject.HtmlTagType.DIV, "", AbstractComponent.ComponentType.WELCOME, "--", java.util.List.of(welcomeComponents, sectionHtmlTagAttributes, divHtmlTagAttributes, containerHtmlTagAttributes, h1HtmlTagAttributes, subHeaderTagAttributes, subSubHeaderTagAttributes).toArray(new String[7]));
+    public AbstractWelcome(
+        String name,
+        String componentName,
+        String welcomeComponents,
+        String sectionHtmlTagAttributes,
+        String divHtmlTagAttributes,
+        String containerHtmlTagAttributes,
+        String h1HtmlTagAttributes,
+        String subHeaderTagAttributes,
+        String subSubHeaderTagAttributes) {
+            super(
+                name,
+                AbstractHtmlObject.HtmlTagType.DIV,
+                "",
+                AbstractComponent.ComponentType.WELCOME,
+                "--",
+                componentName,
+                java.util.List.of(
+                    welcomeComponents, 
+                    sectionHtmlTagAttributes,
+                    divHtmlTagAttributes,
+                    containerHtmlTagAttributes,
+                    h1HtmlTagAttributes,
+                    subHeaderTagAttributes,
+                    subSubHeaderTagAttributes
+                ).toArray(new String[7]));
     }
+
+    /**
+     * Factory method for creating an empty welcome.
+     */
+    public static AbstractWelcome createEmptyWelcome() {
+        return new AbstractWelcome("EMPTY_WELCOME", "", "", "", "", "", "", "", "") {
+            @Override
+            public void setChildrenForComponent() {
+                LOG.info("setChildrenForComponent() called in createEmptyWelcome()");
+            }
+        };
+    }
+
     @Override
     protected int init(String... args) {
         if(args.length == 7) {
@@ -257,21 +294,28 @@ public abstract class AbstractWelcome extends AbstractComponent {
             if(welcomeComponentHTypeAndBody.length == 2) {
                 final String hType = welcomeComponentHTypeAndBody[0].strip().toLowerCase();
                 final String body = welcomeComponentHTypeAndBody[1].strip();
+                AbstractHtmlObject htmlObject = null;
                 if(hType.equals("h1")) {
-                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH1(body), this.h1HtmlTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                    htmlObject = AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponentPart.createH1(body), this.h1HtmlTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
                 } else if(hType.equals("h2")) {
-                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH2(body), this.subHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                    htmlObject = AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponentPart.createH2(body), this.subHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
                 } else if(hType.equals("h3")) {
-                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH3(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                    htmlObject = AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponentPart.createH3(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
                 } else if(hType.equals("h4")) {
-                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH4(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                    htmlObject = AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponentPart.createH4(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
                 } else if(hType.equals("h5")) {
-                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH5(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                    htmlObject = AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponentPart.createH5(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
                 } else if(hType.equals("h6")) {
-                    containerDiv.addChild(AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponent.createH6(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER));
+                    htmlObject = AbstractHtmlObject.getAndSetAttributesForHtmlObject(AbstractWelcomeComponentPart.createH6(body), this.subSubHeaderTagAttributes, AbstractComponent.DEFAULT_DELIMITER);
                 } else {
                     LOG.error("Invalid welcome component h type: " + hType);
                     continue;
+                }
+
+                if(htmlObject != null) {
+                    final String componentPartId = this.componentPartManager.registerComponentPart(super.getComponentName(), htmlObject);
+                    htmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, componentPartId);
+                    containerDiv.addChild(htmlObject);
                 }
             } else {
                 LOG.info("Invalid welcome component: " + welcomeComponentsArray[welcomeComponentsArrayIndex]);

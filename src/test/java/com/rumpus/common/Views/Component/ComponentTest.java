@@ -18,7 +18,6 @@ import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside;
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaBreadcrumb;
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaWelcome;
 import com.rumpus.common.views.Component.AbstractAside;
-import com.rumpus.common.views.Component.AbstractAsideComponent;
 import com.rumpus.common.views.Component.AbstractBreadcrumb;
 import com.rumpus.common.views.Component.AbstractWelcome;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
@@ -53,8 +52,8 @@ public class ComponentTest extends CommonTest {
     @Test
     @Order(1)
     void testAsidecomponents() {
-        this.expectedAbstractHtmlObject = AbstractAsideComponent.createAsideEmbeddedList(); // TODO: this isn't testing anything rn..
-        this.actualAbstractHtmlObject = AbstractAsideComponent.createAsideEmbeddedList();
+        this.expectedAbstractHtmlObject = AbstractAside.AbstractAsideComponentPart.createAsideEmbeddedList(); // TODO: this isn't testing anything rn..
+        this.actualAbstractHtmlObject = AbstractAside.AbstractAsideComponentPart.createAsideEmbeddedList();
         assertEquals(expectedAbstractHtmlObject, actualAbstractHtmlObject);
     }
 
@@ -70,7 +69,7 @@ public class ComponentTest extends CommonTest {
         LOG.info("- - testCreateGroupsFromStrings 1 - - ");
         String asideGroups1 = "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2";
         // Map<String, List<AbstractHtmlObject>> expectedGroups = Map.of("group1", "item1, item2", "group2", "item1, item2");
-        AbstractHtmlObject actualGroups1 = BulmaAside.create(asideGroups1);
+        AbstractHtmlObject actualGroups1 = BulmaAside.create("Test3AsideActual1", asideGroups1);
         LOG.info(actualGroups1.toString());
 
         LOG.info("- - testCreateGroupsFromStrings 2 - - ");
@@ -85,7 +84,7 @@ public class ComponentTest extends CommonTest {
         String asideGroups2 = stringBuilder.toString();
         LOG.info("TESTING");
         LOG.info(asideGroups2);
-        AbstractHtmlObject actualGroups2 = BulmaAside.create(asideGroups2);
+        AbstractHtmlObject actualGroups2 = BulmaAside.create("Test3AsideActual2", asideGroups2);
         LOG.info(actualGroups2.toString());
     }
 
@@ -103,12 +102,12 @@ public class ComponentTest extends CommonTest {
         sb.append("Current Page");
         sb.append(AbstractBreadcrumb.LINK_DELIMITER);
         sb.append("www.yahoo.com");
-        AbstractHtmlObject breadcrumb = BulmaBreadcrumb.create(sb.toString());
+        AbstractHtmlObject breadcrumb = BulmaBreadcrumb.create("Test4BreadcrumbActual1", sb.toString());
         LOG.info(breadcrumb.toString());
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     void testWelcomeComonent() {
         LOG.info("- - testWelcomeComponent - - ");
 
@@ -122,7 +121,7 @@ public class ComponentTest extends CommonTest {
         sb.append(AbstractWelcome.WELCOME_COMPONENT_DELIMITER);
         sb.append("What the hell are you doing?!,");
 
-        AbstractHtmlObject welcome = BulmaWelcome.create(sb.toString());
+        AbstractHtmlObject welcome = BulmaWelcome.create("Test5WelcomeActual1", sb.toString());
         LOG.info(welcome.toString());
     }
 }

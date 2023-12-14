@@ -34,6 +34,14 @@ public class IdSet implements IManageable {
         public static IdSet setWithDefaultLength() {
             return new IdSet();
         }
+        /**
+         * Create an empty IdSet. WARNING: this will not generate ids since the length is 0.
+         * 
+         * @return instance with 0 length
+         */
+        public static IdSet createEmptyIdSet() {
+            return new IdSet(0);
+        }
 
         /**
          * public static factory method

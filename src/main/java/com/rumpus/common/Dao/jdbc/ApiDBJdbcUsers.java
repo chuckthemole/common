@@ -314,7 +314,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
         LOG.info("ApiDBJdbcUsers::update()");
         USER user = super.getById(id); // get user in db
         if(user == null) { // if user not in db return null
-            LogBuilder log = new LogBuilder("Error: Unable to update users with id: ", id, "  returning null...");
+            LogBuilder log = new LogBuilder(true, "Error: Unable to update users with id: ", id, "  returning null...");
             log.info();
             return null;
         }

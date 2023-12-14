@@ -2,7 +2,7 @@ package com.rumpus.common.Builder;
 
 import com.rumpus.common.AbstractCommonObject;
 
-abstract class AbstractBuilder extends AbstractCommonObject {
+public abstract class AbstractBuilder extends AbstractCommonObject {
 
     // public static final String NAME = "Builder";
     protected StringBuilder builder;
@@ -12,11 +12,38 @@ abstract class AbstractBuilder extends AbstractCommonObject {
         this.builder = new StringBuilder();
     }
 
+    /**
+     * This method is used to create a Builder from a String array of arguments
+     * <p>
+     * By default this will add spaces between the arguments
+     * 
+     * @param name the name of the Builder
+     * @param args the arguments to add to the Builder
+     */
     public AbstractBuilder(String name, String... args) {
         super(name);
         this.builder = new StringBuilder();
         for(String arg : args) {
             this.builder.append(arg).append(" ");
+        }
+    }
+
+    /**
+     * This method is used to create a Builder from a String array of arguments
+     * 
+     * @param name the name of the Builder
+     * @param addSpaces whether or not to add spaces between the arguments
+     * @param args the arguments to add to the Builder
+     */
+    public AbstractBuilder(String name, boolean addSpaces, String... args) {
+        super(name);
+        this.builder = new StringBuilder();
+        for(String arg : args) {
+            if(addSpaces) {
+                this.builder.append(arg).append(" ");
+            } else {
+                this.builder.append(arg);
+            }
         }
     }
 

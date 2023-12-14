@@ -118,28 +118,28 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
 
         boolean flag = true;
         if(!this.usernameIsEqual(user)) {
-            LogBuilder log = new LogBuilder("\nUsernames are not equal", "\nUser 1: ", this.getUsername(), "\nUser 2: ", user.getUsername());
+            LogBuilder log = new LogBuilder(true, "\nUsernames are not equal", "\nUser 1: ", this.getUsername(), "\nUser 2: ", user.getUsername());
             log.info();
             flag = false;
         }
         if(!this.idIsEqual(user)) {
-            LogBuilder log = new LogBuilder("\nIds are not equal", "\nUser 1: ", this.getId(), "\nUser 2: ", user.getId());
+            LogBuilder log = new LogBuilder(true, "\nIds are not equal", "\nUser 1: ", this.getId(), "\nUser 2: ", user.getId());
             log.info();
             flag = false;
         }
         // TODO need to do some work with passwords. come back to this later for equality - chuck 6/8/2023
         // if(!this.passwordIsEqual(user)) {
-        //     LogBuilder log = new LogBuilder("\nPasswords are not equal", "\nUser 1: ", this.getPassword(), "\nUser 2: ", user.getPassword());
+        //     LogBuilder log = new LogBuilder(true, "\nPasswords are not equal", "\nUser 1: ", this.getPassword(), "\nUser 2: ", user.getPassword());
         //     log.info();
         //     flag = false;
         // }
         if(!this.emailIsEqual(user)) {
-            LogBuilder log = new LogBuilder("\nEmails are not equal", "\nUser 1: ", this.getEmail(), "\nUser 2: ", user.getEmail());
+            LogBuilder log = new LogBuilder(true, "\nEmails are not equal", "\nUser 1: ", this.getEmail(), "\nUser 2: ", user.getEmail());
             log.info();
             flag = false;
         }
         if(!this.userDetailsIsEqual(user)) {
-            LogBuilder log = new LogBuilder("\nUser Details are not equal", "\nUser 1: ", this.getUserDetails().toString(), "\nUser 2: ", user.getUserDetails().toString());
+            LogBuilder log = new LogBuilder(true, "\nUser Details are not equal", "\nUser 1: ", this.getUserDetails().toString(), "\nUser 2: ", user.getUserDetails().toString());
             log.info();
             flag = false;
         }

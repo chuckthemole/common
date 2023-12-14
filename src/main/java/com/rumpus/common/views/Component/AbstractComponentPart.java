@@ -10,6 +10,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 public class AbstractComponentPart extends AbstractHtmlObject {
 
     public enum ComponentPartType {
+        EMPTY("empty"),
         TITLE("title"),
         LIST_ITEM("list-item"),
         LIST("list"),
@@ -34,6 +35,12 @@ public class AbstractComponentPart extends AbstractHtmlObject {
                 }
             }
             return null;
+        }
+    }
+
+    protected static class Empty extends AbstractComponentPart {
+        protected Empty(String name) {
+            super(name, ComponentPartType.EMPTY, "");
         }
     }
 
@@ -80,6 +87,10 @@ public class AbstractComponentPart extends AbstractHtmlObject {
         this.setHtmlTagTypeBasedOnAsidecomponentType(); // TODO: this may be redundant
     }
 
+    public static AbstractComponentPart createEmptyAbstractComponentPart(String name) {
+        return new AbstractComponentPart.Empty(name);
+    }
+
     public ComponentPartType getComponentPartType() {
         return this.componentPartType;
     }
@@ -90,6 +101,9 @@ public class AbstractComponentPart extends AbstractHtmlObject {
 
     private void setHtmlTagTypeBasedOnAsidecomponentType() {
         switch (this.componentPartType) {
+            case EMPTY:
+                this.setHtmlTagType(HtmlTagType.EMPTY);
+                break;
             case TITLE:
                 this.setHtmlTagType(HtmlTagType.P);
                 break;
@@ -109,8 +123,29 @@ public class AbstractComponentPart extends AbstractHtmlObject {
                 this.setHtmlTagType(HtmlTagType.UL);
                 break;
             default:
-                this.setHtmlTagType(HtmlTagType.DIV);
+                this.setHtmlTagType(HtmlTagType.EMPTY);
                 break;
+        }
+    }
+
+    private AbstractHtmlObject.HtmlTagType getHtmlTagTypeBasedOnAsidecomponentType(ComponentPartType componentPartType) {
+        switch (componentPartType) {
+            case EMPTY:
+                return HtmlTagType.EMPTY;
+            case TITLE:
+                return HtmlTagType.P;
+            case LIST_ITEM:
+                return HtmlTagType.LI;
+            case LIST:
+                return HtmlTagType.UL;
+            case LINK:
+                return HtmlTagType.A;
+            case LINKS:
+                return HtmlTagType.DIV;
+            case EMBEDDED_LIST:
+                return HtmlTagType.UL;
+            default:
+                return HtmlTagType.EMPTY;
         }
     }
     

@@ -204,13 +204,13 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
 
         boolean flag = true;
         if(!this.usernameIsEqual(user)) {
-            LogBuilder log = new LogBuilder("\nUsernames are not equal", "\nUser 1: ", this.username, "\nUser 2: ", user.username);
+            LogBuilder log = new LogBuilder(true, "\nUsernames are not equal", "\nUser 1: ", this.username, "\nUser 2: ", user.username);
             log.info();
             flag = false;
         }
         // TODO need to do some work with passwords. come back to this later for equality - chuck 6/8/2023
         // if(!this.passwordIsEqual(user)) {
-        //     LogBuilder log = new LogBuilder("\nPasswords are not equal", "\nUser 1: ", this.password, "\nUser 2: ", user.password);
+        //     LogBuilder log = new LogBuilder(true, "\nPasswords are not equal", "\nUser 1: ", this.password, "\nUser 2: ", user.password);
         //     log.info();
         //     flag = false;
         // }

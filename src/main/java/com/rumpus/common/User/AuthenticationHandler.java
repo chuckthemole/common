@@ -34,7 +34,7 @@ public class AuthenticationHandler implements AuthenticationSuccessHandler, Auth
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        LogBuilder log = new LogBuilder("WebSecurityConfig::onAuthenticationFailure\n", exception.toString());
+        LogBuilder log = new LogBuilder(true, "WebSecurityConfig::onAuthenticationFailure\n", exception.toString());
         log.error();
         LogBuilder.logBuilderFromStackTraceElementArray(exception.getMessage(), exception.getStackTrace());
     }
