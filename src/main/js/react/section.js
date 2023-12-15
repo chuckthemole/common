@@ -11,8 +11,8 @@ export default function Section({section_path}) {
     );
     
     useEffect(() => {
-        if(data !== undefined && data.htmlParentObject !== undefined) {
-            setHtmlContent(constructHtmlContent(data.htmlParentObject));
+        if(data !== undefined) {
+            setHtmlContent(constructHtmlContent(data));
         }
     }, [data]);
 
@@ -37,6 +37,7 @@ export default function Section({section_path}) {
     )
    
     console.log(data);
+    console.log(htmlContent);
 
     // TODO: data.resources think about what to do...
 

@@ -97,12 +97,12 @@ public abstract class AbstractViewController extends AbstractCommonController {
      * @return The Template as a ResponseEntity
      */
     @GetMapping(AbstractCommonController.PATH_TEMPLATE_BY_NAME)
-    public ResponseEntity<AbstractTemplate> getTemplate(@PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName, HttpServletRequest request) {
+    public ResponseEntity<AbstractHtmlObject> getTemplate(@PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName, HttpServletRequest request) {
 
         // check if the templateName is null or empty
         if(templateName == null || templateName.isEmpty()) {
             LogBuilder.logBuilderFromStringArgs("templateName", " is null or empty").info();
-            return new ResponseEntity<AbstractTemplate>(AbstractTemplate.createEmptyTemplate(), HttpStatusCode.valueOf(404));
+            return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
         }
 
         AbstractTemplate retrievedTemplate = this.viewLoader.get(templateName); // get the template from the viewLoader
@@ -124,7 +124,7 @@ public abstract class AbstractViewController extends AbstractCommonController {
             LOG.info(templateName, " found in viewLoader");
         }
 
-        return new ResponseEntity<AbstractTemplate>(retrievedTemplate, httpCode);
+        return new ResponseEntity<AbstractHtmlObject>(retrievedTemplate != null ? retrievedTemplate.getHead(): AbstractHtmlObject.createEmptyAbstractHtmlObject(), httpCode);
     }
     /** */
     @GetMapping(AbstractCommonController.PATH_COMPONENT_BY_NAME)

@@ -17,7 +17,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 public abstract class AbstractTemplate extends AbstractCommonManager<AbstractComponent> implements IManageable {
 
     // private Set<String> resources; // names of resources that can be found in resource manager // TODO: maybe this should be in the template? look into when we start using resources
-    protected AbstractHtmlObject head; // this is the head of the html object that will be rendered, containing the components.
+    private AbstractHtmlObject head; // this is the head of the html object that will be rendered, containing the components.
     
     public AbstractTemplate(String name) {
         super(name, false);
@@ -83,7 +83,7 @@ public abstract class AbstractTemplate extends AbstractCommonManager<AbstractCom
     abstract public AbstractHtmlObject setHead();
 
     public AbstractHtmlObject getHead() {
-        return head;
+        return this.head;
     }
 
     public void setHead(AbstractHtmlObject head) {
