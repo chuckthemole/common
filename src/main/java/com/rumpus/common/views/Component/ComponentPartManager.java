@@ -2,7 +2,11 @@ package com.rumpus.common.views.Component;
 
 import com.rumpus.common.Manager.AbstractCommonManager;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
+import com.rumpus.common.views.Html.Attribute;
 
+/**
+ * ComponentPartManager is used to register and retrieve component parts.
+ */
 public class ComponentPartManager extends AbstractCommonManager<AbstractHtmlObject> {
 
     private static final String NAME = "ComponentPartManager";
@@ -37,7 +41,7 @@ public class ComponentPartManager extends AbstractCommonManager<AbstractHtmlObje
 
     public String registerComponentPart(String componentName, AbstractHtmlObject componentPart) {
         final String id = componentUniqueIds.generateAndReceiveIdForGivenSet(componentName.strip());
-        componentPart.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, id);
+        componentPart.addHtmlTagAttribute(Attribute.create(AbstractComponent.COMPONENT_PART_ID, id));
 
         // TODO: look at this. this is what I've been looking for, bug.
         // if(this.put(id, componentPart) != null) {

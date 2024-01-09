@@ -1,13 +1,10 @@
 package com.rumpus.common.views.Html;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.AbstractView;
+import com.rumpus.common.views.Component.ComponentAttributeManager;
 
 public abstract class AbstractHtmlObject extends AbstractView implements IManageable {
 
@@ -168,12 +165,32 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     ////////////////////////////////////
     // Begin AbstractHtmlObject class //
     ////////////////////////////////////
-    // private AbstractElement parent; // don't think I need this
-    private List<AbstractHtmlObject> children; // TODO: reorder children?
+
+    /**
+     * The children of the html object.
+     */
+    private java.util.List<AbstractHtmlObject> children; // TODO: reorder children?
+    /**
+     * The body of the html object.
+     */
     private String body;
+    /**
+     * The {@link HtmlTagType} of the html object.
+     */
     private HtmlTagType htmlTagType;
-    private Map<String, String> htmlTagAttributes;
+    /**
+     * The {@link HtmlTagAttributes} of the html object.
+     * <p>
+     * These are attributes of the top level html tag. This is not for child html objects.
+     */
+    protected HtmlTagAttributes htmlAttributes;
+    /**
+     * TODO: what is this? delete?
+     */
     private int order = -1;
+    /**
+     * TODO: see if this is being used. delete?
+     */
     private String link; // Can be empty. Populate if the html object is a link.
 
     // TODO: add an abstract class for the type of html object (e.g. Bulma, Bootstrap, Component, etc.)
@@ -184,15 +201,15 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         super(name);
         this.children = abstractHtmlObject.getChildren();
         this.htmlTagType = abstractHtmlObject.getHtmlTagType();
-        this.htmlTagAttributes = abstractHtmlObject.getHtmlTagAttributes();
+        this.htmlAttributes = abstractHtmlObject.getHtmlAttributes() != null ? abstractHtmlObject.getHtmlAttributes() : HtmlTagAttributes.create();
         this.body = abstractHtmlObject.getBody();
         this.link = String.valueOf("");
     }
     public AbstractHtmlObject(String name, HtmlTagType htmlTagType, String body) {
         super(name);
-        this.children = new ArrayList<>();
+        this.children = new java.util.ArrayList<>();
         this.htmlTagType = htmlTagType;
-        this.htmlTagAttributes = new HashMap<>();
+        this.htmlAttributes = HtmlTagAttributes.create();
         this.body = body;
         this.link = String.valueOf("");
     }
@@ -205,6 +222,8 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     // Helper Methods    //
     ///////////////////////
 
+    // TODO: delete getAndSetAttributesForHtmlObject here. This should not be used. Maybe keep getEmptyHtmlObjectWithAttributes
+
     /**
      * Get and set the attributes for the given html object.
      * <p>
@@ -216,6 +235,15 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      * @return the html object with the attributes set
      */
     public static AbstractHtmlObject getAndSetAttributesForHtmlObject(AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
+        LogBuilder.logBuilderFromStringArgsNoSpaces(
+            "Getting and setting attributes for given html object :: Attributes: ",
+            attributes,
+            "Delimiter: ",
+            delimiter).info();
+        if(attributes == null || attributes.isEmpty()) {
+            LOG.info("attributes is null or empty, returning empty html object");
+            return hTypeHtmlObject;
+        }
         String[] attributesArray = attributes.split(delimiter);
         for(String attribute : attributesArray) {
             String[] attributePropAndValue = attribute.split("=");
@@ -228,19 +256,108 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         return hTypeHtmlObject;
     }
 
+
+    // TODO: Looking to move to Attribute
+    /**
+     * Get an empty html object with the given attributes.
+     * <p>
+     * Example: <code>getEmptyHtmlObjectWithAttributes("class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     * 
+     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
+     * @param delimiter the delimiter to use to separate the attributes
+     * @return the empty html object with the attributes set
+     */
+    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributes(String attributes, String delimiter) {
+        LogBuilder.logBuilderFromStringArgsNoSpaces(
+            "Creating empty html object and adding attributes :: Attributes: ",
+            attributes,
+            "Delimiter: ",
+            delimiter).info();
+        return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(), attributes, delimiter);
+    }
+
+    /**
+     * Get an empty html object with the given attributes and html tag type.
+     * <p>
+     * Example: <code>getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType.DIV, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     * 
+     * @param htmlTagType the html tag type of the html object
+     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
+     * @param delimiter the delimiter to use to separate the attributes
+     * @return the empty html object with the attributes and html tag type set
+     */
+    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType htmlTagType, String attributes, String delimiter) {
+        LogBuilder.logBuilderFromStringArgsNoSpaces(
+            "Creating empty html object and adding attributes :: Tag Type: ",
+            htmlTagType.getHtmlTagType(),
+            "Attributes: ",
+            attributes,
+            "Delimiter: ",
+            delimiter).info();
+        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes, delimiter);
+        hTypeHtmlObject.setHtmlTagType(htmlTagType);
+        return hTypeHtmlObject;
+    }
+
+    /**
+     * Clean the given attribute value string.
+     * <p>
+     * Example: <code>cleanAttributeValueString(" class1  class2 class3")</code> will return "class1 class2 class3".
+     * <p>
+     * TODO: maybe this can be in {@link StringUtil} seems like a string problem.
+     * @param attributesString
+     * @return
+     */
+    public static String cleanAttributeValueString(String attributesString) {
+        StringBuilder sb = new StringBuilder();
+        String[] attributesArray = attributesString.split(" ");
+        boolean firstValueChosen = false;
+        for(int attrtibutesArrayIndex = 0; attrtibutesArrayIndex < attributesArray.length; attrtibutesArrayIndex++) {
+            if(attributesArray[attrtibutesArrayIndex].strip().isEmpty()) {
+                continue;
+            } else if(!firstValueChosen) {
+                sb.append(attributesArray[attrtibutesArrayIndex].strip());
+                firstValueChosen = true;
+            } else {
+                sb.append(" ").append(attributesArray[attrtibutesArrayIndex].strip());
+
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Get the html attribute by the given property name.
+     * <p>
+     * Example: <code>getHtmlAttributeByPropertyName("class")</code> will return the html attribute with the property name "class".
+     * 
+     * @param propertyName the property name of the attribute to get
+     * @return the html attribute with the given property name or null if the attribute does not exist
+     */
+    public Attribute getHtmlAttributeByPropertyName(String propertyName) {
+        for(Attribute attribute : this.htmlAttributes) {
+            if(attribute.getPropertyName().equals(propertyName)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
     ///////////////////////
     // End Helper Methods//
     ///////////////////////
 
-    public List<AbstractHtmlObject> getChildren() {
+    public java.util.List<AbstractHtmlObject> getChildren() {
         return children;
     }
 
-    public AbstractHtmlObject setChildren(List<AbstractHtmlObject> children) {
+    public AbstractHtmlObject setChildren(java.util.List<AbstractHtmlObject> children) {
         // TODO: think about order here, maybe just use addChild
         this.children = children;
         return this;
     }
+
+    // TODO: addChildren?
 
     public AbstractHtmlObject addChild(AbstractHtmlObject child) {
         child.setOrder(this.children.size());
@@ -254,12 +371,12 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         return this;
     }
 
-    public Map<String, String> getHtmlTagAttributes() {
-        return htmlTagAttributes;
+    public HtmlTagAttributes getHtmlAttributes() {
+        return this.htmlAttributes;
     }
 
-    public void setHtmlTagAttributes(Map<String, String> htmlTagAttributes) {
-        this.htmlTagAttributes = htmlTagAttributes;
+    public void setHtmlAttributes(HtmlTagAttributes htmlAttributes) {
+        this.htmlAttributes = htmlAttributes;
     }
 
     public int getOrder() {
@@ -274,50 +391,93 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
 
     /**
      * Add an attribute to the html tag.
-     * <p>
-     * This will overwrite any existing value for the given key. If you want to add to the attribute, use {@link #addToAttribute(String, String)}.
      * 
-     * @param key the key of the attribute
-     * @param value the value of the attribute
-     * @return the previous value associated with key, or null if there was no mapping for key.
-     * @see Map#put(Object, Object)
+     * @param attribute the attribute to add
+     * @return true if the attribute was added, false otherwise {@link java.util.Set#add(Object)}
      */
-    public String addHtmlTagAttribute(String key, String value) {
-        return this.htmlTagAttributes.put(key, value);
+    public boolean addHtmlTagAttribute(Attribute attribute) {
+        return this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute) ? false : this.htmlAttributes.add(attribute);
+    }
+
+    public boolean addHtmlTagAttribute(String attributeKey, String... attributeValues) {
+        return this.addHtmlTagAttribute(Attribute.create(attributeKey, attributeValues));
     }
 
     /**
      * Remove an attribute from the html tag.
-     * TODO: what if I want to remove a single value associated with this key? Example: class="class1 class2 class3", remove class2.
      * 
-     * @param key the key of the attribute
-     * @return the previous value associated with key, or null if there was no mapping for key.
-     * @see Map#remove(Object)
+     * @param attribute the attribute to remove
+     * @return true if the attribute was removed, false otherwise {@link java.util.Set#remove(Object)}
      */
-    public String removeHtmlTagAttribute(String key) {
-        return this.htmlTagAttributes.remove(key);
+    public boolean removeHtmlTagAttribute(Attribute attribute) {
+        return this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute) ? false : this.htmlAttributes.remove(attribute);
     }
 
     /**
-     * Update the value of an attribute in the html tag by appending the given value to the current value.
-     * <p>
-     * This will create a new value if there was no previous value for the given key.
-     * <p>
-     * Example: if the current value, for the value class, is "class1" and the given value is "class2", the new value will be "class1 class2".
+     * Remove a value from the specified attribute.
      * 
-     * @param key the key of the attribute
-     * @param value the value to append to the current value
-     * @return the new value associated with key, or null if there was no mapping for key.
+     * @param attribute the attribute to remove the value from
+     * @param value the value to remove
+     * @return true if the value was removed, false otherwise
      */
-    public String addToAttribute(String key, String value) {
-        String attribute = this.htmlTagAttributes.get(key);
-        if (attribute == null) {
-            attribute = "";
+    public boolean removeHtmlTagAttribute(Attribute attribute, String value) {
+        if(this.htmlAttributes.contains(attribute)) {
+            Attribute newAttribute = Attribute.createCopy(attribute);
+            newAttribute.removeValue(value);
+            if(this.htmlAttributes.remove(attribute) && this.htmlAttributes.add(newAttribute)) {
+                return true;
+            }
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(attribute).append(" ").append(value);
-        this.htmlTagAttributes.put(key, sb.toString());
-        return sb.toString();
+        LogBuilder.logBuilderFromStringArgsNoSpaces("Could not remove value: ", value, " from attribute: ", attribute.toString()).info();
+        return false;
+    }
+
+    /**
+     * Remove values from the specified attribute.
+     * 
+     * @param attribute the attribute to remove the values from
+     * @param values the values to remove
+     */
+    public void removeHtmlTagAttributes(Attribute attribute, String... values) {
+        for(String value : values) {
+            this.removeHtmlTagAttribute(attribute, value);
+        }
+    }
+
+    /**
+     * Update the value of an attribute in the htmlAttributes by appending the given value to the current value.
+     * <p>
+     * Example: if the current value, for 'class', is "class1" and the given attributeValuesToAdd is "class2", the new value will be "class1 class2".
+     * 
+     * @param attributeKey the key of the attribute to update
+     * @param attributeValuesToAdd the values to append to the current value
+     * @return the updated attribute or null if the attribute key is null, is empty, or does not exist
+     */
+    public Attribute addToAttribute(String attributeKey, String... attributeValuesToAdd) {
+
+        // check if the attribute key is null or empty or if the attribute does not exist
+        if(attributeKey == null || attributeKey.isEmpty() || this.htmlAttributes.get(attributeKey) == null) {
+            LogBuilder.logBuilderFromStringArgsNoSpaces("The given attribute key is null, is empty, or does not exist. Returning null.").info();
+            return null;
+        }
+
+        Attribute attribute = this.htmlAttributes.get(attributeKey); // find the attribute in manager
+        attribute.addValues(attributeValuesToAdd); // add the values to the attribute
+        this.htmlAttributes.update(attributeKey, attribute); // update the attribute in the manager
+        return attribute;
+    }
+
+    /**
+     * Update the value of an attribute in the htmlAttributes by appending the given value to the current value.
+     * <p>
+     * Example: if the current value, for 'class', is "class1" and the given attributeValuesToAdd is "class2", the new value will be "class1 class2".
+     * 
+     * @param attribute the attribute to update. This uses the given attribute's key to find the attribute in the htmlAttributes.
+     * @param attributeValuesToAdd the values to append to the current value
+     * @return the updated attribute or null if the attribute key is null, is empty, or does not exist
+     */
+    public Attribute addToAttribute(Attribute attribute, String... attributeValuesToAdd) {
+        return this.addToAttribute(attribute.getUniqueId(), attributeValuesToAdd);
     }
 
     public String getBody() {
@@ -370,7 +530,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      */
     @Override
     public String toString() {
-        // use string builder to build the json string for member variables: body, htmlTagType, htmlTagAttributes, children
+        // use string builder to build the json string for member variables: body, htmlTagType, htmlAttributes, children
         StringBuilder sb = new StringBuilder();
         sb.append("\n{");
         sb.append("\"body\":").append("\"").append(this.body).append("\"").append(",");
@@ -379,7 +539,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             sb.append("\"link\":").append("\"").append(this.link).append("\"").append(",");
         }
         sb.append("\"htmlTagType\":").append("\"").append(this.htmlTagType).append("\"").append(",");
-        sb.append("\"htmlTagAttributes\":").append("\"").append(this.htmlTagAttributes).append("\"").append(",");
+        sb.append("\"htmlAttributes\":").append("\"").append(this.htmlAttributes).append("\"").append(",");
         sb.append("\"children\":");
         // iterate through children and append them to string builder
         sb.append("[");
@@ -401,7 +561,20 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         AbstractHtmlObject abstractHtmlObject = (AbstractHtmlObject) o;
         return this.children.equals(abstractHtmlObject.getChildren())
                 && this.htmlTagType.equals(abstractHtmlObject.getHtmlTagType())
-                && this.htmlTagAttributes.equals(abstractHtmlObject.getHtmlTagAttributes())
+                && this.htmlAttributes.equals(abstractHtmlObject.getHtmlAttributes())
                 && this.body.equals(abstractHtmlObject.getBody());
+    }
+
+    private boolean isGivenAttributeNullOrIsThisHtmlAttributesNull(Attribute attribute) {
+        if(attribute == null) {
+            LogBuilder.logBuilderFromStringArgsNoSpaces("The given attribute is null.").info();
+            return true;
+        }
+        if(this.htmlAttributes == null) {
+            LogBuilder.logBuilderFromStringArgsNoSpaces("This htmlAttributes is null. Not adding attribute: ", attribute.toString()).info();
+            LogBuilder.logBuilderFromStringArgsNoSpaces("Debug this AbstractHtmlObject: ", this.toString()).info();
+            return true;
+        }
+        return false;
     }
 }

@@ -4,7 +4,9 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 
 public abstract class AbstractComponent extends AbstractHtmlObject {
 
+    // TODO: look into moving these delims to AbstractHtmlObject. Should they be there instead of here? Maybe can use them at a highter level?
     public static String DEFAULT_DELIMITER = ",";
+    public static String DEFAULT_LINK_DELIMITER = " >< ";
     public static final String COMPONENT_PART_ID = "component_part_id";
 
     public enum ComponentType {
@@ -12,7 +14,8 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
 
         ASIDE("aside"),
         BREADCRUMB("breadcrumb"),
-        WELCOME("welcome");
+        WELCOME("welcome"),
+        TILE("tile");
 
         private String type;
 
@@ -44,6 +47,14 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      */
     private ComponentType componentType;
     /**
+     * The component as a string, with its parts delimited by the default delimiter.
+     */
+    protected String componentAsString;
+    /**
+     * The componentAttributeManager is used to register and retrieve component attributes.
+     */
+    protected ComponentAttributeManager componentAttributeManager;
+    /**
      * The default delimiter
      */
     protected String defaultDelimiter;
@@ -51,6 +62,8 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      * The componentPartManager is used to register and retrieve component parts.
      * <p>
      * This is a singleton instance.
+     * <p>
+     * TODO: maybe a template should manage its component parts instead of AbstractComponent?
      */
     protected ComponentPartManager componentPartManager;
     /**
@@ -62,29 +75,30 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      * Constructor
      * 
      * @param name top level name of the class passed to AbstractCommonObject
+     * @param componentName the name of the component. This is a unique identifier used to retrieve the component from the componentPartManager.
+     * @param componentType the type of the component
+     * @param componentAsString the component as a string, with its parts delimited by the default delimiter
      * @param htmlTagType the html tag type of the component
      * @param body the body of the component
-     * @param componentType the type of the component
      * @param delimiter the delimiter used to separate the component parts
-     * @param componentName the name of the component. This is a unique identifier used to retrieve the component from the componentPartManager.
-     * @param args the arguments to initialize the component with
+     * @param attributes the list of attributes to init the htmlAttributeManager with
      */
     public AbstractComponent(
         String name,
+        String componentName,
+        ComponentType componentType,
+        String componentAsString,
         HtmlTagType htmlTagType,
         String body,
-        ComponentType componentType,
-        String delimiter,
-        String componentName,
-        String... args) {
+        String delimiter) {
             super(name, htmlTagType, body);
+            this.componentAttributeManager = this.initComponentAttributeManager();
             this.componentName = componentName;
+            this.componentAsString = componentAsString;
             this.componentPartManager = ComponentPartManager.getSingletonInstance();
             this.registerComponent();
             this.defaultDelimiter = delimiter.isEmpty() ? AbstractComponent.DEFAULT_DELIMITER : delimiter;
             this.componentType = componentType;
-            this.init(args);
-            // this.registerComponentParts();
             this.setChildrenForComponent();
     }
 
@@ -92,11 +106,11 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      * Factory method for creating an empty component.
      */
     public static AbstractComponent createEmptyComponent() {
-        return new AbstractComponent("EMPTY_COMPONENT", HtmlTagType.EMPTY, "", ComponentType.EMPTY, "", "") {
+        return new AbstractComponent("EMPTY_COMPONENT", "EMPTY_COMPONENT", ComponentType.EMPTY, "", HtmlTagType.EMPTY, "", AbstractComponent.DEFAULT_DELIMITER) {
             @Override
-            protected int init(String... args) {
+            protected ComponentAttributeManager initComponentAttributeManager() {
                 LOG.info("init() called in createEmptyComponent()");
-                return SUCCESS;
+                return ComponentAttributeManager.create();
             }
 
             @Override
@@ -124,14 +138,12 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
     }
     /**
      * 
-     * This method is used to initialize the component.
-     * <p>
-     * Use this method to set member variables, call setters, and initialize delimiters, etc.
+     * This method is used to initialize the component's html attributes.
      * 
-     * @param args the arguments to initialize the component with
+     * @param attributes the arguments to initialize the attributes with
      * @return SUCCESS or ERROR
      */
-    abstract protected int init(String... args);
+    abstract protected ComponentAttributeManager initComponentAttributeManager();
     /**
      * This method is used to register the component parts using the componentPartManager.
      * <p>

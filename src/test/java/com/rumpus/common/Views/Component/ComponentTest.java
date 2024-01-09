@@ -19,6 +19,7 @@ import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaBreadcru
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaWelcome;
 import com.rumpus.common.views.Component.AbstractAside;
 import com.rumpus.common.views.Component.AbstractBreadcrumb;
+import com.rumpus.common.views.Component.AbstractComponent;
 import com.rumpus.common.views.Component.AbstractWelcome;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
@@ -94,13 +95,13 @@ public class ComponentTest extends CommonTest {
         LOG.info("- - testBreadcrumbComponent - - ");
         StringBuilder sb = new StringBuilder();
         sb.append("Bulma");
-        sb.append(AbstractBreadcrumb.LINK_DELIMITER);
+        sb.append(AbstractComponent.DEFAULT_LINK_DELIMITER);
         sb.append("www.google.com,");
         sb.append("Another Bulma Page");
-        sb.append(AbstractBreadcrumb.LINK_DELIMITER);
+        sb.append(AbstractComponent.DEFAULT_LINK_DELIMITER);
         sb.append("www.google.com,");
         sb.append("Current Page");
-        sb.append(AbstractBreadcrumb.LINK_DELIMITER);
+        sb.append(AbstractComponent.DEFAULT_LINK_DELIMITER);
         sb.append("www.yahoo.com");
         AbstractHtmlObject breadcrumb = BulmaBreadcrumb.create("Test4BreadcrumbActual1", sb.toString());
         LOG.info(breadcrumb.toString());

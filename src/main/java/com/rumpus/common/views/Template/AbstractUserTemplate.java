@@ -4,23 +4,14 @@ import com.rumpus.common.views.Component.AbstractAside;
 import com.rumpus.common.views.Component.AbstractBreadcrumb;
 import com.rumpus.common.views.Component.AbstractWelcome;
 
-public abstract class AbstractAdmin extends AbstractTemplate {;
+abstract public class AbstractUserTemplate extends AbstractTemplate {
 
     private AbstractAside aside;
     private AbstractBreadcrumb breadcrumb;
     private AbstractWelcome welcome;
-    // protected AbstractHtmlObject analytics;
-    // protected List<AbstractHtmlObject> widgets;
 
-    public AbstractAdmin(String name) {
+    public AbstractUserTemplate(String name) {
         super(name);
-    }
-
-    @Override
-    public void addComponentsToMap() {
-        this.put(AbstractTemplate.TEMPLATE_ASIDE, this.aside);
-        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB, this.breadcrumb);
-        this.put(AbstractTemplate.TEMPLATE_WELCOME, this.welcome);
     }
 
     @Override
@@ -30,6 +21,13 @@ public abstract class AbstractAdmin extends AbstractTemplate {;
         this.welcome = this.initWelcome();
     }
 
+    @Override
+    public void addComponentsToMap() {
+        this.put(AbstractTemplate.TEMPLATE_ASIDE, this.aside);
+        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB, this.breadcrumb);
+        this.put(AbstractTemplate.TEMPLATE_WELCOME, this.welcome);
+    }
+    
     /**
      * This method is used to set the aside of the template.
      * Use its setter to set the aside.

@@ -2,8 +2,6 @@ package com.rumpus.common.Views.HtmlObject.Bulma.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,8 +45,7 @@ public class BulmaElementTest {
         this.abstractHtmlObject = Block.createWithBody(body);
         assertEquals(body, this.abstractHtmlObject.getBody());
         assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
-        Map<String, String> attributes = this.abstractHtmlObject.getHtmlTagAttributes();
-        assertEquals("block", attributes.get(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
+        assertEquals("block", this.abstractHtmlObject.getHtmlAttributeByPropertyName("class").getValueAsString());
     }
 
     @Test
@@ -57,8 +54,7 @@ public class BulmaElementTest {
         this.abstractHtmlObject = Block.createWithNoBody();
         assertEquals("", this.abstractHtmlObject.getBody());
         assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
-        Map<String, String> attributes = this.abstractHtmlObject.getHtmlTagAttributes();
-        assertEquals("block", attributes.get(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
+        assertEquals("block", this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
     }
 
     @Test
@@ -68,7 +64,6 @@ public class BulmaElementTest {
         this.abstractHtmlObject = Block.createWithBody(body);
         assertEquals(body, this.abstractHtmlObject.getBody());
         assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
-        Map<String, String> attributes = this.abstractHtmlObject.getHtmlTagAttributes();
-        assertEquals("block", attributes.get(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
+        assertEquals("block", this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
     }
 }

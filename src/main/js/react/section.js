@@ -11,7 +11,7 @@ export default function Section({section_path}) {
     );
     
     useEffect(() => {
-        if(data !== undefined) {
+        if(data !== undefined && data !== null && data !== '') {
             setHtmlContent(constructHtmlContent(data));
         }
     }, [data]);
@@ -35,43 +35,36 @@ export default function Section({section_path}) {
             <progress className="progress is-large is-info" max="100">60%</progress>
         </div>
     )
-   
-    console.log(data);
-    console.log(htmlContent);
 
     // TODO: data.resources think about what to do...
 
     // recursive function to construct the html content from parent object
     function constructHtmlContent(currentObject) {
-        if(currentObject !== undefined) {
-            console.log(currentObject.body);
-            console.log(currentObject.children.length);
-            // iterate over currentObject.htmlTagAttributes object and add each attribute to the html tag
+        if(currentObject !== undefined && currentObject !== null && currentObject !== '') {
+            // iterate over currentObject.htmlAttributes object and add each attribute to the html tag
             let htmlTag = '';
             let htmlTagAttributes = '';
-            if(currentObject.htmlTagAttributes !== undefined) {
-                for(let key in currentObject.htmlTagAttributes) {
-                    htmlTagAttributes += `${key}="${currentObject.htmlTagAttributes[key]}" `;
-                }
-
-                // construct the html tag with the attributes and currentObject.htmlTagTypeValue
-                htmlTag = `<${currentObject.htmlTagTypeValue} ${htmlTagAttributes}>${currentObject.body}`;
+            if(currentObject.htmlAttributes !== undefined && currentObject.htmlAttributes !== null && currentObject.htmlAttributes !== '') {
+                currentObject.htmlAttributes.map(attribute => {
+                    htmlTagAttributes += `${attribute.propertyName}="${attribute.valueAsString}" `;
+                });
             }
 
-            if(currentObject.children !== undefined && currentObject.children.length > 0) {
-                return (`${htmlTag}${currentObject.children.map(child => constructHtmlContent(child)).join('')}</${currentObject.htmlTagTypeValue}>`);
-            } else {
-                return (`${htmlTag}</${currentObject.htmlTagTypeValue}>`);
+            // construct the html tag with the attributes and currentObject.htmlTagTypeValue
+            htmlTag = `<${currentObject.htmlTagTypeValue} ${htmlTagAttributes}>${currentObject.body}`;
+
+            // if currentObject.children is not undefined or null, then recursively call constructHtmlContent on each child
+            if(currentObject.children !== undefined && currentObject.children !== null) {
+                return `${htmlTag}${currentObject.children.map(child => {return constructHtmlContent(child)}).join('')}</${currentObject.htmlTagTypeValue}>`;
             }
+            // if currentObject.children is undefined or null, then just return the html tag
+            return `${htmlTag}</${currentObject.htmlTagTypeValue}>`;
         }
-        return '';
     }
-
-    console.log(htmlContent);
     
     return (
         <>
-            <div dangerouslySetInnerHTML={{__html: htmlContent}}></div>
+            <div className='html-insert' dangerouslySetInnerHTML={{__html: htmlContent}}></div>
         </>
     )
 }

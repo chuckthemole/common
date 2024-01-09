@@ -9,6 +9,8 @@ import com.rumpus.common.Manager.AbstractCommonManager;
 /**
  * Class to keep track of collection's unique ids. Each object's set is identified by its NAME
  * 
+ * TODO: this class can be tested and looked at more closely. What happens when we remove an id? can we remove an id? etc.
+ * 
  */
 public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSet> {
 

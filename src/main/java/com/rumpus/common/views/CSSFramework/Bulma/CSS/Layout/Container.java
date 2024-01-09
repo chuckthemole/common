@@ -1,5 +1,7 @@
 package com.rumpus.common.views.CSSFramework.Bulma.CSS.Layout;
 
+import com.rumpus.common.views.Html.Attribute;
+
 public class Container extends AbstractBulmaLayout {
     
     private static final String NAME = "BulmaContainer";
@@ -14,6 +16,6 @@ public class Container extends AbstractBulmaLayout {
     }
 
     private void init() {
-        this.addHtmlTagAttribute("class", "container");
+        this.addHtmlTagAttribute(Attribute.create("class", "container"));
     }
 }

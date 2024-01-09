@@ -1,9 +1,5 @@
 package com.rumpus.common.views.Template;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import com.rumpus.common.Manager.AbstractCommonManager;
 import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.views.Component.AbstractComponent;
@@ -15,6 +11,10 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  * A template is a manager of {@link AbstractComponent}s and is managed by a {@link com.rumpus.common.views.AbstractViews}.
  */
 public abstract class AbstractTemplate extends AbstractCommonManager<AbstractComponent> implements IManageable {
+
+    public static final String TEMPLATE_ASIDE = "aside";
+    public static final String TEMPLATE_BREADCRUMB = "breadcrumb";
+    public static final String TEMPLATE_WELCOME = "welcome";
 
     // private Set<String> resources; // names of resources that can be found in resource manager // TODO: maybe this should be in the template? look into when we start using resources
     private AbstractHtmlObject head; // this is the head of the html object that will be rendered, containing the components.

@@ -6,6 +6,8 @@ import java.util.TreeMap;
 
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
+import com.rumpus.common.views.Html.Attribute;
+import com.rumpus.common.views.Html.HtmlTagAttributes;
 
 /**
  * Aside html object. A menu for navigating a website.
@@ -14,10 +16,12 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  */
 public abstract class AbstractAside extends AbstractComponent {
 
+    public static final String TITLE_ATTRIBUTES = "title-html-tag-attributes";
+    public static final String ITEMS_ATTRIBUTES = "items-html-tag-attributes";
+
     public static final String START_ASIDE_CHILD_LIST = "start-aside-child-list";
     public static final String END_ASIDE_CHILD_LIST = "end-aside-child-list";
     public static final String GROUP_DELIMITER = "group-delimiter";
-
 
     public abstract class AbstractAsideComponentPart extends AbstractComponentPart {
     
@@ -49,64 +53,35 @@ public abstract class AbstractAside extends AbstractComponent {
     ///////////////////////
     // AbstractAside class/
     ///////////////////////
-    /**
-     * A comma delimited string of html tag attributes for the title of the aside.
-     * <p>
-     * This should be given in the Abstract{Framework}Aside, for example, {@link com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside}.
-     * <p>
-     * For example: "class=menu-label, id=menu-label-id"
-     */
-    protected String titleHtmlTagAttributes;
-    /**
-     * A comma delimited string of html tag attributes for the items of the aside.
-     * <p>
-     * This should be given in the Abstract{Framework}Aside, for example, {@link com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside}.
-     * <p>
-     * For example: "class=menu-label, id=menu-label-id"
-     */
-    protected String itemsHtmlTagAttibutes;
-    /**
-     * A comma delimited string of groups for the aside.
-     * <p>
-     * Example: "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2"
-     * <p>
-     * Example with sub aside: "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2,group-delimiter,start-aside-child-list,groupChildList, child-item1, child-item2,end-aside-child-list,group-delimiter,group3, group3-item1, group3-item2"
-     */
-    private String asideGroupsString;
 
-    public AbstractAside(String name, String componentName, String asideGroups, String titleHtmlTagAttributes, String itemsHtmlTagAttibutes) {
+    public AbstractAside(String name, String componentName, String asideGroups) {
         super(
             name,
+            componentName,
+            AbstractComponent.ComponentType.ASIDE,
+            asideGroups,
             HtmlTagType.ASIDE,
             "",
-            AbstractComponent.ComponentType.ASIDE,
-            "",
-            componentName,
-            List.of(
-                asideGroups,
-                titleHtmlTagAttributes,
-                itemsHtmlTagAttibutes
-            ).toArray(new String[3]));
+            ""
+        );
     }
 
     /**
      * Factory method for creating an empty aside.
      */
     public static AbstractAside createEmptyAside() {
-        return new AbstractAside("EMPTY_ASIDE", "EMPTY_ASIDE_COMPONENT_NAME", "", "", "") {
+        return new AbstractAside("EMPTY_ASIDE", "EMPTY_ASIDE_COMPONENT_NAME", "") {
             @Override
             public void setChildrenForComponent() {
                 LOG.info("setChildrenForComponent() called in createEmptyAbstractHtmlObject()");
             }
-        };
-    }
 
-    @Override
-    protected int init(String... args) {
-        this.asideGroupsString = args[0];
-        this.itemsHtmlTagAttibutes = args[1];
-        this.titleHtmlTagAttributes = args[2];
-        return SUCCESS;
+            @Override
+            protected ComponentAttributeManager initComponentAttributeManager() {
+                LOG.info("init() called in createEmptyAbstractHtmlObject()");
+                return ComponentAttributeManager.create();
+            }
+        };
     }
 
     /**
@@ -116,10 +91,16 @@ public abstract class AbstractAside extends AbstractComponent {
      * @return the sub aside
      */
     private static AbstractAside createSubAside(String name, String componentName, String asideGroups) {
-        AbstractAside aside = new AbstractAside(name, componentName, asideGroups, "", "") {
+        AbstractAside aside = new AbstractAside(name, componentName, asideGroups) {
             @Override
             public void setChildrenForComponent() {
                 super.setChildrenForComponent();
+            }
+
+            @Override
+            protected ComponentAttributeManager initComponentAttributeManager() {
+                LOG.info("init() called in createSubAside()");
+                return ComponentAttributeManager.create();
             }
         };
         aside.setHtmlTagType(HtmlTagType.DIV); // setting type to div rn. this may need to be changed later TODO
@@ -140,24 +121,12 @@ public abstract class AbstractAside extends AbstractComponent {
     @Override
     public void setChildrenForComponent() {
 
-        this.createGroupsFromStrings(this.asideGroupsString).forEach((titleKey, listOfItems) -> {
+        this.createGroupsFromStrings(super.componentAsString).forEach((titleKey, listOfItems) -> {
             if(titleKey != null && !titleKey.equals("")) { // check if titleKey is null or empty, this should never happen, you should have a title for each group
                 // add title
                 AbstractHtmlObject titleHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
                 titleHtmlObject.setHtmlTagType(AbstractHtmlObject.HtmlTagType.P);
-                String[] titleHtmlAttributes = this.titleHtmlTagAttributes.split(super.defaultDelimiter);
-                for(String attribute : titleHtmlAttributes) {
-                    attribute = attribute.strip();
-                    if(attribute != null && !attribute.equals("")) {
-                        String[] attributeKeyValue = attribute.split("=");
-                        // check length is two. if not break loop and log error
-                        if(attributeKeyValue.length != 2) {
-                            LOG.error("Attribute key value pair is not length 2. Title-Attribute: " + attribute);
-                            break;
-                        }
-                        titleHtmlObject.addToAttribute(attributeKeyValue[0].strip(), attributeKeyValue[1].strip());
-                    }
-                }
+                titleHtmlObject.setHtmlAttributes(super.componentAttributeManager.get(TITLE_ATTRIBUTES));
                 titleHtmlObject.setBody(titleKey);
 
                 final String titleId = this.componentPartManager.registerComponentPart(super.getComponentName(), titleHtmlObject);
@@ -167,19 +136,7 @@ public abstract class AbstractAside extends AbstractComponent {
                 // add items
                 AbstractHtmlObject menuListHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
                 menuListHtmlObject.setHtmlTagType(AbstractHtmlObject.HtmlTagType.UL);
-                String[] itemsHtmlAttributes = this.itemsHtmlTagAttibutes.split(super.defaultDelimiter);
-                for(String attribute : itemsHtmlAttributes) {
-                    if(attribute != null && !attribute.equals("")) {
-                        attribute = attribute.strip();
-                        String[] attributeKeyValue = attribute.split("=");
-                        // check length is two. if not break loop and log error
-                        if(attributeKeyValue.length != 2) {
-                            LOG.error("Attribute key value pair is not length 2. Item-Attribute: " + attribute);
-                            break;
-                        }
-                        menuListHtmlObject.addToAttribute(attributeKeyValue[0].strip(), attributeKeyValue[1].strip());
-                    }
-                }
+                menuListHtmlObject.setHtmlAttributes(super.componentAttributeManager.get(ITEMS_ATTRIBUTES));
                 for(AbstractHtmlObject item : listOfItems) {
                     // check if item is null. if so, log error and continue
                     if(item != null) {
