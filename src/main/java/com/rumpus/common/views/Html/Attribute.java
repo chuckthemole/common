@@ -469,7 +469,18 @@ public class Attribute extends AbstractCommonObject implements IManageable, ISet
 
     @Override
     public String toString() {
-        return this.propertyName + "=\"" + this.value + "\"";
+        if(this.propertyName == null || this.value == null || this.propertyName.isEmpty() || this.value.isEmpty()) {
+            return StringUtil.prettyPrintJson("");
+        }
+        StringBuilder values = new StringBuilder();
+        for(String value : this.value) {
+            values.append(value).append(" ");
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.propertyName)
+            .append("=")
+            .append(values.toString().strip());
+        return sb.toString();
     }
 
     @Override

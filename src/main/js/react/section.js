@@ -5,7 +5,7 @@ import { common_fetcher } from './common_requests';
 export default function Section({section_path}) {
 
     const [htmlContent, setHtmlContent] = useState('');
-    const { data, error } = useSWR(
+    const { data, error } = useSWR( // TODO: use common_loader
         section_path,
         common_fetcher
     );

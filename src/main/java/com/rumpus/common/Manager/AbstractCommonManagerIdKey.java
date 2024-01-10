@@ -1,6 +1,7 @@
 package com.rumpus.common.Manager;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.util.UniqueId.AbstractUniqueIdManager;
 
 abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> extends AbstractCommonObject implements java.util.Set<MANAGEE> {
@@ -134,5 +135,30 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
     @Override
     public <T> T[] toArray(T[] manageeSet) {
         return this.manageeSet.values().toArray(manageeSet);
+    }
+
+    @Override // TODO look at this
+    public String toString() {
+        // use string builder to build the json string of the managee set
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        for(MANAGEE managee : this.manageeSet.values()) {
+            stringBuilder.append("\"").append(managee.toString()).append("\"").append(",");
+        }
+        if(this.manageeSet.size() > 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        }
+        stringBuilder.append("]");
+        return StringUtil.prettyPrintJson(stringBuilder.toString());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || !(obj instanceof AbstractCommonManagerIdKey)) {
+            return false;
+        }
+        @SuppressWarnings("unchecked")
+        AbstractCommonManagerIdKey<MANAGEE> objTypecast = (AbstractCommonManagerIdKey<MANAGEE>) obj;
+        return this.name.equals(objTypecast.name) && this.manageeSet.equals(objTypecast.manageeSet);
     }
 }

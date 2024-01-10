@@ -539,7 +539,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             sb.append("\"link\":").append("\"").append(this.link).append("\"").append(",");
         }
         sb.append("\"htmlTagType\":").append("\"").append(this.htmlTagType).append("\"").append(",");
-        sb.append("\"htmlAttributes\":").append("\"").append(this.htmlAttributes).append("\"").append(",");
+        sb.append("\"htmlAttributes\":").append(this.htmlAttributes).append(",");
         sb.append("\"children\":");
         // iterate through children and append them to string builder
         sb.append("[");
@@ -572,7 +572,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         }
         if(this.htmlAttributes == null) {
             LogBuilder.logBuilderFromStringArgsNoSpaces("This htmlAttributes is null. Not adding attribute: ", attribute.toString()).info();
-            LogBuilder.logBuilderFromStringArgsNoSpaces("Debug this AbstractHtmlObject: ", this.toString()).info();
+            // LogBuilder.logBuilderFromStringArgsNoSpaces("Debug this AbstractHtmlObject: ", this.toString()).info();
             return true;
         }
         return false;

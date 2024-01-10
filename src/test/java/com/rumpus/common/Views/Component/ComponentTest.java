@@ -71,7 +71,6 @@ public class ComponentTest extends CommonTest {
         String asideGroups1 = "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2";
         // Map<String, List<AbstractHtmlObject>> expectedGroups = Map.of("group1", "item1, item2", "group2", "item1, item2");
         AbstractHtmlObject actualGroups1 = BulmaAside.create("Test3AsideActual1", asideGroups1);
-        LOG.info(actualGroups1.toString());
 
         LOG.info("- - testCreateGroupsFromStrings 2 - - ");
         StringBuilder stringBuilder = new StringBuilder();
@@ -83,10 +82,7 @@ public class ComponentTest extends CommonTest {
         stringBuilder.append(AbstractAside.GROUP_DELIMITER);
         stringBuilder.append("group2, group2-item1, group2-item2");
         String asideGroups2 = stringBuilder.toString();
-        LOG.info("TESTING");
-        LOG.info(asideGroups2);
         AbstractHtmlObject actualGroups2 = BulmaAside.create("Test3AsideActual2", asideGroups2);
-        LOG.info(actualGroups2.toString());
     }
 
     @Test
@@ -121,8 +117,5 @@ public class ComponentTest extends CommonTest {
         sb.append(AbstractHtmlObject.HtmlTagType.H2);
         sb.append(AbstractWelcome.WELCOME_COMPONENT_DELIMITER);
         sb.append("What the hell are you doing?!,");
-
-        AbstractHtmlObject welcome = BulmaWelcome.create("Test5WelcomeActual1", sb.toString());
-        LOG.info(welcome.toString());
     }
 }

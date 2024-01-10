@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import com.rumpus.common.views.CSSFramework.Bulma.CSS.Element.Block;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
+import com.rumpus.common.views.Html.Attribute;
 
 /**
  * Tests {@link AbstractBulmaElement} and in turn {@link AbstractHtmlObject} since the previous inherrits from the latter
@@ -54,7 +55,10 @@ public class BulmaElementTest {
         this.abstractHtmlObject = Block.createWithNoBody();
         assertEquals("", this.abstractHtmlObject.getBody());
         assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
-        assertEquals("block", this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
+        assertEquals(
+            Attribute.create("class", "block"),
+            this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute())
+        );
     }
 
     @Test
@@ -64,6 +68,9 @@ public class BulmaElementTest {
         this.abstractHtmlObject = Block.createWithBody(body);
         assertEquals(body, this.abstractHtmlObject.getBody());
         assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
-        assertEquals("block", this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
+        assertEquals(
+            Attribute.create("class", "block"),
+            this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute())
+        );
     }
 }

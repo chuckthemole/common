@@ -1,6 +1,7 @@
 package com.rumpus.common.util;
 
 import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.Builder.LogBuilder;
 
 /**
  * Feel free to implement static string helper methods here.
@@ -234,7 +235,13 @@ public class StringUtil extends AbstractCommon {
     //////////////////////////////////////////////
     public static String prettyPrintJson(String json) {
         com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
-        com.google.gson.JsonElement je = com.google.gson.JsonParser.parseString(json);
+        com.google.gson.JsonElement je = null;
+        try {
+            je = com.google.gson.JsonParser.parseString(json);
+        } catch (com.google.gson.JsonSyntaxException e) {
+            LogBuilder.logBuilderFromStringArgsNewLine("The given json is not valid, returning original json:\n", json).info();
+            return json;
+        }
         return gson.toJson(je);
     }
 }

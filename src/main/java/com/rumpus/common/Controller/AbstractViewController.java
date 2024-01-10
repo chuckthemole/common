@@ -97,35 +97,63 @@ public abstract class AbstractViewController extends AbstractCommonController {
      * @return The Template as a ResponseEntity
      */
     @GetMapping(AbstractCommonController.PATH_TEMPLATE_BY_NAME)
-    public ResponseEntity<AbstractHtmlObject> getTemplate(@PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName, HttpServletRequest request) {
+    public ResponseEntity<AbstractHtmlObject> getTemplate(
+        @PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+        HttpServletRequest request) {
 
-        // check if the templateName is null or empty
-        if(templateName == null || templateName.isEmpty()) {
-            LogBuilder.logBuilderFromStringArgs("templateName", " is null or empty").info();
-            return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
-        }
+            // check if the templateName is null or empty
+            if(templateName == null || templateName.isEmpty()) {
+                LogBuilder.logBuilderFromStringArgs("templateName", " is null or empty").info();
+                return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
+            }
 
-        AbstractTemplate retrievedTemplate = this.viewLoader.get(templateName); // get the template from the viewLoader
-        HttpStatusCode httpCode = HttpStatusCode.valueOf(200);
+            AbstractTemplate retrievedTemplate = this.viewLoader.get(templateName); // get the template from the viewLoader
+            HttpStatusCode httpCode = HttpStatusCode.valueOf(200);
 
-        // check if the template is null, empty, or has a null head, update status code, and debug in the logs
-        if(retrievedTemplate == null) {
-            LogBuilder.logBuilderFromStringArgs(templateName, " not found in viewLoader: null", "  Available templates: ").info();
-            LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).info();
-            httpCode = HttpStatusCode.valueOf(404);
-        } else if(retrievedTemplate.isEmpty()) {
-            LogBuilder.logBuilderFromStringArgs(templateName, " not found in viewLoader: empty", "  Available templates: ").info();
-            LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).info();
-            httpCode = HttpStatusCode.valueOf(404);
-        } else if(retrievedTemplate.getHead() == null) {
-            LogBuilder.logBuilderFromStringArgs(templateName, " not found in viewLoader: head is null").info();
-            httpCode = HttpStatusCode.valueOf(404);
-        } else {
-            LOG.info(templateName, " found in viewLoader");
-        }
+            // check if the template is null, empty, or has a null head, update status code, and debug in the logs
+            if(retrievedTemplate == null) {
+                LogBuilder.logBuilderFromStringArgs(templateName, " not found in viewLoader: null", "  Available templates: ").info();
+                LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).info();
+                httpCode = HttpStatusCode.valueOf(404);
+            } else if(retrievedTemplate.isEmpty()) {
+                LogBuilder.logBuilderFromStringArgs(templateName, " not found in viewLoader: empty", "  Available templates: ").info();
+                LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).info();
+                httpCode = HttpStatusCode.valueOf(404);
+            } else if(retrievedTemplate.getHead() == null) {
+                LogBuilder.logBuilderFromStringArgs(templateName, " not found in viewLoader: head is null").info();
+                httpCode = HttpStatusCode.valueOf(404);
+            } else {
+                LOG.info(templateName, " found in viewLoader");
+            }
 
-        return new ResponseEntity<AbstractHtmlObject>(retrievedTemplate != null ? retrievedTemplate.getHead(): AbstractHtmlObject.createEmptyAbstractHtmlObject(), httpCode);
+            return new ResponseEntity<AbstractHtmlObject>(retrievedTemplate != null ? retrievedTemplate.getHead(): AbstractHtmlObject.createEmptyAbstractHtmlObject(), httpCode);
     }
+
+    @GetMapping(AbstractCommonController.PATH_USER_TEMPLATE)
+    public ResponseEntity<AbstractHtmlObject> getUserTemplate(
+        @PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+        @PathVariable(AbstractCommonController.PATH_VARIABLE_USER_TEMPLATE) String userId,
+        HttpServletRequest request) {
+
+            // check if the templateName/userId is null or empty
+            if(templateName == null || templateName.isEmpty()) {
+                LogBuilder.logBuilderFromStringArgs("templateName", " is null or empty").info();
+                return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
+            }
+            if(userId == null || userId.isEmpty()) {
+                LogBuilder.logBuilderFromStringArgs("userId", " is null or empty").info();
+                return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
+            }
+
+            /*
+             * TODO: get the user from the database
+             * I stopped here to work on controllers
+             * I'm going to abstract rumpus controllers so I  an retreive users here.
+             */
+
+            return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(200));
+    }
+
     /** */
     @GetMapping(AbstractCommonController.PATH_COMPONENT_BY_NAME)
     public ResponseEntity<AbstractComponent> getTemplateComponent(
@@ -173,11 +201,29 @@ public abstract class AbstractViewController extends AbstractCommonController {
 
             return new ResponseEntity<AbstractComponent>(retrievedComponent != null ? retrievedComponent : AbstractComponent.createEmptyComponent(), httpCode);
     }
-    // /**
-    //  * Update a particular Template, using @PostMapping, for a particular view. This should take a PathVariable, a Template object to update, and a HttpServletRequest.
-    //  */
-    // @PostMapping(AbstractCommonController.PATH_TEMPLATE_BY_NAME)
-    // public ResponseEntity<AbstractTemplate> updateTemplate(@PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName, AbstractTemplate template, HttpServletRequest request) {
-    //     return new ResponseEntity<Template>(viewLoader.setTemplate(templateName, template), HttpStatusCode.valueOf(200));
-    // }
+    /**
+     * Update a particular Template, using @PostMapping, for a particular view. This should take a PathVariable, a Template object to update, and a HttpServletRequest.
+     * 
+     * TODO: both this and the getter return AbstractHtmlObject. Should I be returning an AbstractTemplate instead? AbstractTemplate is a manager so it would be a map.
+     */
+    @PostMapping(AbstractCommonController.PATH_TEMPLATE_BY_NAME)
+    public ResponseEntity<AbstractHtmlObject> updateTemplate(
+        @PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+        AbstractTemplate updatedTemplate,
+        HttpServletRequest request) {
+
+            // check if the templateName is null or empty
+            if(templateName == null || templateName.isEmpty()) {
+                LogBuilder.logBuilderFromStringArgs("templateName", " is null or empty").info();
+                return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
+            }
+            if(updatedTemplate == null) {
+                LogBuilder.logBuilderFromStringArgs("template", " is null").info();
+                return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
+            }
+
+            AbstractTemplate previousTemplate = this.viewLoader.put(templateName, updatedTemplate);
+            HttpStatusCode httpCode = previousTemplate != null ? HttpStatusCode.valueOf(200) : HttpStatusCode.valueOf(404);
+            return new ResponseEntity<AbstractHtmlObject>(previousTemplate != null ? previousTemplate.getHead() : AbstractHtmlObject.createEmptyAbstractHtmlObject(), httpCode);
+    }
 }

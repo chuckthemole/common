@@ -1,0 +1,73 @@
+package com.rumpus.common.views.Template;
+
+import com.rumpus.common.views.Component.AbstractAside;
+import com.rumpus.common.views.Component.AbstractBreadcrumb;
+import com.rumpus.common.views.Component.AbstractWelcome;
+
+/**
+ * Just a template for a template that has a placeholder for the aside, breadcrumb, and welcome.
+ * Not using right now. Should maybe delete later.
+ */
+abstract public class AbstractPlaceHolderTemplate extends AbstractTemplate {
+    private AbstractAside aside;
+    private AbstractBreadcrumb breadcrumb;
+    private AbstractWelcome welcome;
+
+    public AbstractPlaceHolderTemplate(String name) {
+        super(name);
+    }
+
+    @Override
+    public void setComponents() {
+        this.aside = this.initAside();
+        this.breadcrumb = this.initBreadcrumb();
+        this.welcome = this.initWelcome();
+    }
+
+    @Override
+    public void addComponentsToMap() {
+        this.put(AbstractTemplate.TEMPLATE_ASIDE, this.aside);
+        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB, this.breadcrumb);
+        this.put(AbstractTemplate.TEMPLATE_WELCOME, this.welcome);
+    }
+    
+    /**
+     * This method is used to set the aside of the template.
+     * Use its setter to set the aside.
+     */
+    abstract public AbstractAside initAside();
+    /**
+     * This method is used to set the breadcrumb of the template.
+     * Use its setter to set the breadcrumb.
+     */
+    abstract public AbstractBreadcrumb initBreadcrumb();
+    /**
+     * This method is used to set the welcome of the template.
+     * Use its setter to set the welcome.
+     */
+    abstract public AbstractWelcome initWelcome();
+
+    public AbstractAside getAside() {
+        return aside;
+    }
+
+    public void setAside(AbstractAside aside) {
+        this.aside = aside;
+    }
+
+    public AbstractBreadcrumb getBreadcrumb() {
+        return breadcrumb;
+    }
+
+    public void setBreadcrumb(AbstractBreadcrumb breadcrumb) {
+        this.breadcrumb = breadcrumb;
+    }
+
+    public AbstractWelcome getWelcome() {
+        return welcome;
+    }
+
+    public void setWelcome(AbstractWelcome welcome) {
+        this.welcome = welcome;
+    }
+}

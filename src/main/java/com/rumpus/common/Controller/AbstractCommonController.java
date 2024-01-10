@@ -17,7 +17,9 @@ public abstract class AbstractCommonController extends AbstractCommonObject {
     protected static final String PATH_RESOURCE_BY_NAME = "/resource/{resource_name}";
     protected static final String PATH_VARIABLE_RESOURCE_BY_NAME = "resource_name";
     protected static final String PATH_TEMPLATE_BY_NAME = "/template/{template_name}";
+    protected static final String PATH_USER_TEMPLATE = "/template/{template_name}/{user_id}";
     protected static final String PATH_VARIABLE_TEMPLATE_BY_NAME = "template_name";
+    protected static final String PATH_VARIABLE_USER_TEMPLATE = "user_id";
     protected static final String PATH_COMPONENT_BY_NAME = "/template/{template_name}/{component_name}";
     protected static final String PATH_VARIABLE_COMPONENT_BY_NAME = "component_name";
 

@@ -91,4 +91,9 @@ public abstract class AbstractCommonManager<MANAGEE extends IManageable> extends
     public Set<Entry<String, MANAGEE>> entrySet() {
         return this.manageeMap.entrySet();
     }
+
+    @Override // TODO: look at this more closely
+    public boolean equals(Object o) {
+        return this.manageeMap.equals(o);
+    }
 }
