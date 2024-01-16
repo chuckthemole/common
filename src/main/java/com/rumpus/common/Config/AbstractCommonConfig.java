@@ -37,19 +37,19 @@ public abstract class AbstractCommonConfig extends AbstractCommon {
      */
     protected final String SCOPE_PROTOTYPE = "prototype";
 
-    protected final String URL = "url";
-	protected final String USER = "username";
-	protected final String DRIVER = "driver";
-	protected final String PASSWORD = "password";
+    protected static final String URL = "url";
+	protected static final String USER = "username";
+	protected static final String DRIVER = "driver";
+	protected static final String PASSWORD = "password";
 
     @Bean
     @Scope(SCOPE_SINGLETON)
 	protected DataSource dataSource() {
 		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-		driverManagerDataSource.setUrl(environment.getProperty(URL));
-		driverManagerDataSource.setUsername(environment.getProperty(USER));
-		driverManagerDataSource.setPassword(environment.getProperty(PASSWORD));
-		driverManagerDataSource.setDriverClassName(environment.getProperty(DRIVER));
+		driverManagerDataSource.setUrl(this.environment.getProperty(AbstractCommonConfig.URL));
+		driverManagerDataSource.setUsername(this.environment.getProperty(AbstractCommonConfig.USER));
+		driverManagerDataSource.setPassword(this.environment.getProperty(AbstractCommonConfig.PASSWORD));
+		driverManagerDataSource.setDriverClassName(this.environment.getProperty(AbstractCommonConfig.DRIVER));
 		return driverManagerDataSource;
 	}
 
