@@ -11,9 +11,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
-import com.rumpus.common.Service.UserService;
+import com.rumpus.common.Service.AbstractUserDetailsService;
 
-abstract public class AbstractCommonAuthManager<MODEL extends AbstractModel<MODEL>> extends UserService<MODEL> implements AuthenticationManager {
+abstract public class AbstractCommonAuthManager<MODEL extends AbstractModel<MODEL>> extends AbstractUserDetailsService<MODEL> implements AuthenticationManager {
 
     public AbstractCommonAuthManager(String name, IDao<MODEL> dao) {
         super(name, dao);

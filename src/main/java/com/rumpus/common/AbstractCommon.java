@@ -60,15 +60,6 @@ abstract public class AbstractCommon {
     public static final String KEYHOLDER = "keyholder";
     public static final String USER_ID = "user_id";
 
-    // Paths
-    protected static final String PATH_INDEX = "/";
-    protected static final String PATH_API_USERS = "/api/users";
-    protected static final String PATH_VIEW_FOOTER = "/view/footer";
-    protected static final String PATH_VIEW_USER_TABLE = "/view/user_table";
-    protected static final String PATH_LOGIN = "/login";
-    protected static final String PATH_LOGIN_FAILURE = "/api/login_failure";
-    protected static final String PATH_LOGOUT = "/logout";
-
     // Roles
     protected static final String ROLE_USER = "ROLE_USER";
     protected static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE";

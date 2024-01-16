@@ -9,39 +9,39 @@ import com.rumpus.common.Model.AbstractModel;
 // import org.springframework.stereotype.Service; TODO: maybe use this annotation here, if so, need to change name of class, since currently conflicts with same name
 
 // @Service
-abstract public class Service<T extends AbstractModel<T>> extends AbstractCommonObject {
+abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject {
 
     protected static final String NAME = "rawService";
 
-    protected IDao<T> dao;
+    protected IDao<MODEL> dao;
 
-    public Service() {super(NAME);}
-    public Service(String name, IDao<T> dao) {
+    public AbstractService() {super(NAME);} // TODO: Delete?
+    public AbstractService(String name, IDao<MODEL> dao) {
         super(name);
         this.dao = dao;
     }
 
-    public T get(int id) {
+    public MODEL get(int id) {
         LOG.info("Service::get(id)");
         return this.dao.get(id);
     }
 
-    public T get(String name) {
+    public MODEL get(String name) {
         LOG.info("Service::get(name)");
         return this.dao.get(name);
     }
 
-    public T getById(String id) {
+    public MODEL getById(String id) {
         LOG.info("Service::getById(id)");
         return this.dao.getById(id);
     }
 
-    public List<T> getAll() {
+    public List<MODEL> getAll() {
         LOG.info("Service::getAll()");
         return this.dao.getAll();
     }
 
-    public T add(T rumpusModel) {
+    public MODEL add(MODEL rumpusModel) {
         LOG.info("Service::add()");
         return this.dao.add(rumpusModel);
     }
@@ -56,12 +56,12 @@ abstract public class Service<T extends AbstractModel<T>> extends AbstractCommon
         return this.dao.remove(name);
     }
 
-    public T update(String id, T updatedModel) {
+    public MODEL update(String id, MODEL updatedModel) {
         LOG.info("Service::update()");
         return this.dao.update(id, updatedModel);
     }
     // @Override
-    // public T update(String id, T updatedModel, String condition) {
+    // public MODEL update(String id, MODEL updatedModel, String condition) {
     //     return this.dao.update(id, updatedModel, condition);
     // }
 }

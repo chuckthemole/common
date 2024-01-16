@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
 
+/**
+ * TODO: is this being used? if not, delete it
+ */
 @Service("userDetailsService")
-abstract public class UserService<MODEL extends AbstractModel<MODEL>> extends com.rumpus.common.Service.Service<MODEL> implements UserDetailsService {
-    public UserService(String name, IDao<MODEL> dao) {
+abstract public class AbstractUserDetailsService<MODEL extends AbstractModel<MODEL>> extends com.rumpus.common.Service.AbstractService<MODEL> implements UserDetailsService {
+    public AbstractUserDetailsService(String name, IDao<MODEL> dao) {
         super(name, dao);
     }
 }

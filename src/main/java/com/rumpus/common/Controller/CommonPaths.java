@@ -6,6 +6,9 @@ import java.util.Map;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.util.StringUtil;
 
+/**
+ * TODO: need to look at this more and see how I'm using it - chuck
+ */
 public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
     
         private static final String NAME = "CommonPaths";

@@ -81,6 +81,8 @@ public class ForumPostTest {
      * Comparing creation times. To do this I have have an instant in setUpClass that is the expected creation time. This will differ from post1 and post2 creation time, since they are created at different times. To account I have differenceIntime and difference.
      * 
      * TODO: test more when metaData is built out further
+     * TODO: this will fail sometimes. this test class needs to be refactored to be more robust and make better tests.
+     * Run test again and will prolly pass
      */
     @Test
     @Order(4)

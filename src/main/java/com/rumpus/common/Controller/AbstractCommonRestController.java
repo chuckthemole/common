@@ -5,17 +5,36 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
-abstract public class AbstractCommonRestController extends AbstractCommonController {
-    
-        private static final String NAME = "CommonRestController";
+import com.rumpus.common.Service.AbstractUserService;
+import com.rumpus.common.User.AbstractCommonUser;
+import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.views.Template.IUserTemplate;
+
+abstract public class AbstractCommonRestController
+    <
+        /////////////////////////
+        // Define generics here//
+        /////////////////////////
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends AbstractUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>
+    >
+    extends AbstractCommonController
+    <
+        /////////////////////////
+        // Define generics here//
+        /////////////////////////
+        USER,
+        USER_META,
+        USER_SERVICE,
+        USER_TEMPLATE
+    > {
 
         public static final String COMMON_REST_API_PATH = "/common/api";
-    
-        public AbstractCommonRestController() {
-            super(NAME);
-        }
+
         public AbstractCommonRestController(String name) {
-            super(name);
+                super(name);
         }
 
         /**

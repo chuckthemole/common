@@ -6,7 +6,7 @@ import com.rumpus.common.Builder.StringBuilderHelper;
 import com.rumpus.common.Model.AbstractMetaData;
 
 /**
- * 
+ * TODO: let's make an interface, ICommonUserMetaData, and have this class implement it. 2024/1/15 - chuck
  */
 public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommonUserMetaData<USER_META>> extends AbstractMetaData<USER_META> {
 
@@ -19,10 +19,10 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
     protected String photoLink;
     protected String aboutMe;
     
-    public AbstractCommonUserMetaData() {
-        super(NAME);
-        this.init();
-    }
+    // public AbstractCommonUserMetaData() {
+    //     super(NAME);
+    //     this.init();
+    // }
     public AbstractCommonUserMetaData(String name) {
         super(name);
         this.init();

@@ -2,7 +2,10 @@ package com.rumpus.common.views;
 
 import com.rumpus.common.Builder.ITableBuilder;
 import com.rumpus.common.Manager.AbstractCommonManager;
+import com.rumpus.common.User.AbstractCommonUser;
+import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.Template.AbstractTemplate;
+import com.rumpus.common.views.Template.AbstractUserTemplate;
 
 import java.util.List;
 
@@ -12,6 +15,8 @@ import java.util.List;
  * This class is the base class for all views. It acts as a manager of {@link AbstractTemplate}s.
  */
 public abstract class AbstractViews extends AbstractCommonManager<AbstractTemplate>  {
+
+    public static final String CURRENT_USER_TEMPLATE_KEY = "currentUserTemplate";
     
     protected Footer footer;
     protected Header header;
@@ -89,6 +94,11 @@ public abstract class AbstractViews extends AbstractCommonManager<AbstractTempla
 
     public List<Resource> getResources() {
         return this.resourceManager.getResources();
+    }
+
+    @SuppressWarnings("unchecked")
+    public AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> getCurrentUserTemplate() {
+        return (AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>>) this.get(AbstractViews.CURRENT_USER_TEMPLATE_KEY);
     }
 
     /**

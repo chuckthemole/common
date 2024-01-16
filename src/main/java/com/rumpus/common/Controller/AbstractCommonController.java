@@ -1,69 +1,67 @@
 package com.rumpus.common.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Service.IUserService;
+import com.rumpus.common.User.AbstractCommonUser;
+import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.ResourceManager;
+import com.rumpus.common.views.Template.IUserTemplate;
 
-public abstract class AbstractCommonController extends AbstractCommonObject {
+public abstract class AbstractCommonController
+    <
+        /////////////////////////
+        // Define generics here//
+        /////////////////////////
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>
+    >
 
-    private static final String NAME = "CommonController";
+    extends AbstractCommonObject implements ICommonController {
 
-    public static final String COMMON_REST_API_PATH = "/common/api";
+        @Autowired protected USER_SERVICE userService;
+        @Autowired protected USER_TEMPLATE userTemplate;
 
-    // Paths for views
-    protected static final String PATH_FOOTER = "/footer";
-    protected static final String PATH_HEADER = "/header";
-    protected static final String PATH_USER_TABLE = "/user_table";
-    protected static final String PATH_RESOURCES = "/resources";
-    protected static final String PATH_RESOURCE_BY_NAME = "/resource/{resource_name}";
-    protected static final String PATH_VARIABLE_RESOURCE_BY_NAME = "resource_name";
-    protected static final String PATH_TEMPLATE_BY_NAME = "/template/{template_name}";
-    protected static final String PATH_USER_TEMPLATE = "/template/{template_name}/{user_id}";
-    protected static final String PATH_VARIABLE_TEMPLATE_BY_NAME = "template_name";
-    protected static final String PATH_VARIABLE_USER_TEMPLATE = "user_id";
-    protected static final String PATH_COMPONENT_BY_NAME = "/template/{template_name}/{component_name}";
-    protected static final String PATH_VARIABLE_COMPONENT_BY_NAME = "component_name";
+        protected String currentBasePath;
+        protected ResourceManager resourceManager;
 
-    protected String currentBasePath;
-    protected ResourceManager resourceManager;
+        static protected ICommonPaths commonPaths = null;
 
-    static protected ICommonPaths commonPaths = null;
-
-    public AbstractCommonController() {
-        super(NAME);
-        this.init();
-    }
-    public AbstractCommonController(String name) {
-        super(name);
-        this.init();
-    }
-
-    private void init() {
-        if(AbstractCommonController.commonPaths == null) {
-            AbstractCommonController.commonPaths = CommonPaths.getInstance();
+        public AbstractCommonController(String name) {
+                super(name);
+                this.init();
         }
-        this.currentBasePath = AbstractCommonController.COMMON_REST_API_PATH;
-        this.resourceManager = ResourceManager.createEmptyManager();
-    }
 
-    public String getCurrentBasePath() {
-        return this.currentBasePath;
-    }
+        private void init() {
+            if(AbstractCommonController.commonPaths == null) {
+                AbstractCommonController.commonPaths = CommonPaths.getInstance();
+            }
+            this.currentBasePath = ICommonController.COMMON_REST_API_PATH;
+            this.resourceManager = ResourceManager.createEmptyManager();
+        }
 
-    public String setCurrentBasePath(String currentBasePath) {
-        return this.currentBasePath = currentBasePath;
-    }
-    
-    protected String getWebPage(String uri) {
-        return "TODO - getWebPage()";
-    }
+        public String getCurrentBasePath() {
+            return this.currentBasePath;
+        }
 
-    // @GetMapping(value = AbstractCommonController.COMMON_REST_API_PATH + "/is_authenticated")
-    // static protected ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication) {
-    //     LOG.info("CommonRestController::getAuthenticationOfUser()");
-    //     boolean isAuthenticated = false;
-    //     if(authentication != null) {
-    //         isAuthenticated = authentication.isAuthenticated();
-    //     }
-    //     return new ResponseEntity<Boolean>(isAuthenticated, HttpStatus.ACCEPTED);
-    // }
+        public String setCurrentBasePath(String currentBasePath) {
+            return this.currentBasePath = currentBasePath;
+        }
+        
+        protected String getWebPage(String uri) {
+            return "TODO - getWebPage()";
+        }
+
+        // @GetMapping(value = ICommonController.COMMON_REST_API_PATH + "/is_authenticated")
+        // static protected ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication) {
+        //     LOG.info("CommonRestController::getAuthenticationOfUser()");
+        //     boolean isAuthenticated = false;
+        //     if(authentication != null) {
+        //         isAuthenticated = authentication.isAuthenticated();
+        //     }
+        //     return new ResponseEntity<Boolean>(isAuthenticated, HttpStatus.ACCEPTED);
+        // }
 }

@@ -11,7 +11,10 @@ import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Model.CommonKeyHolder;
 
-public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META extends AbstractCommonUserMetaData<META>> extends AbstractModel<USER> {
+/**
+ * TODO: let's create an interface for this, ICommonUser. Then we can have an AbstractCommonUser that implements ICommonUser. Then we can have a CommonUser that extends AbstractCommonUser. - chuck 1/15/2024
+ */
+public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_META extends AbstractCommonUserMetaData<USER_META>> extends AbstractModel<USER> { // TODO: i feeel like I tried this before. but USER extends AbstractCommonUser<USER, USER_META>
 
     private static final String NAME = "CommonUser";
 
@@ -19,7 +22,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
     static private PasswordEncoder encoder;
     private String email;
     private CommonUserDetails userDetails; // holds username and password among others
-    private AbstractCommonUserMetaData<META> metaData;
+    private AbstractCommonUserMetaData<USER_META> metaData;
 
     static {
         AbstractCommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -85,11 +88,11 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
         this.userPassword = userPassword;
     }
 
-    public AbstractCommonUserMetaData<META> getMetaData() {
+    public AbstractCommonUserMetaData<USER_META> getMetaData() {
         return this.metaData;
     }
 
-    public void setMetaData(AbstractCommonUserMetaData<META> metaData) {
+    public void setMetaData(AbstractCommonUserMetaData<USER_META> metaData) {
         this.metaData = metaData;
     }
 
@@ -114,7 +117,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
         }
 
         @SuppressWarnings(UNCHECKED)
-        AbstractCommonUser<USER, META> user = (AbstractCommonUser<USER, META>) o;
+        AbstractCommonUser<USER, USER_META> user = (AbstractCommonUser<USER, USER_META>) o;
 
         boolean flag = true;
         if(!this.usernameIsEqual(user)) {
@@ -154,20 +157,20 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, META 
     }
 
     // member values to check for equality
-    private boolean usernameIsEqual(AbstractCommonUser<USER, META> user) {
+    private boolean usernameIsEqual(AbstractCommonUser<USER, USER_META> user) {
         return this.getUsername().equals(user.getUsername()) ? true : false;
     }
 
     // TODO check why I have 2 password getters/setters
-    private boolean passwordIsEqual(AbstractCommonUser<USER, META> user) {
+    private boolean passwordIsEqual(AbstractCommonUser<USER, USER_META> user) {
         return this.getPassword().equals(user.getPassword()) ? true : false;
     }
 
-    private boolean emailIsEqual(AbstractCommonUser<USER, META> user) {
+    private boolean emailIsEqual(AbstractCommonUser<USER, USER_META> user) {
         return this.getEmail().equals(user.getEmail()) ? true : false;
     }
 
-    private boolean userDetailsIsEqual(AbstractCommonUser<USER, META> user) {
+    private boolean userDetailsIsEqual(AbstractCommonUser<USER, USER_META> user) {
         return this.getUserDetails().equals(user.getUserDetails()) ? true : false;
     }
 }

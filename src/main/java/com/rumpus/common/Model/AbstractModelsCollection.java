@@ -19,12 +19,30 @@ import com.rumpus.common.AbstractCommonObject;
 public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL>, COLLECTION extends Collection<MODEL>> extends AbstractCommonObject implements Collection<MODEL> {
 
     private static final String NAME = "ModelsCollection";
+
     protected COLLECTION collection;
 
     public AbstractModelsCollection(COLLECTION collection) {
         super(NAME);
         this.collection = collection;
         // this.modelsList = new ArrayList<>();
+    }
+
+    /**
+     * Get a sorted list of models by id from a collection of models
+     * 
+     * @param <MODEL> the model type
+     * @param <COLLECTION> the collection type
+     * @param userCollection the collection of models
+     * @return the sorted list of models
+     */
+    public static <MODEL extends AbstractModel<MODEL>, COLLECTION extends Collection<MODEL>>
+        List<MODEL> getSortedByIdListFromCollection(COLLECTION userCollection) {
+            if(userCollection == null) {
+                LOG.info("AbstractModelsCollection::getSortedByIdListFromCollection: userCollection is null");
+                return null;
+            }
+            return new AbstractModelsCollection<MODEL, COLLECTION>(userCollection) {}.sortById();
     }
 
     // add more sort methods in child classes depending on how you want to sort

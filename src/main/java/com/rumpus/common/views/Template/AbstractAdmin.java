@@ -4,7 +4,7 @@ import com.rumpus.common.views.Component.AbstractAside;
 import com.rumpus.common.views.Component.AbstractBreadcrumb;
 import com.rumpus.common.views.Component.AbstractWelcome;
 
-public abstract class AbstractAdmin extends AbstractTemplate {;
+public abstract class AbstractAdmin extends AbstractTemplate {
 
     private AbstractAside aside;
     private AbstractBreadcrumb breadcrumb;

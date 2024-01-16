@@ -1,10 +1,11 @@
 package com.rumpus.common.Service;
 
+import com.rumpus.common.Manager.IManageable;
 import java.util.List;
 
 import com.rumpus.common.Model.AbstractModel;
 
-public interface IService<T extends AbstractModel<T>> {
+public interface IService<T extends AbstractModel<T>> extends IManageable {
     T get(int id);
     T get(String name);
     /**
