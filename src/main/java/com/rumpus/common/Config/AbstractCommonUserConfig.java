@@ -15,11 +15,12 @@ abstract public class AbstractCommonUserConfig
     >
     extends AbstractCommonConfig {
 
+        public static final String USER_SERVICE = "parentUserService";
         public static final String CHILD_USER_SERVICE = "childUserService";
 
-        @Bean
+        @Bean(name = AbstractCommonUserConfig.USER_SERVICE)
         @DependsOn(AbstractCommonUserConfig.CHILD_USER_SERVICE)
-        public IUserService<USER, USER_META> userService() {
+        public USER_SERVICE userService() {
             return this.childUserService();
         }
 

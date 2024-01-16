@@ -1,19 +1,17 @@
 package com.rumpus.common.User;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
-import com.rumpus.common.Service.AbstractUserDetailsService;
+import com.rumpus.common.Service.AbstractService;
 
-abstract public class AbstractCommonAuthManager<MODEL extends AbstractModel<MODEL>> extends AbstractUserDetailsService<MODEL> implements AuthenticationManager {
+abstract public class AbstractCommonAuthManager<MODEL extends AbstractModel<MODEL>> extends AbstractService<MODEL> implements AuthenticationManager, UserDetailsService {
 
     public AbstractCommonAuthManager(String name, IDao<MODEL> dao) {
         super(name, dao);
@@ -40,5 +38,5 @@ abstract public class AbstractCommonAuthManager<MODEL extends AbstractModel<MODE
     }
 
     abstract public boolean userIsAuthenticated(String name, String password);
-    abstract public Set<GrantedAuthority> getAuthorities(String name);
+    abstract public java.util.Set<GrantedAuthority> getAuthorities(String name);
 }

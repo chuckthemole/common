@@ -5,19 +5,19 @@ import java.util.List;
 
 import com.rumpus.common.Model.AbstractModel;
 
-public interface IService<T extends AbstractModel<T>> extends IManageable {
-    T get(int id);
-    T get(String name);
+public interface IService<MODEL extends AbstractModel<MODEL>> extends IManageable {
+    MODEL get(int id);
+    MODEL get(String name);
     /**
      * 
      * @param id MODEL id to look for
      * @return MODEL if found, null if not
      */
-    T getById(String id);
-    List<T> getAll();
-    T add(T rumpusModel);
+    MODEL getById(String id);
+    List<MODEL> getAll();
+    MODEL add(MODEL rumpusModel);
     boolean remove(int id);
     boolean remove(String name);
-    T update(String id, T updatedModel);
-    // T update(String id, T updatedModel, String condition);
+    MODEL update(String id, MODEL updatedModel);
+    // MODEL update(String id, MODEL updatedModel, String condition);
 }

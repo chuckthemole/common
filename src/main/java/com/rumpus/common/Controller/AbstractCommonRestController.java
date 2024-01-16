@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
-import com.rumpus.common.Service.AbstractUserService;
+import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.Template.IUserTemplate;
@@ -17,7 +17,7 @@ abstract public class AbstractCommonRestController
         /////////////////////////
         USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends AbstractUserService<USER, USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>
     >
     extends AbstractCommonController

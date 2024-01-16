@@ -6,10 +6,7 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
 
-// import org.springframework.stereotype.Service; TODO: maybe use this annotation here, if so, need to change name of class, since currently conflicts with same name
-
-// @Service
-abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject {
+abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL>{
 
     protected static final String NAME = "rawService";
 

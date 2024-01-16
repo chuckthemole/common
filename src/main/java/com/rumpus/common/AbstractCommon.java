@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory;
 import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
 
+/**
+ * TODO: maybe make this an interface and have AbstractCommonObject implement it?
+ * <p>
+ * Then make all protected fields public. Think about it - chuck
+ */
 abstract public class AbstractCommon {
     protected static IRumpusIO io = new RumpusIO();
     protected static final Logger LOG = LoggerFactory.getLogger(AbstractCommon.class);
