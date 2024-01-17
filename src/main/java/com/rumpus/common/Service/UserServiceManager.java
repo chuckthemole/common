@@ -4,6 +4,10 @@ import com.rumpus.common.Manager.AbstractCommonManager;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
+/**
+ * TODO: don't think I'm using this. maybe delete it.
+ * maybe get to this when i have multiple services, like using chuck repo when implemented?
+ */
 public class UserServiceManager<META extends AbstractCommonUserMetaData<META>, USER extends AbstractCommonUser<USER, META>> extends AbstractCommonManager<IUserService<USER, META>> {
 
     private static final String NAME = "UserServiceManager";

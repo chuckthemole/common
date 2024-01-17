@@ -1,10 +1,9 @@
 package com.rumpus.common.Builder;
 
-import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Logger.AbstractCommonLogger;
 
-public abstract class AbstractBuilder extends AbstractCommonObject {
-
-    // public static final String NAME = "Builder";
+public abstract class AbstractBuilder extends AbstractCommonLogger {
+    
     protected StringBuilder builder;
 
     public AbstractBuilder(String name) {
@@ -51,11 +50,14 @@ public abstract class AbstractBuilder extends AbstractCommonObject {
         this.builder = new StringBuilder();
     }
 
+    // TODO: this is just sending the string to the logger, think about how to make this better. - chuck
     public void info() {
-        LOG.info(this.toString());
+        this.info(this.toString());
+        // LOG.info(this.toString());
     }
     public void error() {
-        LOG.error(this.toString());
+        this.error(this.toString());
+        // LOG.error(this.toString());
     }
 
     public void append(String... appendees) {

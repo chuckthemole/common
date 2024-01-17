@@ -1,25 +1,34 @@
-package com.rumpus.common.Log;
+package com.rumpus.common.Logger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
-
-import com.rumpus.common.AbstractCommonObject;
 
 /**
  * Common logger class that implements the SLF4J {@link Logger} interface
  * <p>
  * This allows us to set the logger class for this object.
  */
-public class CommonLogger extends AbstractCommonObject implements Logger {
-
-    private static final String NAME = "CommonLogger";
+abstract public class AbstractCommonLogger extends com.rumpus.common.AbstractCommonObject implements ICommonLogger {
 
     private Class<?> clazz;
 
-    private CommonLogger(Class<?> clazz) {
-        super(NAME);
+    // Ctors
+    public AbstractCommonLogger(String name) {
+        super(name);
+        this.clazz = com.rumpus.common.AbstractCommon.class;
+    }
+    public AbstractCommonLogger(String name, Class<?> clazz) {
+        super(name);
         this.clazz = clazz;
+    }
+
+    public void setClass(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+
+    public Class<?> getClass(Class<?> clazz) {
+        return this.clazz;
     }
 
     @Override

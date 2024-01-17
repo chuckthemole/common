@@ -22,6 +22,7 @@ import java.sql.SQLException;
 public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends AbstractCommonObject implements Blob {
 
     protected Blob blob;
+    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(AbstractBlob.class);
 
     public AbstractBlob(final String name, Blob blob) {
         super(name);

@@ -6,7 +6,7 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL>{
+abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL> {
 
     protected IDao<MODEL> dao;
 

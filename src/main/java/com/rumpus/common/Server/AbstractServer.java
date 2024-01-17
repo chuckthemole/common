@@ -46,7 +46,7 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
                 LOG.error("Server directory does not exist: " + this.directory);
             }
             if(ServerUtil.isPortAvailable(port)) {
-                LogBuilder.logBuilderFromStringArgs(null, "Port is available: ", this.port, "\nRunning server.").info();
+                LogBuilder.logBuilderFromStringArgs(AbstractServer.class, "Port is available: ", this.port, "\nRunning server.").info();
                 this.isRunning = this.runner();
             } else {
                 LogBuilder.logBuilderFromStringArgs("Port is not available: ", this.port, "\nSetting isRunning to true because the port is unavailable, meaning this server must be running.").info();

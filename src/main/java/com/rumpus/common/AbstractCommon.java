@@ -1,8 +1,5 @@
 package com.rumpus.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
 
@@ -13,7 +10,8 @@ import com.rumpus.common.IO.RumpusIO;
  */
 abstract public class AbstractCommon {
     protected static IRumpusIO io = new RumpusIO();
-    protected static final Logger LOG = LoggerFactory.getLogger(AbstractCommon.class);
+    protected static final Class<?> DEFAULT_LOGGER_CLASS = AbstractCommon.class;
+    protected static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(DEFAULT_LOGGER_CLASS);
 
     public final static String NO_ID = String.valueOf(-1);
 

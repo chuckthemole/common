@@ -2,7 +2,8 @@ package com.rumpus.common;
 
 abstract public class AbstractCommonObject extends AbstractCommon {
     
-    private final static String NAME = "RumpusObject";
+    private final static String NAME = "AbstractCommonObject";
+
     protected final String name;
 
     public AbstractCommonObject() { // TODO: should I let users create objects without a name? prolly not
@@ -32,6 +33,20 @@ abstract public class AbstractCommonObject extends AbstractCommon {
      */
     @Override
     public String toString() {
+        LOG.info("AbstractCommonObject::toString()  Should you be here? Maybe override toString() in your class?");
         return this.name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        LOG.info("AbstractCommonObject::equals()  Should you be here? Maybe override equals() in your class?");
+        if(obj == null) {
+            return false;
+        }
+        if(!(obj instanceof AbstractCommonObject)) {
+            return false;
+        }
+        AbstractCommonObject other = (AbstractCommonObject) obj;
+        return this.name.equals(other.name);
     }
 }
