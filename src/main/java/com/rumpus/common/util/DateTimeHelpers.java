@@ -4,10 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 
 // TODO expand this helper 
-public class DateTimeHelpers extends AbstractCommon {
+public class DateTimeHelpers implements ICommon {
+
+    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(DateTimeHelpers.class);
 
     /**
      * 

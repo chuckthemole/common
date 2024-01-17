@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 
 /**
  * @author Chuck Thomas
@@ -22,7 +22,7 @@ import com.rumpus.common.AbstractCommon;
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.
  * TODO: think about making this into an annotation.
  */
-public abstract class AbstractCommonConfig extends AbstractCommon {
+public abstract class AbstractCommonConfig implements ICommon {
 
     @Autowired protected Environment environment;
     @Autowired protected static ApplicationContext applicationContext;

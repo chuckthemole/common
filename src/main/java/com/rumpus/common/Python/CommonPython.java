@@ -8,14 +8,15 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.util.FileUtil;
 
-public class CommonPython extends AbstractCommon {
+public class CommonPython implements ICommon {
     
     private static PythonInterpreter interpreter = null;
     private static final String PYCOMMON_DIR = "../pycommon";
+    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(CommonPython.class);
 
     public static PythonInterpreter getInterpreter() {
         if (interpreter == null) {

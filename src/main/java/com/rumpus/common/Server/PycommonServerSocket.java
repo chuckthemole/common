@@ -1,6 +1,6 @@
 package com.rumpus.common.Server;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 
 /**
  * A server socket for the Pycommon server.
@@ -9,6 +9,6 @@ import com.rumpus.common.AbstractCommon;
 public class PycommonServerSocket extends AbstractServerSocket {
 
     public PycommonServerSocket() {
-        super(AbstractCommon.PYCOMMON_PORT);
+        super(ICommon.PYCOMMON_PORT);
     }
 }

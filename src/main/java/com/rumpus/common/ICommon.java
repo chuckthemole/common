@@ -6,12 +6,12 @@ import com.rumpus.common.IO.RumpusIO;
 /**
  * TODO: maybe make this an interface and have AbstractCommonObject implement it?
  * <p>
- * Then make all protected fields public. Think about it - chuck
+ * Then make all public fields public. Think about it - chuck
  */
-abstract public class AbstractCommon {
-    protected static IRumpusIO io = new RumpusIO();
-    protected static final Class<?> DEFAULT_LOGGER_CLASS = AbstractCommon.class;
-    protected static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(DEFAULT_LOGGER_CLASS);
+public interface ICommon {
+    public static IRumpusIO io = new RumpusIO();
+    public static final Class<?> DEFAULT_LOGGER_CLASS = ICommon.class;
+    public static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(DEFAULT_LOGGER_CLASS);
 
     public final static String NO_ID = String.valueOf(-1);
 
@@ -52,7 +52,7 @@ abstract public class AbstractCommon {
     public final static String DELETE_GROUP_AUTHORITIES = "DELETE_GROUP_AUTHORITIES";
 
     // SQL stored procedures
-    protected final static String GET_USER_BY_ID = "get_user_by_id";
+    public final static String GET_USER_BY_ID = "get_user_by_id";
 
     // User
     public static final String USERNAME = "username";
@@ -64,39 +64,34 @@ abstract public class AbstractCommon {
     public static final String USER_ID = "user_id";
 
     // Roles
-    protected static final String ROLE_USER = "ROLE_USER";
-    protected static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE";
-    protected static final String ROLE_MANAGER = "ROLE_MANAGER";
-    protected static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE";
+    public static final String ROLE_MANAGER = "ROLE_MANAGER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
     
     // Shorthand Roles
-    protected static final String USER = "USER";
-    protected static final String EMPLOYEE = "EMPLOYEE";
-    protected static final String MANAGER = "MANAGER";
-    protected static final String ADMIN = "ADMIN";
+    public static final String USER = "USER";
+    public static final String EMPLOYEE = "EMPLOYEE";
+    public static final String MANAGER = "MANAGER";
+    public static final String ADMIN = "ADMIN";
 
     // MISC
-    protected static final String UNCHECKED = "unchecked";
+    public static final String UNCHECKED = "unchecked";
 
     // PYTHON
-    protected static final String PYTHON_HOME_PATH = "./../rumpusenv/bin/python3.11";
-    protected static final String PYTHON_PATH_PATH = "./../rumpusenv/lib";
-    protected static final String PYTHON_HOME = "python.home";
-    protected static final String JYTHON_HOME = "jython.home";
-    protected static final String PYTHON_PATH = "python.path";
-    protected static final String JYTHON_PATH = "jython.path";
+    public static final String PYTHON_HOME_PATH = "./../rumpusenv/bin/python3.11";
+    public static final String PYTHON_PATH_PATH = "./../rumpusenv/lib";
+    public static final String PYTHON_HOME = "python.home";
+    public static final String JYTHON_HOME = "jython.home";
+    public static final String PYTHON_PATH = "python.path";
+    public static final String JYTHON_PATH = "jython.path";
 
     // Class UID     look here: https://stackoverflow.com/questions/10378855/java-io-invalidclassexception-local-class-incompatible
     // Some of these should be moved into rumpus directory, as they're not common
-    protected final static Long RUMPUS_USER_META_DATA_UID = Long.valueOf(11);
-    protected final static Long USER_META_DATA_UID = Long.valueOf(12);
-    protected final static Long META_DATA_UID = Long.valueOf(13);
+    public final static Long RUMPUS_USER_META_DATA_UID = Long.valueOf(11);
+    public final static Long USER_META_DATA_UID = Long.valueOf(12);
+    public final static Long META_DATA_UID = Long.valueOf(13);
 
     // Ports
-    protected final static String PYCOMMON_PORT = "8000";
-
-    // @Autowired
-    // public Rumpus() {
-    // io = new RumpusIO();
-    // }
+    public final static String PYCOMMON_PORT = "8000";
 }

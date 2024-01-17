@@ -3,9 +3,9 @@ package com.rumpus.common.util;
 import java.io.File;
 import java.io.PrintWriter;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 
-public class FileUtil extends AbstractCommon {
+public class FileUtil implements ICommon {
 
     /**
      * Check if a path exists.

@@ -6,7 +6,7 @@ public class LogBuilder extends AbstractBuilder {
 
     public LogBuilder(boolean addSpaces, String... args) {
         super(NAME, addSpaces, args);
-        this.setClass(com.rumpus.common.AbstractCommon.DEFAULT_LOGGER_CLASS);
+        this.setClass(com.rumpus.common.ICommon.DEFAULT_LOGGER_CLASS);
     }
 
     public LogBuilder(Class<?> clazz, boolean addSpaces, String... args) {

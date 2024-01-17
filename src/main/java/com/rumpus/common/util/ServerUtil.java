@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
 
-public class ServerUtil extends AbstractCommon {
+public class ServerUtil implements ICommon {
 
+    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(ServerUtil.class);
     public static final int MIN_PORT_NUMBER = 1000;
     public static final int MAX_PORT_NUMBER = 9999;
 

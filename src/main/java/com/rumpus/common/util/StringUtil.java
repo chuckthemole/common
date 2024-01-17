@@ -1,6 +1,6 @@
 package com.rumpus.common.util;
 
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
 
 /**
@@ -9,7 +9,7 @@ import com.rumpus.common.Builder.LogBuilder;
  * 
  * @brief String utilities
  */
-public class StringUtil extends AbstractCommon {
+public class StringUtil implements ICommon {
     
     /**
      * @brief Checks if string is surrouned in given char

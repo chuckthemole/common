@@ -1,5 +1,5 @@
 package com.rumpus.common;
 
-public class CommonTest extends AbstractCommon {
+public class CommonTest implements ICommon {
     
 }

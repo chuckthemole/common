@@ -1,6 +1,6 @@
 package com.rumpus.common;
 
-abstract public class AbstractCommonObject extends AbstractCommon {
+abstract public class AbstractCommonObject implements ICommon {
     
     private final static String NAME = "AbstractCommonObject";
 

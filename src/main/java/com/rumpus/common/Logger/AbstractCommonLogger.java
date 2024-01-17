@@ -16,7 +16,7 @@ abstract public class AbstractCommonLogger extends com.rumpus.common.AbstractCom
     // Ctors
     public AbstractCommonLogger(String name) {
         super(name);
-        this.clazz = com.rumpus.common.AbstractCommon.class;
+        this.clazz = com.rumpus.common.ICommon.class;
     }
     public AbstractCommonLogger(String name, Class<?> clazz) {
         super(name);

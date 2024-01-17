@@ -12,7 +12,7 @@ public class CommonLogger extends AbstractCommonLogger {
     }
 
     public static ICommonLogger createEmptyLogger() {
-        return new CommonLogger(com.rumpus.common.AbstractCommon.DEFAULT_LOGGER_CLASS);
+        return new CommonLogger(com.rumpus.common.ICommon.DEFAULT_LOGGER_CLASS);
     }
 
     public static ICommonLogger createLogger(Class<?> clazz) {

@@ -3,7 +3,6 @@ package com.rumpus.common.Structures;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.rumpus.common.AbstractCommon;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Forum.ForumPost;
 
@@ -12,7 +11,7 @@ import com.rumpus.common.Forum.ForumPost;
  * 
  * This is being used for {@link ForumPost}s. So think of a structure like that.
  */
-abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE extends AbstractNode<OBJECT, NODE>> extends AbstractCommon {
+abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE extends AbstractNode<OBJECT, NODE>> extends AbstractCommonObject {
 
     private NODE head;
     private NODE current;

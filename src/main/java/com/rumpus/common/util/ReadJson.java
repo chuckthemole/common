@@ -6,10 +6,10 @@ import java.nio.file.Paths;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.rumpus.common.AbstractCommon;
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Model.AbstractModel;
 
-public class ReadJson<MODEL extends AbstractModel<MODEL>> extends AbstractCommon {
+public class ReadJson<MODEL extends AbstractModel<MODEL>> implements ICommon {
 
     private String file; // location of the file
     private Gson gson;
