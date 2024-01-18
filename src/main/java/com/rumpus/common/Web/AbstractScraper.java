@@ -8,8 +8,8 @@ abstract public class AbstractScraper extends AbstractWeb implements Runnable {
     protected String body;
     protected String head;
 
-    public AbstractScraper(String browserVersion, String uri, List<String> params) {
-        super(browserVersion, uri, params);
+    public AbstractScraper(String name, String browserVersion, String uri, List<String> params) {
+        super(name, browserVersion, uri, params);
     }
     
     /**

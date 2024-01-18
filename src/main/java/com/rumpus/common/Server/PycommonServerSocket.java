@@ -8,7 +8,7 @@ import com.rumpus.common.ICommon;
  */
 public class PycommonServerSocket extends AbstractServerSocket {
 
-    public PycommonServerSocket() {
-        super(ICommon.PYCOMMON_PORT);
+    public PycommonServerSocket(String name) {
+        super(name, ICommon.PYCOMMON_PORT);
     }
 }

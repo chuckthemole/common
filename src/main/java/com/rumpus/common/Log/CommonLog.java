@@ -8,6 +8,8 @@ import com.rumpus.common.AbstractCommonObject;
  */
 public class CommonLog extends AbstractCommonObject implements Log {
 
+    private static final String NAME = "CommonLog";
+
     private boolean debugEnabled;
     private boolean errorEnabled;
     private boolean fatalEnabled;
@@ -16,6 +18,7 @@ public class CommonLog extends AbstractCommonObject implements Log {
     private boolean warnEnabled;
 
     public CommonLog() {
+        super(NAME);
         this.debugEnabled = false;
         this.errorEnabled = false;
         this.fatalEnabled = false;
@@ -25,6 +28,7 @@ public class CommonLog extends AbstractCommonObject implements Log {
     }
 
     public CommonLog(Log log) {
+        super(NAME);
         this.debugEnabled = log.isDebugEnabled();
         this.errorEnabled = log.isErrorEnabled();
         this.fatalEnabled = log.isFatalEnabled();

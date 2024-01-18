@@ -1,14 +1,9 @@
 package com.rumpus.common;
 
 abstract public class AbstractCommonObject implements ICommon {
-    
-    private final static String NAME = "AbstractCommonObject";
 
     protected final String name;
 
-    public AbstractCommonObject() { // TODO: should I let users create objects without a name? prolly not
-        this.name = NAME;
-    }
     public AbstractCommonObject(String name) {
         this.name = name;
     }

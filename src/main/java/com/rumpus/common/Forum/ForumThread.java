@@ -8,14 +8,15 @@ import com.rumpus.common.Structures.AbstractGraph;
  */
 public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> implements IManageable {
     
+    private static final String NAME = "ForumThread";
     private String pageID; // id of page
 
     private ForumThread() {
-        super();
+        super(NAME);
         this.pageID = null;
     }
     private ForumThread(ForumPostNode head, String pageID) {
-        super(head);
+        super(NAME, head);
         this.pageID = pageID;
     }
 

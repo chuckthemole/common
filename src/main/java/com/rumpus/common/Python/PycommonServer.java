@@ -2,7 +2,6 @@ package com.rumpus.common.Python;
 
 import java.io.IOException;
 
-import org.python.jline.internal.Log;
 import org.python.util.PythonInterpreter;
 
 import com.rumpus.common.CommonOutputStream;
@@ -13,6 +12,7 @@ import com.rumpus.common.util.ServerUtil;
 
 public class PycommonServer extends AbstractServer {
 
+    private static final String NAME = "PycommonServer";
     private static final String SERVER_NAME = "PycommonServer";
     private static final String PYCOMMON_DIR = "../pycommon";
     private static final String HOST_IP = "localhost";
@@ -25,7 +25,7 @@ public class PycommonServer extends AbstractServer {
     // private static PythonInterpreter interpreter;
 
     private PycommonServer(boolean isRunning) {
-        super(SERVER_NAME, PYCOMMON_DIR, HOST_IP, PORT, isRunning);
+        super(NAME, SERVER_NAME, PYCOMMON_DIR, HOST_IP, PORT, isRunning);
         this.init(isRunning);
     }
 

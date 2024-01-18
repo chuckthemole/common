@@ -10,6 +10,8 @@ import com.rumpus.common.Manager.IManageable;
  */
 public class Resource extends AbstractCommonObject implements IManageable {
 
+    private static final String NAME = "Resource";
+
     /**
      * Represents the type of Resource.
      */
@@ -58,6 +60,7 @@ public class Resource extends AbstractCommonObject implements IManageable {
 
     // Ctor
     protected Resource(String name, ResourceType resourceType, StorageType storageType, String url) {
+        super(NAME);
         this.name = name;
         this.resourceType = resourceType;
         this.storageType = storageType;

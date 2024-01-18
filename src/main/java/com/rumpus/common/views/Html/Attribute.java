@@ -2,7 +2,6 @@ package com.rumpus.common.views.Html;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.Manager.ISetItem;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
@@ -26,8 +25,9 @@ import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
  * class="myClass"
  * }
  */
-public class Attribute extends AbstractCommonObject implements IManageable, ISetItem {  // TODO: Change java.util.Set<String> to java.util.Set<String> for the value
+public class Attribute extends AbstractCommonObject implements ISetItem {
 
+    private static final String NAME = "Attribute";
     public static final String CLASS_ATTRIBUTE_NAME = "class";
     public static final String ID_ATTRIBUTE_NAME = "id";
     public static final String STYLE_ATTRIBUTE_NAME = "style";
@@ -61,6 +61,7 @@ public class Attribute extends AbstractCommonObject implements IManageable, ISet
 
     // Ctor use static factory methods instead
     private Attribute(String propertyName, java.util.Set<String> value) {
+        super(NAME);
         this.propertyName = propertyName;
         this.value = value;
     }

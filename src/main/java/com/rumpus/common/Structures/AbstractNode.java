@@ -3,7 +3,6 @@ package com.rumpus.common.Structures;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gson.JsonObject;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Forum.ForumPost;
@@ -16,7 +15,8 @@ abstract public class AbstractNode<OBJECT extends AbstractCommonObject, NODE ext
         protected NODE previous;
         protected NODE headChild;
 
-        public AbstractNode(OBJECT data) {
+        public AbstractNode(String name, OBJECT data) {
+            super(name);
             this.data = data;
             this.next = null;
             this.previous = null;

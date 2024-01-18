@@ -1,14 +1,13 @@
 package com.rumpus.common.Forum;
 
-import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Structures.AbstractNode;
-
-import kong.unirest.json.JSONObject;
 
 public class ForumPostNode extends AbstractNode<ForumPost, ForumPostNode> {
 
+    private static final String NAME = "ForumPostNode";
+
     private ForumPostNode(ForumPost data) {
-        super(data);
+        super(NAME, data);
     }
 
     public static ForumPostNode createNodeFromForumPost(ForumPost post) {

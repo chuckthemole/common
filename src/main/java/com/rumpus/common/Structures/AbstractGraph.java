@@ -18,11 +18,13 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
     private NODE tail;
     private int level; // TODO: need to think about this more. What if head is set and level is unknown?
 
-    public AbstractGraph() {
+    public AbstractGraph(String name) {
+        super(name);
         this.init(null);
     }
 
-    public AbstractGraph(NODE head) {
+    public AbstractGraph(String name, NODE head) {
+        super(name);
         this.init(head);
     }
 

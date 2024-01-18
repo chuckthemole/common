@@ -11,7 +11,7 @@ import com.rumpus.common.AbstractCommonObject;
 /**
  * Abstract class for common server sockets.
  */
-public class AbstractServerSocket extends AbstractCommonObject {
+abstract public class AbstractServerSocket extends AbstractCommonObject {
     
     private ServerSocket serverSocket;
     private Socket clientSocket;
@@ -22,8 +22,8 @@ public class AbstractServerSocket extends AbstractCommonObject {
     private static final String CLIENT_GREETING = "hello server";
     private static final String SERVER_GREETING = "hello client";
 
-    public AbstractServerSocket(final String port) {
-        super();
+    public AbstractServerSocket(String name, final String port) {
+        super(name);
         this.port = port;
     }
 

@@ -21,7 +21,8 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
     protected String hostIp;
     protected String port;
 
-    protected AbstractServer(String serverName, String directory, String hostIp, String port, boolean isRunning) {
+    protected AbstractServer(String name, String serverName, String directory, String hostIp, String port, boolean isRunning) {
+        super(name);
         this.init(serverName, directory, hostIp, port, isRunning);
     }
 

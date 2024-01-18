@@ -22,7 +22,8 @@ abstract public class AbstractWeb extends AbstractCommonObject {
         BrowserVersion.setDefault(DEFAULT_BROWSER_VERSION);
     }
 
-    public AbstractWeb(String browserVersion, String uri, List<String> params) {
+    public AbstractWeb(String name, String browserVersion, String uri, List<String> params) {
+        super(name);
         this.init(browserVersion, uri, params);
     }
 
