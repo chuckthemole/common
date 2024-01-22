@@ -1,37 +1,35 @@
-const React = require('react');
+import React, { useEffect, useState } from 'react';
 const ReactDOM = require('react-dom/client');
+import useSWR from 'swr';
+import { common_fetcher } from './common_requests';
 
-export async function loader(page) {
-    // default to sort by username if not defined
-    const response = await fetch('/api/logs/' + page );
-    // If the status code is not in the range 200-299,
-    // we still try to parse and throw it.
-    if (!response.ok) {
-        const error = new Error('An error occurred while fetching logs');
-        // Attach extra info to the error object.
-        error.info = await response.json();
-        error.status = response.status;
-        throw error;
+export default function Log({log_identifier}) {
+
+    const [logs, setLogs] = useState([]);
+    const {data, error} = useSWR(
+        '/api/logs/' + log_identifier,
+        common_fetcher
+    );
+
+    useEffect(() => {
+        if(data !== undefined && data !== null && data !== '') {
+            console.log(data);
+            setLogs(data);
+        }
+    }, [data]);
+
+    if (error) {
+        console.log(error);
+        return(
+            <div className='columns is-centered has-text-centered'>
+                <div className='column is-half notification is-warning'>
+                    <p>An error occurred getting the log with identifier: {log_identifier}</p>
+                </div>
+            </div>
+        )
     }
-    if(response.redirected == true) { // catching this and returning null as to not get console error
-        return null;
-    }
 
-    return response.json();
-}
-
-export default function Log({page}) {
-
-    const [logs, setLogs] = React.useState([]);
-
-    React.useEffect(() => { // TODO: this calls the api a lot. figure out a resolution.
-        loader(page).then((response) => {
-            console.log(response);
-            setLogs(response);
-        });
-    }, [logs]);
-
-    if (!logs) return(
+    if (!data || !logs) return(
         <div className='container m-6'>
             <progress className="progress is-small is-primary" max="100">15%</progress>
             <progress className="progress is-danger" max="100">30%</progress>
