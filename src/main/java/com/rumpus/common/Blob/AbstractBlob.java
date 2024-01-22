@@ -134,6 +134,7 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
         } catch (IOException e) {
             LOG.error("-- AbstractBlob::deserialize() IOException 1 --");
             LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "InputStream stream: ", stream.toString()).info();
+            // TODO: this is using LogBuilder to stack trace. can we print the stack trace to different file than the log file so it's easier to read? Maybe use a file util and print to its own file using PrintWriter. 2024/1/22 - chuck
             // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
             LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "IOException: ", e.getMessage()).error();
             return null;

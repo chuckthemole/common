@@ -43,4 +43,6 @@ public class FileUtil implements ICommon {
     public static String getCurrentWorkingDirectory() {
         return System.getProperty("user.dir");
     }
+
+    // TODO: write to log file, see use case in AbstractBlob deserialize()
 }
