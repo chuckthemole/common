@@ -3,7 +3,11 @@ package com.rumpus.common.views.Template;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
-abstract public class AbstractUserTemplate<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractUserTemplate
+    <
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>
+    >
     extends AbstractTemplate implements IUserTemplate<USER, USER_META> {
 
         public static final String USERNAME_TILE_KEY = "username";

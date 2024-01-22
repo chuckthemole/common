@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Blob;
-import java.sql.SQLException;
 
 // started here for inspo
 // https://stackoverflow.com/questions/14768439/deserialize-java-object-from-a-blob/17840811#17840811
@@ -18,6 +17,8 @@ import java.sql.SQLException;
 /**
  * Abstract helper class for blob handling (serialization).
  * Keeping the member variable blob here for now to be able to subclass if needed
+ * <p>
+ * TODO: Write tests for this class. 2024/1/22 - chuck
  */
 public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends AbstractCommonObject implements Blob {
 
@@ -93,12 +94,21 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
      * @return META object
      */
     public static <META extends AbstractMetaData<?>> META getObjectFromBlob(Blob blob) {
+        LOG.info("AbstractBlob::getObjectFromBlob()");
         if(blob == null) {
             LOG.info("Error: the given blob has a value of null. Returning null.");
             return null;
         }
+        try {
+            LOG.info("Provided blob is NOT null, continuing...");
+            if(blob.length() == 0) {
+                LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "Error: the given blob has a length of 0. Returning null.").info();
+                return null;
+            }
+        } catch (java.sql.SQLException e) {
+            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
+        }
 
-        LOG.info("Provided blob is not null, continuing...");
         try {
             META object = deserialize(blob.getBinaryStream());
             if(object == null) {
@@ -107,7 +117,7 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
             }
             LogBuilder.logBuilderFromStringArgs("Blob deserialized, returning object.").info();
             return object;
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
         } catch (Exception e) {
             LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
@@ -123,7 +133,9 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
             ois = new ObjectInputStream(stream);
         } catch (IOException e) {
             LOG.error("-- AbstractBlob::deserialize() IOException 1 --");
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+            LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "InputStream stream: ", stream.toString()).info();
+            // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+            LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "IOException: ", e.getMessage()).error();
             return null;
         }
         if(ois != null) {
@@ -132,11 +144,15 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
                     return (META) ois.readObject();
                 } catch (ClassNotFoundException e) {
                     LOG.error("-- AbstractBlob::deserialize() ClassNotFoundException --");
-                    LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "ObjectInputStream ois: ", ois.toString()).info();
+                    // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "ClassNotFoundException: ", e.getMessage()).error();
                     return null;
                 } catch (IOException e) {
                     LOG.error("-- AbstractBlob::deserialize() IOException 2 --");
-                    LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "ObjectInputStream ois: ", ois.toString()).info();
+                    // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "IOException: ", e.getMessage()).error();
                     return null;
                 }
             } finally { // TODO: clean this up with my returns
@@ -144,7 +160,8 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
                     ois.close();
                 } catch (IOException e) {
                     LOG.error("-- AbstractBlob::deserialize() IOException 3 --");
-                    LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                    // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "IOException: ", e.getMessage()).error();
                     return null;
                 }
             }

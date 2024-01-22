@@ -2,6 +2,7 @@ package com.rumpus.common.User;
 
 import java.io.IOException;
 
+import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.StringBuilderHelper;
 import com.rumpus.common.Model.AbstractMetaData;
 
@@ -19,10 +20,10 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
     protected String photoLink;
     protected String aboutMe;
     
-    // public AbstractCommonUserMetaData() {
-    //     super(NAME);
-    //     this.init();
-    // }
+    public AbstractCommonUserMetaData() {
+        super(NAME);
+        this.init();
+    }
     public AbstractCommonUserMetaData(String name) {
         super(name);
         this.init();

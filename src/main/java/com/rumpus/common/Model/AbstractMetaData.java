@@ -1,34 +1,22 @@
 package com.rumpus.common.Model;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
-import org.springframework.core.serializer.Serializer;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
-import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Forum.ForumPost;
 
 /**
  * Abstract class for Model meta data. This holds some of the common member variables, like creationTime, and interface that each Model shares.
  * 
  * Child class can override the writeObject and readObject methods of Serializeable.
  * Child class should override Serializer<META> serialize() method.
- * 
+ * <p>
+ * TODO: This class is implementing Serializable. According to Effective Java, this may not be a good idea. I should look into this more.
  */
-public abstract class AbstractMetaData<META extends AbstractMetaData<META>> extends AbstractCommonObject implements Serializable, Serializer<META> {
+public abstract class AbstractMetaData<META extends AbstractMetaData<META>> extends AbstractMeta implements java.io.Serializable, org.springframework.core.serializer.Serializer<META> {
 
     private static final long serialVersionUID = META_DATA_UID;
 
-    private static final String NAME = "MetaData";
+    private static final String NAME = "AbstractMetaData";
     public static final String USER_CREATION_DATE_TIME = "user_creation_datetime";
     protected static final String NAME_KEY = "name";
     protected static final String CREATION_TIME_KEY = "creationTime";
@@ -38,11 +26,11 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
 
     public AbstractMetaData() {
         super(NAME);
-        this.creationTime = String.valueOf(Instant.now().toEpochMilli());
+        this.creationTime = String.valueOf(java.time.Instant.now().toEpochMilli());
     }
     public AbstractMetaData(String name) {
         super(name);
-        this.creationTime = String.valueOf(Instant.now().toEpochMilli());
+        this.creationTime = String.valueOf(java.time.Instant.now().toEpochMilli());
     }
     public AbstractMetaData(String name, String creationTime) {
         super(name);
@@ -54,7 +42,7 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
      * 
      * @param attributesMap
      */
-    public AbstractMetaData(Map<String, Object> attributesMap) {
+    public AbstractMetaData(java.util.Map<String, Object> attributesMap) {
         super((String) attributesMap.get(NAME_KEY));
         this.creationTime = (String) attributesMap.get(CREATION_TIME_KEY);
     }
@@ -74,7 +62,7 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
      *   return metaAttributesMap;
      * }
      */
-    @JsonIgnore abstract public Map<String, Object> getMetaAttributesMap();
+    @JsonIgnore abstract public java.util.Map<String, Object> getMetaAttributesMap();
 
     /**
      * 
@@ -113,16 +101,16 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
      * @return LocalDateTime object to string using ZoneOffset.UTC <- TODO look into this more. may have to come up with standards for time.
      */
     public final String getStandardFormattedCreationTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.valueOf(this.creationTime)), ZoneOffset.UTC).toString();
+        return java.time.LocalDateTime.ofInstant(java.time.Instant.ofEpochMilli(Long.valueOf(this.creationTime)), java.time.ZoneOffset.UTC).toString();
         // return LocalDateTime.ofInstant(this.creationTime, ZoneOffset.UTC).toString();
     }
 
     // overriding these serializer methods here. right now just using defaults but can customize
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
         LOG.info("AbstractMetaData::writeObject()");
         out.defaultWriteObject();
     }
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
         LOG.info("AbstractMetaData::readObject()");
         in.defaultReadObject();
     }
@@ -133,20 +121,20 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
         if (o == this) {
             return true;
         }
-        if (!(o instanceof ForumPost)) {
+        if (!(o instanceof AbstractMetaData)) {
             return false;
         }
 
         AbstractMetaData<META> meta = (AbstractMetaData<META>) o;
 
         boolean isEqual = true;
-        Map<String, Object> thisAttributeMap = this.getMetaAttributesMap();
-        Map<String, Object> otherAttributeMap = meta.getMetaAttributesMap();
+        java.util.Map<String, Object> thisAttributeMap = this.getMetaAttributesMap();
+        java.util.Map<String, Object> otherAttributeMap = meta.getMetaAttributesMap();
         if(thisAttributeMap.size() != otherAttributeMap.size()) {
             LogBuilder.logBuilderFromStringArgs("Meta data not equal: different sizes ( ", String.valueOf(thisAttributeMap.size()), " : ", String.valueOf(otherAttributeMap.size()), " )").info();
             isEqual = false;
         } else {
-            for(Entry<String, Object> entrySet : thisAttributeMap.entrySet())  {
+            for(java.util.Map.Entry<String, Object> entrySet : thisAttributeMap.entrySet())  {
                 final String key = entrySet.getKey();
                 final Object value = entrySet.getValue();
                 if(!otherAttributeMap.containsKey(key)) {

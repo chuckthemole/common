@@ -45,7 +45,7 @@ public abstract class AbstractViewController
         USER_META,
         USER_SERVICE,
         USER_TEMPLATE
-    > {
+    > implements ICommonViewController {
 
         protected final AbstractViews viewLoader;
 
@@ -61,7 +61,7 @@ public abstract class AbstractViewController
          * 
          * @return The Footer
          */
-        @GetMapping(AbstractCommonController.PATH_FOOTER)
+        @GetMapping(ICommonViewController.PATH_FOOTER)
         public ResponseEntity<Footer> getFooter(HttpServletRequest request) {
             return new ResponseEntity<Footer>(viewLoader.getFooter(), HttpStatusCode.valueOf(200));
         }
@@ -71,7 +71,7 @@ public abstract class AbstractViewController
          * 
          * @return The Header
          */
-        @GetMapping(AbstractCommonController.PATH_HEADER)
+        @GetMapping(ICommonViewController.PATH_HEADER)
         public ResponseEntity<Header> getHeader(HttpServletRequest request) {
             return new ResponseEntity<Header>(viewLoader.getHeader(), HttpStatusCode.valueOf(200));
         }
@@ -81,7 +81,7 @@ public abstract class AbstractViewController
          * 
          * @return The User Table
          */
-        @GetMapping(AbstractCommonController.PATH_USER_TABLE)
+        @GetMapping(ICommonViewController.PATH_USER_TABLE)
         public ResponseEntity<String> getUserTable(HttpServletRequest request) {
             return new ResponseEntity<String>(viewLoader.getUserTable().getTable(), HttpStatusCode.valueOf(200));
         }
@@ -91,7 +91,7 @@ public abstract class AbstractViewController
          * 
          * @return The Resource List
          */
-        @GetMapping(AbstractCommonController.PATH_RESOURCES)
+        @GetMapping(ICommonViewController.PATH_RESOURCES)
         public ResponseEntity<List<Resource>> getResources(HttpServletRequest request) {
             return new ResponseEntity<List<Resource>>(viewLoader.getResources(), HttpStatusCode.valueOf(200));
         }
@@ -101,8 +101,8 @@ public abstract class AbstractViewController
          * 
          * @return The Resource
          */
-        @GetMapping(AbstractCommonController.PATH_RESOURCE_BY_NAME)
-        public ResponseEntity<Resource> getResourceByName(@PathVariable(AbstractCommonController.PATH_VARIABLE_RESOURCE_BY_NAME) String name, HttpServletRequest request) {
+        @GetMapping(ICommonViewController.PATH_RESOURCE_BY_NAME)
+        public ResponseEntity<Resource> getResourceByName(@PathVariable(ICommonViewController.PATH_VARIABLE_RESOURCE_BY_NAME) String name, HttpServletRequest request) {
             Resource resource = viewLoader.getResourceByName(name);
             return new ResponseEntity<Resource>(resource != null ? resource : this.resourceManager.createEmptyManagee(), HttpStatusCode.valueOf(200));
         }
@@ -115,7 +115,7 @@ public abstract class AbstractViewController
          * 
          * TODO!!
          */
-        @PostMapping(value = AbstractCommonController.PATH_USER_TEMPLATE)
+        @PostMapping(value = ICommonViewController.PATH_USER_TEMPLATE)
         public ResponseEntity<CommonSession> updateCurrentUserTemplate(
             @RequestBody USER user,
             // @RequestBody AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> userTemplate,
@@ -139,9 +139,9 @@ public abstract class AbstractViewController
          * @param request The HttpServletRequest
          * @return The Template as a ResponseEntity
          */
-        @GetMapping(AbstractCommonController.PATH_TEMPLATE_BY_NAME)
+        @GetMapping(ICommonViewController.PATH_TEMPLATE_BY_NAME)
         public ResponseEntity<AbstractHtmlObject> getTemplate(
-            @PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
             HttpServletRequest request) {
 
                 LOG.info("AbstractViewController::getTemplate()");
@@ -177,11 +177,11 @@ public abstract class AbstractViewController
                 return new ResponseEntity<AbstractHtmlObject>(retrievedTemplate != null ? retrievedTemplate.getHead(): AbstractHtmlObject.createEmptyAbstractHtmlObject(), httpCode);
         }
 
-        @GetMapping(AbstractCommonController.PATH_USER_TEMPLATE)
+        @GetMapping(ICommonViewController.PATH_USER_TEMPLATE)
         public ResponseEntity<AbstractHtmlObject> getUserTemplate(
-            @PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
             @RequestBody AbstractCommonUser<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> user,
-            // @PathVariable(AbstractCommonController.PATH_VARIABLE_USER_TEMPLATE) String userId,
+            // @PathVariable(ICommonViewController.PATH_VARIABLE_USER_TEMPLATE) String userId,
             HttpServletRequest request) {
 
                 LOG.info("AbstractViewController::getUserTemplate()");
@@ -211,10 +211,10 @@ public abstract class AbstractViewController
         }
 
         /** */
-        @GetMapping(AbstractCommonController.PATH_COMPONENT_BY_NAME)
+        @GetMapping(ICommonViewController.PATH_COMPONENT_BY_NAME)
         public ResponseEntity<AbstractComponent> getTemplateComponent(
-            @PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
-            @PathVariable(AbstractCommonController.PATH_VARIABLE_COMPONENT_BY_NAME) String componentName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_COMPONENT_BY_NAME) String componentName,
             HttpServletRequest request) {
 
                 // check if the templateName or componentName is null or empty
@@ -262,9 +262,9 @@ public abstract class AbstractViewController
          * 
          * TODO: both this and the getter return AbstractHtmlObject. Should I be returning an AbstractTemplate instead? AbstractTemplate is a manager so it would be a map.
          */
-        @PostMapping(AbstractCommonController.PATH_TEMPLATE_BY_NAME)
+        @PostMapping(ICommonViewController.PATH_TEMPLATE_BY_NAME)
         public ResponseEntity<AbstractHtmlObject> updateTemplate(
-            @PathVariable(AbstractCommonController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
             AbstractTemplate updatedTemplate,
             HttpServletRequest request) {
 

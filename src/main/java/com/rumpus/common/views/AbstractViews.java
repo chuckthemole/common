@@ -13,6 +13,7 @@ import java.util.List;
  * @author Charles Thomas
  * 
  * This class is the base class for all views. It acts as a manager of {@link AbstractTemplate}s.
+ * TODO: define generics for this class, ie USER, USER_META, etc.
  */
 public abstract class AbstractViews extends AbstractCommonManager<AbstractTemplate>  {
 
@@ -96,6 +97,7 @@ public abstract class AbstractViews extends AbstractCommonManager<AbstractTempla
         return this.resourceManager.getResources();
     }
 
+    // TODO: this should have defined generics. Do this for this class.
     @SuppressWarnings("unchecked")
     public AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> getCurrentUserTemplate() {
         return (AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>>) this.get(AbstractViews.CURRENT_USER_TEMPLATE_KEY);
