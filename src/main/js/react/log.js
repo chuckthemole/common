@@ -3,6 +3,12 @@ const ReactDOM = require('react-dom/client');
 import useSWR from 'swr';
 import { common_fetcher } from './common_requests';
 
+/**
+ * This component is responsible for displaying the log page, given a log identifier.
+ * 
+ * @param {*} param0
+ * @returns logs in a table view
+ */
 export default function Log({log_identifier}) {
 
     const [logs, setLogs] = useState([]);
