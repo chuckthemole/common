@@ -1,5 +1,6 @@
 package com.rumpus.common.views.CSSFramework.Bulma.CSS.Layout;
 
+import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Component.AbstractComponent;
 import com.rumpus.common.views.Component.AbstractTile;
 import com.rumpus.common.views.Component.ComponentAttributeManager;
@@ -68,14 +69,23 @@ public class BulmaTile extends AbstractTile {
     }
 
     public static BulmaTile createParentTile(String componentName) {
-        return new BulmaTile(componentName, TileType.PARENT, "parent::");
+        return new BulmaTile(componentName, TileType.PARENT, StringUtil.buildStringFromArgs(AbstractTile.PARENT_ATTRIBUTE, AbstractTile.TILE_TYPE_DELIMITER));
     }
 
     public static BulmaTile createChildTile(String componentName, String title, String subtitle) {
         StringBuilder sb = new StringBuilder();
         sb.append("child::");
         sb.append(title).append(AbstractComponent.DEFAULT_DELIMITER).append(subtitle);
-        return new BulmaTile(componentName, TileType.CHILD, sb.toString());
+        return new BulmaTile(
+            componentName,
+            TileType.CHILD,
+            StringUtil.buildStringFromArgs(
+                AbstractTile.CHILD_ATTRIBUTE,
+                AbstractTile.TILE_TYPE_DELIMITER,
+                title,
+                AbstractComponent.DEFAULT_DELIMITER, subtitle
+            )
+        );
     }
 
     public static BulmaTile createChildTile(String componentName, String tileComponents) {

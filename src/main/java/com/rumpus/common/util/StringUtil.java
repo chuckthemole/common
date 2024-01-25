@@ -1,15 +1,28 @@
 package com.rumpus.common.util;
 
-import com.rumpus.common.ICommon;
-import com.rumpus.common.Builder.LogBuilder;
-
 /**
  * Feel free to implement static string helper methods here.
  * If you are doing something repeatedly in your code, consider adding it here.
  * 
  * @brief String utilities
  */
-public class StringUtil implements ICommon {
+public class StringUtil implements com.rumpus.common.ICommon {
+
+    /**
+     * Build a string from args
+     * <p>
+     * TODO: should this be Object or String?
+     * 
+     * @param args args to build string from
+     * @return string built from args
+     */
+    public static String buildStringFromArgs(Object... args) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Object arg : args) {
+            stringBuilder.append(arg);
+        }
+        return stringBuilder.toString();
+    }
     
     /**
      * @brief Checks if string is surrouned in given char
@@ -239,9 +252,13 @@ public class StringUtil implements ICommon {
         try {
             je = com.google.gson.JsonParser.parseString(json);
         } catch (com.google.gson.JsonSyntaxException e) {
-            LogBuilder.logBuilderFromStringArgsNewLine("The given json is not valid, returning original json:\n", json).info();
+            LOG("The given json is not valid, returning original json:\n", json);
             return json;
         }
         return gson.toJson(je);
+    }
+
+    private static void LOG(String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(StringUtil.class, args).info();
     }
 }
