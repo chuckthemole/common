@@ -179,23 +179,26 @@ public abstract class AbstractViewController
 
         @GetMapping(ICommonViewController.PATH_USER_TEMPLATE)
         public ResponseEntity<AbstractHtmlObject> getUserTemplate(
+            @PathVariable(ICommonViewController.PATH_VARIABLE_USER_ID) String userId,
             @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
-            @RequestBody AbstractCommonUser<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> user,
-            // @PathVariable(ICommonViewController.PATH_VARIABLE_USER_TEMPLATE) String userId,
             HttpServletRequest request) {
 
                 LOG.info("AbstractViewController::getUserTemplate()");
+                // check if the userId is null or empty
+                if(userId == null || userId.isEmpty()) {
+                    LogBuilder.logBuilderFromStringArgs(AbstractViewController.class, "userId", " is null or empty").info();
+                    return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
+                }
                 // check if the templateName/userId is null or empty
                 if(templateName == null || templateName.isEmpty()) {
-                    LogBuilder.logBuilderFromStringArgs("templateName", " is null or empty").info();
+                    LogBuilder.logBuilderFromStringArgs(AbstractViewController.class, "templateName", " is null or empty").info();
                     return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
                 }
-                if(user == null) {
-                    LogBuilder.logBuilderFromStringArgs("user", " is null or empty").info();
-                    return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(404));
-                }
+
+                AbstractCommonUser<USER, USER_META> user = this.userService.getById(userId);
+
                 LOG.info("DEBUG USER");
-                LogBuilder.logBuilderFromStringArgs(user.toString()).info();
+                LogBuilder.logBuilderFromStringArgs(AbstractHtmlObject.class, user.toString()).info();
 
                 /*
                 * TODO: get the user from the database
@@ -203,11 +206,14 @@ public abstract class AbstractViewController
                 * I'm going to abstract rumpus controllers so I  an retreive users here.
                 */
 
-                // LogBuilder.logBuilderFromStringArgs("USER maybe?: ", this.userService.getById(userId).toString()).info();
-                AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> currentUserTemplate = viewLoader.getCurrentUserTemplate();
-                LogBuilder.logBuilderFromStringArgsNoSpaces("DEBUG currentUserTemplate: username - ", currentUserTemplate.get(AbstractUserTemplate.USERNAME_TILE_KEY).toString(), " email - ", currentUserTemplate.get(AbstractUserTemplate.EMAIL_TILE_KEY).toString()).info();
+                @SuppressWarnings("unchecked")
+                AbstractUserTemplate<USER, USER_META> currentUserTemplate = (AbstractUserTemplate<USER, USER_META>) viewLoader.get(AbstractViews.CURRENT_USER_TEMPLATE_KEY);
+                currentUserTemplate.setUser(user);
+                LOG.info("DEBUG currentUserTemplate");
+                currentUserTemplate.reload();
+                LogBuilder.logBuilderFromStringArgs(AbstractHtmlObject.class, currentUserTemplate.toString()).info();
 
-                return new ResponseEntity<AbstractHtmlObject>(AbstractHtmlObject.createEmptyAbstractHtmlObject(), HttpStatusCode.valueOf(200));
+                return new ResponseEntity<AbstractHtmlObject>(currentUserTemplate.getHead(), HttpStatusCode.valueOf(200));
         }
 
         /** */

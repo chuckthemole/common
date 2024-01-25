@@ -12,7 +12,11 @@ export default function Section({section_path}) {
     
     useEffect(() => {
         if(data !== undefined && data !== null && data !== '') {
-            setHtmlContent(constructHtmlContent(data));
+            console.log('Creating html content...');
+            console.log(data);
+            const htmlContent = constructHtmlContent(data);
+            console.log(htmlContent);
+            setHtmlContent(htmlContent);
         }
     }, [data]);
 

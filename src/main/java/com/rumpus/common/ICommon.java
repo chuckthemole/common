@@ -87,10 +87,11 @@ public interface ICommon {
     public static final String JYTHON_PATH = "jython.path";
 
     // Class UID     look here: https://stackoverflow.com/questions/10378855/java-io-invalidclassexception-local-class-incompatible
-    // Some of these should be moved into rumpus directory, as they're not common
+    // TODO: Some of these should be moved into rumpus directory, as they're not common. think about this though. I want each value to be unique.
     public final static Long RUMPUS_USER_META_DATA_UID = Long.valueOf(11);
     public final static Long USER_META_DATA_UID = Long.valueOf(12);
     public final static Long META_DATA_UID = Long.valueOf(13);
+    public final static Long TEST_USER_META_DATA_UID = Long.valueOf(14);
 
     // Ports
     public final static String PYCOMMON_PORT = "8000";

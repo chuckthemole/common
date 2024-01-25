@@ -1,10 +1,10 @@
 package com.rumpus.common.views.Component;
 
-import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
 abstract public class AbstractTile extends AbstractComponent {
 
+    public static final String TILE_TYPE_DELIMITER = "::";
     public static final String ANCESTOR_ATTRIBUTE = "ancestor";
     public static final String PARENT_ATTRIBUTE = "parent";
     public static final String CHILD_ATTRIBUTE = "child";
@@ -98,25 +98,31 @@ abstract public class AbstractTile extends AbstractComponent {
 
     @Override
     public void setChildrenForComponent() {
-        if(this.tileType == TileType.ANCESTOR) {
-            this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
-            this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.ANCESTOR_ATTRIBUTE));
-        } else if(this.tileType == TileType.PARENT) {
-            this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
-            this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.PARENT_ATTRIBUTE));
-        } else if(this.tileType == TileType.CHILD) {
-            this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
-            this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.CHILD_ATTRIBUTE));
-            for(AbstractHtmlObject child : this.createChildBody()) {
-                this.addChild(child);
+        final String[] tileTypeAndComponentArray = super.componentAsString.split(TILE_TYPE_DELIMITER);
+        if(tileTypeAndComponentArray.length == 2) {
+            final TileType extractedTileType = TileType.fromString(tileTypeAndComponentArray[0].strip());
+            if(extractedTileType == TileType.ANCESTOR) {
+                this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
+                this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.ANCESTOR_ATTRIBUTE));
+            } else if(extractedTileType == TileType.PARENT) {
+                this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
+                this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.PARENT_ATTRIBUTE));
+            } else if(extractedTileType == TileType.CHILD) {
+                this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
+                this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.CHILD_ATTRIBUTE));
+                for(AbstractHtmlObject child : this.createChildBody()) {
+                    this.addChild(child);
+                }
+            } else if(extractedTileType == TileType.CONTAINER) {
+                this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
+                this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.CONTAINER_ATTRIBUTE));
+            } else if(extractedTileType == null) {
+                LOG("TileType is EMPTY. TileType: 'null'");
+            } else {
+                LOG("TileType is not valid. TileType: ", extractedTileType.toString());
             }
-        } else if(this.tileType == TileType.CONTAINER) {
-            this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
-            this.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.CONTAINER_ATTRIBUTE));
-        } else if(this.tileType == null) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("TileType is EMPTY. TileType: 'null'");
         } else {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("TileType is not valid. TileType: ", this.tileType.toString());
+            LOG("tileTypeAndComponentArray.length is not 2. Length: ", String.valueOf(tileTypeAndComponentArray.length), " Consider looking at delimiter.");
         }
     }
 
@@ -125,34 +131,45 @@ abstract public class AbstractTile extends AbstractComponent {
         String[] tileComponentsArray = super.componentAsString.split(super.defaultDelimiter);
         java.util.List<AbstractHtmlObject> childElementList = new java.util.ArrayList<>();
         for (int tileComponentsArrayIndex = 0; tileComponentsArrayIndex < tileComponentsArray.length; tileComponentsArrayIndex++) {
-            // LOG.info("Tile component: " + tileComponentsArray[tileComponentsArrayIndex]);
+            // LOG("Tile component: " + tileComponentsArray[tileComponentsArrayIndex]);
             String[] tileComponentAndLink = tileComponentsArray[tileComponentsArrayIndex].split(AbstractComponent.DEFAULT_LINK_DELIMITER);
             AbstractHtmlObject htmlObject = null;
             if(tileComponentAndLink.length == 1) {
-                htmlObject = AbstractTileComponentPart.createTitle(tileComponentAndLink[0].strip());
-                htmlObject.setHtmlAttributes(
-                    (
-                        tileComponentsArrayIndex == 0 ?
-                        super.componentAttributeManager.get(AbstractTile.TITLE_ATTRIBUTE) :
-                        super.componentAttributeManager.get(AbstractTile.SUBTITLE_ATTRIBUTE)
-                    )
-                );
-
+                if(tileComponentsArrayIndex == 0) { // this is a title, not a subtitle
+                    String [] typeAndTitleArray = tileComponentAndLink[0].split(AbstractTile.TILE_TYPE_DELIMITER);
+                    if(typeAndTitleArray.length != 2) {
+                        LOG("typeAndTitleArray.length is not 2. Length: ", String.valueOf(typeAndTitleArray.length), " Consider looking at delimiter.");
+                        continue;
+                    }
+                    htmlObject = AbstractTileComponentPart.createTitle(typeAndTitleArray[1].strip());
+                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.TITLE_ATTRIBUTE));
+                } else { // this is a subtitle, not a title
+                    htmlObject = AbstractTileComponentPart.createTitle(tileComponentAndLink[0].strip());
+                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.SUBTITLE_ATTRIBUTE));
+                }
             } else if(tileComponentAndLink.length == 2) {
-                htmlObject = AbstractTileComponentPart.createLink(tileComponentAndLink[0].strip(), tileComponentAndLink[1].strip());
-                htmlObject.setHtmlAttributes(
-                    (
-                        tileComponentsArrayIndex == 0 ?
-                        super.componentAttributeManager.get(AbstractTile.TITLE_ATTRIBUTE) :
-                        super.componentAttributeManager.get(AbstractTile.SUBTITLE_ATTRIBUTE)
-                    )
-                );
+                if(tileComponentsArrayIndex == 0) { // this is a title, not a subtitle
+                    String [] typeAndTitleArray = tileComponentAndLink[0].split(AbstractTile.TILE_TYPE_DELIMITER);
+                    if(typeAndTitleArray.length != 2) {
+                        LOG("typeAndTitleArray.length is not 2. Length: ", String.valueOf(typeAndTitleArray.length), " Consider looking at delimiter.");
+                        continue;
+                    }
+                    htmlObject = AbstractTileComponentPart.createLink(typeAndTitleArray[1].strip(), tileComponentAndLink[1].strip());
+                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.TITLE_ATTRIBUTE));
+                } else { // this is a subtitle, not a title
+                    htmlObject = AbstractTileComponentPart.createLink(tileComponentAndLink[0].strip(), tileComponentAndLink[1].strip());
+                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(AbstractTile.SUBTITLE_ATTRIBUTE));
+                }
             } else {
-                LogBuilder.logBuilderFromStringArgsNoSpaces("titleComponentAndLink.length is not 1 or 2. Length: ", String.valueOf(tileComponentAndLink.length), " Consider looking at delimiter.");
+                LOG("titleComponentAndLink.length is not 1 or 2. Length: ", String.valueOf(tileComponentAndLink.length), " Consider looking at delimiter.");
                 continue;
             }
             childElementList.add(htmlObject);
         }
         return childElementList;
+    }
+
+    private void LOG(String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractTile.class, args).info();
     }
 }

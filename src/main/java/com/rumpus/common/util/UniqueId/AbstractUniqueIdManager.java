@@ -3,7 +3,6 @@ package com.rumpus.common.util.UniqueId;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Manager.AbstractCommonManager;
 
 /**
@@ -26,14 +25,13 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
      * @param setName the name of the set to create
      */
     public void createUniqueIdSetWithDefaultLength(String setName) {
-        LOG.info("createUniqueIdSetWithDefaultLength() called: " + setName);
+        // LOG.info("createUniqueIdSetWithDefaultLength() called: " + setName);
         setName = setName.strip();
         if(!AbstractUniqueIdManager.uniqueIds.containsKey(setName.strip())) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("Creating set of ids with name: \"", setName.strip(), "\"").info();
+            LOG("Creating set of ids with name: \"", setName.strip(), "\"");
             AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.setWithDefaultLength());
         } else {
-            LogBuilder log = new LogBuilder(true, "Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
-            log.info();
+            LOG("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
         }
     }
     /**
@@ -44,11 +42,10 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
     public void createUniqueIdSetWithSetLength(String setName, int length) {
         setName = setName.strip();
         if(!AbstractUniqueIdManager.uniqueIds.containsKey(setName)) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("Creating set of ids with name: '", setName, "'").info();
+            LOG("Creating set of ids with name: '", setName, "'");
             AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.setWithLength(length));
         } else {
-            LogBuilder log = new LogBuilder(true, "Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
-            log.info();
+            LOG("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
         }
     }
 
@@ -59,24 +56,19 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
      */
     public String generateAndReceiveIdForGivenSet(String name) {
         name = name.strip();
-        LogBuilder.logBuilderFromStringArgsNoSpaces("AbstractUniqueIdManager::generateAndReceiveIdForGivenSet()").info();
-        LogBuilder.logBuilderFromStringArgsNoSpaces("Looking for unique id set with name: '", name, "'").info();
+        LOG("AbstractUniqueIdManager::generateAndReceiveIdForGivenSet()");
+        LOG("Looking for unique id set with name: '", name, "'");
         if(AbstractUniqueIdManager.uniqueIds.containsKey(name)) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("Found set!").info();
+            LOG("Found set!");
             final String createdId = AbstractUniqueIdManager.uniqueIds.get(name).add();
-            LogBuilder.logBuilderFromStringArgsNoSpaces("Generated id: '", createdId, "'").info();
+            LOG("Generated id: '", createdId, "'");
             return createdId;
         } else {
             StringBuilder listOfIds = new StringBuilder();
             for(String setId : AbstractUniqueIdManager.uniqueIds.keySet()) {
                 listOfIds.append("  ").append(setId).append("\n");
             }
-            LogBuilder log = new LogBuilder(false, // TODO: get rid of these new LogBuilders, replace with static methods
-                "Set of ids with name '",
-                name,
-                "' does not exist.\nNames of available sets:\n",
-                listOfIds.toString());
-            log.info();
+            LOG("Set of ids with name '", name, "' does not exist.\nNames of available sets:\n", listOfIds.toString());
             return null;
         }
     }
@@ -92,8 +84,7 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
         if(AbstractUniqueIdManager.uniqueIds.containsKey(name)) {
             return AbstractUniqueIdManager.uniqueIds.get(name).remove(id);
         } else {
-            LogBuilder log = new LogBuilder(true, "Set of ids with name '", name, "' does not exist.");
-            log.info();
+            LOG("Set of ids with name '", name, "' does not exist.");
             return false;
         }
     }
@@ -107,5 +98,9 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
     public IdSet createEmptyManagee(String name) {
         name = name.strip();
         return this.put(name, IdSet.createEmptyIdSet());
+    }
+
+    private void LOG(String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractUniqueIdManager.class, args).info();
     }
 }

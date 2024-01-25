@@ -68,11 +68,12 @@ public class BulmaTile extends AbstractTile {
     }
 
     public static BulmaTile createParentTile(String componentName) {
-        return new BulmaTile(componentName, TileType.PARENT, "");
+        return new BulmaTile(componentName, TileType.PARENT, "parent::");
     }
 
     public static BulmaTile createChildTile(String componentName, String title, String subtitle) {
         StringBuilder sb = new StringBuilder();
+        sb.append("child::");
         sb.append(title).append(AbstractComponent.DEFAULT_DELIMITER).append(subtitle);
         return new BulmaTile(componentName, TileType.CHILD, sb.toString());
     }

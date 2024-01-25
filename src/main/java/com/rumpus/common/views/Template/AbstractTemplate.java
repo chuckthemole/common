@@ -63,6 +63,17 @@ public abstract class AbstractTemplate extends AbstractCommonManager<AbstractCom
         };
     }
 
+    /**
+     * Reloads the template.
+     * <p>
+     * This method is called when the template needs to be reloaded.
+     */
+    public void reload() {
+        this.setComponents();
+        this.addComponentsToMap();
+        this.head = this.setHead();
+    }
+
     @Override
     public AbstractHtmlObject getHead() {
         return this.head;
@@ -82,5 +93,10 @@ public abstract class AbstractTemplate extends AbstractCommonManager<AbstractCom
     public AbstractComponent createEmptyManagee(String name) {
         AbstractComponent component = AbstractComponent.createEmptyComponent();
         return this.put(name, component);
+    }
+
+    @Override
+    public String toString() {
+        return this.head.toString();
     }
 }
