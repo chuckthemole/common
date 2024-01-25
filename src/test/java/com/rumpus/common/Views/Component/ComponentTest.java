@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-import com.rumpus.common.CommonTest;
+import com.rumpus.common.AbstractCommonTest;
 import com.rumpus.common.views.CSSFramework.Bulma.CSS.Element.Block;
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside;
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaBreadcrumb;
@@ -28,10 +28,14 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  * 
  * TODO: this isn't testing anything rn.. just using to debug in console
  */
-public class ComponentTest extends CommonTest {
+public class ComponentTest extends AbstractCommonTest {
     
     private AbstractHtmlObject actualAbstractHtmlObject;
     private AbstractHtmlObject expectedAbstractHtmlObject;
+
+    public ComponentTest() {
+        super(ComponentTest.class);
+    }
 
     @BeforeAll
     public static void setUpClass() {

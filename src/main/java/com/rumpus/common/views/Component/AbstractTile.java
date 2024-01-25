@@ -98,8 +98,10 @@ abstract public class AbstractTile extends AbstractComponent {
 
     @Override
     public void setChildrenForComponent() {
+        LOG("AbstractTile::setChildrenForComponent()");
         final String[] tileTypeAndComponentArray = super.componentAsString.split(TILE_TYPE_DELIMITER);
-        if(tileTypeAndComponentArray.length == 2) {
+        LOG(tileTypeAndComponentArray);
+        if(tileTypeAndComponentArray.length > 0) {
             final TileType extractedTileType = TileType.fromString(tileTypeAndComponentArray[0].strip());
             if(extractedTileType == TileType.ANCESTOR) {
                 this.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
@@ -122,17 +124,17 @@ abstract public class AbstractTile extends AbstractComponent {
                 LOG("TileType is not valid. TileType: ", extractedTileType.toString());
             }
         } else {
-            LOG("tileTypeAndComponentArray.length is not 2. Length: ", String.valueOf(tileTypeAndComponentArray.length), " Consider looking at delimiter.");
+            LOG("tileTypeAndComponentArray.length is not greater than 0. Length: ", String.valueOf(tileTypeAndComponentArray.length), " Consider looking at delimiter.");
         }
     }
 
     private java.util.List<AbstractHtmlObject> createChildBody() {
         // create tile components, ie title and subtitle
-        String[] tileComponentsArray = super.componentAsString.split(super.defaultDelimiter);
+        final String[] tileComponentsArray = super.componentAsString.split(super.defaultDelimiter);
         java.util.List<AbstractHtmlObject> childElementList = new java.util.ArrayList<>();
         for (int tileComponentsArrayIndex = 0; tileComponentsArrayIndex < tileComponentsArray.length; tileComponentsArrayIndex++) {
             // LOG("Tile component: " + tileComponentsArray[tileComponentsArrayIndex]);
-            String[] tileComponentAndLink = tileComponentsArray[tileComponentsArrayIndex].split(AbstractComponent.DEFAULT_LINK_DELIMITER);
+            final String[] tileComponentAndLink = tileComponentsArray[tileComponentsArrayIndex].split(AbstractComponent.DEFAULT_LINK_DELIMITER);
             AbstractHtmlObject htmlObject = null;
             if(tileComponentAndLink.length == 1) {
                 if(tileComponentsArrayIndex == 0) { // this is a title, not a subtitle

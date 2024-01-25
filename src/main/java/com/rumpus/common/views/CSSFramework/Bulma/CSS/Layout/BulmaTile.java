@@ -65,11 +65,25 @@ public class BulmaTile extends AbstractTile {
     }
 
     public static BulmaTile createAncestorTile(String componentName) {
-        return new BulmaTile(componentName, TileType.ANCESTOR, "");
+        return new BulmaTile(
+            componentName,
+            TileType.ANCESTOR,
+            StringUtil.buildStringFromArgs(
+                AbstractTile.ANCESTOR_ATTRIBUTE,
+                AbstractTile.TILE_TYPE_DELIMITER
+            )
+        );
     }
 
     public static BulmaTile createParentTile(String componentName) {
-        return new BulmaTile(componentName, TileType.PARENT, StringUtil.buildStringFromArgs(AbstractTile.PARENT_ATTRIBUTE, AbstractTile.TILE_TYPE_DELIMITER));
+        return new BulmaTile(
+            componentName,
+            TileType.PARENT,
+            StringUtil.buildStringFromArgs(
+                AbstractTile.PARENT_ATTRIBUTE,
+                AbstractTile.TILE_TYPE_DELIMITER
+            )
+        );
     }
 
     public static BulmaTile createChildTile(String componentName, String title, String subtitle) {
@@ -93,11 +107,25 @@ public class BulmaTile extends AbstractTile {
     }
 
     public static BulmaTile createEmptyChildTile(String componentName) {
-        return new BulmaTile(componentName, TileType.CHILD, "");
+        return new BulmaTile(
+            componentName,
+            TileType.CHILD,
+            StringUtil.buildStringFromArgs(
+                AbstractTile.CHILD_ATTRIBUTE,
+                AbstractTile.TILE_TYPE_DELIMITER
+            )
+        );
     }
 
     public static BulmaTile createContainerTile(String componentName) {
-        return new BulmaTile(componentName, TileType.CONTAINER, "");
+        return new BulmaTile(
+            componentName,
+            TileType.CONTAINER,
+            StringUtil.buildStringFromArgs(
+                AbstractTile.CONTAINER_ATTRIBUTE,
+                AbstractTile.TILE_TYPE_DELIMITER
+            )
+        );
     }
 
     @Override

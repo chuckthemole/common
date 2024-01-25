@@ -9,13 +9,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-import com.rumpus.common.CommonTest;
+import com.rumpus.common.AbstractCommonTest;
 import com.rumpus.common.util.StringUtil;
 
 /**
  * This class is used to test the {@link StringUtil} class.
  */
-public class StringUtilTest extends CommonTest {
+public class StringUtilTest extends AbstractCommonTest {
+
+    public StringUtilTest() {
+        super(StringUtilTest.class);
+    }
     
     @BeforeAll
     public static void setUpClass() {

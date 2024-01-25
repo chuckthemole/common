@@ -8,16 +8,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.rumpus.common.CommonTest;
-import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.AbstractCommonTest;
 import com.rumpus.common.Model.User.TestUserModel;
 import com.rumpus.common.views.CSSFramework.Bulma.CSS.Layout.BulmaTile;
 import com.rumpus.common.views.Component.AbstractTile;
 
-public class BulmaTest extends CommonTest {
+public class BulmaTest extends AbstractCommonTest {
 
-    private static void LOG(String... args) {
-        LogBuilder.logBuilderFromStringArgsNoSpaces(BulmaTest.class, args).info();
+    public BulmaTest() {
+        super(BulmaTest.class);
     }
 
     @BeforeAll

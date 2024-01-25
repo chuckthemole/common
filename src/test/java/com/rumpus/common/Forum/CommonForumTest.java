@@ -3,9 +3,14 @@ package com.rumpus.common.Forum;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.rumpus.common.CommonTest;
+import com.rumpus.common.AbstractCommonTest;
 
-public class CommonForumTest extends CommonTest {
+public class CommonForumTest extends AbstractCommonTest {
+
+    public CommonForumTest() {
+        super(CommonForumTest.class);
+    }
+
     protected static String creationTime;
     protected static BigDecimal differenceInTime;
     

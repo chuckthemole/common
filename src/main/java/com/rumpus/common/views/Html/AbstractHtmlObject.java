@@ -391,6 +391,12 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
 
     /**
      * Add an attribute to the html tag.
+     * <p>
+     * This will not overwrite an existing attribute with the same property name.
+     * <p>
+     * If you want to update an existing attribute, use {@link #addToAttribute(String, String...)}.
+     * <p>
+     * TODO: should I make a replaceHtmlTagAttribute?
      * 
      * @param attribute the attribute to add
      * @return true if the attribute was added, false otherwise {@link java.util.Set#add(Object)}

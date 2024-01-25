@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
+import com.rumpus.common.AbstractCommonTest;
 import com.rumpus.common.views.CSSFramework.Bulma.CSS.Element.Block;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 import com.rumpus.common.views.Html.Attribute;
@@ -18,9 +19,13 @@ import com.rumpus.common.views.Html.Attribute;
  * 
  *  TODO: add tests for the other methods
  */
-public class BulmaElementTest {
+public class BulmaElementTest extends AbstractCommonTest {
 
     AbstractHtmlObject abstractHtmlObject;
+
+    public BulmaElementTest() {
+        super(BulmaElementTest.class);
+    }
 
     @BeforeAll
     public static void setUpClass() {
