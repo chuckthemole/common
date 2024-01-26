@@ -2,23 +2,13 @@ package com.rumpus.common.Views.Component;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-import java.util.TreeMap;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import com.rumpus.common.AbstractCommonTest;
-import com.rumpus.common.views.CSSFramework.Bulma.CSS.Element.Block;
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside;
 import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaBreadcrumb;
-import com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaWelcome;
 import com.rumpus.common.views.Component.AbstractAside;
-import com.rumpus.common.views.Component.AbstractBreadcrumb;
 import com.rumpus.common.views.Component.AbstractComponent;
 import com.rumpus.common.views.Component.AbstractWelcome;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
@@ -37,19 +27,19 @@ public class ComponentTest extends AbstractCommonTest {
         super(ComponentTest.class);
     }
 
-    @BeforeAll
-    public static void setUpClass() {
+    @Override
+    public void setUpClass() {
     }
 
-    @AfterAll
-    public static void tearDownClass() {
+    @Override
+    public void tearDownClass() {
     }
 
-    @BeforeEach
+    @Override
     public void setUp() {
     }
 
-    @AfterEach
+    @Override
     public void tearDown() {
     }
 

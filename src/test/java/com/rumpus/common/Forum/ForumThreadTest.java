@@ -5,14 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Structures.AbstractGraph;
+import com.rumpus.common.util.StringUtil;
 
 import org.junit.jupiter.api.Order;
 
@@ -21,22 +17,22 @@ import org.junit.jupiter.api.Order;
  */
 public class ForumThreadTest extends CommonForumTest {
 
-    @BeforeAll
-    public static void setUpClass() {
+    @Override
+    protected void setUpClass() {
+    }
+
+    @Override
+    protected void tearDownClass() {
+    }
+
+    @Override
+    protected void setUp() {
         CommonForumTest.initForumPosts();
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-    }
-
-    @BeforeEach
-    public void setUp() {
         CommonForumTest.initThreads();
     }
 
-    @AfterEach
-    public void tearDown() {
+    @Override
+    protected void tearDown() {
     }
 
     // setters getters
@@ -149,13 +145,14 @@ public class ForumThreadTest extends CommonForumTest {
         while(current != null) { // check each node for correctness
 
             // build message
-            final String message = LogBuilder.logBuilderFromStringArgs(
-                "Error with next: \n~ ~ ~ Current ~ ~ ~\n",
-                current.toString(),
-                "\n- - Next - - \n",
-                current.getNext() != null ? current.getNext().toString() : "null",
-                "\n* * Previous * * \n", current.getPrevious() != null ? current.getPrevious().toString() : "null")
-                .getStringBuilder().toString(); // common error message
+            final String message =
+                StringUtil.buildStringFromArgs(
+                    "Error with next: \n~ ~ ~ Current ~ ~ ~\n",
+                    current.toString(),
+                    "\n- - Next - - \n",
+                    current.getNext() != null ? current.getNext().toString() : "null",
+                    "\n* * Previous * * \n", current.getPrevious() != null ? current.getPrevious().toString() : "null"
+                );
 
             // depending on the index, assertEquals that node to expected
             if(count == 0) {

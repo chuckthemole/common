@@ -2,10 +2,6 @@ package com.rumpus.common.Views.CSSFramework;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.rumpus.common.AbstractCommonTest;
@@ -19,19 +15,19 @@ public class BulmaTest extends AbstractCommonTest {
         super(BulmaTest.class);
     }
 
-    @BeforeAll
-    public static void setUpClass() {
+    @Override
+    public void setUpClass() {
     }
 
-    @AfterAll
-    public static void tearDownClass() {
+    @Override
+    public void tearDownClass() {
     }
 
-    @BeforeEach
+    @Override
     public void setUp() {
     }
 
-    @AfterEach
+    @Override
     public void tearDown() {
     }
 

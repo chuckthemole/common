@@ -11,6 +11,30 @@ public class CommonForumTest extends AbstractCommonTest {
         super(CommonForumTest.class);
     }
 
+    @Override
+    protected void setUpClass() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setUpClass'");
+    }
+
+    @Override
+    protected void tearDownClass() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'tearDownClass'");
+    }
+
+    @Override
+    protected void setUp() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setUp'");
+    }
+
+    @Override
+    protected void tearDown() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'tearDown'");
+    }
+
     protected static String creationTime;
     protected static BigDecimal differenceInTime;
     

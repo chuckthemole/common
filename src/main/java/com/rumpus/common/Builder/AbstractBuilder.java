@@ -51,13 +51,58 @@ public abstract class AbstractBuilder extends AbstractCommonLogger {
     }
 
     // TODO: this is just sending the string to the logger, think about how to make this better. - chuck
+    /**
+     * This method is used to log the Builder's string using the logger's info level
+     */
     public void info() {
         this.info(this.toString());
-        // LOG.info(this.toString());
     }
+
+    /**
+     * This method is used to log the Builder's string using the logger's error level
+     */
     public void error() {
         this.error(this.toString());
-        // LOG.error(this.toString());
+    }
+
+    /**
+     * This method is used to log the Builder's string using the logger's warn level
+     */
+    public void warn() {
+        this.warn(this.toString());
+    }
+
+    /**
+     * This method is used to log the Builder's string using the logger's debug level
+     */
+    public void debug() {
+        this.debug(this.toString());
+    }
+
+    /**
+     * This method is used to log the Builder's string using the logger's trace level
+     */
+    public void trace() {
+        this.trace(this.toString());
+    }
+
+    /**
+     * This method is used to log the Builder's string using the logger's level
+     * 
+     * @param level the level to log the Builder's string at
+     */
+    public void log(AbstractCommonLogger.LogLevel level) {
+        if(level == AbstractCommonLogger.LogLevel.TRACE) {
+            this.trace(this.toString());
+        } else if(level == AbstractCommonLogger.LogLevel.DEBUG) {
+            this.debug(this.toString());
+        } else if(level == AbstractCommonLogger.LogLevel.INFO) {
+            this.info(this.toString());
+        } else if(level == AbstractCommonLogger.LogLevel.WARN) {
+            this.warn(this.toString());
+        } else if(level == AbstractCommonLogger.LogLevel.ERROR) {
+            this.error(this.toString());
+        }
     }
 
     public void append(String... appendees) {

@@ -11,6 +11,15 @@ import org.slf4j.Marker;
  */
 abstract public class AbstractCommonLogger extends com.rumpus.common.AbstractCommonObject implements ICommonLogger {
 
+    // enum for log levels
+    public enum LogLevel {
+        TRACE,
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR
+    }
+
     private Class<?> clazz;
 
     // Ctors
