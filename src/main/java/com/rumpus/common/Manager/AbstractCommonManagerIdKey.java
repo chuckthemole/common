@@ -4,26 +4,39 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.util.UniqueId.AbstractUniqueIdManager;
 
+/**
+ * This class is used to manage a {@link java.util.Set} of objects. It can act like a map with a key of the unique id of the managees.
+ * <p>
+ * It is a {@link java.util.Set} of {@link ISetItem} objects.
+ * <p>
+ * It is abstract and must be extended by a child class.
+ */
 abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> extends AbstractCommonObject implements java.util.Set<MANAGEE> {
 
-    private static class IdManager extends AbstractUniqueIdManager {
-        private static final String NAME = "AbstractCommonSetIdManager";
-        private IdManager() {
-            super(NAME);
-        }
-    }
+    /**
+     * The {@link com.rumpus.common.util.UniqueId.IdSet} object used to manage the unique ids of the managees.
+     */
+    private com.rumpus.common.util.UniqueId.IdSet idSet;
 
-    private static AbstractUniqueIdManager uniqueIdManager;
+    /**
+     * The {@link java.util.Map} of {@link ISetItem} objects. Used to make this class implement {@link java.util.Set}, and have a get(key) method.
+     */
     private java.util.Map<String, MANAGEE> manageeSet;
 
-    static {
-        uniqueIdManager = new IdManager();
-    }
-
+    /**
+     * Ctor for {@link AbstractCommonManagerIdKey}.
+     * <p>
+     * This ctor creates a {@link java.util.Map} to hold the managees.
+     * <p>
+     * This ctor also creates a {@link AbstractUniqueIdManager} to manage the unique ids of the managees.
+     * 
+     * @param name the name of the child class
+     * @param collectionName the name of the collection of managees
+     */
     public AbstractCommonManagerIdKey(String name) {
         super(name);
         this.manageeSet = new java.util.HashMap<>();
-        AbstractCommonManagerIdKey.uniqueIdManager.createUniqueIdSetWithDefaultLength(name);
+        this.idSet = com.rumpus.common.util.UniqueId.IdSet.createEmptyIdSetWithDefaultLength();
     }
 
     /**
@@ -44,10 +57,16 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
 
     @Override
     public boolean add(MANAGEE managee) {
-        if(managee == null || managee.hasUniqueId()) {
+        LOG("AbstractCommonManagerIdKey::add()");
+        if(managee == null) {
+            LOG("MANAGEE is null");
             return false;
         }
-        managee.setUniqueId(AbstractCommonManagerIdKey.uniqueIdManager.generateAndReceiveIdForGivenSet(this.name));
+        if(managee.hasUniqueId()) {
+            LOG("MANAGEE has unique id");
+            return false;
+        }
+        managee.setUniqueId(this.idSet.add());
         this.manageeSet.put(managee.getUniqueId(), managee);
         return true;
     }
@@ -159,6 +178,22 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
         }
         @SuppressWarnings("unchecked")
         AbstractCommonManagerIdKey<MANAGEE> objTypecast = (AbstractCommonManagerIdKey<MANAGEE>) obj;
-        return this.name.equals(objTypecast.name) && this.manageeSet.equals(objTypecast.manageeSet);
+        // return this.name.equals(objTypecast.name) && this.manageeSet.equals(objTypecast.manageeSet);
+        for(String key : this.manageeSet.keySet()) {
+            if(!objTypecast.manageeSet.containsKey(key)) {
+                return false;
+            }
+            if(!this.manageeSet.get(key).equals(objTypecast.manageeSet.get(key))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractCommonManagerIdKey.class, args).log(level);
+    }
+    private static void LOG(String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractCommonManagerIdKey.class, args).info();
     }
 }

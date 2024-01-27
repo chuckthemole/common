@@ -197,14 +197,15 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     // maybe make this a breadcrumb trail of the object's parents?
     // this will help when knowing how to render the object in the front end
 
-    public AbstractHtmlObject(String name, AbstractHtmlObject abstractHtmlObject) {
-        super(name);
-        this.children = abstractHtmlObject.getChildren();
-        this.htmlTagType = abstractHtmlObject.getHtmlTagType();
-        this.htmlAttributes = abstractHtmlObject.getHtmlAttributes() != null ? abstractHtmlObject.getHtmlAttributes() : HtmlTagAttributes.create();
-        this.body = abstractHtmlObject.getBody();
-        this.link = String.valueOf("");
-    }
+    // TODO: I want to delete this ctor
+    // public AbstractHtmlObject(String name, AbstractHtmlObject abstractHtmlObject) {
+    //     super(name);
+    //     this.children = abstractHtmlObject.getChildren();
+    //     this.htmlTagType = abstractHtmlObject.getHtmlTagType();
+    //     this.htmlAttributes = abstractHtmlObject.getHtmlAttributes() != null ? abstractHtmlObject.getHtmlAttributes() : HtmlTagAttributes.create();
+    //     this.body = abstractHtmlObject.getBody();
+    //     this.link = String.valueOf("");
+    // }
     public AbstractHtmlObject(String name, HtmlTagType htmlTagType, String body) {
         super(name);
         this.children = new java.util.ArrayList<>();

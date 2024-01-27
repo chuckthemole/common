@@ -2,7 +2,7 @@ package com.rumpus.common;
 
 import org.junit.jupiter.api.TestInstance;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) // TODO: look into this annotation more. It lets you use @BeforeAll and @AfterAll on non-static methods. Is this what I want? think more about how I want beforeAll and afterAll to work.
+// @TestInstance(TestInstance.Lifecycle.PER_CLASS) // TODO: look into this annotation more. It lets you use @BeforeAll and @AfterAll on non-static methods. Is this what I want? think more about how I want beforeAll and afterAll to work.
 abstract public class AbstractCommonTest implements ICommon {
 
     /**
@@ -39,13 +39,13 @@ abstract public class AbstractCommonTest implements ICommon {
     abstract protected void tearDown();
 
     @org.junit.jupiter.api.BeforeAll
-    public void beforeAll() {
-        this.setUpClass();
+    public static void beforeAll() {
+        // this.setUpClass();
     }
 
     @org.junit.jupiter.api.AfterAll
-    public void afterAll() {
-        this.tearDownClass();
+    public static void afterAll() {
+        // this.tearDownClass();
     }
 
     @org.junit.jupiter.api.BeforeEach

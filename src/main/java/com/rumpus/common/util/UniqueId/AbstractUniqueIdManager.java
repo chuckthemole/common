@@ -29,7 +29,7 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
         setName = setName.strip();
         if(!AbstractUniqueIdManager.uniqueIds.containsKey(setName.strip())) {
             LOG("Creating set of ids with name: \"", setName.strip(), "\"");
-            AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.setWithDefaultLength());
+            AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.createEmptyIdSetWithDefaultLength());
         } else {
             LOG("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
         }
@@ -43,7 +43,7 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
         setName = setName.strip();
         if(!AbstractUniqueIdManager.uniqueIds.containsKey(setName)) {
             LOG("Creating set of ids with name: '", setName, "'");
-            AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.setWithLength(length));
+            AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.createWithLength(length));
         } else {
             LOG("Set of ids with name '", setName, "' already exists. To overwrite you must delete the existing set.");
         }
