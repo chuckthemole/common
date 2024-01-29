@@ -2,6 +2,7 @@ package com.rumpus.common.views.Html;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Manager.AbstractCommonManagerIdKey;
 import com.rumpus.common.Manager.ISetItem;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
@@ -27,6 +28,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
  */
 public class Attribute extends AbstractCommonObject implements ISetItem {
 
+    // changed to enum below. may delete these in the future. keeping for now so as not to break anything - chuck
     private static final String NAME = "Attribute";
     public static final String CLASS_ATTRIBUTE_NAME = "class";
     public static final String ID_ATTRIBUTE_NAME = "id";
@@ -45,11 +47,39 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
     public static final String FOR_ATTRIBUTE_NAME = "for";
     // TODO: add more maybe?
 
+    public enum AttributeProperty {
+        CLASS(CLASS_ATTRIBUTE_NAME),
+        ID(ID_ATTRIBUTE_NAME),
+        STYLE(STYLE_ATTRIBUTE_NAME),
+        HREF(HREF_ATTRIBUTE_NAME),
+        SRC(SRC_ATTRIBUTE_NAME),
+        ALT(ALT_ATTRIBUTE_NAME),
+        TITLE(TITLE_ATTRIBUTE_NAME),
+        TYPE(TYPE_ATTRIBUTE_NAME),
+        NAME(NAME_ATTRIBUTE_NAME),
+        VALUE(VALUE_ATTRIBUTE_NAME),
+        PLACEHOLDER(PLACEHOLDER_ATTRIBUTE_NAME),
+        ROWS(ROWS_ATTRIBUTE_NAME),
+        COLS(COLS_ATTRIBUTE_NAME),
+        TARGET(TARGET_ATTRIBUTE_NAME),
+        FOR(FOR_ATTRIBUTE_NAME);
+
+        private String attributeProperty;
+
+        AttributeProperty(String attributeProperty) {
+            this.attributeProperty = attributeProperty;
+        }
+
+        public String getAttributeProperty() {
+            return this.attributeProperty;
+        }
+    }
+
     private String uniqueId = null;
     /**
      * The property propertyName of the attribute
      */
-    private String propertyName; // TODO: make enum class for this?
+    private String propertyName; // TODO: made an enum class for this. Do I want this member to be enum type or String type? - chuck
     /**
      * The value of the attribute as a Set of Strings
      * <p>
@@ -487,6 +517,7 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
     @Override
     public boolean equals(Object obj) {
         if(obj == null || !(obj instanceof Attribute)) {
+            LOG("obj is null or not an instance of Attribute");
             return false;
         }
         Attribute attribute = (Attribute) obj;
@@ -509,5 +540,12 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
             return false;
         }
         return true;
+    }
+
+    private static void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(Attribute.class, args).log(level);
+    }
+    private static void LOG(String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(Attribute.class, args).info();
     }
 }

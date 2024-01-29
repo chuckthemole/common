@@ -39,13 +39,12 @@ public class HtmlObjectTest extends AbstractCommonTest {
 
     @Override
     public void setUp() {
-        // stopping here. looking at unique id manager. since the manager is static it is causing problems.
         LOG("HtmlObjectTest::setUp()");
         this.actualHtmlTagAttributes = HtmlTagAttributes.createEmpty();
         this.actualHtmlTagAttributes.add(CLASS_BLOCK_ATTRIBUTE1);
         this.actualHtmlTagAttributes.add(ADMIN_ATTRIBUTE1);
         this.actualAbstractHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
-        // LOG("Attributes after setUp:\n", this.actualHtmlTagAttributes.toString());
+        LOG("Attributes after setUp:\n", this.actualHtmlTagAttributes.toString());
     }
 
     @Override
@@ -58,8 +57,6 @@ public class HtmlObjectTest extends AbstractCommonTest {
     @Test
     @Order(1)
     void testSetHtmlAttributes() {
-        LOG("Attributes 1:\n", this.actualHtmlTagAttributes.toString());
-
         // Set the html attributes and make sure they are set with get method
         this.actualAbstractHtmlObject.setHtmlAttributes(this.actualHtmlTagAttributes);
         assertEquals(this.actualHtmlTagAttributes, this.actualAbstractHtmlObject.getHtmlAttributes());
@@ -74,9 +71,9 @@ public class HtmlObjectTest extends AbstractCommonTest {
     @Test
     @Order(2)
     void testAddHtmlTagAttribute() {
-        LOG("Attributes 2:\n", this.actualHtmlTagAttributes.toString());
-
+        
         // this should not be added to the HtmlTagAttributes, since it is a 'class' attribute, which already exists
+        this.actualAbstractHtmlObject.setHtmlAttributes(this.actualHtmlTagAttributes);
         final Attribute UNPROPER_PROPERTY_ATTRIBUTE = Attribute.create("class", "this should not be added");
         this.actualAbstractHtmlObject.addHtmlTagAttribute(UNPROPER_PROPERTY_ATTRIBUTE);
         assertEquals(this.actualHtmlTagAttributes, this.actualAbstractHtmlObject.getHtmlAttributes());
@@ -91,16 +88,17 @@ public class HtmlObjectTest extends AbstractCommonTest {
 
         // this.actualAbstractHtmlObject.addHtmlTagAttribute(ADMIN, null);
 
+    }
+
+    @Test
+    @Order(3)
+    void testRemoveHtmlTagAttribute() {
         LOG("Attributes 3:\n", this.actualHtmlTagAttributes.toString());
     }
 
     @Test
-    void testRemoveHtmlTagAttribute() {
-
-    }
-
-    @Test
+    @Order(4)
     void testAddToAttribute() {
-
+        LOG("Attributes 3:\n", this.actualHtmlTagAttributes.toString());
     }
 }

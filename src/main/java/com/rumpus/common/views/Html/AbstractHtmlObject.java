@@ -1,6 +1,7 @@
 package com.rumpus.common.views.Html;
 
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Manager.AbstractCommonManagerIdKey;
 import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.AbstractView;
@@ -242,7 +243,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             "Delimiter: ",
             delimiter).info();
         if(attributes == null || attributes.isEmpty()) {
-            LOG.info("attributes is null or empty, returning empty html object");
+            LOG("attributes is null or empty, returning empty html object");
             return hTypeHtmlObject;
         }
         String[] attributesArray = attributes.split(delimiter);
@@ -251,7 +252,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             if(attributePropAndValue.length == 2) {
                 hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
             } else {
-                LOG.error("Invalid attribute: " + attribute);
+                LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: ", attribute);
             }
         }
         return hTypeHtmlObject;
@@ -403,9 +404,27 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      * @return true if the attribute was added, false otherwise {@link java.util.Set#add(Object)}
      */
     public boolean addHtmlTagAttribute(Attribute attribute) {
-        return this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute) ? false : this.htmlAttributes.add(attribute);
+        if(this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute)) {
+            return false;
+        }
+        if(this.htmlAttributes.containsAttributeProperty(attribute.getPropertyName())) {
+            LOG("addHtmlTagAttribute::This html objects attributes already contains the given attribute property: ", attribute.getPropertyName());
+            return false;
+        }
+        return this.htmlAttributes.add(attribute);
     }
 
+    /**
+     * Add an attribute to the html tag.
+     * <p>
+     * This will not overwrite an existing attribute with the same property name.
+     * <p>
+     * If you want to update an existing attribute, use {@link #addToAttribute(String, String...)}.
+     * 
+     * @param attributeKey the key of the attribute to add
+     * @param attributeValues the values of the attribute to add
+     * @return true if the attribute was added, false otherwise {@link java.util.Set#add(Object)}
+     */
     public boolean addHtmlTagAttribute(String attributeKey, String... attributeValues) {
         return this.addHtmlTagAttribute(Attribute.create(attributeKey, attributeValues));
     }
@@ -583,5 +602,12 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             return true;
         }
         return false;
+    }
+
+    private static void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractHtmlObject.class, args).log(level);
+    }
+    private static void LOG(String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractHtmlObject.class, args).info();
     }
 }

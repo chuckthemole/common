@@ -76,7 +76,37 @@ public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute> imp
         /////////////////////////
         /// End factory methods /
         /////////////////////////
-    
+
+        /**
+         * Check if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given {@link Attribute.AttributeProperty}.
+         * 
+         * @param attributeProperty the {@link Attribute.AttributeProperty} to check for
+         * @return true if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given {@link Attribute.AttributeProperty}, false otherwise
+         */
+        public boolean containsAttributeProperty(Attribute.AttributeProperty attributeProperty) {
+            for (Attribute attribute : this) {
+                if (attribute.getPropertyName().equals(attributeProperty.getAttributeProperty())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Check if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given property (String form).
+         * 
+         * @param attributeProperty the property to check for
+         * @return true if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given property, false otherwise
+         */
+        public boolean containsAttributeProperty(String attributeProperty) {
+            for (Attribute attribute : this) {
+                if (attribute.getPropertyName().toLowerCase().equals(attributeProperty.toLowerCase())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /**
          * Creates a {@link java.util.Map} from the {@link Attribute} objects in this {@link HtmlTagAttributes} object.
          * 

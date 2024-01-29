@@ -55,6 +55,27 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
         return this.manageeSet.put(key, managee);
     }
 
+    /**
+     * Add a managee to the manageeSet. Same as {@link AbstractCommonManagerIdKey#add(ISetItem)} but returns the id of the managee.
+     * 
+     * @param managee the managee to add
+     * @return the id of the managee or null if there is an error
+     */
+    public String addThenReturnId(MANAGEE managee) {
+        if(managee == null) {
+            LOG("MANAGEE is null");
+            return null;
+        }
+        if(this.contains(managee)) { // sets are unique
+            LOG("MANAGEE already exists");
+            return null;
+        }
+        String id = this.idSet.add();
+        managee.setUniqueId(id);
+        this.manageeSet.put(id, managee);
+        return id;
+    }
+
     @Override
     public boolean add(MANAGEE managee) {
         LOG("AbstractCommonManagerIdKey::add()");
@@ -62,8 +83,8 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
             LOG("MANAGEE is null");
             return false;
         }
-        if(managee.hasUniqueId()) {
-            LOG("MANAGEE has unique id");
+        if(this.contains(managee)) { // sets are unique
+            LOG("MANAGEE already exists");
             return false;
         }
         managee.setUniqueId(this.idSet.add());
@@ -89,7 +110,7 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
     public boolean contains(Object managee) {
         @SuppressWarnings("unchecked")
         MANAGEE manageeTypecast = (MANAGEE) managee;
-        return this.manageeSet.containsKey(manageeTypecast.getUniqueId());
+        return this.manageeSet.containsValue(manageeTypecast);
     }
 
     @Override
@@ -171,23 +192,27 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
         return StringUtil.prettyPrintJson(stringBuilder.toString());
     }
 
+    /**
+     * Check if the sets are equal by checking if the sets contain the same managees.
+     */
     @Override
     public boolean equals(Object obj) {
+        // LOG("AbstractCommonManagerIdKey::equals()");
         if(obj == null || !(obj instanceof AbstractCommonManagerIdKey)) {
+            LOG("obj is null or not an instance of AbstractCommonManagerIdKey");
             return false;
         }
         @SuppressWarnings("unchecked")
         AbstractCommonManagerIdKey<MANAGEE> objTypecast = (AbstractCommonManagerIdKey<MANAGEE>) obj;
-        // return this.name.equals(objTypecast.name) && this.manageeSet.equals(objTypecast.manageeSet);
-        for(String key : this.manageeSet.keySet()) {
-            if(!objTypecast.manageeSet.containsKey(key)) {
+        int count = objTypecast.size(); // verify the sets are the same size
+        for(MANAGEE manageeValue : this.manageeSet.values()) {
+            if(!objTypecast.contains(manageeValue)) {
+                // LOG("obj does not contain managee: ", manageeValue.toString());
                 return false;
             }
-            if(!this.manageeSet.get(key).equals(objTypecast.manageeSet.get(key))) {
-                return false;
-            }
+            count--;
         }
-        return true;
+        return count == 0 ? true : false; // count should be 0 if the sets are equal
     }
 
     private static void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
