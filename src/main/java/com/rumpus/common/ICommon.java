@@ -95,4 +95,25 @@ public interface ICommon {
 
     // Ports
     public final static String PYCOMMON_PORT = "8000";
+
+    /**
+     * Top level AbstractCommonObject LOG method. Uses info level.
+     * 
+     * @param clazz the class to log the message for
+     * @param args The message to log
+     */
+    public static void LOG(Class<?> clazz, String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).info();
+    }
+
+    /**
+     * Top level AbstractCommonObject LOG method. Uses the specified level.
+     * 
+     * @param clazz the class to log the message for
+     * @param level the level to log the message at
+     * @param args The message to log
+     */
+    public static void LOG(Class<?> clazz, com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).log(level);
+    }
 }

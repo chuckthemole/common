@@ -9,13 +9,12 @@ import com.rumpus.common.Builder.LogBuilder;
 
 public class ServerUtil implements ICommon {
 
-    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(ServerUtil.class);
     public static final int MIN_PORT_NUMBER = 1000;
     public static final int MAX_PORT_NUMBER = 9999;
 
     public static boolean isPortAvailable(String port) {
 
-        LOG.info("ServerUtil::isPortAvailable(" + port + ")");
+        ICommon.LOG(ServerUtil.class, "ServerUtil::isPortAvailable(" + port + ")");
 
         int portNumber = Integer.parseInt(port);
 

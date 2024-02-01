@@ -109,7 +109,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_
 
     @Override
     public boolean equals(Object o) {
-        LOG.info("CommonUser::equals()");
+        LOG("CommonUser::equals()");
         if (o == this) {
             return true;
         } else if (!(o instanceof AbstractCommonUser)) {
@@ -151,7 +151,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_
 
     @Override
     public Map<String, Object> getModelAttributesMap() {
-        LOG.info("AbstractCommonUser::getModelAttributesMap()");
+        LOG("AbstractCommonUser::getModelAttributesMap()");
         Map<String, Object> modelAttributesMap = Map.of(ID, this.id, EMAIL, this.getEmail());
         return modelAttributesMap;
     }

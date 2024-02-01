@@ -61,12 +61,12 @@ public class ComponentTest extends AbstractCommonTest {
     @Test
     @Order(3)
     void testCreateGroupsFromStrings() {
-        LOG.info("- - testCreateGroupsFromStrings 1 - - ");
+        LOG("- - testCreateGroupsFromStrings 1 - - ");
         String asideGroups1 = "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2";
         // Map<String, List<AbstractHtmlObject>> expectedGroups = Map.of("group1", "item1, item2", "group2", "item1, item2");
         AbstractHtmlObject actualGroups1 = BulmaAside.create("Test3AsideActual1", asideGroups1);
 
-        LOG.info("- - testCreateGroupsFromStrings 2 - - ");
+        LOG("- - testCreateGroupsFromStrings 2 - - ");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("group1, group1-item1, group1-item2,");
         stringBuilder.append(AbstractAside.START_ASIDE_CHILD_LIST);
@@ -82,7 +82,7 @@ public class ComponentTest extends AbstractCommonTest {
     @Test
     @Order(4)
     void testBreadcrumbComponent() {
-        LOG.info("- - testBreadcrumbComponent - - ");
+        LOG("- - testBreadcrumbComponent - - ");
         StringBuilder sb = new StringBuilder();
         sb.append("Bulma");
         sb.append(AbstractComponent.DEFAULT_LINK_DELIMITER);
@@ -94,13 +94,13 @@ public class ComponentTest extends AbstractCommonTest {
         sb.append(AbstractComponent.DEFAULT_LINK_DELIMITER);
         sb.append("www.yahoo.com");
         AbstractHtmlObject breadcrumb = BulmaBreadcrumb.create("Test4BreadcrumbActual1", sb.toString());
-        LOG.info(breadcrumb.toString());
+        LOG(breadcrumb.toString());
     }
 
     @Test
     @Order(5)
     void testWelcomeComonent() {
-        LOG.info("- - testWelcomeComponent - - ");
+        LOG("- - testWelcomeComponent - - ");
 
         StringBuilder sb = new StringBuilder();
         sb.append(AbstractHtmlObject.HtmlTagType.H1);

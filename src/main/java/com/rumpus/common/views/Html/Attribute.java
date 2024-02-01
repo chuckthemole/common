@@ -193,9 +193,9 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
      */
     public String addValue(String value) {
         if(this.value.add(value)) {
-            LOG.info("Added value: " + value + " to attribute: " + this.propertyName);
+            LOG("Added value: " + value + " to attribute: " + this.propertyName);
         } else {
-            LOG.info("Value: " + value + " already exists in attribute: " + this.propertyName);
+            LOG("Value: " + value + " already exists in attribute: " + this.propertyName);
         }
         return this.getValueAsString();
     }
@@ -203,9 +203,9 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
     public String addValues(String... values) {
         for(String value : values) {
             if(this.value.add(value.strip())) {
-                LOG.info("Added value: " + value + " to attribute: " + this.propertyName);
+                LOG("Added value: " + value + " to attribute: " + this.propertyName);
             } else {
-                LOG.info("Value: " + value + " already exists in attribute: " + this.propertyName);
+                LOG("Value: " + value + " already exists in attribute: " + this.propertyName);
             }
         }
         return this.getValueAsString();
@@ -220,9 +220,9 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
     public String addValues(java.util.Set<String> values) {
         for(String value : values) {
             if(this.value.add(value.strip())) {
-                LOG.info("Added value: " + value + " to attribute: " + this.propertyName);
+                LOG("Added value: " + value + " to attribute: " + this.propertyName);
             } else {
-                LOG.info("Value: " + value + " already exists in attribute: " + this.propertyName);
+                LOG("Value: " + value + " already exists in attribute: " + this.propertyName);
             }
         }
         return this.getValueAsString();
@@ -236,9 +236,9 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
      */
     public String removeValue(String value) {
         if(this.value.remove(value)) {
-            LOG.info("Removed value: " + value + " from attribute: " + this.propertyName);
+            LOG("Removed value: " + value + " from attribute: " + this.propertyName);
         } else {
-            LOG.info("Value: " + value + " does not exist in attribute: " + this.propertyName);
+            LOG("Value: " + value + " does not exist in attribute: " + this.propertyName);
         }
         return this.getValueAsString();
     }
@@ -252,9 +252,9 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
     public String removeValues(java.util.Set<String> values) {
         for(String value : values) {
             if(this.value.remove(value)) {
-                LOG.info("Removed value: " + value + " from attribute: " + this.propertyName);
+                LOG("Removed value: " + value + " from attribute: " + this.propertyName);
             } else {
-                LOG.info("Value: " + value + " does not exist in attribute: " + this.propertyName);
+                LOG("Value: " + value + " does not exist in attribute: " + this.propertyName);
             }
         }
         return this.getValueAsString();
@@ -278,7 +278,7 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
     public static java.util.List<Attribute> getAttributesFromStringOfAttributes(String attributes, String delimiter) {
         java.util.List<Attribute> attributeList = new java.util.LinkedList<>();
         if(attributes == null || attributes.isEmpty()) {
-            LOG.info("attributes is null or empty, returning empty attribute list");
+            LOG_THIS("attributes is null or empty, returning empty attribute list");
             return attributeList;
         }
         String[] attributesArray = attributes.split(delimiter);
@@ -289,14 +289,14 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
                 String[] valuesArray = attributePropAndValue[1].split(" ");
                 for(String value : valuesArray) {
                     if(valueSet.add(value.strip())) {
-                        LOG.info("Added value: " + value + " to attribute: " + attributePropAndValue[0]);
+                        LOG_THIS("Added value: " + value + " to attribute: " + attributePropAndValue[0]);
                     } else {
-                        LOG.info("Value: " + value + " already exists in attribute: " + attributePropAndValue[0]);
+                        LOG_THIS("Value: " + value + " already exists in attribute: " + attributePropAndValue[0]);
                     }
                 }
                 attributeList.add(new Attribute(attributePropAndValue[0].strip(), valueSet));
             } else {
-                LOG.error("Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
+                LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             }
         }
         return attributeList;
@@ -314,7 +314,7 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
      */
     public static Attribute getAttributeFromString(String attribute) {
         if(attribute == null || attribute.isEmpty()) {
-            LOG.info("attribute is null or empty, returning empty attribute");
+            LOG_THIS("attribute is null or empty, returning empty attribute");
             return Attribute.createEmptyAttribute(false);
         }
         String[] attributePropAndValue = attribute.split("=");
@@ -323,14 +323,14 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
             String[] valuesArray = attributePropAndValue[1].split(" ");
             for(String value : valuesArray) {
                 if(valueSet.add(value.strip())) {
-                    LOG.info("Added value: " + value + " to attribute: " + attributePropAndValue[0]);
+                    LOG_THIS("Added value: " + value + " to attribute: " + attributePropAndValue[0]);
                 } else {
-                    LOG.info("Value: " + value + " already exists in attribute: " + attributePropAndValue[0]);
+                    LOG_THIS("Value: " + value + " already exists in attribute: " + attributePropAndValue[0]);
                 }
             }
             return new Attribute(attributePropAndValue[0].strip(), valueSet);
         } else {
-            LOG.error("Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
+            LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             return Attribute.createEmptyAttribute(false);
         }
     }
@@ -338,15 +338,15 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
     public static java.util.Set<String> getValuesFromStringOfValues(String values, String delimiter) {
         java.util.Set<String> valueSet = new java.util.HashSet<>();
         if(values == null || values.isEmpty()) {
-            LOG.info("values is null or empty, returning empty value set");
+            LOG_THIS("values is null or empty, returning empty value set");
             return valueSet;
         }
         String[] valuesArray = values.split(delimiter);
         for(String value : valuesArray) {
             if(valueSet.add(value.strip())) {
-                LOG.info("Added value: " + value + " to value set");
+                LOG_THIS("Added value: " + value + " to value set");
             } else {
-                LOG.info("Value: " + value + " already exists in value set");
+                LOG_THIS("Value: " + value + " already exists in value set");
             }
         }
         return valueSet;
@@ -370,7 +370,7 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
             "Delimiter: ",
             delimiter).info();
         if(attributes == null || attributes.isEmpty()) {
-            LOG.info("attributes is null or empty, returning empty html object");
+            LOG_THIS("attributes is null or empty, returning empty html object");
             return hTypeHtmlObject;
         }
         String[] attributesArray = attributes.split(delimiter);
@@ -379,7 +379,7 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
             if(attributePropAndValue.length == 2) {
                 hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
             } else {
-                LOG.error("Invalid attribute: " + attribute);
+                LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: ", attribute);
             }
         }
         return hTypeHtmlObject;
@@ -542,10 +542,11 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
         return true;
     }
 
-    private static void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(Attribute.class, args).log(level);
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(Attribute.class, args);
     }
-    private static void LOG(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(Attribute.class, args).info();
+
+    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(Attribute.class, level, args);
     }
 }

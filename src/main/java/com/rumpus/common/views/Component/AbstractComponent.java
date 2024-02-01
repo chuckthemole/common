@@ -109,13 +109,13 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
         return new AbstractComponent("EMPTY_COMPONENT", "EMPTY_COMPONENT", ComponentType.EMPTY, "", HtmlTagType.EMPTY, "", AbstractComponent.DEFAULT_DELIMITER) {
             @Override
             protected ComponentAttributeManager initComponentAttributeManager() {
-                LOG.info("init() called in createEmptyComponent()");
+                LOG("init() called in createEmptyComponent()");
                 return ComponentAttributeManager.create();
             }
 
             @Override
             public void setChildrenForComponent() {
-                LOG.info("setChildrenForComponent() called in createEmptyComponent()");
+                LOG("setChildrenForComponent() called in createEmptyComponent()");
             }
         };
     }
@@ -133,7 +133,7 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      * </pre>
      */
     private void registerComponent() {
-        LOG.info("registerComponent() called in AbstractComponent: '" + this.componentName + "'");
+        LOG("registerComponent() called in AbstractComponent: '" + this.componentName + "'");
         this.componentPartManager.registerComponent(this.componentName);
     }
     /**

@@ -120,7 +120,7 @@ public abstract class AbstractViewController
             @RequestBody USER user,
             // @RequestBody AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> userTemplate,
             HttpServletRequest request) {
-                LOG.info("AbstractViewController::updateCurrentUserTemplate()");
+                LOG("AbstractViewController::updateCurrentUserTemplate()");
                 AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> userTemplate = viewLoader.getCurrentUserTemplate();
                 // check if the templateName is null or empty
                 if(userTemplate == null) {
@@ -144,7 +144,7 @@ public abstract class AbstractViewController
             @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
             HttpServletRequest request) {
 
-                LOG.info("AbstractViewController::getTemplate()");
+                LOG("AbstractViewController::getTemplate()");
 
                 // check if the templateName is null or empty
                 if(templateName == null || templateName.isEmpty()) {
@@ -168,7 +168,7 @@ public abstract class AbstractViewController
                     LogBuilder.logBuilderFromStringArgs(templateName, " not found in viewLoader: head is null").info();
                     httpCode = HttpStatusCode.valueOf(404);
                 } else {
-                    LOG.info(templateName, " found in viewLoader");
+                    LOG(templateName, " found in viewLoader");
                 }
 
                 AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> currentUserTemplate = viewLoader.getCurrentUserTemplate();
@@ -183,7 +183,7 @@ public abstract class AbstractViewController
             @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
             HttpServletRequest request) {
 
-                LOG.info("AbstractViewController::getUserTemplate()");
+                LOG("AbstractViewController::getUserTemplate()");
                 // check if the userId is null or empty
                 if(userId == null || userId.isEmpty()) {
                     LogBuilder.logBuilderFromStringArgs(AbstractViewController.class, "userId", " is null or empty").info();
@@ -197,19 +197,18 @@ public abstract class AbstractViewController
 
                 AbstractCommonUser<USER, USER_META> user = this.userService.getById(userId);
 
-                LOG.info("DEBUG USER");
-                LogBuilder.logBuilderFromStringArgs(AbstractHtmlObject.class, user.toString()).info();
+                LOG("DEBUG USER");
+                LOG(user.toString());
 
                 /*
                 * TODO: get the user from the database
                 * I stopped here to work on controllers
                 * I'm going to abstract rumpus controllers so I  an retreive users here.
                 */
-
                 @SuppressWarnings("unchecked")
                 AbstractUserTemplate<USER, USER_META> currentUserTemplate = (AbstractUserTemplate<USER, USER_META>) viewLoader.get(AbstractViews.CURRENT_USER_TEMPLATE_KEY);
                 currentUserTemplate.setUser(user);
-                LOG.info("DEBUG currentUserTemplate");
+                LOG("DEBUG currentUserTemplate");
                 currentUserTemplate.reload();
                 LogBuilder.logBuilderFromStringArgs(AbstractHtmlObject.class, currentUserTemplate.toString()).info();
 
@@ -250,14 +249,14 @@ public abstract class AbstractViewController
                     httpCode = HttpStatusCode.valueOf(404);
                 } else {
                     // Found template now check for component
-                    LOG.info(templateName, " found in viewLoader");
+                    LOG(templateName, " found in viewLoader");
                     retrievedComponent = retrievedTemplate.get(componentName);
                     if(retrievedComponent == null) {
                         LogBuilder.logBuilderFromStringArgs(componentName, " not found in template: null", "  Available components: ").info();
                         LogBuilder.logBuilderFromSet(retrievedTemplate.keySet()).info();
                         httpCode = HttpStatusCode.valueOf(404);
                     } else {
-                        LOG.info(componentName, " found in template");
+                        LOG(componentName, " found in template");
                     }
                 }
 

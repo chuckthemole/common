@@ -25,7 +25,7 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
      * @param setName the name of the set to create
      */
     public void createUniqueIdSetWithDefaultLength(String setName) {
-        // LOG.info("createUniqueIdSetWithDefaultLength() called: " + setName);
+        // LOG("createUniqueIdSetWithDefaultLength() called: " + setName);
         setName = setName.strip();
         if(!AbstractUniqueIdManager.uniqueIds.containsKey(setName.strip())) {
             LOG("Creating set of ids with name: \"", setName.strip(), "\"");
@@ -98,9 +98,5 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
     public IdSet createEmptyManagee(String name) {
         name = name.strip();
         return this.put(name, IdSet.createEmptyIdSet());
-    }
-
-    private void LOG(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractUniqueIdManager.class, args).info();
     }
 }

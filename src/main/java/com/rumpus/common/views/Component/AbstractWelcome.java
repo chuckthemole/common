@@ -120,13 +120,13 @@ public abstract class AbstractWelcome extends AbstractComponent {
         return new AbstractWelcome("EMPTY_WELCOM", "EMPTY_WELCOM", "") {
             @Override
             protected ComponentAttributeManager initComponentAttributeManager() {
-                LOG.info("initComponentAttributeManager() called in createEmptyWelcome()");
+                LOG("initComponentAttributeManager() called in createEmptyWelcome()");
                 return ComponentAttributeManager.create();
             }
 
             @Override
             public void setChildrenForComponent() {
-                LOG.info("setChildrenForComponent() called in createEmptyWelcome()");
+                LOG("setChildrenForComponent() called in createEmptyWelcome()");
             }
         };
     }
@@ -173,7 +173,7 @@ public abstract class AbstractWelcome extends AbstractComponent {
                     containerDiv.addChild(htmlObject);
                 }
             } else {
-                LOG.info("Invalid welcome component: " + welcomeComponentsArray[welcomeComponentsArrayIndex]);
+                LOG("Invalid welcome component: " + welcomeComponentsArray[welcomeComponentsArrayIndex]);
                 continue;
             }
         }

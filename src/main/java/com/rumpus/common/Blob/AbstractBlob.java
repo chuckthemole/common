@@ -1,6 +1,5 @@
 package com.rumpus.common.Blob;
 
-import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractMetaData;
 
@@ -20,7 +19,7 @@ import java.sql.Blob;
  * <p>
  * TODO: Write tests for this class. 2024/1/22 - chuck
  */
-public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends AbstractCommonObject implements Blob {
+public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends com.rumpus.common.AbstractCommonObject implements Blob {
 
     protected Blob blob;
     private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(AbstractBlob.class);
@@ -94,13 +93,13 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
      * @return META object
      */
     public static <META extends AbstractMetaData<?>> META getObjectFromBlob(Blob blob) {
-        LOG.info("AbstractBlob::getObjectFromBlob()");
+        LOG_THIS("AbstractBlob::getObjectFromBlob()");
         if(blob == null) {
-            LOG.info("Error: the given blob has a value of null. Returning null.");
+            LOG_THIS("Error: the given blob has a value of null. Returning null.");
             return null;
         }
         try {
-            LOG.info("Provided blob is NOT null, continuing...");
+            LOG_THIS("Provided blob is NOT null, continuing...");
             if(blob.length() == 0) {
                 LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "Error: the given blob has a length of 0. Returning null.").info();
                 return null;
@@ -112,7 +111,7 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
         try {
             META object = deserialize(blob.getBinaryStream());
             if(object == null) {
-                LOG.info("Error: deserializing params from blob.");
+                LOG_THIS("Error: deserializing params from blob.");
                 return null;
             }
             LogBuilder.logBuilderFromStringArgs("Blob deserialized, returning object.").info();
@@ -168,5 +167,13 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends Abs
             }
         }
         return null;
+    }
+
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractBlob.class, args);
+    }
+
+    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractBlob.class, level, args);
     }
 }

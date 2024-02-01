@@ -214,11 +214,4 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
         }
         return count == 0 ? true : false; // count should be 0 if the sets are equal
     }
-
-    private static void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractCommonManagerIdKey.class, args).log(level);
-    }
-    private static void LOG(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractCommonManagerIdKey.class, args).info();
-    }
 }

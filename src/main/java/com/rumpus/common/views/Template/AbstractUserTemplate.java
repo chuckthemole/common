@@ -34,9 +34,9 @@ abstract public class AbstractUserTemplate
 
         @Override
         public AbstractCommonUser<USER, USER_META> getUser() {
-            LOG.info("AbstractUserTemplate::getUser");
+            LOG("AbstractUserTemplate::getUser");
             if(user == null) {
-                LOG.info("AbstractUserTemplate::getUser: user is null");
+                LOG("AbstractUserTemplate::getUser: user is null");
                 return com.rumpus.common.User.EmptyUser.createEmptyUser();
             }
             return user;

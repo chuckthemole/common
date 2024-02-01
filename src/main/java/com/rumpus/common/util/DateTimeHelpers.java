@@ -21,7 +21,7 @@ public class DateTimeHelpers implements ICommon {
         try {
             dateObject = sdf.parse(date);
         } catch (ParseException exception) {
-            LOG.info(exception.toString());
+            com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(DateTimeHelpers.class, exception.toString());
         }
         return dateObject;
     }

@@ -28,7 +28,7 @@ public class ServerManager extends AbstractCommonManager<ManageableServerThread>
     }
 
     public synchronized void startServer(String name) {
-        LOG.info("ServerManager starting server: " + name);
+        LOG("ServerManager starting server: " + name);
         ManageableServerThread serverThread = this.get(name);
         LogBuilder.logBuilderFromStringArgs("Starting server:\n", serverThread.getManagee().toString()).info();
         if(serverThread != null && !serverThread.isAlive()) {
@@ -42,7 +42,7 @@ public class ServerManager extends AbstractCommonManager<ManageableServerThread>
     }
 
     public synchronized void stopServer(String name) {
-        LOG.info("ServerManager stopping server: " + name);
+        LOG("ServerManager stopping server: " + name);
         ManageableServerThread serverThread = this.get(name);
         if(serverThread != null) {
             LogBuilder.logBuilderFromStringArgs("Thread is alive (before stopping thread): " + serverThread.isAlive()).info();
@@ -53,7 +53,7 @@ public class ServerManager extends AbstractCommonManager<ManageableServerThread>
                     int aliveCounter = 0;
                     while(serverThread.isAlive()) {
                         Thread.sleep(1000);
-                        LOG.info("Waiting for thread to stop...");
+                        LOG("Waiting for thread to stop...");
                         if(aliveCounter > 5) {
                             LogBuilder.logBuilderFromStringArgs("Thread is alive (after waiting 5 seconds): " + serverThread.isAlive()).info();
                             break;

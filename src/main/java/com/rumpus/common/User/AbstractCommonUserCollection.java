@@ -56,7 +56,7 @@ public abstract class AbstractCommonUserCollection
         public static <USER extends AbstractCommonUser<USER, ? extends AbstractCommonUserMetaData<?>>, COLLECTION extends Collection<USER>>
             List<USER> getSortedByUsernameListFromCollection(COLLECTION userCollection) {
                 if(userCollection == null) {
-                    LOG.info("AbstractCommonUserCollection::getSortedByUsernameListFromCollection: userCollection is null");
+                    LOG_THIS("AbstractCommonUserCollection::getSortedByUsernameListFromCollection: userCollection is null");
                     return null;
                 }
                 return new AbstractCommonUserCollection<USER, COLLECTION>(userCollection){}.sortByUsername();
@@ -73,7 +73,7 @@ public abstract class AbstractCommonUserCollection
         public static <USER extends AbstractCommonUser<USER, ? extends AbstractCommonUserMetaData<?>>, COLLECTION extends Collection<USER>>
             List<USER> getSortedByEmailListFromCollection(COLLECTION userCollection) {
                 if(userCollection == null) {
-                    LOG.info("AbstractCommonUserCollection::getSortedByUsernameListFromCollection: userCollection is null");
+                    LOG_THIS("AbstractCommonUserCollection::getSortedByUsernameListFromCollection: userCollection is null");
                     return null;
                 }
                 return new AbstractCommonUserCollection<USER, COLLECTION>(userCollection) {}.sortByEmail();
@@ -101,4 +101,12 @@ public abstract class AbstractCommonUserCollection
             });
             return list;
         }
+
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class, args);
+    }
+
+    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class, level, args);
+    }
 }

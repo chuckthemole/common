@@ -235,7 +235,7 @@ public class SQLBuilder extends AbstractBuilder {
                 .append(valuesBuilder.toString())
                 .append(SEMI);
          } else {
-            LOG.info("Error: No values given to perform an insert.");
+            LOG("Error: No values given to perform an insert.");
          }
     }
 
@@ -268,7 +268,7 @@ public class SQLBuilder extends AbstractBuilder {
                 this.builder.deleteCharAt(this.builder.length() - 1);
                 this.builder.append(SEMI);
         } else {
-            LOG.info("Error: No values given to perform an update.");
+            LOG("Error: No values given to perform an update.");
         }
     }
 
@@ -302,7 +302,7 @@ public class SQLBuilder extends AbstractBuilder {
                 this.builder.deleteCharAt(this.builder.length() - 2); // delete trailing comma
                 this.builder.append(SPACE).append(WHERE).append(SPACE).append(where).append(SEMI); // WHERE clause
         } else {
-            LOG.info("Error: No values given to perform an update.");
+            LOG("Error: No values given to perform an update.");
         }
     }
 }

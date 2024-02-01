@@ -19,17 +19,17 @@ abstract public class AbstractCommonAuthManager<MODEL extends AbstractModel<MODE
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        LOG.info("AbstractCommonAuthManager::authenticate");
+        LOG("AbstractCommonAuthManager::authenticate");
         final String name = authentication.getName();
         final String password = authentication.getCredentials().toString();
         
         if (userIsAuthenticated(name, password)) {
-            LOG.info("User is authenticated, returning token.");
+            LOG("User is authenticated, returning token.");
             // use the credentials
             // and authenticate against the third-party system
             return new UsernamePasswordAuthenticationToken(name, password, getAuthorities(name));
         } else {
-            LOG.info("User is NOT authenticated");
+            LOG("User is NOT authenticated");
             return null;
         }
 

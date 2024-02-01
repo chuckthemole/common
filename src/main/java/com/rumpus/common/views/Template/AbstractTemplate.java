@@ -35,17 +35,17 @@ public abstract class AbstractTemplate extends AbstractCommonManager<AbstractCom
         return new AbstractTemplate("EMPTY_TEMPLATE") {
             @Override
             public void addComponentsToMap() {
-                LOG.info("addComponentsToMap() called in createEmptyTemplate(), do nothing");
+                LOG("addComponentsToMap() called in createEmptyTemplate(), do nothing");
             }
 
             @Override
             public void setComponents() {
-                LOG.info("setComponents() called in createEmptyTemplate(), do nothing");
+                LOG("setComponents() called in createEmptyTemplate(), do nothing");
             }
 
             @Override
             public AbstractHtmlObject setHead() {
-                LOG.info("setHead() called in createEmptyTemplate(), createing empty head");
+                LOG("setHead() called in createEmptyTemplate(), createing empty head");
                 return AbstractHtmlObject.createEmptyAbstractHtmlObject();
             }
 

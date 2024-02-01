@@ -1,11 +1,10 @@
 package com.rumpus.common.views.Html;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Manager.AbstractCommonManagerIdKey;
 import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.AbstractView;
-import com.rumpus.common.views.Component.ComponentAttributeManager;
 
 public abstract class AbstractHtmlObject extends AbstractView implements IManageable {
 
@@ -243,7 +242,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             "Delimiter: ",
             delimiter).info();
         if(attributes == null || attributes.isEmpty()) {
-            LOG("attributes is null or empty, returning empty html object");
+            LOG_THIS("attributes is null or empty, returning empty html object");
             return hTypeHtmlObject;
         }
         String[] attributesArray = attributes.split(delimiter);
@@ -252,7 +251,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             if(attributePropAndValue.length == 2) {
                 hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
             } else {
-                LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: ", attribute);
+                LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: ", attribute);
             }
         }
         return hTypeHtmlObject;
@@ -604,10 +603,11 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         return false;
     }
 
-    private static void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractHtmlObject.class, args).log(level);
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractCommonObject.class, args);
     }
-    private static void LOG(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractHtmlObject.class, args).info();
+
+    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractCommonObject.class, level, args);
     }
 }

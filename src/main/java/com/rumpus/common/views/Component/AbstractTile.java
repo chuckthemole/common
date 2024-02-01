@@ -170,8 +170,4 @@ abstract public class AbstractTile extends AbstractComponent {
         }
         return childElementList;
     }
-
-    private void LOG(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractTile.class, args).info();
-    }
 }

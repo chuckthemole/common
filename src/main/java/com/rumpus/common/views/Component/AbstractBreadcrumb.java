@@ -53,12 +53,12 @@ public abstract class AbstractBreadcrumb extends AbstractComponent {
         return new AbstractBreadcrumb("EMPTY_BREADCRUMB", "EMPTY_BREADCRUMB", "") {
             @Override
             public void setChildrenForComponent() {
-                LOG.info("setChildrenForComponent() called in createEmptyBreadcrumb()");
+                LOG("setChildrenForComponent() called in createEmptyBreadcrumb()");
             }
 
             @Override
             protected ComponentAttributeManager initComponentAttributeManager() {
-                LOG.info("init() called in createEmptyBreadcrumb()");
+                LOG("init() called in createEmptyBreadcrumb()");
                 return ComponentAttributeManager.create();
             } 
         };

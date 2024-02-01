@@ -35,7 +35,7 @@ public class SessionEvent extends AbstractCommonObject {
             this.destroyedEvent = new Destroyed(source, session);
             this.isDestroyed = true;
         } else {
-            LOG.info("ERROR: can't destory what was not created.");
+            LOG("ERROR: can't destory what was not created.");
         }
     }
 

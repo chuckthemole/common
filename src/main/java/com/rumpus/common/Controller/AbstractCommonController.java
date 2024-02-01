@@ -55,7 +55,7 @@ public abstract class AbstractCommonController
 
         // @GetMapping(value = ICommonController.COMMON_REST_API_PATH + "/is_authenticated")
         // static protected ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication) {
-        //     LOG.info("CommonRestController::getAuthenticationOfUser()");
+        //     LOG("CommonRestController::getAuthenticationOfUser()");
         //     boolean isAuthenticated = false;
         //     if(authentication != null) {
         //         isAuthenticated = authentication.isAuthenticated();

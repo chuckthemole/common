@@ -34,7 +34,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     @Override
     public boolean remove(int id) {
-        LOG.info("ApiDBJdbc::remove()");
+        LOG("ApiDBJdbc::remove()");
         // TODO: Check dependencies to delete
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM ")
@@ -48,18 +48,18 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     @Override
     public boolean remove(String name) {
-        LOG.info("ApiDBJdbc::remove()");
+        LOG("ApiDBJdbc::remove()");
         // TODO: Check dependencies to delete
         SQLBuilder sqlBuilder = new SQLBuilder();
         sqlBuilder.deleteUserByUsername(name);
         final String sql = sqlBuilder.toString();
-        LOG.info(sql);
+        LOG(sql);
         return CommonJdbc.jdbcTemplate.update(sql) > 0;
     }
 
     @Override
     public MODEL get(int id) {
-        LOG.info("ApiDBJdbc::get()");
+        LOG("ApiDBJdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -67,14 +67,14 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
             .append(id)
             .append(" = ?;");
         final String sql = sb.toString();
-        LOG.info(sql);
+        LOG(sql);
         return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
     }
 
     // TODO this is working for user. Need to abstract 'username' for other objects. Maybe add parameter of constraint.
     @Override
     public MODEL get(String name) {
-        LOG.info("ApiDBJdbc::get()");
+        LOG("ApiDBJdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -87,13 +87,13 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         sb.append("username");
         sb.append(" = ?;");
         final String sql = sb.toString();
-        LOG.info(sql);
+        LOG(sql);
         return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, name);
     }
 
     @Override
     public List<MODEL> get(Map<String, String> constraints) {
-        LOG.info("ApiDBJdbc::get()");
+        LOG("ApiDBJdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -110,7 +110,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
             count++;
         }
         final String sql = sb.toString();
-        LOG.info(sql);
+        LOG(sql);
         return CommonJdbc.jdbcTemplate.query(sql, mapper, constraints.values());
     }
 
@@ -123,22 +123,22 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     @Override
     public List<MODEL> getAll() {
-        LOG.info("ApiDBJdbc::getAll()");
+        LOG("ApiDBJdbc::getAll()");
         SQLBuilder sqlBuilder = new SQLBuilder();
         sqlBuilder.selectAll(this.table);
 
         // StringBuilder sb = new StringBuilder();
         // sb.append("SELECT * FROM ").append(table).append(";");
         // final String sql = sb.toString();
-        LOG.info(sqlBuilder.toString());
+        LOG(sqlBuilder.toString());
         List<MODEL> models = CommonJdbc.jdbcTemplate.query(sqlBuilder.toString(), this.mapper);
         return models;
     }
 
     // @Override
     // public MODEL add(MODEL model) {
-    //     LOG.info("ApiDBJdbc::add()");
-    //     LOG.info(model.toString());
+    //     LOG("ApiDBJdbc::add()");
+    //     LOG(model.toString());
 
     //     // Build sql
     //     StringBuilder sbSql = new StringBuilder();
@@ -154,7 +154,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     //     sbSql.deleteCharAt(sbSql.length() - 1);
     //     sbSql.append(");");
     //     final String sql = sbSql.toString();
-    //     LOG.info(sql);
+    //     LOG(sql);
 
     //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
     //     CommonJdbc.jdbcTemplate.update((Connection conn) -> {
@@ -174,8 +174,8 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     @Override
     public void insert(String sqlInsertStatement, Map<String, Object> modelMap) {
-        LOG.info("ApiDBJdbc::insert()");
-        LOG.info(sqlInsertStatement);
+        LOG("ApiDBJdbc::insert()");
+        LOG(sqlInsertStatement);
         PreparedStatementCallback<Integer> ps = new PreparedStatementCallback<Integer>() {
             public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
                 return ps.executeUpdate();
@@ -226,12 +226,12 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     @Override
     public MODEL onGet(final String sql) {
-        LOG.info("ApiDBApiDBJdbc::onGet()");
+        LOG("ApiDBApiDBJdbc::onGet()");
         try{
             return CommonJdbc.jdbcTemplate.queryForObject(sql, this.mapper);
         } catch(DataAccessException e) {
-            LOG.info("Error retrieving entry from the db. Details below...");
-            LOG.info(e.toString());
+            LOG("Error retrieving entry from the db. Details below...");
+            LOG(e.toString());
             return null;
         }
     }
@@ -247,7 +247,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     // @Override
     // public MODEL update(String key, MODEL newModel, String condition) {
-    //     LOG.info("ApiDBJdbc::add()");
+    //     LOG("ApiDBJdbc::add()");
     //     // StringBuilder logBuilder = new StringBuilder();
     //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
     //     LogBuilder log = new LogBuilder(true, "Updating '", key, "' of type '", newModel.name(), "''.");
@@ -260,7 +260,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     //         sqlBuilder.update(this.table, newModel.getAttributes(), condition);
     //     }
 
-    //     LOG.info(sqlBuilder.toString());
+    //     LOG(sqlBuilder.toString());
 
     //     MODEL model = this.get(key);
     //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
@@ -283,7 +283,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     // @Override
     // public MODEL update(String id, MODEL newModel, Set<String> columns, String condition) {
-    //     LOG.info("ApiDBApiDBJdbc::add()");
+    //     LOG("ApiDBApiDBJdbc::add()");
     //     // StringBuilder logBuilder = new StringBuilder();
     //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
     //     LogBuilder log = new LogBuilder(true, "Updating '", id, "' of type '", newModel.name(), "''.");
@@ -305,7 +305,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     //         sqlBuilder.update(this.table, columnNamesAndValues, condition);
     //     }
 
-    //     LOG.info(sqlBuilder.toString());
+    //     LOG(sqlBuilder.toString());
 
     //     MODEL model = this.get(id);
     //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();

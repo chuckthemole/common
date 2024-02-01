@@ -18,6 +18,25 @@ abstract public class AbstractCommonObject implements ICommon {
     public String name() {
         return this.name;
     }
+
+    /**
+     * Top level AbstractCommonObject LOG method. Uses info level.
+     * 
+     * @param args The message to log
+     */
+    protected void LOG(String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(this.getClass(), args).info();
+    }
+
+    /**
+     * Top level AbstractCommonObject LOG method. Uses the specified level.
+     * 
+     * @param level the level to log the message at
+     * @param args The message to log
+     */
+    protected void LOG(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(this.getClass(), args).log(level);
+    }
     
     /**
      * Top level AbstractCommonObject toString() method.
@@ -28,13 +47,13 @@ abstract public class AbstractCommonObject implements ICommon {
      */
     @Override
     public String toString() {
-        LOG.info("AbstractCommonObject::toString()  Should you be here? Maybe override toString() in your class?");
+        LOG("AbstractCommonObject::toString()  Should you be here? Maybe override toString() in your class?");
         return this.name;
     }
 
     @Override
     public boolean equals(Object obj) {
-        LOG.info("AbstractCommonObject::equals()  Should you be here? Maybe override equals() in your class?");
+        LOG("AbstractCommonObject::equals()  Should you be here? Maybe override equals() in your class?");
         if(obj == null) {
             return false;
         }

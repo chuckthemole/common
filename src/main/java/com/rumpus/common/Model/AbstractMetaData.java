@@ -107,11 +107,11 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
 
     // overriding these serializer methods here. right now just using defaults but can customize
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-        LOG.info("AbstractMetaData::writeObject()");
+        LOG("AbstractMetaData::writeObject()");
         out.defaultWriteObject();
     }
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-        LOG.info("AbstractMetaData::readObject()");
+        LOG("AbstractMetaData::readObject()");
         in.defaultReadObject();
     }
 

@@ -35,7 +35,7 @@ public class ComponentPartManager extends AbstractCommonManager<AbstractHtmlObje
      * @param component a unique name of the component to register. ie: "BulmaBreadcrumb" or "BulmaWelcome"
      */
     public void registerComponent(String component) {
-        LOG.info("Registering component: '" + component + "'");
+        LOG("Registering component: '" + component + "'");
         componentUniqueIds.createUniqueIdSetWithDefaultLength(component);
     }
 

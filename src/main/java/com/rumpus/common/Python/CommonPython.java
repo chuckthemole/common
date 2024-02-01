@@ -8,19 +8,25 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
-import com.rumpus.common.ICommon;
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.util.FileUtil;
 
-public class CommonPython implements ICommon {
+public class CommonPython extends AbstractCommonObject {
     
+    static final String NAME = "CommonPython";
+
+    public CommonPython() {
+        super(NAME);
+    }
+
     private static PythonInterpreter interpreter = null;
     private static final String PYCOMMON_DIR = "../pycommon";
     private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(CommonPython.class);
 
     public static PythonInterpreter getInterpreter() {
         if (interpreter == null) {
-            LOG.info("Initializing PythonInterpreter");
+            LOG_THIS("Initializing PythonInterpreter");
             Properties props = new Properties();
 
             boolean pathsExist = true;
@@ -51,7 +57,7 @@ public class CommonPython implements ICommon {
     }
 
     public static boolean addPycommontToPath() {
-        LOG.info("Adding pycommon to path");
+        LOG_THIS("Adding pycommon to path");
         if(FileUtil.doesPathExist(PYCOMMON_DIR) == DOES_NOT_EXIST) {
             LOG.error("Pycommon directory does not exist: " + PYCOMMON_DIR);
             return false;
@@ -62,7 +68,7 @@ public class CommonPython implements ICommon {
     }
 
     public static PyObject addImport(String module, String function) {
-        LOG.info("Importing " + module + " " + function);
+        LOG_THIS("Importing " + module + " " + function);
         try {
             interpreter.exec("from " + module + " import " + function);
         } catch (Exception e) {
@@ -75,5 +81,13 @@ public class CommonPython implements ICommon {
             LOG.error("Could not find function: " + function + " in module: " + module);
         }
         return pyObjFunction;
+    }
+
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(CommonPython.class, args);
+    }
+
+    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(CommonPython.class, level, args);
     }
 }

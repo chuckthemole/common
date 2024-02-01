@@ -39,7 +39,7 @@ public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL
     public static <MODEL extends AbstractModel<MODEL>, COLLECTION extends Collection<MODEL>>
         List<MODEL> getSortedByIdListFromCollection(COLLECTION userCollection) {
             if(userCollection == null) {
-                LOG.info("AbstractModelsCollection::getSortedByIdListFromCollection: userCollection is null");
+                LOG_THIS("AbstractModelsCollection::getSortedByIdListFromCollection: userCollection is null");
                 return null;
             }
             return new AbstractModelsCollection<MODEL, COLLECTION>(userCollection) {}.sortById();
@@ -121,5 +121,13 @@ public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL
     @Override
     public void clear() {
         this.collection.clear();
+    }
+
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class, args);
+    }
+
+    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class, level, args);
     }
 }

@@ -54,7 +54,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
         if(StringUtil.isSurrounded(inputString, startChar, endChar)) {
             return inputString.substring(1, inputString.length() - 1);
         }
-        LOG.info("String is not surrounded by given chars. Returning original string.");
+        LOG("String is not surrounded by given chars. Returning original string.");
         return inputString;
     }
 
@@ -82,11 +82,11 @@ public class StringUtil implements com.rumpus.common.ICommon {
         String modifiedString = String.valueOf(trimee);
         int charsLength = chars.length;
         for(int i = 0; i < charsLength; i++) {
-            // LOG.info("Trimming char: " + chars[i] + " from string: " + modifiedString + ".");
+            // LOG("Trimming char: " + chars[i] + " from string: " + modifiedString + ".");
             String previous = String.valueOf(modifiedString);
             modifiedString = StringUtil.trimStartAndEnd(modifiedString, chars[i], chars[charsLength - 1 - i]);
             if(previous.equals(modifiedString)) {
-                LOG.info("String is not surrounded by given chars. Returning original string.");
+                LOG("String is not surrounded by given chars. Returning original string.");
                 return trimee;
             }
         }
@@ -119,7 +119,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
             return inputString;
         }
         if(inputString.charAt(0) != inputChar) {
-            LOG.info("Input string does not start with given char. Returning original string.");
+            LOG("Input string does not start with given char. Returning original string.");
             return inputString;
         }
         return inputString.substring(1);
@@ -135,7 +135,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
             return inputString;
         }
         if(!inputString.startsWith(inputStringToTrim)) {
-            LOG.info("Input string does not start with given String. Returning original string.");
+            LOG("Input string does not start with given String. Returning original string.");
             return inputString;
         }
         return inputString.substring(inputStringToTrim.length());
@@ -151,7 +151,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
             return inpuString;
         }
         if(inpuString.charAt(inpuString.length() - 1) != inputChar) {
-            LOG.info("Input string does not end with given char. Returning original string.");
+            LOG("Input string does not end with given char. Returning original string.");
             return inpuString;
         }
         return inpuString.substring(0, inpuString.length() - 1);
@@ -167,7 +167,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
             return inpuString;
         }
         if(!inpuString.endsWith(inputStringToTrim)) {
-            LOG.info("Input string does not end with given String. Returning original string.");
+            LOG("Input string does not end with given String. Returning original string.");
             return inpuString;
         }
         return inpuString.substring(0, inpuString.length() - inputStringToTrim.length());
@@ -237,7 +237,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
      */
     public static boolean isStringNullOrEmpty(String str) {
         if(str == null || str.length() == 0) {
-            LOG.info("Input string is null or empty.");
+            LOG("Input string is null or empty.");
             return true;
         }
         return false;

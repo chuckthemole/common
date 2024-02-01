@@ -48,7 +48,7 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
 
     @SuppressWarnings(UNCHECKED)
     public static TestUserModel createFromMap(Map<String, Object> userMap) {
-        LOG.info("TestUserModel::createFromMap()");
+        ICommon.LOG(TestUserModel.class, "TestUserModel::createFromMap()");
         TestUserModel user = new TestUserModel();
         user.setUsername(userMap.containsKey(USERNAME) ? (String) userMap.get(USERNAME) : EMPTY_FIELD);
         user.setUserPassword(userMap.containsKey(PASSWORD) ? (String) userMap.get(PASSWORD) : EMPTY_FIELD);
@@ -77,13 +77,13 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
 
     @Override
     public void serialize(TestUserModel object, OutputStream outputStream) throws IOException {
-        LOG.info("TestUserModel::serialize()");
+        LOG("TestUserModel::serialize()");
         this.getTypeAdapter().write(new JsonWriter(new OutputStreamWriter(outputStream)), object);
     }
 
     @Override
     public Map<String, Object> getModelAttributesMap() {
-        LOG.info("TestUserModel::getModelAttributesMap()");
+        LOG("TestUserModel::getModelAttributesMap()");
         Map<String, Object> modelAttributesMap = Map.of(ID, this.id, EMAIL, this.getEmail());
         return modelAttributesMap;
     }

@@ -59,7 +59,7 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
         @Override
         public void addBasePath(String basePath, Map<String, String> paths, boolean overwrite) {
             if(this.requestMap.containsKey(basePath) == true && overwrite == false) {
-                LOG.info("Base path already exists and overwrite is false. Not adding base path.");
+                LOG("Base path already exists and overwrite is false. Not adding base path.");
                 return;
             }
             this.requestMap.put(StringUtil.trimStartAndEnd(basePath, '/'), paths);
@@ -68,7 +68,7 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
         @Override
         public void addPathToBasePath(String basePath, String pathName, String path) {
             if(this.requestMap.containsKey(basePath) == false) {
-                LOG.info("Base path does not exist. Not adding path.");
+                LOG("Base path does not exist. Not adding path.");
                 return;
             }
             this.requestMap.get(basePath).put(pathName, path);
@@ -77,18 +77,18 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
         @Override
         public void removeBasePath(String basePath) {
             if(this.requestMap.remove(basePath) == null) {
-                LOG.info("Base path does not exist. Not removing base path.");
+                LOG("Base path does not exist. Not removing base path.");
             }
         }
 
         @Override
         public void removePathFromBasePath(String basePath, String pathName) {
             if(this.requestMap.containsKey(basePath) == false) {
-                LOG.info("Base path does not exist. Not removing path.");
+                LOG("Base path does not exist. Not removing path.");
                 return;
             }
             if(this.requestMap.get(basePath).remove(pathName) == null) {
-                LOG.info("Path does not exist. Not removing path.");
+                LOG("Path does not exist. Not removing path.");
             }
         }
 }

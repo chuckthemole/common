@@ -135,12 +135,12 @@ public class CommonLog extends AbstractCommonObject implements Log {
 
     @Override
     public void logInfo(Object msg) {
-        LOG.info((String) msg);
+        LOG((String) msg);
     }
 
     @Override
-    public void logInfo(Object msg, Throwable thrown) {
-        LOG.info((String) msg, thrown);
+    public void logInfo(Object msg, Throwable thrown) { // TODO: should I make a LOG method in AbstractCommonObject to take Throwable?
+        LOG((String) msg, thrown.getMessage());
     }
 
     @Override

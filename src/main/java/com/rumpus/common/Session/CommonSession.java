@@ -80,7 +80,7 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         try {
             tempCreationTime = Instant.parse(Long.toString(session.getCreationTime()));
         } catch(DateTimeParseException exception) {
-            LOG.info("Unable to parse creation time for HttpSession.");
+            LOG("Unable to parse creation time for HttpSession.");
         }
         if(tempCreationTime == Instant.MAX) {
             tempCreationTime = Instant.now();
@@ -92,7 +92,7 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         try {
             this.lastAccessedTime = Instant.parse(Long.toString(session.getLastAccessedTime()));
         } catch(DateTimeParseException exception) {
-            LOG.info("Unable to parse last accessed time for HttpSession.");
+            LOG("Unable to parse last accessed time for HttpSession.");
         }
         if(this.lastAccessedTime == Instant.MAX) {
             this.lastAccessedTime = Instant.now();
@@ -114,7 +114,7 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         try {
             this.maxInactiveInterval = Duration.parse(Integer.toString(session.getMaxInactiveInterval()));
         } catch(DateTimeParseException exception) {
-            LOG.info("Unable to parse max inactive interval for HttpSession.");
+            LOG("Unable to parse max inactive interval for HttpSession.");
         }
         if(Duration.ZERO.equals(this.maxInactiveInterval)) {
             this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
@@ -270,9 +270,9 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
     }
     @Override
     public Map<String, Object> getModelAttributesMap() {
-        LOG.info("CommonSession::getModelAtrributesMap()");
+        LOG("CommonSession::getModelAtrributesMap()");
         // TODO Auto-generated method stub
-        LOG.info("Unimplemented method 'getModelAttributesMap'");
+        LOG("Unimplemented method 'getModelAttributesMap'");
         return Map.of();
     }
     @Override

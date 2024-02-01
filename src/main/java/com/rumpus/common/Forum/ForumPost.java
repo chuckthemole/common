@@ -67,7 +67,7 @@ public class ForumPost extends AbstractModel<ForumPost> {
 
     @Override
     public Map<String, Object> getModelAttributesMap() {
-        LOG.info("ForumPost::getModelAtrributesMap()");
+        LOG("ForumPost::getModelAtrributesMap()");
         return(
             Map.of(
                 "post_id", this.id != null ? this.id : EMPTY_FIELD, // id of this forum post

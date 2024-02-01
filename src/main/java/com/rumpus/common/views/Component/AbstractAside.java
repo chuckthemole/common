@@ -2,12 +2,10 @@ package com.rumpus.common.views.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.TreeMap; // TODO: maybe look into using LinkedHashMap instead of TreeMap. It has a lookup time of O(1) vs O(log n) for TreeMap - chuck
 
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
-import com.rumpus.common.views.Html.Attribute;
-import com.rumpus.common.views.Html.HtmlTagAttributes;
 
 /**
  * Aside html object. A menu for navigating a website.
@@ -73,12 +71,12 @@ public abstract class AbstractAside extends AbstractComponent {
         return new AbstractAside("EMPTY_ASIDE", "EMPTY_ASIDE_COMPONENT_NAME", "") {
             @Override
             public void setChildrenForComponent() {
-                LOG.info("setChildrenForComponent() called in createEmptyAbstractHtmlObject()");
+                LOG("setChildrenForComponent() called in createEmptyAbstractHtmlObject()");
             }
 
             @Override
             protected ComponentAttributeManager initComponentAttributeManager() {
-                LOG.info("init() called in createEmptyAbstractHtmlObject()");
+                LOG("init() called in createEmptyAbstractHtmlObject()");
                 return ComponentAttributeManager.create();
             }
         };
@@ -99,7 +97,7 @@ public abstract class AbstractAside extends AbstractComponent {
 
             @Override
             protected ComponentAttributeManager initComponentAttributeManager() {
-                LOG.info("init() called in createSubAside()");
+                LOG("init() called in createSubAside()");
                 return ComponentAttributeManager.create();
             }
         };

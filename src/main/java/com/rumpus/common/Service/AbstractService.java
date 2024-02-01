@@ -17,49 +17,49 @@ abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extend
 
     @Override
     public MODEL get(int id) {
-        LOG.info("Service::get(id)");
+        LOG("Service::get(id)");
         return this.dao.get(id);
     }
 
     @Override
     public MODEL get(String name) {
-        LOG.info("Service::get(name)");
+        LOG("Service::get(name)");
         return this.dao.get(name);
     }
 
     @Override
     public MODEL getById(String id) {
-        LOG.info("Service::getById(id)");
+        LOG("Service::getById(id)");
         return this.dao.getById(id);
     }
 
     @Override
     public List<MODEL> getAll() {
-        LOG.info("Service::getAll()");
+        LOG("Service::getAll()");
         return this.dao.getAll();
     }
 
     @Override
     public MODEL add(MODEL rumpusModel) {
-        LOG.info("Service::add()");
+        LOG("Service::add()");
         return this.dao.add(rumpusModel);
     }
 
     @Override
     public boolean remove(int id) {
-        LOG.info("Service::remove(id)");
+        LOG("Service::remove(id)");
         return this.dao.remove(id);
     }
 
     @Override
     public boolean remove(String name) {
-        LOG.info("Service::remove(name)");
+        LOG("Service::remove(name)");
         return this.dao.remove(name);
     }
 
     @Override
     public MODEL update(String id, MODEL updatedModel) {
-        LOG.info("Service::update()");
+        LOG("Service::update()");
         return this.dao.update(id, updatedModel);
     }
 }

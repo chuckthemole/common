@@ -70,7 +70,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
     @Override
     public boolean remove(int id) {
-        LOG.info("ApiDBJdbcUsers::remove()");
+        LOG("ApiDBJdbcUsers::remove()");
         // USER user = super.get(id); TODO: need an sql get user name here get user name for below.
         this.manager.deleteUser(name); // look at TODO above
         if(!super.remove(id)) {
@@ -83,7 +83,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     // May not need the super operation if we use ON DELETE CASCADE
     @Override
     public boolean remove(String name) {
-        LOG.info("ApiDBJdbcUsers::remove()");
+        LOG("ApiDBJdbcUsers::remove()");
         if(!super.remove(name)) {
             LOG.error("ERROR: ApiDBJdbc.remove() could not remove with name = '" + name + "'");
             return false;
@@ -94,7 +94,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
     @Override
     public USER get(int id) {
-        LOG.info("ApiDBJdbcUsers::get()");
+        LOG("ApiDBJdbcUsers::get()");
         USER user = super.get(id);
         // if(user == null) {
         //     LOG.error("ERROR: ApiDBJdbc.get() could not get.");
@@ -106,7 +106,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
     @Override
     public USER get(String name) {
-        LOG.info("ApiDBJdbcUsers::get()");
+        LOG("ApiDBJdbcUsers::get()");
         SQLBuilder sql = new SQLBuilder();
         sql.selectUserByUsername(this.table, name);
         sql.info();
@@ -124,7 +124,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
     // @Override
     // public List<USER> get(List<USER> users, String value, String column) {
-    //     LOG.info("ApiDBJdbcUsers::get(value, column)");
+    //     LOG("ApiDBJdbcUsers::get(value, column)");
 
     //     if(column.equals(ID)) {
     //         Map<String, Object> out = super.onSelectById(value);
@@ -136,10 +136,10 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     //         users.add(user);
     //     } else if(column.equals(PASSWORD)) {
     //         // TODO
-    //         LOG.info("Get by password not implemented");
+    //         LOG("Get by password not implemented");
     //     } else if(column.equals(EMAIL)) {
     //         // TODO
-    //         LOG.info("Get by emmail not implemented");
+    //         LOG("Get by emmail not implemented");
     //     } else if(column.equals(USERNAME)) {
     //         this.get(value);
     //     }
@@ -148,7 +148,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     //         LOG.error("Error retrieving USERs from db. returning null...");
     //         return null;
     //     } else if(users.isEmpty()) {
-    //         LOG.info("No users found. returning null...");
+    //         LOG("No users found. returning null...");
     //         return null;
     //     }
 
@@ -163,7 +163,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     public List<USER> get(Map<String, String> constraints) {
         // TODO need to select users from details table too. Maybe use join sql to achieve.
 
-        LOG.info("ApiDBJdbcUsers::get()");
+        LOG("ApiDBJdbcUsers::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
             .append(table)
@@ -180,13 +180,13 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
             count++;
         }
         final String sql = sb.toString();
-        LOG.info(sql);
+        LOG(sql);
         return CommonJdbc.jdbcTemplate.query(sql, mapper, constraints.values());
     }
 
     @Override
     public List<USER> getAll() {
-        LOG.info("ApiDBJdbcUsers::getAll()");
+        LOG("ApiDBJdbcUsers::getAll()");
         List<USER> users = super.getAll();
         if(users != null && !users.isEmpty()) {
             users.stream().forEach((user) -> {
@@ -194,7 +194,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
                 user.setUserDetails(CommonUserDetails.createFromUserDetails(this.manager.loadUserByUsername(user.getUsername())));
             });
         } else {
-            LOG.info("Error: returned user list is empty or null.");
+            LOG("Error: returned user list is empty or null.");
         }
         return users;
     }
@@ -202,8 +202,8 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     @Override
     public USER add(USER newUser) {
         // debug
-        LOG.info("ApiDBJdbcUsers::add()");
-        LOG.info(newUser.toString());
+        LOG("ApiDBJdbcUsers::add()");
+        LOG(newUser.toString());
 
         // check if user exists
         LogBuilder.logBuilderFromStringArgs("- - - Checking if user '", newUser.getUsername(), "' already exists.").info();
@@ -246,7 +246,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
             ID, !newUser.hasId() ? NO_ID : newUser.getId() // TODO: should check that the id is unique if we getId() here
         );
         sqlBuilder.insert(this.table, columnValues);
-        LOG.info(sqlBuilder.toString());
+        LOG(sqlBuilder.toString());
         super.onInsert(newUser, sqlBuilder.toString());
         // create user in user meta table
         // if(super.add(newUser) == null) {
@@ -257,7 +257,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     }
 
     private USER simpleAddUser(USER newUser) {
-        LOG.info("ApiDBJdbcUsers::simpleAddUser()");
+        LOG("ApiDBJdbcUsers::simpleAddUser()");
         if(newUser == null) {
             LogBuilder.logBuilderFromStringArgs("Given user is null, returning null.").error();
             return null;
@@ -297,7 +297,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
     // @Override
     // public USER update(String username, USER user, String condition) {
-    //     LOG.info("ApiDBJdbcUsers::update()");
+    //     LOG("ApiDBJdbcUsers::update()");
     //     if(this.manager.userExists(user.getUsername())) {
     //         this.manager.updateUser(user.getUserDetails());
 
@@ -311,7 +311,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
     @Override
 	public USER update(String id, USER newUser) {
-        LOG.info("ApiDBJdbcUsers::update()");
+        LOG("ApiDBJdbcUsers::update()");
         USER user = super.getById(id); // get user in db
         if(user == null) { // if user not in db return null
             LogBuilder log = new LogBuilder(true, "Error: Unable to update users with id: ", id, "  returning null...");

@@ -63,7 +63,7 @@ abstract public class AbstractUserController
 
         @Override
         public ResponseEntity<java.util.List<USER>> getAllUsers(@PathVariable("sort") String sort, HttpSession session) {
-            LOG.info("AbstractUserController::getAllUsers()");
+            LOG("AbstractUserController::getAllUsers()");
             // get users from service and store in collection for sorting
             java.util.List<USER> users = null; // user list to return
             if(sort != null) { // determine the sort
@@ -82,29 +82,29 @@ abstract public class AbstractUserController
                 users = AbstractCommonUserCollection.getSortedByUsernameListFromCollection(this.userService.getAll());
             }
             if(users == null) {
-                LOG.info("Error getting users from user service (null).");
+                LOG("Error getting users from user service (null).");
                 return new ResponseEntity<>(java.util.List.of(), HttpStatusCode.valueOf(400));
             }
             if(users.isEmpty()) {
-                LOG.info("Error getting users from user service (empty).");
+                LOG("Error getting users from user service (empty).");
                 return new ResponseEntity<>(java.util.List.of(), HttpStatusCode.valueOf(400));
             }
             ResponseEntity<java.util.List<USER>> responseEntity = new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
-            // LOG.info(responseEntity.getBody().toString());
+            // LOG(responseEntity.getBody().toString());
             return responseEntity;
         }
 
         @Override
         public ResponseEntity<CommonSession> userSubmit(@RequestBody USER newUser, HttpServletRequest request) {
-            LOG.info("AbstractUserController::userSubmit()");
+            LOG("AbstractUserController::userSubmit()");
             HttpSession session = request.getSession();
-            LOG.info("Creating user: " + newUser.toString());
+            LOG("Creating user: " + newUser.toString());
             newUser.setMetaData(EmptyUserMetaData.createEmptyUserMetaData()); // new MetaData adds creation time
             USER user = this.userService.add(newUser);
 
             AbstractUserController.currentUserLogin(user, request);
             if (user == null) {
-                LOG.info("ERROR: User is null.");
+                LOG("ERROR: User is null.");
                 session.setAttribute("status", "error creating user");
                 return ResponseEntity.badRequest().body(new CommonSession(session));
             }
@@ -137,7 +137,7 @@ abstract public class AbstractUserController
 
         @Override
         public ResponseEntity<CommonSession> deleteUser(@RequestBody String user, HttpServletRequest request) {
-            LOG.info("USERRestController POST: /api/delete_user");
+            LOG("USERRestController POST: /api/delete_user");
             HttpSession session = request.getSession();
             if(this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1, user.length() - 1) : user)) { // if user was removed, return session with status delete
                 session.setAttribute("status", "user deleted");
@@ -149,7 +149,7 @@ abstract public class AbstractUserController
 
         @Override
         public ResponseEntity<CommonSession> updateUser(@RequestBody USER user, HttpServletRequest request) {
-            LOG.info("USERRestController POST: /api/update_user");
+            LOG("USERRestController POST: /api/update_user");
             HttpSession session = request.getSession();
             // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1, user.length() - 1) : user);
             LogBuilder log = new LogBuilder(true, "Update this user: ", user.toString());
@@ -172,7 +172,7 @@ abstract public class AbstractUserController
         // TODO this should be secured so user info is not visible
         @Override
         public ResponseEntity<USER> getUserById(@PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id, HttpServletRequest request) {
-            LOG.info("USERRestController::getUserById()");
+            LOG("USERRestController::getUserById()");
             USER user = this.userService.getById(id);
             if(user != null) {
                 LogBuilder log = new LogBuilder(true, "Retrieved user: ", user.toString());
@@ -186,7 +186,7 @@ abstract public class AbstractUserController
 
         @Override
         public ResponseEntity<USER> getCurrentUser(Authentication authentication) {
-            LOG.info("USERRestController::getCurrentUser()");
+            LOG("USERRestController::getCurrentUser()");
             if(authentication != null) {
                 final String username = authentication.getName();
                 final USER user = this.userService.get(username);
@@ -215,7 +215,7 @@ abstract public class AbstractUserController
             USER extends AbstractCommonUser<USER, USER_META>,
             USER_META extends AbstractCommonUserMetaData<USER_META>>
             void currentUserLogin(USER user, HttpServletRequest request) {
-                LOG.info("RumpusController::currentUserLogin()");
+                LOG_THIS("RumpusController::currentUserLogin()");
                 String password = user.getUserPassword();
                 String username = user.getUsername();
                 try {
@@ -226,12 +226,12 @@ abstract public class AbstractUserController
                         .append("  User Password: ")
                         .append(password)
                         .append("\n");
-                    LOG.info(sbLogInfo.toString());
+                    LOG_THIS(sbLogInfo.toString());
                     request.login(username, password);
                 } catch (ServletException exception) {
                     StringBuilder sbLogInfo = new StringBuilder();
                     sbLogInfo.append("\nError with log in request:\n").append("  ").append(exception.toString()).append("\n");
-                    LOG.info(sbLogInfo.toString());
+                    LOG_THIS(sbLogInfo.toString());
                 }
         }
 
@@ -241,7 +241,15 @@ abstract public class AbstractUserController
             sb.append("  User name: ").append(user.getUsername()).append("\n");
             sb.append("  User email: ").append(user.getEmail()).append("\n");
             sb.append("  User password: ").append(user.getPassword()).append("\n");
-            LOG.info(sb.toString());
+            LOG(sb.toString());
             return SUCCESS;
         }
+
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractUserController.class, args);
+    }
+
+    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractUserController.class, level, args);
+    }
 }

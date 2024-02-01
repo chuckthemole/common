@@ -77,7 +77,7 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends 
     }
 
     public boolean equals(Object o) {
-        LOG.info("Model::equals()");
+        LOG("Model::equals()");
         if (o == this) {
             return true;
         } else if (!(o instanceof AbstractModel)) {

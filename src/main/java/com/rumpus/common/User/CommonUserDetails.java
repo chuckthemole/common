@@ -192,7 +192,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
 
     @Override
     public boolean equals(Object o) {
-        LOG.info("CommonUserDetails::equals()");
+        LOG("CommonUserDetails::equals()");
         if (o == this) {
             return true;
         } else if (!(o instanceof CommonUserDetails)) {

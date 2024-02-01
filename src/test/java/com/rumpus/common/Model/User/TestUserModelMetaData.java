@@ -62,14 +62,14 @@ public class TestUserModelMetaData extends AbstractCommonUserMetaData<TestUserMo
 
     // overriding these serializer methods here. right now just using defaults but can customize as commented out below. 2023/6/28
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        LOG.info("TestUserModelMetaData::writeObject()");
+        LOG("TestUserModelMetaData::writeObject()");
         out.defaultWriteObject();
         // out.writeObject(this.getCreationTime());
         // out.writeChars(this.photoLink);
         // out.writeChars(this.aboutMe);
     }
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        LOG.info("TestUserModelMetaData::readObject()");
+        LOG("TestUserModelMetaData::readObject()");
         in.defaultReadObject();
         // try {
         //     this.creationTime = (Instant) stream.readObject();
@@ -143,13 +143,13 @@ public class TestUserModelMetaData extends AbstractCommonUserMetaData<TestUserMo
 
     @Override
     public void serialize(TestUserModelMetaData object, OutputStream outputStream) throws IOException {
-        LOG.info("TestUserModelMetaData::serialize()");
+        LOG("TestUserModelMetaData::serialize()");
         this.getTypeAdapter().write(new JsonWriter(new OutputStreamWriter(outputStream)), object);
     }
 
     @Override
     public Map<String, Object> getMetaAttributesMap() {
-        LOG.info("TestUserModelMetaData::getModelAttributesMap()");
+        LOG("TestUserModelMetaData::getModelAttributesMap()");
         Map<String, Object> modelAttributesMap = Map.of(
             USER_CREATION_DATE_TIME, (String) this.getStandardFormattedCreationTime(),
             USER_PHOTO_LINK, (String) this.getPhotoLink(),
