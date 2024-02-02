@@ -1,4 +1,4 @@
-package com.rumpus.common.Config;
+package com.rumpus.common.Server;
 
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;

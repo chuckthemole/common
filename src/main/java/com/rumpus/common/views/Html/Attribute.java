@@ -1,9 +1,6 @@
 package com.rumpus.common.views.Html;
 
-import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Manager.AbstractCommonManagerIdKey;
-import com.rumpus.common.Manager.ISetItem;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
 
@@ -26,7 +23,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
  * class="myClass"
  * }
  */
-public class Attribute extends AbstractCommonObject implements ISetItem {
+public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     // changed to enum below. may delete these in the future. keeping for now so as not to break anything - chuck
     private static final String NAME = "Attribute";
@@ -75,7 +72,6 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
         }
     }
 
-    private String uniqueId = null;
     /**
      * The property propertyName of the attribute
      */
@@ -522,24 +518,6 @@ public class Attribute extends AbstractCommonObject implements ISetItem {
         }
         Attribute attribute = (Attribute) obj;
         return this.propertyName.equals(attribute.getPropertyName()) && this.value.equals(attribute.getValue());
-    }
-
-    @Override
-    public void setUniqueId(String id) {
-        this.uniqueId = id;
-    }
-
-    @Override
-    public String getUniqueId() {
-        return this.uniqueId;
-    }
-
-    @Override
-    public boolean hasUniqueId() {
-        if(this.uniqueId == null) {
-            return false;
-        }
-        return true;
     }
 
     private static void LOG_THIS(String... args) {

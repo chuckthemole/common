@@ -26,6 +26,7 @@ public abstract class AbstractCommonConfig implements ICommon {
 
     @Autowired protected Environment environment;
     @Autowired protected static ApplicationContext applicationContext;
+    @Autowired protected static com.rumpus.common.Server.Port.PortManager commonPortManager;
 
     // Scopes: https://www.baeldung.com/spring-bean-scopes
     /**
@@ -80,5 +81,11 @@ public abstract class AbstractCommonConfig implements ICommon {
     @Scope(SCOPE_SINGLETON)
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Scope(SCOPE_SINGLETON)
+    public com.rumpus.common.Server.Port.PortManager portManager() {
+        return new com.rumpus.common.Server.Port.PortManager();
     }
 }
