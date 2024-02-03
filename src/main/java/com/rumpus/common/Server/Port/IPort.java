@@ -3,7 +3,8 @@ package com.rumpus.common.Server.Port;
 public interface IPort extends com.rumpus.common.Manager.ISetItem {
 
     public static final String PORT = "PORT";
-    public static final String NO_PORT = "NO_PORT";
+    public static final int PORT_LENGTH = 4;
+    public static final String NO_PORT = "1025";
     public static final String PORT_MIN = "1024";
     public static final String PORT_MAX = "9999";
 

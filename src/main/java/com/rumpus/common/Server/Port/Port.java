@@ -6,7 +6,7 @@ public class Port extends com.rumpus.common.Manager.AbstractSetItem implements I
 
     private String port;
 
-    protected Port(String port) {
+    private Port(String port) {
         super(NAME);
         this.init(port);
     }
@@ -17,6 +17,10 @@ public class Port extends com.rumpus.common.Manager.AbstractSetItem implements I
         } else {
             this.port = IPort.NO_PORT;
         }
+    }
+
+    public static IPort create(String port) {
+        return new Port(port);
     }
 
     @Override
@@ -43,7 +47,10 @@ public class Port extends com.rumpus.common.Manager.AbstractSetItem implements I
         if(port == null) {
             LOG_THIS("Port cannot be null.");
             return false;
-        }else if(port.isBlank() || port.isEmpty()) {
+        } else if(port.equals(IPort.NO_PORT)) {
+            LOG_THIS("Port is empty. No port set.");
+            return true;
+        } else if(port.isBlank() || port.isEmpty()) {
             LOG_THIS("Port cannot be blank or empty.");
             return false;
         } else if(port.length() < 4) {

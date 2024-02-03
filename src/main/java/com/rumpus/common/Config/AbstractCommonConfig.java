@@ -24,6 +24,12 @@ import com.rumpus.common.ICommon;
  */
 public abstract class AbstractCommonConfig implements ICommon {
 
+    protected static final String BEAN_PORT_MANAGER = "portManager";
+    protected static final String BEAN_JDBC_USER_DETAILS_MANAGER = "jdbcUserDetailsManager";
+    protected static final String BEAN_AUTHENTICATION_PROVIDER = "authenticationProvider";
+    protected static final String BEAN_PASSWORD_ENCODER = "passwordEncoder";
+    protected static final String BEAN_DATA_SOURCE = "dataSource";
+
     @Autowired protected Environment environment;
     @Autowired protected static ApplicationContext applicationContext;
     @Autowired protected static com.rumpus.common.Server.Port.PortManager commonPortManager;
@@ -69,7 +75,7 @@ public abstract class AbstractCommonConfig implements ICommon {
     
     @Bean
     @Scope(SCOPE_SINGLETON)
-    @DependsOn("jdbcUserDetailsManager")
+    @DependsOn(AbstractCommonConfig.BEAN_JDBC_USER_DETAILS_MANAGER)
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(jdbcUserDetailsManager());
