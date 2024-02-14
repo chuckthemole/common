@@ -25,6 +25,18 @@ public abstract class AbstractIdSet extends com.rumpus.common.AbstractCommonObje
         }
 
         @Override
+        public String printPretty() {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("IdSet: [");
+            for(String id : this.idSet) {
+                stringBuilder.append(id);
+                stringBuilder.append(", ");
+            }
+            stringBuilder.append("]");
+            return stringBuilder.toString();
+        }
+
+        @Override
         public String add() {
             String id;
             do {
@@ -87,5 +99,13 @@ public abstract class AbstractIdSet extends com.rumpus.common.AbstractCommonObje
             this.idSet.clear();
         }
 
+        @Override
+        public String toString() {
+            return this.printPretty();
+        }
+
+        private static void LOG_THIS(String... args) {
+            com.rumpus.common.ICommon.LOG(AbstractIdSet.class, args);
+        }
     }
 

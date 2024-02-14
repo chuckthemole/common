@@ -7,4 +7,9 @@ public interface IIdSet extends com.rumpus.common.Manager.IManageable, java.util
      * @return randomly generated id
      */
     public String add();
+
+    /**
+     * Prints the set in a pretty format.
+     */
+    public String printPretty();
 }

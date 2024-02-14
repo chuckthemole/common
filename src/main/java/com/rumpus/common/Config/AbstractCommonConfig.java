@@ -31,8 +31,7 @@ public abstract class AbstractCommonConfig implements ICommon {
     protected static final String BEAN_DATA_SOURCE = "dataSource";
 
     @Autowired protected Environment environment;
-    @Autowired protected static ApplicationContext applicationContext;
-    @Autowired protected static com.rumpus.common.Server.Port.PortManager commonPortManager;
+    @Autowired protected ApplicationContext applicationContext;
 
     // Scopes: https://www.baeldung.com/spring-bean-scopes
     /**
@@ -48,6 +47,7 @@ public abstract class AbstractCommonConfig implements ICommon {
 	protected static final String USER = "username";
 	protected static final String DRIVER = "driver";
 	protected static final String PASSWORD = "password";
+    protected static final String PORT = "port";
 
     @Bean
     @Scope(SCOPE_SINGLETON)
@@ -91,7 +91,7 @@ public abstract class AbstractCommonConfig implements ICommon {
 
     @Bean
     @Scope(SCOPE_SINGLETON)
-    public com.rumpus.common.Server.Port.PortManager portManager() {
-        return new com.rumpus.common.Server.Port.PortManager();
+    public com.rumpus.common.Server.Port.IPort applicationPort() {
+        return com.rumpus.common.Server.Port.Port.create(this.environment.getProperty(AbstractCommonConfig.PORT));
     }
 }

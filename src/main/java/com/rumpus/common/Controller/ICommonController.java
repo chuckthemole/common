@@ -21,6 +21,7 @@ public interface ICommonController {
     public static final String PATH_API_USERS = "/api/users";
     public static final String PATH_SERVER_API = "/api/server";
     public static final String PATH_PYCOMMON_API = "/api/pycommon";
+    public static final String PATH_PORTS_API = "/api/ports";
     public static final String PATH_SCRAPER = "/scraper";
     public static final String PATH_VIEW_FOOTER = "/view/footer";
     public static final String PATH_VIEW_USER_TABLE = "/view/user_table";

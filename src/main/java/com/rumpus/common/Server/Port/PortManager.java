@@ -1,17 +1,30 @@
 package com.rumpus.common.Server.Port;
 
+/**
+ * Not really using this. Had an idea for a port manager, but I don't think I need it now. - chuck 2024/2/13/
+ */
 public class PortManager extends com.rumpus.common.util.UniqueId.AbstractIdSet {
 
     private static final String NAME = "PortManager";
-    private static final IPort EMPTY_PORT;
+    private static String adminPort = null;
+    private static PortManager portManager = null;
 
-    static {
-        EMPTY_PORT = Port.create(IPort.NO_PORT);
+    private PortManager() {
+        super(NAME, IPort.PORT_LENGTH);
     }
 
-    public PortManager() {
-        super(NAME, IPort.PORT_LENGTH);
-        LOG("Testing Testing Testing" + String.valueOf(this.add(EMPTY_PORT.getPort())));
+    /**
+     * Gets the port manager.
+     * 
+     * @return the port manager
+     */
+    public static synchronized PortManager getPortManager() {
+        LOG_THIS("Getting port manager.");
+        if(portManager == null) {
+            LOG_THIS("Port manager is null. Creating a new port manager.");
+            portManager = new PortManager();
+        }
+        return portManager;
     }
 
     /**
@@ -64,10 +77,19 @@ public class PortManager extends com.rumpus.common.util.UniqueId.AbstractIdSet {
      * @return true if the port is valid and not already in the manager, false otherwise
      */
     public static boolean verifyPort(PortManager manager, String port) {
-        if(port == null || !Port.verifyPort(port) || port.equals(IPort.NO_PORT)) {
+        if(port == null) {
+            LOG_THIS("Port is null");
+            return false;
+        }
+        if(!Port.verifyPort(port)) {
             LOG_THIS("Port is invalid: ", port);
             return false;
         }
+        if(port.equals(IPort.NO_PORT)) {
+            LOG_THIS("Port is empty: ", port);
+            return false;
+        }
+
         if(manager == null) {
             LOG_THIS("Port manager is null");
             return false;
@@ -80,7 +102,41 @@ public class PortManager extends com.rumpus.common.util.UniqueId.AbstractIdSet {
         return true;
     }
 
+    public static boolean verifyPort(java.util.Set<String> ports, String port) {
+        if(port == null) {
+            LOG_THIS("Port is null");
+            return false;
+        }
+        if(!Port.verifyPort(port)) {
+            LOG_THIS("Port is invalid: ", port);
+            return false;
+        }
+        if(port.equals(IPort.NO_PORT)) {
+            LOG_THIS("Port is empty: ", port);
+            return false;
+        }
+
+        if(ports == null) {
+            LOG_THIS("Port manager is null");
+            return false;
+        }
+        if(ports.contains(port.strip())) {
+            LOG_THIS("Port already exists with port manager: ", port);
+            return false;
+        }
+        LOG_THIS("Port is valid: ", port);
+        return true;
+    }
+
+    public static String getAdminPort() {
+        return PortManager.adminPort;
+    }
+
+    public static void setAdminPort(final String port) {
+        PortManager.adminPort = port;
+    }
+
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(PortManager.class, args);
+        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(PortManager.class, args).info();
     }
 }
