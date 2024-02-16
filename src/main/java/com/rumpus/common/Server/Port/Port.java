@@ -31,6 +31,7 @@ public class Port extends com.rumpus.common.Manager.AbstractSetItem implements I
     @Override
     public void setPort(String port) {
         if(verifyPort(port)) {
+            LOG_THIS("Setting port to ", port);
             this.port = port;
         } else {
             LOG_THIS("Failed to set port: ", port);

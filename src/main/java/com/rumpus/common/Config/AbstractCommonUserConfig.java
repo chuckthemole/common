@@ -2,6 +2,7 @@ package com.rumpus.common.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
 
 import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -17,6 +18,10 @@ abstract public class AbstractCommonUserConfig
 
         public static final String USER_SERVICE = "parentUserService";
         public static final String CHILD_USER_SERVICE = "childUserService";
+
+        public AbstractCommonUserConfig(String name, Environment environment) {
+            super(name, environment);
+        }
 
         @Bean(name = AbstractCommonUserConfig.USER_SERVICE)
         @DependsOn(AbstractCommonUserConfig.CHILD_USER_SERVICE)

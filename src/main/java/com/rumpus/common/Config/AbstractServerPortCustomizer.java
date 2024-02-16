@@ -22,7 +22,8 @@ public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig 
      * Ctor
      * @param port port to set
      */
-    public AbstractServerPortCustomizer(com.rumpus.common.Server.Port.IPort port) {
+    public AbstractServerPortCustomizer(String name, org.springframework.core.env.Environment environment, com.rumpus.common.Server.Port.IPort port) {
+        super(name, environment);
         if(port != null) {
             this.port = port;
         } else {
@@ -35,15 +36,26 @@ public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig 
     public void customize(ConfigurableWebServerFactory factory) {
         LOG_THIS("AbstractServerPortCustomizer::customize()");
         LOG_THIS("Setting port to ", this.port.getPort(), ".");
-        if(this.port != null) {
-            factory.setPort(Integer.valueOf(this.port.getPort()));
-        } else {
+        if(this.port == null) {
             LOG_THIS("Port is null. Not customize setting port.");
+            return;
         }
+        if(this.port.getPort() == null) {
+            LOG_THIS("Port.getPort() null. Not customize setting port.");
+            return;
+        }
+        if(this.port.getPort().equals(com.rumpus.common.Server.Port.IPort.NO_PORT)) {
+            LOG_THIS("Port is NO_PORT. Not customize setting port.");
+        }
+        factory.setPort(Integer.valueOf(this.port.getPort()));
     }
 
     public String getPort() {
         return this.port.getPort();
+    }
+
+    public void setPort(String port) {
+        this.port.setPort(port);
     }
 
     private static void LOG_THIS(String... args) {

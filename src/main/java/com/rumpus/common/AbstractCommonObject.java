@@ -19,6 +19,7 @@ abstract public class AbstractCommonObject implements ICommon {
         return this.name;
     }
 
+    // TODO: think about getting rid of these LOG methods and use the LOG methods in ICommon
     /**
      * Top level AbstractCommonObject LOG method. Uses info level.
      * 
