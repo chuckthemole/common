@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-public class CommonAuthentication implements Authentication {
+abstract public class AbstractCommonAuthentication implements ICommonAuthentication {
 
     private String name;
     private Set<CommonAuthority> authorities;
@@ -15,7 +16,16 @@ public class CommonAuthentication implements Authentication {
     private Map<String, String> details;
     private boolean authenticated;
 
-    public CommonAuthentication(String name, Set<CommonAuthority> authorities, String password, String username, Map<String, String> details, boolean authenticated) {
+    public AbstractCommonAuthentication() {
+        this.name = "";
+        this.authorities = new HashSet<>();
+        this.password = "";
+        this.username = "";
+        this.details = null;
+        this.authenticated = false;
+    }
+
+    public AbstractCommonAuthentication(String name, Set<CommonAuthority> authorities, String password, String username, Map<String, String> details, boolean authenticated) {
         this.name = name;
         this.authorities = authorities;
         this.password = password;
@@ -23,7 +33,7 @@ public class CommonAuthentication implements Authentication {
         this.details = details;
         this.authenticated = authenticated;
     }
-    public CommonAuthentication(Authentication auth) {
+    public AbstractCommonAuthentication(Authentication auth) {
         this.name = auth.getName();
         this.authorities.addAll(getAuthorities(auth));
         this.password = auth.getCredentials().toString();
@@ -70,6 +80,11 @@ public class CommonAuthentication implements Authentication {
         this.authenticated = isAuthenticated;
     }
 
+    @Override
+    public Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
     private Set<CommonAuthority> getAuthorities(Authentication auth) {
         Set<CommonAuthority> authorities = new HashSet<>();
         auth.getAuthorities().stream().forEach(grantedAuth -> {
@@ -77,5 +92,4 @@ public class CommonAuthentication implements Authentication {
         });
         return authorities;
     }
-    
 }

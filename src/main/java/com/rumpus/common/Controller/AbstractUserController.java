@@ -1,5 +1,6 @@
 package com.rumpus.common.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.EmptyUserMetaData;
+import com.rumpus.common.User.ICommonAuthentication;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Template.IUserTemplate;
 
@@ -56,6 +58,7 @@ abstract public class AbstractUserController
     > {
         
         private static final AbstractCommonUserCollection.Sort DEFAULT_SORT = AbstractCommonUserCollection.Sort.USERNAME;
+        @Autowired protected ICommonAuthentication authentication;
 
         public AbstractUserController(String name) {
                 super(name);
@@ -193,6 +196,18 @@ abstract public class AbstractUserController
                 return new ResponseEntity<USER>(user, HttpStatus.ACCEPTED);
             }
             return null;
+        }
+
+        @Override
+        public ResponseEntity<String> currentUsername() {
+            LOG("USERRestController::currentUsername()");
+            final Authentication authentication = this.authentication.getAuthentication();
+            if(authentication != null) {
+                final String username = authentication.getName();
+                return new ResponseEntity<String>(username, HttpStatus.ACCEPTED);
+            }
+
+            return new ResponseEntity<String>("NO_USER_NAME", HttpStatus.NOT_FOUND);
         }
 
         /////////////////////////

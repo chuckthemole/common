@@ -32,6 +32,8 @@ public interface ICommonUserController
         ///////////
         public static final String PATH_USER = "/user";
         public static final String PATH_GET_USERS = "/users";
+        public static final String PATH_GET_CURRENT_USER_NAME = "/username";
+        public static final String PATH_GET_CURRENT_USER = "/current_user";
         public static final String PATH_GET_USERS_BY_SORT = "/users/{sort}";
         public static final String PATH_DELETE_USER = "/delete_user";
         public static final String PATH_UPDATE_USER = "/update_user";
@@ -109,7 +111,15 @@ public interface ICommonUserController
          * @param authentication the {@link Authentication} to use
          * @return the {@link USER} as a {@link ResponseEntity}
          */
-        @GetMapping(value = "current_user")
+        @GetMapping(value = ICommonUserController.PATH_GET_CURRENT_USER)
         public ResponseEntity<USER> getCurrentUser(Authentication authentication);
+
+        /**
+         * Get the current username
+         * 
+         * @return the username as a {@link String}
+         */
+        @GetMapping(value = ICommonUserController.PATH_GET_CURRENT_USER_NAME)
+        public ResponseEntity<String> currentUsername();
     
 }
