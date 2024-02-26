@@ -4,6 +4,11 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
+// including for common test classes. See com.rumpus.common.Test
+dependencies {
+    implementation('org.junit.jupiter:junit-jupiter-api:5.8.1')
+}
+
 // https://stackoverflow.com/questions/56861256/gradle-build-failed-main-class-name-has-not-been-configured-and-it-could-not-be
 bootJar {
     enabled = false
