@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class AbstractViews extends AbstractCommonManager<AbstractTemplate>  {
 
     public static final String CURRENT_USER_TEMPLATE_KEY = "currentUserTemplate";
-    protected final static String DEFAULT_NAVBAR_BRAND = "/images/default_brand.PNG";
+    protected final static String DEFAULT_NAVBAR_BRAND = "/images/default_brand.png";
     
     protected Footer footer;
     protected Header header;

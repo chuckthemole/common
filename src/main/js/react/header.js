@@ -67,6 +67,8 @@ export default function Header({header_path}) {
                         className="navbar-item">
                             <AwsGetResource
                                 resource_key={data.navbarBrand.image}
+                                
+                                // TODO: this path is hardcoded. Should be passed in as a prop or some other way?
                                 aws_properties_path={'/cloud/aws_s3_bucket_properties'}/>
                     </Link>;
             } else {

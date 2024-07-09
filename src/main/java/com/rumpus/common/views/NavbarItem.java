@@ -1,10 +1,7 @@
 package com.rumpus.common.views;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
-
-import com.rumpus.common.Cloud.Aws.AwsS3BucketProperties;
 
 public class NavbarItem extends AbstractView {
 
@@ -74,25 +71,13 @@ public class NavbarItem extends AbstractView {
         return new NavbarItem(name, href, active, dropdown, ItemType.DROPDOWN, null, null);
     }
 
-    public static NavbarItem createWithImage(String name, String href, boolean active, String image) {
-        if(image == null || true) { // using true for now
-            LOG_THIS("Image path is null. Returning null.");
-            // try using a default image if image is null or does not exist
-            try {
-                java.io.File file = org.springframework.util.ResourceUtils.getFile("classpath:images/default_brand.PNG");
-                if(file.exists()) {
-                    LOG_THIS("Default image path exists: ", file.getPath());
-                    return new NavbarItem(name, href, active, null, ItemType.BRAND, null, "resources/images/default_brand.PNG");
-                } else {
-                    LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Default image path does not exist: ", "classpath:images/default_brand.PNG");
-                }
-            } catch (FileNotFoundException e) {
-                LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "File not found exception: ", "classpath:images/default_brand.PNG");
-            }
-            return new NavbarItem(name, href, active, null, ItemType.BRAND, null, null);
-        } else {
-            LOG_THIS("Image path does not exist: ", image);
+    public static NavbarItem createNavbarBrandWithLocalImage(String name, String href, boolean active, String image) {
+        if(image != null && !image.isEmpty()) {
+            LOG_THIS("Setting image path: ", image);
             return new NavbarItem(name, href, active, null, ItemType.BRAND, null, image);
+        } else {
+            LOG_THIS("Image path is null. Placing default navbar brand image path.");
+            return new NavbarItem(name, href, active, null, ItemType.BRAND, null, AbstractViews.DEFAULT_NAVBAR_BRAND);
         }
     }
 
