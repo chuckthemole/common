@@ -1,7 +1,10 @@
 package com.rumpus.common.Controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,6 +57,21 @@ public abstract class AbstractViewController
             AbstractViews viewLoader) {
                 super(name);
                 this.viewLoader = viewLoader;
+        }
+
+        // TODO: commited this but need to work on some more... - chuck
+        // I should probably delete and think about having the header take care of this?
+        @GetMapping("/resources/default_brand")
+        public ResponseEntity<byte[]> getDefaultNavBarBrand(HttpServletRequest request) {
+            org.springframework.core.io.Resource resource = this.resourceLoader.getResource("classpath:images/default_brand.PNG");
+            InputStream in;
+            try {
+                in = resource.getInputStream();
+                return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatusCode.valueOf(200));
+            } catch (IOException e) {
+                LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
+                return new ResponseEntity<byte[]>(new byte[0], HttpStatusCode.valueOf(404));
+            }
         }
 
         /**
