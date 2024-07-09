@@ -2,7 +2,12 @@ package com.rumpus.common.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties;
 import com.rumpus.common.Config.AbstractCommonUserConfig;
 import com.rumpus.common.views.ResourceManager;
 
@@ -22,6 +27,7 @@ public abstract class AbstractCommonController
         @Autowired protected org.springframework.core.env.Environment environment;
         @Autowired @Qualifier(AbstractCommonUserConfig.USER_SERVICE) protected USER_SERVICE userService;
         @Autowired protected USER_TEMPLATE userTemplate;
+        @Autowired protected ResourceLoader resourceLoader;
 
         protected String currentBasePath;
         protected ResourceManager resourceManager;

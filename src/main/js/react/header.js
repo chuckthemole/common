@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import useSWR from 'swr';
 import ReactComponent from './react_component';
 import { common_fetcher } from './common_requests';
+import AwsGetResource from './aws_get_resource';
 
 /**
  * 
@@ -34,7 +35,7 @@ export default function Header({header_path}) {
         console.log('TODO: maybe add animation here... loading header');
     }
 
-    // Navbar items
+    // Navbar items 
     // TODO: think more about active switch for elements
     let navbar_brand = '';
     const missing_navbar_brand = navbar_brand =
@@ -49,13 +50,24 @@ export default function Header({header_path}) {
     if(data !== undefined && data !== null && data !== '') {
 
         // Navbar brand
+        console.log(data.navbarBrand);
         if(data.navbarBrand !== undefined && data.navbarBrand !== null && data.navbarBrand !== '') {
             if(data.navbarBrand.itemType === 'BRAND') {
                 navbar_brand =
                     <Link
                         to={data.navbarBrand.href}
                         className="navbar-item">
+                            {/* TODO: should I have hardcoded dimensions? prolly not */}
                             <img src={data.navbarBrand.image} width="112" height="28" />
+                    </Link>;
+            } else if(data.navbarBrand.itemType === 'AWS_S3_CLOUD_IMAGE') {
+                navbar_brand =
+                    <Link
+                        to={data.navbarBrand.href}
+                        className="navbar-item">
+                            <AwsGetResource
+                                resource_key={data.navbarBrand.image}
+                                aws_properties_path={'/cloud/aws_s3_bucket_properties'}/>
                     </Link>;
             } else {
                 console.log('data.navbarBrand.itemType is undefined');
@@ -147,11 +159,11 @@ export default function Header({header_path}) {
                     }
                 } else if(data.navbarItemsEnd[i].itemType === 'REACT_COMPONENT') {
                     navbar_items_end.push(
-                            <ReactComponent
-                                component_name={data.navbarItemsEnd[i].reactComponent}
-                                key={data.navbarItemsEnd[i].name}
-                                className="navbar-item">
-                            </ReactComponent>
+                        <ReactComponent
+                            component_name={data.navbarItemsEnd[i].reactComponent}
+                            key={data.navbarItemsEnd[i].name}
+                            className="navbar-item">
+                        </ReactComponent>
                     );
                 }
             }

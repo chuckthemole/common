@@ -58,12 +58,20 @@ public abstract class AbstractCommonConfig extends com.rumpus.common.AbstractCom
      */
     protected final String SCOPE_PROTOTYPE = "prototype";
 
-    // TODO: I'm unsure why I have to prefix with 'properties.' here and not with PORT.
+    ////////////////////////////////////////////////////////////////
+    // Properties: list of properties in the properties.yml file. //
+    ////////////////////////////////////////////////////////////////
+    // DataSource properties
     protected static final String URL = "properties.datasource.url";
 	protected static final String USER = "properties.datasource.username";
 	protected static final String DRIVER = "properties.datasource.driver";
 	protected static final String PASSWORD = "properties.datasource.password";
     protected static final String PORT = "port";
+    // Cloud properties
+    public static final String S3_BUCKET_NAME_PROPERTY = "properties.cloud.aws.s3.bucket";
+    public static final String S3_ACCESS_KEY_PROPERTY = "properties.cloud.aws.credentials.access-key";
+    public static final String S3_SECRET_ACCESS_KEY_PROPERTY = "properties.cloud.aws.credentials.secret-key";
+    public static final String S3_REGION_PROPERTY = "properties.cloud.aws.s3.region";
 
     public AbstractCommonConfig(String name, Environment environment) {
         super(name);
@@ -139,6 +147,36 @@ public abstract class AbstractCommonConfig extends com.rumpus.common.AbstractCom
     @Scope(SCOPE_SINGLETON)
     public com.rumpus.common.Server.Port.IPort applicationPort() {
         return com.rumpus.common.Server.Port.Port.create(this.environment.getProperty(AbstractCommonConfig.PORT));
+    }
+
+    // TODO: Should I create a cloud config class? and put this bean in there?
+    @Bean
+    @Scope(SCOPE_SINGLETON)
+    public com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties awsS3Bucket() {
+        LOG_THIS("Creating AwsS3Bucket bean...");
+        final String bucketName = this.environment.getProperty(AbstractCommonConfig.S3_BUCKET_NAME_PROPERTY);
+        final String accessKey = this.environment.getProperty(AbstractCommonConfig.S3_ACCESS_KEY_PROPERTY);
+        final String secretAccessKey = this.environment.getProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY);
+        final String region = this.environment.getProperty(AbstractCommonConfig.S3_REGION_PROPERTY);
+        if(bucketName == null) {
+            LOG_THIS("S3_BUCKET_NAME_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            return null;
+        }
+        if(accessKey == null) {
+            LOG_THIS("S3_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            return null;
+        }
+        if(secretAccessKey == null) {
+            LOG_THIS("S3_SECRET_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            return null;
+        }
+        if(region == null) {
+            LOG_THIS("S3_REGION_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            return null;
+        }
+        com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties awsS3Bucket = com.rumpus.common.Cloud.Aws.AwsS3BucketProperties.create(bucketName, accessKey, secretAccessKey, region);
+        LOG_THIS("Created AwsS3Bucket bean with name: ", awsS3Bucket.getBucketName());
+        return awsS3Bucket;
     }
 
     // TODO: come back to this. Allow for different config types, i.e. yaml, properties, etc.

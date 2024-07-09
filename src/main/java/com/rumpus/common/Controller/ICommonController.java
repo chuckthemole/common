@@ -7,6 +7,7 @@ public interface ICommonController {
 
     // Common paths
     public static final String PATH_VIEW = "/view";
+    public static final String PATH_CLOUD = "/cloud";
     public static final String PATH_REDIRECT = "redirect:/";
     public static final String PATH_LOGOUT = "/logout";
     public static final String PATH_LOGIN = "/login";
