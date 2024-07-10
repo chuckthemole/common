@@ -32,7 +32,7 @@ public class AbstractCloudController
         USER_TEMPLATE
     > implements ICommonCloudController {
 
-        @Autowired protected IAwsS3BucketProperties awsS3BucketProperties;
+        @Autowired private IAwsS3BucketProperties awsS3BucketProperties;
 
         public AbstractCloudController(String name) {
             super(name);
