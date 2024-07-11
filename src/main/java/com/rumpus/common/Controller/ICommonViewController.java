@@ -3,6 +3,7 @@ package com.rumpus.common.Controller;
 public interface ICommonViewController {
     public static final String PATH_FOOTER = "/footer";
     public static final String PATH_HEADER = "/header";
+    public static final String PATH_LANDING_PAGE_BODY = "/landing_page_body";
     public static final String PATH_USER_TABLE = "/user_table";
     public static final String PATH_RESOURCES = "/resources";
     public static final String PATH_RESOURCE_BY_NAME = "/resource/{resource_name}";

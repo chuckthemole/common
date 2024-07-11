@@ -94,6 +94,11 @@ public abstract class AbstractViewController
             return new ResponseEntity<Header>(viewLoader.getHeader(), HttpStatusCode.valueOf(200));
         }
 
+        @GetMapping(ICommonViewController.PATH_LANDING_PAGE_BODY)
+        public ResponseEntity<AbstractHtmlObject> getLandingPageBody(HttpServletRequest request) {
+            return new ResponseEntity<AbstractHtmlObject>(viewLoader.getLandingPageBody(), HttpStatusCode.valueOf(200));
+        }
+
         /**
          * Get the User Table
          * 

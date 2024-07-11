@@ -4,6 +4,7 @@ import com.rumpus.common.Builder.ITableBuilder;
 import com.rumpus.common.Manager.AbstractCommonManager;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.views.Html.AbstractHtmlObject;
 import com.rumpus.common.views.Template.AbstractTemplate;
 import com.rumpus.common.views.Template.AbstractUserTemplate;
 
@@ -22,6 +23,7 @@ public abstract class AbstractViews extends AbstractCommonManager<AbstractTempla
     
     protected Footer footer;
     protected Header header;
+    protected AbstractHtmlObject landingPageBody;
     protected ITableBuilder userTable;
     protected ResourceManager resourceManager;
 
@@ -35,6 +37,7 @@ public abstract class AbstractViews extends AbstractCommonManager<AbstractTempla
         initTemplates();
         initFooter();
         initHeader();
+        initBody();
         initUserTable();
         initResourceManager();
         return SUCCESS;
@@ -50,6 +53,11 @@ public abstract class AbstractViews extends AbstractCommonManager<AbstractTempla
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initHeader();
+    /**
+     * Landing page body
+     * @return SUCCESS if successful, otherwise FAILURE
+     */
+    abstract protected int initBody();
     /**
      * Init user table
      * @return SUCCESS if successful, otherwise FAILURE
@@ -82,6 +90,15 @@ public abstract class AbstractViews extends AbstractCommonManager<AbstractTempla
 
     public int setHeader(Header header) {
         this.header = header;
+        return SUCCESS;
+    }
+
+    public AbstractHtmlObject getLandingPageBody() {
+        return this.landingPageBody;
+    }
+
+    public int setLandingPageBody(AbstractHtmlObject body) {
+        this.landingPageBody = body;
         return SUCCESS;
     }
 
