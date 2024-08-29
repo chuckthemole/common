@@ -15,6 +15,44 @@ import com.rumpus.common.AbstractCommonObject;
  * Wrapper for a collection of Models
  * mainly used to sort collections
  * to use: subclass this and create sortBy method similar to sortById()
+ * 
+ * TODO: use Comparator to sort by different fields, also maybe have default sort by id
+ * Example below:
+ * 
+        public class StudentSortingExample {
+            public static void main(String[] args) {
+                List<Student> students = new ArrayList<>();
+                students.add(new Student("Alice", 90, 20));
+                students.add(new Student("Bob", 85, 22));
+                students.add(new Student("Charlie", 95, 21));
+
+                // Sort by name
+                Comparator<Student> nameComparator = Comparator.comparing(Student::getName);
+
+                // Sort by grade
+                Comparator<Student> gradeComparator = Comparator.comparingInt(Student::getGrade);
+
+                // Sort by age
+                Comparator<Student> ageComparator = Comparator.comparingInt(Student::getAge);
+
+                // Sort by name
+                Collections.sort(students, nameComparator);
+                System.out.println("Sorted by name: " + students);
+
+                // Sort by grade
+                Collections.sort(students, gradeComparator);
+                System.out.println("Sorted by grade: " + students);
+
+                // Sort by age
+                Collections.sort(students, ageComparator);
+                System.out.println("Sorted by age: " + students);
+
+                // Sort by grade, then by name if grades are equal
+                Comparator<Student> gradeThenNameComparator = gradeComparator.thenComparing(nameComparator);
+                Collections.sort(students, gradeThenNameComparator);
+                System.out.println("Sorted by grade, then by name: " + students);
+            }
+        }
  */
 public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL>, COLLECTION extends Collection<MODEL>> extends AbstractCommonObject implements Collection<MODEL> {
 

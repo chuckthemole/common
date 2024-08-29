@@ -12,7 +12,8 @@ import com.google.gson.TypeAdapter;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
-public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends AbstractCommonObject implements Serializable, Serializer<MODEL> {
+public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends AbstractCommonObject
+    implements Serializable, Serializer<MODEL>, Comparable<AbstractModel<MODEL>> {
 
     protected static final String NAME = "Model";
     @Id protected String id;
@@ -93,6 +94,11 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends 
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(AbstractModel<MODEL> model) {
+        return this.id.compareTo(model.id);
     }
 
     protected boolean idIsEqual(AbstractModel<MODEL> model) {
