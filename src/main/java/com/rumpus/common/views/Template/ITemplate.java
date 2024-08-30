@@ -2,6 +2,9 @@ package com.rumpus.common.views.Template;
 
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
+/**
+ * TODO: comment more on these classes to tell what they do.
+ */
 public interface ITemplate {
     /**
      * This method is used to set the components of the template.

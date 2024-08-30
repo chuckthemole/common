@@ -16,6 +16,7 @@ public class AbstractCloudController
         /////////////////////////
         // Define generics here//
         /////////////////////////
+        SERVICES extends com.rumpus.common.Manager.AbstractServiceManager<?>,
         USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
@@ -26,6 +27,7 @@ public class AbstractCloudController
         /////////////////////////
         // Define generics here//
         /////////////////////////
+        SERVICES,
         USER,
         USER_META,
         USER_SERVICE,

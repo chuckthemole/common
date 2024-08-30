@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -72,6 +75,9 @@ public abstract class AbstractCommonConfig extends com.rumpus.common.AbstractCom
     public static final String S3_ACCESS_KEY_PROPERTY = "properties.cloud.aws.credentials.access-key";
     public static final String S3_SECRET_ACCESS_KEY_PROPERTY = "properties.cloud.aws.credentials.secret-key";
     public static final String S3_REGION_PROPERTY = "properties.cloud.aws.s3.region";
+    // Redis properties
+    protected static final String REDIS_HOST = "properties.redis.host";
+    protected static final String REDIS_PORT = "properties.redis.port";
 
     public AbstractCommonConfig(String name, Environment environment) {
         super(name);
@@ -126,6 +132,27 @@ public abstract class AbstractCommonConfig extends com.rumpus.common.AbstractCom
         // manager.manager().setUsersByUsernameQuery(SET_USERS_QUERY);
 		// return manager.manager();
 	}
+
+    @Bean
+    JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory jedisConFactory = new JedisConnectionFactory();
+        RedisStandaloneConfiguration redisStandaloneConfiguration = jedisConFactory.getStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(
+            this.environment.getProperty(AbstractCommonConfig.REDIS_HOST)
+        );
+        redisStandaloneConfiguration.setPort(Integer.parseInt(
+            this.environment.getProperty(AbstractCommonConfig.REDIS_PORT)
+        ));
+        return jedisConFactory;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(jedisConnectionFactory());
+        return template;
+    }
+
     
     @Bean
     @Scope(SCOPE_SINGLETON)

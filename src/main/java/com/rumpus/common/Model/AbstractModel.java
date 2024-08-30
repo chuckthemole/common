@@ -1,7 +1,9 @@
 package com.rumpus.common.Model;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import org.springframework.core.serializer.Serializer;
 import org.springframework.data.annotation.Id;
@@ -9,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
@@ -41,7 +44,7 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends 
      *   return modelAttributesMap;
      * }
      */
-    abstract public Map<String, Object> getModelAttributesMap();
+    abstract public java.util.Map<String, Object> getModelAttributesMap();
 
     public String getId() {
         return this.id;
@@ -94,6 +97,12 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends 
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void serialize(MODEL object, OutputStream outputStream) throws IOException {
+        LOG("AbstractModel::serialize()");
+        this.getTypeAdapter().write(new JsonWriter(new OutputStreamWriter(outputStream)), object);
     }
 
     @Override
