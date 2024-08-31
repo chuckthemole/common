@@ -3,10 +3,11 @@ package com.rumpus.common.Dao;
 import java.util.List;
 import java.util.Map;
 
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.jdbc.Mapper;
 import com.rumpus.common.Model.AbstractModel;
 
-public interface IDao<MODEL extends AbstractModel<MODEL>> {
+public interface IDao<MODEL extends AbstractModel<MODEL>> extends ICommon {
     MODEL get(String name);
     /**
      * 
@@ -38,4 +39,23 @@ public interface IDao<MODEL extends AbstractModel<MODEL>> {
     // long countAll(Map<String, Object> params);
     
     // Function<MODEL, MODEL> getAddFunction();
+
+    /**
+     * Creates a set that keeps track of ids for the given name
+     * this has a default length for ids, managed by UniqueIdManager
+     * 
+     * @param name the name of the set to register
+     */
+    public static void registerIdSet(final String name) {
+        AbstractDao.idManager.createUniqueIdSetWithDefaultLength(name);
+    }
+    /**
+     * Creates a set that keeps track of ids for the given name
+     * 
+     * @param name the name of the set to register
+     * @param length the length of the ids in this set
+     */
+    public static void registerIdSet(final String name, final int length) {
+        AbstractDao.idManager.createUniqueIdSetWithSetLength(name, length);
+    }
 }

@@ -71,6 +71,8 @@ abstract public class AbstractUserController
             LOG("AbstractUserController::getAllUsers()");
             // get users from service and store in collection for sorting
             java.util.List<USER> users = null; // user list to return
+
+            /// TODO: this sort can be replaced with some sort of Comparable interface
             if(sort != null) { // determine the sort
                 if(sort.equals(AbstractCommonUserCollection.Sort.USERNAME.getSort())) {
                     users = AbstractCommonUserCollection.getSortedByUsernameListFromCollection(this.userService.getAll());
