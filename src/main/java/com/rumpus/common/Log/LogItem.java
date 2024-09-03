@@ -17,6 +17,7 @@ public class LogItem extends AbstractModel<LogItem> {
     private String action;
 
     private LogItem(String logName, String time, String username, String userId, String action) {
+        super("LogItem");
         this.logName = logName;
         this.time = time;
         this.username = username;
