@@ -127,10 +127,6 @@ public abstract class AbstractCommonConfig extends com.rumpus.common.AbstractCom
 
 		jdbcUserDetailsManager.setDataSource(dataSource());
         return jdbcUserDetailsManager;
-
-        // CommonJdbcUserManager manager = new CommonJdbcUserManager(dataSource);
-        // manager.manager().setUsersByUsernameQuery(SET_USERS_QUERY);
-		// return manager.manager();
 	}
 
     @Bean
