@@ -72,26 +72,26 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
     }
 
     // factory static methods
-    public static CommonUserDetails createEmptyUserDetails() {
+    protected static CommonUserDetails createEmptyUserDetails() {
         return new CommonUserDetails();
     }
-    public static CommonUserDetails createFromUserDetails(UserDetails details) {
+    protected static CommonUserDetails createFromUserDetails(UserDetails details) {
         return new CommonUserDetails(details);
     }
-    public static CommonUserDetails createFromUsernamePassword(
+    protected static CommonUserDetails createFromUsernamePassword(
         String username,
         String password,
         boolean isEnabled) {
             return new CommonUserDetails(username, password, isEnabled, null, false, false, false);
     }
-    public static CommonUserDetails createFromUsernamePasswordAuthority(
+    protected static CommonUserDetails createFromUsernamePasswordAuthority(
         String username,
         String password,
         Set<GrantedAuthority> authorities,
         boolean isEnabled) {
             return new CommonUserDetails(username, password, isEnabled, authorities, false, false, false);
     }
-    public static CommonUserDetails createWithAll(
+    protected static CommonUserDetails createWithAll(
         String username,
         String password,
         boolean isEnabled,
