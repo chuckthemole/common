@@ -14,6 +14,7 @@ public abstract class AbstractCommonUserCollection
     > extends AbstractModelsCollection<USER, COLLECTION> {
 
         /**
+         * // TODO: look here: org.springframework.data.domain.Sort
          * Sort options for users
          */
         public enum Sort  {
