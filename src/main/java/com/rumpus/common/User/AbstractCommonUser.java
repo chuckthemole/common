@@ -2,6 +2,7 @@ package com.rumpus.common.User;
 
 import java.util.Map;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -54,6 +55,9 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_
     }
     public void setUserDetails(CommonUserDetails userDetails) {
         this.userDetails = userDetails;
+    }
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = CommonUserDetails.createFromUserDetails(userDetails);
     }
     public String getUsername() {
         return this.userDetails.getUsername();

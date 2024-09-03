@@ -121,8 +121,8 @@ public class ApiDBJdbcUsers
             return user;
         }
         // CommonUserDetails details = new CommonUserDetails(this.manager.loadUserByUsername(name));
-        UserDetails details = this.manager.loadUserByUsername(name);
-        user.setUserDetails(CommonUserDetails.createFromUserDetails(details));
+        final UserDetails details = this.manager.loadUserByUsername(name);
+        user.setUserDetails(details);
         return user;
     }
 
@@ -195,7 +195,8 @@ public class ApiDBJdbcUsers
         if(users != null && !users.isEmpty()) {
             users.stream().forEach((user) -> {
                 // CommonUserDetails details = new CommonUserDetails(this.manager.loadUserByUsername(user.getUsername()));
-                user.setUserDetails(CommonUserDetails.createFromUserDetails(this.manager.loadUserByUsername(user.getUsername())));
+                final UserDetails details = this.manager.loadUserByUsername(user.getUsername());
+                user.setUserDetails(details);
             });
         } else {
             LOG("Error: returned user list is empty or null.");
