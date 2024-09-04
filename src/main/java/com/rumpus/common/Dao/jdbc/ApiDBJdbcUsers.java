@@ -16,7 +16,6 @@ import com.rumpus.common.Blob.JdbcBlob;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractDao;
-import com.rumpus.common.Dao.AbstractUserDao;
 import com.rumpus.common.Dao.IUserDao;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -218,7 +217,7 @@ public class ApiDBJdbcUsers
 
     @Override
     public USER getByUsername(String username) {
-        LOG_THIS("AbstractUserDao::getByUsername(username)");
+        LOG_THIS("getByUsername(username)");
         final List <USER> users = this.getByColumnValue(ICommon.USERNAME, username);
         if (users.size() == 1) {
             USER user = users.get(0);
