@@ -3,7 +3,9 @@ package com.rumpus.common.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.IUserDao;
+import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
@@ -14,7 +16,7 @@ abstract public class AbstractUserService
     >
     extends AbstractService<USER> implements IUserService<USER, USER_META> {
 
-        private IUserDao<USER, USER_META> userDao;
+        protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
 
         public AbstractUserService(String name, IUserDao<USER, USER_META> userDao) {
             super(name, userDao);
@@ -40,10 +42,10 @@ abstract public class AbstractUserService
         }
 
         private static void LOG_THIS(String... args) {
-            com.rumpus.common.ICommon.LOG(AbstractUserService.class, args);
+            ICommon.LOG(AbstractUserService.class, args);
         }
 
-        private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-            com.rumpus.common.ICommon.LOG(AbstractUserService.class, level, args);
+        private static void LOG_THIS(LogLevel level, String... args) {
+            ICommon.LOG(AbstractUserService.class, level, args);
         }
 }

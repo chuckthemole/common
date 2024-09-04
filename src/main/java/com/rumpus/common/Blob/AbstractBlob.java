@@ -1,6 +1,8 @@
 package com.rumpus.common.Blob;
 
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractMetaData;
 
 import java.io.ByteArrayOutputStream;
@@ -170,10 +172,10 @@ public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends com
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractBlob.class, args);
+        ICommon.LOG(AbstractBlob.class, args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractBlob.class, level, args);
+    private static void LOG_THIS(LogLevel level, String... args) {
+        ICommon.LOG(AbstractBlob.class, level, args);
     }
 }

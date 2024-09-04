@@ -3,6 +3,8 @@ package com.rumpus.common.Service;
 import com.rumpus.common.Manager.IManageable;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.rumpus.common.Model.AbstractModel;
 
 /**
@@ -44,6 +46,7 @@ public interface IService<MODEL extends AbstractModel<MODEL>> extends IManageabl
      * @param rumpusModel MODEL to add
      * @return MODEL if added, null if not
      */
+    @Transactional(rollbackFor = Exception.class)
     public MODEL add(MODEL rumpusModel);
 
     /**
@@ -52,15 +55,8 @@ public interface IService<MODEL extends AbstractModel<MODEL>> extends IManageabl
      * @param id MODEL id to remove
      * @return true if removed, false if not
      */
-    public boolean remove(int id);
-
-    /**
-     * Remove a MODEL using this service
-     * 
-     * @param name MODEL name to remove
-     * @return true if removed, false if not
-     */
-    public boolean remove(String name);
+    @Transactional(rollbackFor = Exception.class)
+    public boolean remove(String id);
 
     /**
      * Update a MODEL using this service
@@ -69,5 +65,6 @@ public interface IService<MODEL extends AbstractModel<MODEL>> extends IManageabl
      * @param updatedModel MODEL to update with
      * @return MODEL if updated, null if not
      */
+    @Transactional(rollbackFor = Exception.class)
     public MODEL update(String id, MODEL updatedModel);
 }

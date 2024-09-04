@@ -3,12 +3,14 @@ package com.rumpus.common.Service;
 import java.util.List;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.IDao;
+import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
 abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL> {
 
-    protected IDao<MODEL> dao;
+    protected IDao<MODEL> dao; // TODO: should this be private?
 
     public AbstractService(String name, IDao<MODEL> dao) {
         super(name);
@@ -17,7 +19,7 @@ abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extend
 
     @Override
     public MODEL getById(String id) {
-        LOG("Service::getById(id)");
+        LOG_THIS("getById(id)");
         return this.dao.getById(id);
     }
 
@@ -28,31 +30,33 @@ abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extend
 
     @Override
     public List<MODEL> getAll() {
-        LOG("Service::getAll()");
+        LOG_THIS("getAll()");
         return this.dao.getAll();
     }
 
     @Override
     public MODEL add(MODEL rumpusModel) {
-        LOG("Service::add()");
+        LOG_THIS("add()");
         return this.dao.add(rumpusModel);
     }
 
     @Override
-    public boolean remove(int id) {
-        LOG("Service::remove(id)");
+    public boolean remove(String id) {
+        LOG_THIS("remove(id)");
         return this.dao.remove(id);
     }
 
     @Override
-    public boolean remove(String name) {
-        LOG("Service::remove(name)");
-        return this.dao.remove(name);
+    public MODEL update(String id, MODEL updatedModel) {
+        LOG_THIS("update()");
+        return this.dao.update(id, updatedModel);
     }
 
-    @Override
-    public MODEL update(String id, MODEL updatedModel) {
-        LOG("Service::update()");
-        return this.dao.update(id, updatedModel);
+    private static void LOG_THIS(String... args) {
+        ICommon.LOG(AbstractService.class, args);
+    }
+
+    private static void LOG_THIS(LogLevel level, String... args) {
+        ICommon.LOG(AbstractService.class, level, args);
     }
 }

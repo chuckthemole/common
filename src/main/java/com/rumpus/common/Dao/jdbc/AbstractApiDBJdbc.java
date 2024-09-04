@@ -32,19 +32,19 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
     }
 
-    @Override
-    public boolean remove(int id) {
-        LOG("ApiDBJdbc::remove()");
-        // TODO: Check dependencies to delete
-        StringBuilder sb = new StringBuilder();
-        sb.append("DELETE FROM ")
-            .append(table)
-            .append(" WHERE ")
-            .append(id)
-            .append(" = ?;");
-        final String sql = sb.toString();
-        return CommonJdbc.jdbcTemplate.update(sql, id) > 0;
-    }
+    // @Override
+    // public boolean remove(int id) {
+    //     LOG("ApiDBJdbc::remove()");
+    //     // TODO: Check dependencies to delete
+    //     StringBuilder sb = new StringBuilder();
+    //     sb.append("DELETE FROM ")
+    //         .append(table)
+    //         .append(" WHERE ")
+    //         .append(id)
+    //         .append(" = ?;");
+    //     final String sql = sb.toString();
+    //     return CommonJdbc.jdbcTemplate.update(sql, id) > 0;
+    // }
 
     @Override
     public boolean remove(String name) {
@@ -57,42 +57,42 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         return CommonJdbc.jdbcTemplate.update(sql) > 0;
     }
 
-    @Override
-    public MODEL get(int id) {
-        LOG("ApiDBJdbc::get()");
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT * FROM ")
-            .append(table)
-            .append(" WHERE ")
-            .append(id)
-            .append(" = ?;");
-        final String sql = sb.toString();
-        LOG(sql);
-        return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
-    }
+    // @Override
+    // public MODEL get(int id) {
+    //     LOG("ApiDBJdbc::get()");
+    //     StringBuilder sb = new StringBuilder();
+    //     sb.append("SELECT * FROM ")
+    //         .append(table)
+    //         .append(" WHERE ")
+    //         .append(id)
+    //         .append(" = ?;");
+    //     final String sql = sb.toString();
+    //     LOG(sql);
+    //     return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
+    // }
 
     // TODO this is working for user. Need to abstract 'username' for other objects. Maybe add parameter of constraint.
-    @Override
-    public MODEL get(String name) {
-        LOG("ApiDBJdbc::get()");
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT * FROM ")
-            .append(table)
-            .append(" WHERE ");
-        // if(StringUtil.isQuoted(name)) {
-        //     sb.append(name);
-        // } else {
-        //     sb.append("\"").append(name).append("\"");
-        // }
-        sb.append("username");
-        sb.append(" = ?;");
-        final String sql = sb.toString();
-        LOG(sql);
-        return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, name);
-    }
+    // @Override
+    // public MODEL get(String name) {
+    //     LOG("ApiDBJdbc::get()");
+    //     StringBuilder sb = new StringBuilder();
+    //     sb.append("SELECT * FROM ")
+    //         .append(table)
+    //         .append(" WHERE ");
+    //     // if(StringUtil.isQuoted(name)) {
+    //     //     sb.append(name);
+    //     // } else {
+    //     //     sb.append("\"").append(name).append("\"");
+    //     // }
+    //     sb.append("username");
+    //     sb.append(" = ?;");
+    //     final String sql = sb.toString();
+    //     LOG(sql);
+    //     return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, name);
+    // }
 
     @Override
-    public List<MODEL> get(Map<String, String> constraints) {
+    public List<MODEL> getByConstraints(Map<String, String> constraints) {
         LOG("ApiDBJdbc::get()");
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")

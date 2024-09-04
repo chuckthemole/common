@@ -5,15 +5,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.rumpus.common.Dao.IDao;
-import com.rumpus.common.Model.AbstractModel;
-import com.rumpus.common.Service.AbstractService;
+import com.rumpus.common.Dao.IUserDao;
+import com.rumpus.common.Service.AbstractUserService;
 
-abstract public class AbstractCommonAuthManager<MODEL extends AbstractModel<MODEL>> extends AbstractService<MODEL> implements AuthenticationManager, UserDetailsService {
+abstract public class AbstractCommonAuthManager
+<
+    USER extends AbstractCommonUser<USER, USER_META>,
+    USER_META extends AbstractCommonUserMetaData<USER_META>
+> extends AbstractUserService<USER, USER_META> implements AuthenticationManager {
 
-    public AbstractCommonAuthManager(String name, IDao<MODEL> dao) {
+    public AbstractCommonAuthManager(String name, IUserDao<USER, USER_META> dao) {
         super(name, dao);
     }
 
