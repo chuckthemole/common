@@ -1,6 +1,5 @@
 package com.rumpus.common.Dao;
 
-import java.util.List;
 import java.util.Map;
 
 import com.rumpus.common.Model.AbstractModel;
@@ -25,13 +24,13 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>>
     }
 
     // TODO: see if i'm using this?
-    public AbstractDao(String name, AbstractDao<MODEL> dao) {
-        super(name);
-        this.table = dao.table;
-        this.metaTable = dao.metaTable;
-        this.mapper = dao.mapper;
-        this.initialized = dao.initialized;
-    }
+    // public AbstractDao(String name, AbstractDao<MODEL> dao) {
+    //     super(name);
+    //     this.table = dao.table;
+    //     this.metaTable = dao.metaTable;
+    //     this.mapper = dao.mapper;
+    //     this.initialized = dao.initialized;
+    // }
 
     public AbstractDao(String name, String table, String metaTable, Mapper<MODEL> mapper) {
         super(name);
@@ -41,20 +40,6 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>>
         this.initialized = true;
         this.metaTable = metaTable;
     }
-
-    // abstract public boolean remove(int id);
-    // abstract public boolean remove(String name);
-    // abstract public boolean removeAll();
-    // abstract public MODEL get(int id);
-    // abstract public MODEL get(String name);
-    // abstract public List<MODEL> get(Map<String, String> constraints);
-    // abstract public MODEL getById(String id);
-    // abstract public List<MODEL> getAll();
-    // abstract public MODEL add(MODEL model);
-    // abstract public MODEL update(String id, MODEL updatedModel);
-    // abstract public long countAll(Map<String, Object> params);
-    // abstract public Mapper<MODEL> getMapper();
-    // abstract public int setApiDB(AbstractApiDB<MODEL> dao);
 
     public String getTable() {
         return this.table;

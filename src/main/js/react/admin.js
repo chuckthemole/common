@@ -11,6 +11,12 @@ export default function Admin() {
     const user_authorities = getCurrentUserAuthorities({get_user_auth_path: full_path_to_current_user_info}); // the current user info
     const is_user_authenticated = isCurrentUserAuthenticated(); // is the current user authenticated
 
+    // Leaving for debugging purposes
+    // console.log('User is authenticated: ' + is_user_authenticated.isAuthenticated);
+    // console.log('User authorities: ' + user_authorities);
+    // console.log('Base path: ' + base_path.BASE_PATH);
+    // console.log('full path to current user info: ' + full_path_to_current_user_info);
+
     if(base_path.BASE_PATH_CHILD_LIST !== undefined) {
         const base_path_child_list = base_path.BASE_PATH_CHILD_LIST;
         if(base_path_child_list.common_paths !== undefined && base_path_child_list.common_paths.CurrentUserInfo !== undefined) {

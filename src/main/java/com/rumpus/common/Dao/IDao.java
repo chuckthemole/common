@@ -16,6 +16,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL>> extends ICommon {
      */
     MODEL getById(String id);
     MODEL get(int id);
+    List<MODEL> getByColumnValue(String column, String value);
     List<MODEL> get(Map<String, String> constraints);
     List<MODEL> getAll();
     MODEL add(MODEL model); // maybe call create

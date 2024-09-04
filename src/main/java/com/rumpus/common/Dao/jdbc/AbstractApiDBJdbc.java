@@ -115,6 +115,20 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     }
 
     @Override
+    public List<MODEL> getByColumnValue(String column, String value) {
+        LOG("ApiDBJdbc::getByColumnValue()");
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * FROM ")
+            .append(table)
+            .append(" WHERE ")
+            .append(column)
+            .append(" = ?;");
+        final String sql = sb.toString();
+        LOG(sql);
+        return CommonJdbc.jdbcTemplate.query(sql, mapper, value);
+    }
+
+    @Override
     public MODEL getById(String id) {
         SQLBuilder sql = new SQLBuilder();
         sql.selectById(this.table, id);

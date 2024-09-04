@@ -16,21 +16,14 @@ abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extend
     }
 
     @Override
-    public MODEL get(int id) {
-        LOG("Service::get(id)");
-        return this.dao.get(id);
-    }
-
-    @Override
-    public MODEL get(String name) {
-        LOG("Service::get(name)");
-        return this.dao.get(name);
-    }
-
-    @Override
     public MODEL getById(String id) {
         LOG("Service::getById(id)");
         return this.dao.getById(id);
+    }
+
+    @Override
+    public List<MODEL> getByColumnValue(String column, String value) {
+        return this.dao.getByColumnValue(column, value);
     }
 
     @Override

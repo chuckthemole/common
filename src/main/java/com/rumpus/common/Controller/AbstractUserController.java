@@ -73,6 +73,7 @@ abstract public class AbstractUserController
             java.util.List<USER> users = null; // user list to return
 
             /// TODO: this sort can be replaced with some sort of Comparable interface
+            // Look at org.springframework.data.domain.Sort
             if(sort != null) { // determine the sort
                 if(sort.equals(AbstractCommonUserCollection.Sort.USERNAME.getSort())) {
                     users = AbstractCommonUserCollection.getSortedByUsernameListFromCollection(this.userService.getAll());
@@ -173,7 +174,7 @@ abstract public class AbstractUserController
         // TODO this should be secured so user info is not visible
         @Override
         public ResponseEntity<USER> getUserByUsername(@PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username, HttpServletRequest request) {
-            return new ResponseEntity<USER>(this.userService.get(username), HttpStatus.ACCEPTED);
+            return new ResponseEntity<USER>(this.userService.getByUsername(username), HttpStatus.ACCEPTED);
         }
 
         // TODO this should be secured so user info is not visible
@@ -196,9 +197,10 @@ abstract public class AbstractUserController
             LOG("USERRestController::getCurrentUser()");
             if(authentication != null) {
                 final String username = authentication.getName();
-                final USER user = this.userService.get(username);
+                final USER user = this.userService.getByUsername(username);
                 return new ResponseEntity<USER>(user, HttpStatus.ACCEPTED);
             }
+            LOG_THIS("No user found in authentication.");
             return null;
         }
 
@@ -264,11 +266,11 @@ abstract public class AbstractUserController
             return SUCCESS;
         }
 
-    private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractUserController.class, args);
-    }
+        private static void LOG_THIS(String... args) {
+            com.rumpus.common.ICommon.LOG(AbstractUserController.class, args);
+        }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractUserController.class, level, args);
-    }
+        private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+            com.rumpus.common.ICommon.LOG(AbstractUserController.class, level, args);
+        }
 }

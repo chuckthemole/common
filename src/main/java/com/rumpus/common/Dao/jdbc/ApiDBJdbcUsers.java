@@ -10,13 +10,16 @@ import java.util.Set;
 
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Blob.AbstractBlob;
 import com.rumpus.common.Blob.JdbcBlob;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractDao;
+import com.rumpus.common.Dao.AbstractUserDao;
+import com.rumpus.common.Dao.IUserDao;
+import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
-import com.rumpus.common.User.CommonUserDetails;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,7 +34,7 @@ public class ApiDBJdbcUsers
 <
     USER extends AbstractCommonUser<USER, META>,
     META extends AbstractCommonUserMetaData<META>
-> extends AbstractApiDBJdbc<USER> {
+> extends AbstractApiDBJdbc<USER> implements IUserDao<USER, META> {
 
     public static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
     private static final String UPDATE_USERS_TABLE = "update users set username = ?, password = ?, enabled = ? where username = ?";
@@ -70,6 +73,10 @@ public class ApiDBJdbcUsers
         }
         // this.authenticationManager = new AbstractCommonAuthManager();
         this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
+    }
+
+    public UserDetails getUserDetails(String username) {
+        return this.manager.loadUserByUsername(username);
     }
 
     @Override
@@ -186,6 +193,45 @@ public class ApiDBJdbcUsers
         final String sql = sb.toString();
         LOG(sql);
         return CommonJdbc.jdbcTemplate.query(sql, mapper, constraints.values());
+    }
+
+    @Override
+    public List<USER> getByColumnValue(String column, String value) {
+        LOG("ApiDBJdbc::getByColumnValue()");
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * FROM ")
+            .append(table)
+            .append(" WHERE ")
+            .append(column)
+            .append(" = ?;");
+        final String sql = sb.toString();
+        LOG(sql);
+
+        return CommonJdbc.jdbcTemplate.query(sql, mapper, value);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        LOG_THIS("loadUserByUsername(username)");
+        return this.manager.loadUserByUsername(username);
+    }
+
+    @Override
+    public USER getByUsername(String username) {
+        LOG_THIS("AbstractUserDao::getByUsername(username)");
+        final List <USER> users = this.getByColumnValue(ICommon.USERNAME, username);
+        if (users.size() == 1) {
+            USER user = users.get(0);
+            UserDetails details = this.loadUserByUsername(username);
+            user.setUserDetails(details);
+            return user;
+        } else if (users.size() == 0) {
+            LOG_THIS("No user found with username: " + username);
+            return null;
+        } else {
+            LOG_THIS("More than one user found with username: " + username);
+            return null;
+        }
     }
 
     @Override
@@ -421,5 +467,13 @@ public class ApiDBJdbcUsers
             this.manager.setInsertGroupAuthoritySql(JdbcUserDetailsManager.DEF_INSERT_GROUP_AUTHORITY_SQL);
             this.manager.setDeleteUserAuthoritiesSql(JdbcUserDetailsManager.DEF_DELETE_USER_AUTHORITIES_SQL);
             this.manager.setDeleteGroupAuthoritiesSql(JdbcUserDetailsManager.DEF_DELETE_GROUP_AUTHORITIES_SQL);
+    }
+
+    private static void LOG_THIS(String... args) {
+        ICommon.LOG(ApiDBJdbcUsers.class, args);
+    }
+
+    private static void LOG_THIS(LogLevel level, String... args) {
+        ICommon.LOG(ApiDBJdbcUsers.class, level, args);
     }
 }

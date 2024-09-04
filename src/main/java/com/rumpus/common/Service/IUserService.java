@@ -13,5 +13,18 @@ public interface IUserService
         META extends AbstractCommonUserMetaData<META>
     > extends IService<USER>, UserDetailsService {
         
+        /**
+         * Get a user by their username.
+         * 
+         * @param username The username of the user to get.
+         * @return The user with the given username. If no user is found, return null. If more than one user is found, return null.
+         */
+        public USER getByUsername(String username);
+
+        /**
+         * Get the key for this service.
+         * TODO: look into this more. Am I using this??
+         * @return
+         */
         public String getKey();
 }
