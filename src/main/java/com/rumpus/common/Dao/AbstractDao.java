@@ -10,8 +10,7 @@ import com.rumpus.common.Dao.jdbc.Mapper;
 /**
  * Abstract Data Access Object (Dao)
  */
-public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>>
-    extends AbstractCommonObject implements IDao<MODEL> {
+public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IDao<MODEL> {
 
     protected boolean initialized;
     protected String table;
@@ -23,22 +22,17 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>>
         AbstractDao.idManager = ModelUniqueIdManager.getSingletonInstance();
     }
 
-    // TODO: see if i'm using this?
-    // public AbstractDao(String name, AbstractDao<MODEL> dao) {
-    //     super(name);
-    //     this.table = dao.table;
-    //     this.metaTable = dao.metaTable;
-    //     this.mapper = dao.mapper;
-    //     this.initialized = dao.initialized;
-    // }
-
-    public AbstractDao(String name, String table, String metaTable, Mapper<MODEL> mapper) {
-        super(name);
-        this.table = table;
-        this.metaTable = metaTable;
-        this.mapper = mapper;
-        this.initialized = true;
-        this.metaTable = metaTable;
+    public AbstractDao(
+        String name,
+        String table,
+        String metaTable,
+        Mapper<MODEL> mapper) {
+            super(name);
+            this.table = table;
+            this.metaTable = metaTable;
+            this.mapper = mapper;
+            this.initialized = true;
+            this.metaTable = metaTable;
     }
 
     public String getTable() {

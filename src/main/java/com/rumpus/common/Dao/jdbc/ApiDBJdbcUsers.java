@@ -78,18 +78,6 @@ public class ApiDBJdbcUsers
         return this.manager.loadUserByUsername(username);
     }
 
-    // @Override
-    // public boolean remove(int id) {
-    //     LOG("ApiDBJdbcUsers::remove()");
-    //     // USER user = super.get(id); TODO: need an sql get user name here get user name for below.
-    //     this.manager.deleteUser(name); // look at TODO above
-    //     if(!super.remove(id)) {
-    //         LOG.error("ERROR: ApiDBJdbc.remove() could not remove.");
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
     // May not need the super operation if we use ON DELETE CASCADE
     @Override
     public boolean remove(String name) {
@@ -102,97 +90,6 @@ public class ApiDBJdbcUsers
         return true;
     }
 
-    // @Override
-    // public USER get(int id) {
-    //     LOG("ApiDBJdbcUsers::get()");
-    //     USER user = super.get(id);
-    //     // if(user == null) {
-    //     //     LOG.error("ERROR: ApiDBJdbc.get() could not get.");
-    //     //     return null;
-    //     // }
-    //     // TODO implement get user by id for this.manager
-    //     return user;
-    // }
-
-    // @Override
-    // public USER get(String name) {
-    //     LOG("ApiDBJdbcUsers::get()");
-    //     SQLBuilder sql = new SQLBuilder();
-    //     sql.selectUserByUsername(this.table, name);
-    //     sql.info();
-    //     USER user = super.onGet(sql.toString());
-    //     // USER user = super.get(name);
-    //     if(user == null) {
-    //         LOG.error("Error retrieving USER from db. returning null...");
-    //         return user;
-    //     }
-    //     // CommonUserDetails details = new CommonUserDetails(this.manager.loadUserByUsername(name));
-    //     final UserDetails details = this.manager.loadUserByUsername(name);
-    //     user.setUserDetails(details);
-    //     return user;
-    // }
-
-    // @Override
-    // public List<USER> get(List<USER> users, String value, String column) {
-    //     LOG("ApiDBJdbcUsers::get(value, column)");
-
-    //     if(column.equals(ID)) {
-    //         Map<String, Object> out = super.onSelectById(value);
-    //         USER user;
-    //         user.setUsername((String) out.get(USERNAME));
-    //         user.setPassword((String) out.get(PASSWORD));
-    //         user.setEmail((String) out.get(EMAIL));
-    //         user.setId((String) out.get(ID));
-    //         users.add(user);
-    //     } else if(column.equals(PASSWORD)) {
-    //         // TODO
-    //         LOG("Get by password not implemented");
-    //     } else if(column.equals(EMAIL)) {
-    //         // TODO
-    //         LOG("Get by emmail not implemented");
-    //     } else if(column.equals(USERNAME)) {
-    //         this.get(value);
-    //     }
-
-    //     if(users == null) {
-    //         LOG.error("Error retrieving USERs from db. returning null...");
-    //         return null;
-    //     } else if(users.isEmpty()) {
-    //         LOG("No users found. returning null...");
-    //         return null;
-    //     }
-
-    //     for(USER user : users) {
-    //         UserDetails details = this.manager.loadUserByUsername(user.getUsername());
-    //         user.setUserDetails(CommonUserDetails.createFromUserDetails(details));
-    //     }
-    //     return users;
-    // }
-
-    // @Override
-    // public List<USER> getByConstraints(Map<String, String> constraints) {
-    //     // TODO need to select users from details table too. Maybe use join sql to achieve.
-
-    //     LOG("ApiDBJdbcUsers::get()");
-    //     StringBuilder sb = new StringBuilder();
-    //     sb.append("SELECT * FROM ")
-    //         .append(table)
-    //         .append(" WHERE ");
-    //     int count = 0;
-    //     int size = constraints.size();
-    //     for(String key : constraints.keySet()) {
-    //         sb.append(key).append(" = ?");
-    //         if(count == size) {
-    //             sb.append(";");
-    //         } else {
-    //             sb.append(" AND ");
-    //         }
-    //         count++;
-    //     }
-    //     final String sql = sb.toString();
-    //     LOG(sql);
-    //     return CommonJdbc.jdbcTemplate.query(sql, mapper, constraints.values());
-    // }
 
     @Override
     public List<USER> getByColumnValue(String column, String value) {

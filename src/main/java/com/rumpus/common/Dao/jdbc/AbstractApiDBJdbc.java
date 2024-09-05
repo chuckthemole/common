@@ -32,20 +32,6 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
     }
 
-    // @Override
-    // public boolean remove(int id) {
-    //     LOG("ApiDBJdbc::remove()");
-    //     // TODO: Check dependencies to delete
-    //     StringBuilder sb = new StringBuilder();
-    //     sb.append("DELETE FROM ")
-    //         .append(table)
-    //         .append(" WHERE ")
-    //         .append(id)
-    //         .append(" = ?;");
-    //     final String sql = sb.toString();
-    //     return CommonJdbc.jdbcTemplate.update(sql, id) > 0;
-    // }
-
     @Override
     public boolean remove(String name) {
         LOG("ApiDBJdbc::remove()");
@@ -56,40 +42,6 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         LOG(sql);
         return CommonJdbc.jdbcTemplate.update(sql) > 0;
     }
-
-    // @Override
-    // public MODEL get(int id) {
-    //     LOG("ApiDBJdbc::get()");
-    //     StringBuilder sb = new StringBuilder();
-    //     sb.append("SELECT * FROM ")
-    //         .append(table)
-    //         .append(" WHERE ")
-    //         .append(id)
-    //         .append(" = ?;");
-    //     final String sql = sb.toString();
-    //     LOG(sql);
-    //     return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, id);
-    // }
-
-    // TODO this is working for user. Need to abstract 'username' for other objects. Maybe add parameter of constraint.
-    // @Override
-    // public MODEL get(String name) {
-    //     LOG("ApiDBJdbc::get()");
-    //     StringBuilder sb = new StringBuilder();
-    //     sb.append("SELECT * FROM ")
-    //         .append(table)
-    //         .append(" WHERE ");
-    //     // if(StringUtil.isQuoted(name)) {
-    //     //     sb.append(name);
-    //     // } else {
-    //     //     sb.append("\"").append(name).append("\"");
-    //     // }
-    //     sb.append("username");
-    //     sb.append(" = ?;");
-    //     final String sql = sb.toString();
-    //     LOG(sql);
-    //     return CommonJdbc.jdbcTemplate.queryForObject(sql, mapper, name);
-    // }
 
     @Override
     public List<MODEL> getByConstraints(Map<String, String> constraints) {
@@ -148,43 +100,6 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         List<MODEL> models = CommonJdbc.jdbcTemplate.query(sqlBuilder.toString(), this.mapper);
         return models;
     }
-
-    // @Override
-    // public MODEL add(MODEL model) {
-    //     LOG("ApiDBJdbc::add()");
-    //     LOG(model.toString());
-
-    //     // Build sql
-    //     StringBuilder sbSql = new StringBuilder();
-    //     sbSql.append("INSERT INTO ").append(table).append("(");
-    //     for(Map.Entry<String, String> entry : model.getAttributes().entrySet()) {
-    //         sbSql.append(entry.getKey()).append(",");
-    //     }
-    //     sbSql.deleteCharAt(sbSql.length() - 1);
-    //     sbSql.append(") VALUES(");
-    //     for(Map.Entry<String, String> entry : model.getAttributes().entrySet()) {
-    //         sbSql.append("?,");
-    //     }
-    //     sbSql.deleteCharAt(sbSql.length() - 1);
-    //     sbSql.append(");");
-    //     final String sql = sbSql.toString();
-    //     LOG(sql);
-
-    //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-    //     CommonJdbc.jdbcTemplate.update((Connection conn) -> {
-    //         PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-    //         return model.getStatement().apply(statement);
-    //     }, keyHolder);
-    //     if(keyHolder.getKey() != null) {
-    //         model.setId(keyHolder.getKey().toString());
-    //     } else {
-    //         model.setId(NO_ID);
-    //     }
-
-    //     return model;
-
-    //     // return add.apply(model);
-    // }
 
     @Override
     public void insert(String sqlInsertStatement, Map<String, Object> modelMap) {
@@ -259,93 +174,6 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         return CommonJdbc.jdbcTemplate.update(sql, objects);
     }
 
-    // @Override
-    // public MODEL update(String key, MODEL newModel, String condition) {
-    //     LOG("ApiDBJdbc::add()");
-    //     // StringBuilder logBuilder = new StringBuilder();
-    //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
-    //     LogBuilder log = new LogBuilder(true, "Updating '", key, "' of type '", newModel.name(), "''.");
-    //     log.info();
-
-    //     SQLBuilder sqlBuilder = new SQLBuilder();
-    //     if(condition.isEmpty()) {
-    //         sqlBuilder.update(this.table, newModel.getAttributes());
-    //     } else {
-    //         sqlBuilder.update(this.table, newModel.getAttributes(), condition);
-    //     }
-
-    //     LOG(sqlBuilder.toString());
-
-    //     MODEL model = this.get(key);
-    //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-    //     CommonJdbc.jdbcTemplate.update((Connection conn) -> {
-    //         PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
-    //         if(!condition.isEmpty()) { // TODO think about how to alter this. We can have more than one under 'condition'. Will work for 'user' right now.
-    //             statement.setString(1, key);
-    //         }
-    //         // return model.getStatement().apply(statement);
-    //         return statement;
-    //     }, keyHolder);
-    //     if(keyHolder.getKey() != null) {
-    //         model.setId(keyHolder.getKey().toString());
-    //     } else {
-    //         model.setId(NO_ID);
-    //     }
-
-    //     return newModel;
-    // }
-
-    // @Override
-    // public MODEL update(String id, MODEL newModel, Set<String> columns, String condition) {
-    //     LOG("ApiDBApiDBJdbc::add()");
-    //     // StringBuilder logBuilder = new StringBuilder();
-    //     // logBuilder.append("Updating '").append(model).append("' of type '").append(newModel.name()).append("''.");
-    //     LogBuilder log = new LogBuilder(true, "Updating '", id, "' of type '", newModel.name(), "''.");
-    //     log.info();
-
-    //     // filter necessary columns into map
-    //     Map<String, String> columnNamesAndValues = new HashMap<>();
-    //     Map<String, String> modelAttributes = newModel.getAttributes();
-    //     columns.forEach(column -> {
-    //         if(modelAttributes.containsKey(column)) {
-    //             columnNamesAndValues.put(column, modelAttributes.get(column));
-    //         }
-    //     });
-
-    //     SQLBuilder sqlBuilder = new SQLBuilder();
-    //     if(condition.isEmpty()) {
-    //         sqlBuilder.update(this.table, columnNamesAndValues);
-    //     } else {
-    //         sqlBuilder.update(this.table, columnNamesAndValues, condition);
-    //     }
-
-    //     LOG(sqlBuilder.toString());
-
-    //     MODEL model = this.get(id);
-    //     GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-    //     CommonJdbc.jdbcTemplate.update((Connection conn) -> {
-    //         PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
-    //         if(!condition.isEmpty()) { // TODO think about how to alter this. We can have more than one under 'condition'. Will work for 'user' right now.
-    //             statement.setString(1, id);
-    //         }
-    //         // return model.getStatement().apply(statement);
-    //         return statement;
-    //     }, keyHolder);
-    //     if(keyHolder.getKey() != null) {
-    //         model.setId(keyHolder.getKey().toString());
-    //     } else {
-    //         model.setId(NO_ID);
-    //     }
-
-    //     return newModel;
-    // }
-
-    // @Override
-    // public MODEL update(String id, MODEL newModel) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'update'");
-    // }
-
     @Override
     public boolean removeAll() {
         // TODO Auto-generated method stub
@@ -356,14 +184,4 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     public Mapper<MODEL> getMapper() {
         return super.mapper;
     }
-
-    // public int setMapper(Mapper<MODEL> mapper) {
-    //     this.mapper = mapper;
-    //     return SUCCESS;
-    // }
-
-    // public int setAddFunc(Function<T, T> add) {
-    //     this.add = add;
-    //     return SUCCESS;
-    // }
 }

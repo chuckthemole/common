@@ -3,6 +3,7 @@ package com.rumpus.common.Service;
 import com.rumpus.common.Manager.IManageable;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rumpus.common.Model.AbstractModel;
@@ -14,6 +15,7 @@ import com.rumpus.common.Model.AbstractModel;
  * <p>
  * This interface is used by the {@link AbstractService} class
  */
+@Service
 public interface IService<MODEL extends AbstractModel<MODEL>> extends IManageable {
 
     /**
