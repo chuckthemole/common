@@ -70,7 +70,7 @@ public class ForumPost extends AbstractModel<ForumPost> {
         LOG("ForumPost::getModelAtrributesMap()");
         return(
             Map.of(
-                "post_id", this.id != null ? this.id : EMPTY_FIELD, // id of this forum post
+                "post_id", this.getId() != null ? this.getId() : EMPTY_FIELD, // id of this forum post
                 "user_id", this.userId != null ? this.userId : EMPTY_FIELD, // id of user that created this forum post
                 // "meta", this.metaData, // ForumPostMeta
                 "body", this.body != null ? this.body : EMPTY_FIELD // forum post content

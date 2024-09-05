@@ -1,37 +1,51 @@
 package com.rumpus.common.Service;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Dao.IUserDao;
+import com.rumpus.common.Dao.IUserDaoJpa;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
-public class AbstractUserServiceJpa
+abstract public class AbstractUserServiceJpa
     <
         USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>
     > extends AbstractServiceJpa<USER> implements IUserService<USER, USER_META> {
 
-        protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
+        private IUserDaoJpa<USER, USER_META> userDaoJpa;
 
-        public AbstractUserServiceJpa(String name, IUserDao<USER, USER_META> userDao) {
-            super(name, userDao);
-            this.userDao = userDao;
+        public AbstractUserServiceJpa(String name, IUserDaoJpa<USER, USER_META> userDaoJpa) {
+            super(name, userDaoJpa);
+            this.userDaoJpa = userDaoJpa;
         }
+
+        /**
+         * Create a user with the given username.
+         * 
+         * @param username The username of the user to create.
+         * @return A user with the given username.
+         */
+        abstract public USER createUserWithUsername(String username);
 
         @Override
         public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
             LOG_THIS("loadUserByUsername(username)");
-            return this.userDao.loadUserByUsername(username);
+            return this.getByUsername(username).getUserDetails(); // TODO: catch NoSuchElementException
         }
 
         @Override
         public USER getByUsername(String username) {
-            LOG_THIS("getByUsername(username)");
-            return this.userDao.getByUsername(username);
+            USER exampleUser = this.createUserWithUsername(username);
+            ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreNullValues() // ignore null values
+                .withMatcher(ICommon.USERNAME, ExampleMatcher.GenericPropertyMatchers.exact());
+            Example<USER> example = Example.of(exampleUser, matcher);
+            return this.userDaoJpa.findOne(example).get(); // TODO: catch NoSuchElementException
         }
 
         @Override

@@ -2,31 +2,34 @@ package com.rumpus.common.Service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Dao.IDaoJpa;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL>> extends AbstractService<MODEL> {
+abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL> {
 
-    @Autowired protected IDaoJpa<MODEL> daoJpa;
+    /**
+     * The data access object for this service.
+     */
+    private IDaoJpa<MODEL> daoJpa;
 
-    public AbstractServiceJpa(String name, IDao<MODEL> dao) {
-        super(name, dao);
+    public AbstractServiceJpa(String name, IDaoJpa<MODEL> daoJpa) {
+        super(name);
+        this.daoJpa = daoJpa;
     }
 
     @Override
     public MODEL getById(String id) {
         LOG_THIS("getById(id)");
-        return this.dao.getById(id);
+        return this.daoJpa.getById(id);
     }
 
     @Override
     public List<MODEL> getByColumnValue(String column, String value) {
-        return this.dao.getByColumnValue(column, value);
+        LOG_THIS(LogLevel.ERROR, "getByColumnValue(column, value) not implemented");
+        return null;
     }
 
     @Override

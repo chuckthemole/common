@@ -84,7 +84,7 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
     @Override
     public Map<String, Object> getModelAttributesMap() {
         LOG("TestUserModel::getModelAttributesMap()");
-        Map<String, Object> modelAttributesMap = Map.of(ID, this.id, EMAIL, this.getEmail());
+        Map<String, Object> modelAttributesMap = Map.of(ID, this.getId(), EMAIL, this.getEmail());
         return modelAttributesMap;
     }
 

@@ -48,8 +48,8 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         super(NAME);
         this.creationTime = Instant.now();
         if(initialize) {
-            this.id = getUniqueId();
-            CommonSession.sessionIds.add(this.id);
+            this.setId(getUniqueId());
+            CommonSession.sessionIds.add(this.getId());
             this.lastAccessedTime = Instant.now();
             this.attributes = new HashMap<>();
             this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
@@ -58,8 +58,8 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
     }
     public CommonSession(Session session) {
         super(NAME);
-        this.id = session.getId();
-        CommonSession.sessionIds.add(this.id);
+        this.setId(session.getId());
+        CommonSession.sessionIds.add(this.getId());
         this.creationTime = session.getCreationTime();
         this.lastAccessedTime = session.getLastAccessedTime();
         Set<String> names = session.getAttributeNames();
@@ -72,8 +72,8 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
     }
     public CommonSession(HttpSession session) {
         super(NAME);
-        this.id = session.getId();
-        CommonSession.sessionIds.add(this.id);
+        this.setId(session.getId());
+        CommonSession.sessionIds.add(this.getId());
 
         // try to parse creation time, if not, set to now()
         Instant tempCreationTime = Instant.MAX;
@@ -130,7 +130,7 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
             Duration maxInactiveInterval,
             boolean isExpired) {
         super(NAME);
-        this.id = id;
+        this.setId(id);
         CommonSession.sessionIds.add(id);
         this.attributes = attributes;
         this.creationTime = creationTime;
@@ -184,12 +184,12 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
     public String changeSessionId() {
         String tempId = getUniqueId();
         sessionIds.add(tempId);
-        this.id = tempId;
-        return this.id;
+        this.setId(tempId);
+        return this.getId();
     }
 
     public String setNoId() {
-        this.id = NO_ID;
+        this.setId(NO_ID);
         return NO_ID;
     }
 

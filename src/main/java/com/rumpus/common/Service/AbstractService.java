@@ -10,7 +10,10 @@ import com.rumpus.common.Model.AbstractModel;
 
 abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL> {
 
-    protected IDao<MODEL> dao; // TODO: should this be private?
+    /**
+     * The data access object for this service.
+     */
+    private IDao<MODEL> dao;
 
     public AbstractService(String name, IDao<MODEL> dao) {
         super(name);

@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
+import jakarta.persistence.Column;
+
 /**
  * CommonUserDetails class implementing UserDetails
  * 
@@ -18,11 +20,11 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
     private static final String NAME = "CommonUserDetails";
     private static final GrantedAuthority USER = new CommonAuthority(ROLE_USER);
 
-    private String username;
-    private String password;
-    private boolean isEnabled;
+    @Column(name = "username") private String username;
+    @Column(name = "password") private String password;
+    @Column(name = "isEnabled") private boolean isEnabled;
     // private CommonAuthentication authority;
-    private Set<GrantedAuthority> authorities;
+    @Column(name = "authorities") private Set<GrantedAuthority> authorities;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;

@@ -91,7 +91,7 @@ public abstract class AbstractModelsCollection<MODEL extends AbstractModel<MODEL
     public List<MODEL> sortById() {
         List<MODEL> list = new ArrayList<>(this.collection);
         Collections.sort(list, (model1, model2) -> {
-            return model1.id.compareTo(model2.id);
+            return model1.getId().compareTo(model2.getId());
         });
         return list;
     }

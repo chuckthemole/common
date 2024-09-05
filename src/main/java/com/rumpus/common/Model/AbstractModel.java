@@ -6,8 +6,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import org.springframework.core.serializer.Serializer;
-import org.springframework.data.annotation.Id;
 import org.springframework.jdbc.support.KeyHolder;
+
+import jakarta.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
@@ -15,21 +16,24 @@ import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
+@MappedSuperclass
 public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends AbstractCommonObject
     implements Serializable, Serializer<MODEL>, Comparable<AbstractModel<MODEL>> {
 
     protected static final String NAME = "Model";
-    @jakarta.persistence.Id @GeneratedValue(strategy = GenerationType.IDENTITY) protected String id;
+
+    /**
+     * The id of the model
+     */
+    @Id private String id; // TODO: will have to use org.springframework.data.annotation.Id for NoSQL. Need to figure out how to handle this.
+
     @JsonIgnore transient protected CommonKeyHolder key;
+    
     @JsonIgnore transient private TypeAdapter<MODEL> typeAdapter;
 
     // Ctors
-    public AbstractModel() { super(NAME); }
     public AbstractModel(final String name) {
         super(name);
     }

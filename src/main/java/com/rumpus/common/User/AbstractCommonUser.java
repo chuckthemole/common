@@ -12,6 +12,8 @@ import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Model.CommonKeyHolder;
 
+import jakarta.persistence.Column;
+
 /**
  * TODO: let's create an interface for this, ICommonUser. Then we can have an AbstractCommonUser that implements ICommonUser. Then we can have a CommonUser that extends AbstractCommonUser. - chuck 1/15/2024
  */
@@ -21,7 +23,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_
 
     @JsonIgnore private String userPassword; // used for when user logs in initially to authenticate. Otherwise this should be empty. TODO: Maybe look into better solution for this.
     static private PasswordEncoder encoder;
-    private String email;
+    @Column(name = "email") private String email;
     private CommonUserDetails userDetails; // holds username and password among others
     private AbstractCommonUserMetaData<USER_META> metaData;
 
@@ -44,8 +46,8 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_
     private void init() {
         this.userDetails = CommonUserDetails.createFromUsernamePasswordAuthority(EMPTY_FIELD, EMPTY_FIELD, null, true);
         this.email = EMPTY_FIELD;
-        this.id = EMPTY_FIELD;
-        // this.id = NO_ID;
+        this.setId(EMPTY_FIELD);
+        // this.getId() = NO_ID;
         this.key = new CommonKeyHolder(); // doing this for now. should take out later maybe. or set keys in setters
         // this.setStatement(statement()); // do i need to do this?
     }
@@ -104,7 +106,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_
     public String toString() {
         return CommonStringBuilder.buildString(
             "\n Name: ", this.name, "\n",
-            " Id: ", this.id, "\n",
+            " Id: ", this.getId(), "\n",
             " Username: ", this.getUsername(), "\n",
             " Password: ", this.getPassword(), "\n",
             " Email: ", this.email, "\n",
@@ -156,7 +158,7 @@ public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_
     @Override
     public Map<String, Object> getModelAttributesMap() {
         LOG("AbstractCommonUser::getModelAttributesMap()");
-        Map<String, Object> modelAttributesMap = Map.of(ID, this.id, EMAIL, this.getEmail());
+        Map<String, Object> modelAttributesMap = Map.of(ID, this.getId(), EMAIL, this.getEmail());
         return modelAttributesMap;
     }
 
