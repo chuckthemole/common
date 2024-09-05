@@ -15,11 +15,16 @@ import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+@Entity
 public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends AbstractCommonObject
     implements Serializable, Serializer<MODEL>, Comparable<AbstractModel<MODEL>> {
 
     protected static final String NAME = "Model";
-    @Id protected String id;
+    @jakarta.persistence.Id @GeneratedValue(strategy = GenerationType.IDENTITY) protected String id;
     @JsonIgnore transient protected CommonKeyHolder key;
     @JsonIgnore transient private TypeAdapter<MODEL> typeAdapter;
 
