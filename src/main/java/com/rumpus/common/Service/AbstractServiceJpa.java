@@ -12,7 +12,7 @@ import com.rumpus.common.Model.AbstractModel;
 
 abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL>> extends AbstractService<MODEL> {
 
-    @Autowired IDaoJpa<MODEL> daoJpa;
+    @Autowired protected IDaoJpa<MODEL> daoJpa;
 
     public AbstractServiceJpa(String name, IDao<MODEL> dao) {
         super(name, dao);
