@@ -21,6 +21,7 @@ import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -50,7 +51,7 @@ public class ApiDBJdbcUsers
     private final static Set<String> jdbcUserColumns = new HashSet<>(Arrays.asList("username", "email")); // current columns in jdbc db
     private CommonSimpleJdbc<USER> simpleUsersJdbc;
 
-    public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, Mapper<USER> mapper) {
+    public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper) {
         super(API_NAME, manager.getDataSource(), table, mapper);
         this.manager = manager;
         this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
@@ -61,7 +62,7 @@ public class ApiDBJdbcUsers
         this.setDefaultQueries();
         this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
     }
-    public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, Mapper<USER> mapper, Map<String, String> queries) {
+    public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper, Map<String, String> queries) {
         super(API_NAME, manager.getDataSource(), table, mapper);
         this.manager = manager;
         this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need

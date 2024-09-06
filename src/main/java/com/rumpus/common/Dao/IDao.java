@@ -3,12 +3,13 @@ package com.rumpus.common.Dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Dao.jdbc.Mapper;
 import com.rumpus.common.Model.AbstractModel;
 
 /**
- * Interface for all Dao classes
+ * Interface for Dao classes
  * 
  * @param <MODEL> the model to use
  * @see AbstractModel
@@ -88,11 +89,32 @@ public interface IDao<MODEL extends AbstractModel<MODEL>> extends ICommon {
     String getTable();
 
     /**
+     * Set the table
+     * 
+     * @param table to set
+     */
+    public void setTable(String table);
+
+    /**
+     * Get the meta table name
+     * 
+     * @return meta table name
+     */
+    String getMetaTable();
+
+    /**
+     * Set the meta table
+     * 
+     * @param metaTable to set
+     */
+    public void setMetaTable(String metaTable);
+
+    /**
      * Get the mapper
      * 
-     * @return {@link Mapper} for this model
+     * @return {@link RowMapper} for this model
      */
-    Mapper<MODEL> getMapper();
+    RowMapper<MODEL> getMapper();
 
     /**
      * Creates a set that keeps track of ids for the given name

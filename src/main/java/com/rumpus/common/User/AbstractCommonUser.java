@@ -16,7 +16,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
 /**
- * TODO: let's create an interface for this, ICommonUser. Then we can have an AbstractCommonUser that implements ICommonUser. Then we can have a CommonUser that extends AbstractCommonUser. - chuck 1/15/2024
+ * TODO: let's create an     interface for this, ICommonUser. Then we can have an AbstractCommonUser that implements ICommonUser. Then we can have a CommonUser that extends AbstractCommonUser. - chuck 1/15/2024
  */
 @MappedSuperclass
 public abstract class AbstractCommonUser<USER extends AbstractModel<USER>, USER_META extends AbstractCommonUserMetaData<USER_META>> extends AbstractModel<USER> { // TODO: i feeel like I tried this before. but USER extends AbstractCommonUser<USER, USER_META>

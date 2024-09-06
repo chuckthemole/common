@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
@@ -25,7 +26,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     protected CommonJdbc jdbc;
     protected CommonSimpleJdbc<MODEL> simpleJdbc;
 
-    public AbstractApiDBJdbc(String name, DataSource dataSource, String table, Mapper<MODEL> mapper) {
+    public AbstractApiDBJdbc(String name, DataSource dataSource, String table, RowMapper<MODEL> mapper) {
         super(name, table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to handle in future.
         this.jdbc = CommonJdbc.create();
         this.jdbc.setDataSource(dataSource);
@@ -178,10 +179,5 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     public boolean removeAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removeAll'");
-    }
-
-    @Override
-    public Mapper<MODEL> getMapper() {
-        return super.mapper;
     }
 }
