@@ -16,6 +16,25 @@ import com.rumpus.common.util.Pair;
 /**
  * A row mapper for JDBC.
  * 
+ * Example usage:
+ * <pre>
+ *      protected Function<Pair<ResultSet, Integer>, TestUserModel> initMapFunction() {
+ *         return (pair) -> {
+ *            ResultSet rs = pair.getFirst();
+ *            try {
+ *              String username = rs.getString("username"); // Assuming "data" column exists
+ *              TestUserModel user = TestUserModel.createEmptyUser();
+ *              user.setUsername(username);
+ *              return user;
+ *            } catch (SQLException e) {
+ *              e.printStackTrace();
+ *              return null;
+ *            }
+ *         };
+ *      }  
+ *    
+ * </pre>
+ * 
  * @param <MODEL> the model to map to
  */
 abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements RowMapper<MODEL> {
@@ -35,15 +54,7 @@ abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL>> 
     // Initialize AbstractJdbcRowMapper. This will create a function that returns null if initMapFunction() returns null.
     private void init() {
         Function<Pair<ResultSet, Integer>, MODEL> function = this.initMapFunction();
-        // TODO: may want to look into a better solution. Maybe a default function?
-        if(function == null) { // If the map function is null, set it to a function that returns null
-            this.mapFunction = (pair) -> {
-                LOG_THIS("This mapper function is null, returning null");
-                return null;
-            };
-            return;
-        }
-        this.mapFunction = function;
+        this.setMapFunc(function);
     }
 
     /**
@@ -56,10 +67,18 @@ abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL>> 
 
     /**
      * Set the map function.
+     * This will create a function that returns null if the input is null.
      * 
      * @param mapFunction the map function to set
      */
     public void setMapFunc(Function<Pair<ResultSet, Integer>, MODEL> mapFunction) {
+        if(mapFunction == null) { // If the map function is null, set it to a function that returns null
+            this.mapFunction = (pair) -> {
+                LOG_THIS("This mapper function is null, returning null");
+                return null;
+            };
+            return;
+        }
         this.mapFunction = mapFunction;
     }
 
