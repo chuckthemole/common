@@ -20,7 +20,7 @@ public class ObjectUserRowMapper extends AbstractJdbcRowMapper<TestUserModel> {
     }
 
     @Override
-    protected Function<Pair<ResultSet, Integer>, TestUserModel> initMapFunction() {
+    protected Function<Pair<ResultSet, Integer>, TestUserModel> initMapperFunction() {
         return (pair) -> {
             ResultSet rs = pair.getFirst();
             try {

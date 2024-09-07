@@ -18,7 +18,7 @@ import com.rumpus.common.util.Pair;
  * 
  * Example usage:
  * <pre>
- *      protected Function<Pair<ResultSet, Integer>, TestUserModel> initMapFunction() {
+ *      protected Function<Pair<ResultSet, Integer>, TestUserModel> initMapperFunction() {
  *         return (pair) -> {
  *            ResultSet rs = pair.getFirst();
  *            try {
@@ -51,9 +51,9 @@ abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL>> 
             this.init();
     }
 
-    // Initialize AbstractJdbcRowMapper. This will create a function that returns null if initMapFunction() returns null.
+    // Initialize AbstractJdbcRowMapper. This will create a function that returns null if initMapperFunction() returns null.
     private void init() {
-        Function<Pair<ResultSet, Integer>, MODEL> function = this.initMapFunction();
+        Function<Pair<ResultSet, Integer>, MODEL> function = this.initMapperFunction();
         this.setMapFunc(function);
     }
 
@@ -61,9 +61,9 @@ abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL>> 
      * Initialize and return the map function.
      * this function should be overridden by the subclass.
      * 
-     * @return the map function
+     * @return the row mapper function as a {@link Function} of {@link Pair}<ResultSet, Integer> to MODEL
      */
-    protected abstract Function<Pair<ResultSet, Integer>, MODEL> initMapFunction();
+    protected abstract Function<Pair<ResultSet, Integer>, MODEL> initMapperFunction();
 
     /**
      * Set the map function.

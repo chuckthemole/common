@@ -51,8 +51,8 @@ public class ApiDBJdbcUsers
     private final static Set<String> jdbcUserColumns = new HashSet<>(Arrays.asList("username", "email")); // current columns in jdbc db
     private CommonSimpleJdbc<USER> simpleUsersJdbc;
 
-    public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper) {
-        super(API_NAME, manager.getDataSource(), table, mapper);
+    public ApiDBJdbcUsers(final String name, JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper) {
+        super(name, manager.getDataSource(), table, mapper);
         this.manager = manager;
         this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
         // this.manager.setEnableAuthorities(enableAuthorities);
@@ -62,18 +62,18 @@ public class ApiDBJdbcUsers
         this.setDefaultQueries();
         this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
     }
-    public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper, Map<String, String> queries) {
-        super(API_NAME, manager.getDataSource(), table, mapper);
-        this.manager = manager;
-        this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
-        // this.manager.setEnableAuthorities(enableAuthorities);
-        this.setDefaultQueries();
-        if(queries != null && !queries.isEmpty()) {
-            this.setQueries(queries);
-        }
-        // this.authenticationManager = new AbstractCommonAuthManager();
-        this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
-    }
+    // public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper, Map<String, String> queries) {
+    //     super(API_NAME, manager.getDataSource(), table, mapper);
+    //     this.manager = manager;
+    //     this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
+    //     // this.manager.setEnableAuthorities(enableAuthorities);
+    //     this.setDefaultQueries();
+    //     if(queries != null && !queries.isEmpty()) {
+    //         this.setQueries(queries);
+    //     }
+    //     // this.authenticationManager = new AbstractCommonAuthManager();
+    //     this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
+    // }
 
     public UserDetails getUserDetails(String username) {
         return this.manager.loadUserByUsername(username);
