@@ -9,7 +9,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.rumpus.common.AbstractCommonObject;
@@ -30,6 +34,40 @@ import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
  */
 public class CommonJdbc extends AbstractCommonObject {
 
+    /**
+     * Wrapper for SimpleJdbc
+     * Actions (insert, call) TODO: Add more actions
+     */
+    private class CommonSimpleJdbc extends AbstractCommonObject {
+
+        private final static String NAME = "JdbcTemplate";
+        protected SimpleJdbcInsert insert;
+        protected SimpleJdbcCall call;
+
+        private CommonSimpleJdbc() {
+            super(NAME);
+            this.insert = new SimpleJdbcInsert(jdbcTemplate);
+            this.call = new SimpleJdbcCall(jdbcTemplate);
+        }
+
+        private void setInsertTable(final String table) {
+            this.insert.withTableName(table);
+        }
+
+        private int onAdd(Map<String, ?> paramaters) {
+            return this.insert.execute(paramaters);
+        }
+
+        private Map<String, ?> simpleExecuteCall(Map<String, ?> parameters) {
+            SqlParameterSource parameterSource = new MapSqlParameterSource().addValues(parameters);
+            return this.call.execute(parameterSource);
+        }
+
+        private int simpleInsert(final String table, final Map<String, ?> parameters) {
+            return new SimpleJdbcInsert(jdbcTemplate).withTableName(table).execute(parameters);
+        }
+    }
+
     private final static String NAME = "JdbcTemplate";
 
     /**
@@ -45,6 +83,11 @@ public class CommonJdbc extends AbstractCommonObject {
      * The {@link NamedParameterJdbcTemplate} instance.
      */
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    /**
+     * The {@link CommonSimpleJdbc} instance.
+     * TODO: Maybe think about this more. This could be creating a lot of objects that are not needed.
+     */
+    private CommonSimpleJdbc simpleJdbc;
 
     /**
      * Private constructor to prevent instantiation from outside.
@@ -56,6 +99,7 @@ public class CommonJdbc extends AbstractCommonObject {
         super(NAME);
         this.jdbcTemplate = new JdbcTemplate(dataSource);  // Initialize JdbcTemplate with the provided DataSource.
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate); // Initialize NamedParameterJdbcTemplate.
+        this.simpleJdbc = new CommonSimpleJdbc(); // TODO: maybe init if user wants to use it.
     }
 
     /**
@@ -95,6 +139,14 @@ public class CommonJdbc extends AbstractCommonObject {
     protected NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
         return this.namedParameterJdbcTemplate;
     }
+
+    /******************************************************************************
+     *                             JdbcTemplate                                   *
+     * ----------------------------------------------------------------------------
+     *  Purpose: These are the methods used to execute SQL queries and updates    *
+     *        using the JdbcTemplate.                                             *
+     * ----------------------------------------------------------------------------
+     *****************************************************************************/
 
     /**
      * Query method to execute a SQL query and map the results to a list of objects using a RowMapper.
@@ -144,10 +196,61 @@ public class CommonJdbc extends AbstractCommonObject {
         return this.jdbcTemplate.update(preparedStatementCreator, keyHolder);
     }
 
+    /******************************************************************************
+     *                             NamedParameterJdbcTemplate                     *
+     * ----------------------------------------------------------------------------
+     *  Purpose: These are the methods used to execute SQL queries and updates    *
+     *       using the NamedParameterJdbcTemplate.                                *
+     * ----------------------------------------------------------------------------
+     *****************************************************************************/
+
     protected <T> T execute(String sql, Map<String, ?> paramMap, PreparedStatementCallback<T> psc) {
         return this.namedParameterJdbcTemplate.execute(sql, paramMap, psc);
     }
 
+    /******************************************************************************
+     *                             SimpleJdbcInsert                               *
+     * ----------------------------------------------------------------------------
+     *  Purpose: These methods are used to insert data into the database using    *
+     *         the SimpleJdbcInsert class.                                        *
+     * ----------------------------------------------------------------------------
+     *****************************************************************************/
+
+    /**
+     * Use the SimpleJdbcInsert to insert a row into the database.
+     * 
+     * @param table the table to insert into
+     * @param parameters the parameters to insert
+     * @return the number of rows affected
+     */
+    protected int simpleInsert(final String table, Map<String, ?> parameters) {
+        return this.simpleJdbc.simpleInsert(table, parameters);
+    }
+
+    /**
+     * TODO: Add documentation
+     * 
+     * @param parameters
+     * @return
+     */
+    protected Map<String, ?> simpleExecuteCall(Map<String, ?> parameters) {
+        return this.simpleJdbc.simpleExecuteCall(parameters);
+    }
+
+    /******************************************************************************
+     *                             End of SimpleJdbcInsert                        *
+     * ----------------------------------------------------------------------------
+     *  Purpose: These methods are used to insert data into the database using    *
+     *         the SimpleJdbcInsert class.                                        *
+     * ----------------------------------------------------------------------------
+     *****************************************************************************/
+
+    /******************************************************************************
+     *                             Logging                                        *
+     * ----------------------------------------------------------------------------
+     *  Purpose: These methods are used to log messages to the console.           *
+     * ----------------------------------------------------------------------------
+     *****************************************************************************/
     private void LOG_THIS(String... args) {
         ICommon.LOG(CommonJdbc.class, args);
     }

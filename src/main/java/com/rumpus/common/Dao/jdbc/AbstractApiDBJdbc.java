@@ -6,19 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractDao;
@@ -28,40 +22,13 @@ import com.rumpus.common.Model.CommonKeyHolder;
 public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> extends AbstractDao<MODEL> {
 
     /**
-     * Wrapper for SimpleJdbc actions (insert, call)
-     * 
-     * CommonJdbc should have an instance in ApiDB initiated before this.
+     * The {@link CommonJdbc} for this Dao
      */
-    private class CommonSimpleJdbc<SIMPLE_MODEL extends AbstractModel<SIMPLE_MODEL>> extends AbstractCommonObject {
-
-        private final static String NAME = "JdbcTemplate";
-        protected SimpleJdbcInsert insert;
-        protected SimpleJdbcCall call;
-        protected Map<String, Object> paramaters;
-
-        public CommonSimpleJdbc(String table) {
-            super(NAME);
-            this.paramaters = new HashMap<>();
-            this.insert = new SimpleJdbcInsert(jdbc.getJdbcTemplate()).withTableName(table);
-            this.call = new SimpleJdbcCall(jdbc.getJdbcTemplate());
-        }
-
-        public void setInsertTable(final String table) {
-            this.insert.withTableName(table);
-        }
-
-        public int onAdd(SIMPLE_MODEL model) {
-            return this.insert.execute(paramaters);
-        }
-    }
-
     protected CommonJdbc jdbc;
-    protected CommonSimpleJdbc<MODEL> simpleJdbc;
 
     public AbstractApiDBJdbc(String name, DataSource dataSource, String table, RowMapper<MODEL> mapper) {
         super(name, table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to handle in future.
         this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
-        this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
     }
 
     @Override
@@ -175,14 +142,13 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         //     model.setKey(null);
         // }
         // return model;
-
-        this.simpleJdbc.insert.execute(parameters);
+        final int rowsAffected = this.jdbc.simpleInsert(this.getTable(), parameters);
+        LOG("Rows affected: " + rowsAffected);
         return model;
     }
 
-    public Map<String, Object> onSelectById(String id) {
-        SqlParameterSource in =  new MapSqlParameterSource().addValue(GET_USER_BY_ID, id);
-        return this.simpleJdbc.call.execute(in);
+    public Map<String, ?> onSelectById(String id) {
+        return this.jdbc.simpleExecuteCall(Map.of(GET_USER_BY_ID, id));
     }
 
     @Override
