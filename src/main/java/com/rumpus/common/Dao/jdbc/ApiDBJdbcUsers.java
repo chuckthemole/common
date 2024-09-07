@@ -2,11 +2,8 @@ package com.rumpus.common.Dao.jdbc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
@@ -22,7 +19,6 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // TODO: in many of these I'm operating with 'manager' first. Many operations don't return status. Need to figure out how to abort if the manager fails.
@@ -39,41 +35,15 @@ public class ApiDBJdbcUsers
     public static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
     private static final String UPDATE_USERS_TABLE = "update users set username = ?, password = ?, enabled = ? where username = ?";
     private static final String UPDATE_USER_TABLE = "UPDATE user SET email = ? WHERE id = ?";
-    private static final String UPDATE_USER_AUTHORITIES = "UPDATE authorities SET username = ? WHERE username = ?";
-    private static final String INSERT_USER = "INSERT INTO user VALUES(:id, :username, :email)";
-
-    private final static String API_NAME = "ApiDBJdbcUsers";
-    private final static String USER_MANAGER_TABLE = "USERS";
 
     private JdbcUserDetailsManager manager;
-    // private AuthenticationManager authenticationManager;
-    private DaoAuthenticationProvider authenticationProvider;
-    private final static Set<String> jdbcUserColumns = new HashSet<>(Arrays.asList("username", "email")); // current columns in jdbc db
-    private CommonSimpleJdbc<USER> simpleUsersJdbc;
 
     public ApiDBJdbcUsers(final String name, JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper) {
         super(name, manager.getDataSource(), table, mapper);
         this.manager = manager;
-        this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
-        // this.manager.setEnableAuthorities(enableAuthorities);
-        // this.authenticationManager = new AbstractCommonAuthManager();
-        // this.encoder = new BCryptPasswordEncoder();
-        this.authenticationProvider = new DaoAuthenticationProvider();
+        this.manager.setJdbcTemplate(super.jdbc.getJdbcTemplate()); // TODO: may not need this. look into it.
         this.setDefaultQueries();
-        this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
     }
-    // public ApiDBJdbcUsers(JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper, Map<String, String> queries) {
-    //     super(API_NAME, manager.getDataSource(), table, mapper);
-    //     this.manager = manager;
-    //     this.manager.setJdbcTemplate(CommonJdbc.jdbcTemplate); // may not need
-    //     // this.manager.setEnableAuthorities(enableAuthorities);
-    //     this.setDefaultQueries();
-    //     if(queries != null && !queries.isEmpty()) {
-    //         this.setQueries(queries);
-    //     }
-    //     // this.authenticationManager = new AbstractCommonAuthManager();
-    //     this.simpleUsersJdbc = new CommonSimpleJdbc<>(this.table);
-    // }
 
     public UserDetails getUserDetails(String username) {
         return this.manager.loadUserByUsername(username);
@@ -89,22 +59,6 @@ public class ApiDBJdbcUsers
         }
         this.manager.deleteUser(name);
         return true;
-    }
-
-
-    @Override
-    public List<USER> getByColumnValue(String column, String value) {
-        LOG("ApiDBJdbc::getByColumnValue()");
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT * FROM ")
-            .append(table)
-            .append(" WHERE ")
-            .append(column)
-            .append(" = ?;");
-        final String sql = sb.toString();
-        LOG(sql);
-
-        return CommonJdbc.jdbcTemplate.query(sql, mapper, value);
     }
 
     @Override
@@ -242,20 +196,6 @@ public class ApiDBJdbcUsers
         }
         return JdbcBlob.createFromByteArray(byteArrayOutputStream.toByteArray());
     }
-
-    // @Override
-    // public USER update(String username, USER user, String condition) {
-    //     LOG("ApiDBJdbcUsers::update()");
-    //     if(this.manager.userExists(user.getUsername())) {
-    //         this.manager.updateUser(user.getUserDetails());
-
-    //         super.update(username, user, jdbcUserColumns, condition);
-    //     } else { // username changed so delete user then add user
-    //         this.remove(username);
-    //         this.add(user);
-    //     }
-    //     return user;
-    // }
 
     @Override
 	public USER update(String id, USER newUser) {

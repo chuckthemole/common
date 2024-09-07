@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import javax.sql.DataSource;
 
@@ -14,7 +15,10 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractDao;
@@ -23,13 +27,40 @@ import com.rumpus.common.Model.CommonKeyHolder;
 
 public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> extends AbstractDao<MODEL> {
 
+    /**
+     * Wrapper for SimpleJdbc actions (insert, call)
+     * 
+     * CommonJdbc should have an instance in ApiDB initiated before this.
+     */
+    private class CommonSimpleJdbc<SIMPLE_MODEL extends AbstractModel<SIMPLE_MODEL>> extends AbstractCommonObject {
+
+        private final static String NAME = "JdbcTemplate";
+        protected SimpleJdbcInsert insert;
+        protected SimpleJdbcCall call;
+        protected Map<String, Object> paramaters;
+
+        public CommonSimpleJdbc(String table) {
+            super(NAME);
+            this.paramaters = new HashMap<>();
+            this.insert = new SimpleJdbcInsert(jdbc.getJdbcTemplate()).withTableName(table);
+            this.call = new SimpleJdbcCall(jdbc.getJdbcTemplate());
+        }
+
+        public void setInsertTable(final String table) {
+            this.insert.withTableName(table);
+        }
+
+        public int onAdd(SIMPLE_MODEL model) {
+            return this.insert.execute(paramaters);
+        }
+    }
+
     protected CommonJdbc jdbc;
     protected CommonSimpleJdbc<MODEL> simpleJdbc;
 
     public AbstractApiDBJdbc(String name, DataSource dataSource, String table, RowMapper<MODEL> mapper) {
         super(name, table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to handle in future.
-        this.jdbc = CommonJdbc.create();
-        this.jdbc.setDataSource(dataSource);
+        this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
         this.simpleJdbc = new CommonSimpleJdbc<>(this.table);
     }
 
@@ -41,7 +72,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         sqlBuilder.deleteUserByUsername(name);
         final String sql = sqlBuilder.toString();
         LOG(sql);
-        return CommonJdbc.jdbcTemplate.update(sql) > 0;
+        return this.jdbc.update(sql) > 0;
     }
 
     @Override
@@ -64,7 +95,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         }
         final String sql = sb.toString();
         LOG(sql);
-        return CommonJdbc.jdbcTemplate.query(sql, mapper, constraints.values());
+        return this.jdbc.query(sql, mapper, constraints.values());
     }
 
     @Override
@@ -78,7 +109,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
             .append(" = ?;");
         final String sql = sb.toString();
         LOG(sql);
-        return CommonJdbc.jdbcTemplate.query(sql, mapper, value);
+        return this.jdbc.query(sql, mapper, value);
     }
 
     @Override
@@ -98,7 +129,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         // sb.append("SELECT * FROM ").append(table).append(";");
         // final String sql = sb.toString();
         LOG(sqlBuilder.toString());
-        List<MODEL> models = CommonJdbc.jdbcTemplate.query(sqlBuilder.toString(), this.mapper);
+        List<MODEL> models = this.jdbc.query(sqlBuilder.toString(), this.mapper);
         return models;
     }
 
@@ -111,13 +142,13 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
                 return ps.executeUpdate();
             }
         };
-        CommonJdbc.namedParameterJdbcTemplate.execute(sqlInsertStatement, modelMap, ps);
+        this.jdbc.execute(sqlInsertStatement, modelMap, ps); // TODO: should I return the result of this?
     }
 
     @Override
     public MODEL onInsert(MODEL model, final String sql) {
         CommonKeyHolder keyHolder = new CommonKeyHolder(); // TODO read more about this and see what to do with it. Keeping as member variable in Model. - chuck
-        CommonJdbc.jdbcTemplate.update((Connection conn) -> {
+        this.jdbc.update((Connection conn) -> {
             return conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         }, keyHolder);
 
@@ -158,7 +189,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
     public MODEL onGet(final String sql) {
         LOG("ApiDBApiDBJdbc::onGet()");
         try{
-            return CommonJdbc.jdbcTemplate.queryForObject(sql, this.mapper);
+            return this.jdbc.queryForObject(sql, this.mapper);
         } catch(DataAccessException e) {
             LOG("Error retrieving entry from the db. Details below...");
             LOG(e.toString());
@@ -168,11 +199,11 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
 
     @Override
     public MODEL onGet(final String sql, final String name) {
-        return CommonJdbc.jdbcTemplate.queryForObject(sql, this.mapper, name);
+        return this.jdbc.queryForObject(sql, this.mapper, name);
     }
 
     protected int onUpdate(final String sql, final Object... objects) {
-        return CommonJdbc.jdbcTemplate.update(sql, objects);
+        return this.jdbc.update(sql, objects);
     }
 
     @Override
