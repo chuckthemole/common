@@ -2,6 +2,8 @@ package com.rumpus.common.Dao;
 
 import java.util.Map;
 
+import org.jooq.DSLContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.rumpus.common.Model.AbstractModel;
@@ -14,10 +16,12 @@ import com.rumpus.common.AbstractCommonObject;
  */
 public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IDao<MODEL> {
 
+    // TODO: can we make all these fields private?
+
     /**
      * The table name
      */
-    protected String table;
+    private String table;
     /**
      * The meta table name
      */
@@ -30,6 +34,10 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends Ab
      * The {@link ModelUniqueIdManager} for this Dao
      */
     protected static ModelUniqueIdManager idManager;
+    /**
+     * The {@link DSLContext} for this Dao
+     */
+    @Autowired protected DSLContext dslContext;
 
     static {
         AbstractDao.idManager = ModelUniqueIdManager.getSingletonInstance();

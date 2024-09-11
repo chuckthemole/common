@@ -2,6 +2,10 @@ package com.rumpus.common.Config;
 
 import javax.sql.DataSource;
 
+import org.jooq.DSLContext;
+import org.jooq.SQL;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +20,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import com.rumpus.common.AbstractCommonObject;
 
 /**
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.
@@ -40,13 +46,14 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
  */
 @org.springframework.boot.context.properties.ConfigurationProperties(prefix = "properties")
 @org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.YamlPropertySourceFactory.class)
-public abstract class AbstractCommonConfig extends com.rumpus.common.AbstractCommonObject {
+public abstract class AbstractCommonConfig extends AbstractCommonObject {
 
     protected static final String BEAN_PORT_MANAGER = "portManager";
     protected static final String BEAN_JDBC_USER_DETAILS_MANAGER = "jdbcUserDetailsManager";
     protected static final String BEAN_AUTHENTICATION_PROVIDER = "authenticationProvider";
     protected static final String BEAN_PASSWORD_ENCODER = "passwordEncoder";
     protected static final String BEAN_DATA_SOURCE = "dataSource";
+    protected static final String BEAN_SQL_DIALECT = "sqlDialect";
 
     protected Environment environment;
     @Autowired protected ApplicationContext applicationContext;
@@ -130,7 +137,22 @@ public abstract class AbstractCommonConfig extends com.rumpus.common.AbstractCom
 	}
 
     @Bean
-    JedisConnectionFactory jedisConnectionFactory() {
+    abstract public String sqlDialect();
+
+    @Bean
+    @DependsOn({AbstractCommonConfig.BEAN_DATA_SOURCE, AbstractCommonConfig.BEAN_SQL_DIALECT})
+    public DSLContext dslContext() {
+        SQLDialect sqlDialect;
+        try {
+            sqlDialect = SQLDialect.valueOf(this.sqlDialect());
+        } catch (IllegalArgumentException e) {
+            sqlDialect = SQLDialect.DEFAULT;
+        }
+        return DSL.using(this.dataSource(), sqlDialect);
+    }
+
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConFactory = new JedisConnectionFactory();
         RedisStandaloneConfiguration redisStandaloneConfiguration = jedisConFactory.getStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(

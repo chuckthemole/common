@@ -38,11 +38,15 @@ public class ApiDBJdbcUsers
 
     private JdbcUserDetailsManager manager;
 
-    public ApiDBJdbcUsers(final String name, JdbcUserDetailsManager manager, String table, RowMapper<USER> mapper) {
-        super(name, manager.getDataSource(), table, mapper);
-        this.manager = manager;
-        this.manager.setJdbcTemplate(super.jdbc.getJdbcTemplate()); // TODO: may not need this. look into it.
-        this.setDefaultQueries();
+    public ApiDBJdbcUsers(
+        final String name,
+        JdbcUserDetailsManager manager,
+        String table,
+        RowMapper<USER> mapper) {
+            super(name, manager.getDataSource(), table, mapper);
+            this.manager = manager;
+            this.manager.setJdbcTemplate(CommonJdbc.getInstance().getJdbcTemplate()); // TODO: may not need this. look into it.
+            this.setDefaultQueries();
     }
 
     public UserDetails getUserDetails(String username) {
@@ -147,7 +151,7 @@ public class ApiDBJdbcUsers
             EMAIL, newUser.getEmail(),
             ID, !newUser.hasId() ? NO_ID : newUser.getId() // TODO: should check that the id is unique if we getId() here
         );
-        sqlBuilder.insert(this.table, columnValues);
+        sqlBuilder.insert(this.getTable(), columnValues);
         LOG(sqlBuilder.toString());
         super.onInsert(newUser, sqlBuilder.toString());
         // create user in user meta table

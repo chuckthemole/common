@@ -32,7 +32,7 @@ import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
  * - Simplifies JDBC operations by managing `JdbcTemplate` and `NamedParameterJdbcTemplate` objects.
  * - Ensures that the `DataSource` is set once and shared across the application.
  */
-public class CommonJdbc extends AbstractCommonObject {
+final public class CommonJdbc extends AbstractCommonObject {
 
     /**
      * Wrapper for SimpleJdbc using the CommonJdbc instance.
@@ -44,14 +44,14 @@ public class CommonJdbc extends AbstractCommonObject {
          */
         private static Map<String, ?> simpleExecuteCall(Map<String, ?> parameters) {
             SqlParameterSource parameterSource = new MapSqlParameterSource().addValues(parameters);
-            return new SimpleJdbcCall(commonJdbcSingleton.getJdbcTemplate()).execute(parameterSource);
+            return new SimpleJdbcCall(CommonJdbc.commonJdbcSingleton.getJdbcTemplate()).execute(parameterSource);
         }
 
         /**
          * Insert a row into the database using the SimpleJdbcInsert.
          */
         private static int simpleInsert(final String table, final Map<String, ?> parameters) {
-            return new SimpleJdbcInsert(commonJdbcSingleton.getJdbcTemplate()).withTableName(table).execute(parameters);
+            return new SimpleJdbcInsert(CommonJdbc.commonJdbcSingleton.getJdbcTemplate()).withTableName(table).execute(parameters);
         }
     }
 
@@ -84,6 +84,15 @@ public class CommonJdbc extends AbstractCommonObject {
     }
 
     /**
+     * Method to retrieve the singleton instance.
+     * 
+     * @return the singleton instance of CommonJdbc.
+     */
+    protected static CommonJdbc getInstance() {
+        return CommonJdbc.commonJdbcSingleton;
+    }
+
+    /**
      * Method to retrieve the singleton instance and set the DataSource.
      * This method uses double-checked locking to ensure thread-safety while avoiding unnecessary synchronization.
      * 
@@ -92,15 +101,15 @@ public class CommonJdbc extends AbstractCommonObject {
      */
     protected static CommonJdbc createAndSetDataSource(DataSource dataSource) {
         // First check if the singleton is null before entering the synchronized block for efficiency.
-        if (commonJdbcSingleton == null) {
+        if (CommonJdbc.commonJdbcSingleton == null) {
             synchronized (CommonJdbc.class) {
                 // Double-check if the instance is still null to ensure only one thread creates the instance.
-                if (commonJdbcSingleton == null) {
-                    commonJdbcSingleton = new CommonJdbc(dataSource);
+                if (CommonJdbc.commonJdbcSingleton == null) {
+                    CommonJdbc.commonJdbcSingleton = new CommonJdbc(dataSource);
                 }
             }
         }
-        return commonJdbcSingleton; // Return the singleton instance.
+        return CommonJdbc.commonJdbcSingleton; // Return the singleton instance.
     }
 
     /**
