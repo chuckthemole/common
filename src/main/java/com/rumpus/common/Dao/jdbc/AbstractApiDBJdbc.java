@@ -23,7 +23,7 @@ import org.jooq.Query;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> extends AbstractDao<MODEL> {
+public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> extends AbstractDao<MODEL> {
 
     /**
      * The {@link CommonJdbc} for this Dao
@@ -168,11 +168,11 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL>> exte
         }, keyHolder);
 
         // TODO:i don't think we need to get the key here. 
-        if(keyHolder.getKey() != null) {
-            model.setKey(keyHolder);
-        } else {
-            model.setKey(null);
-        }
+        // if(keyHolder.getKey() != null) {
+        //     model.setKey(keyHolder);
+        // } else {
+        //     model.setKey(null);
+        // }
         
         return model;
     }

@@ -5,7 +5,7 @@ import com.rumpus.common.Model.AbstractModel;
 /**
  * Using this for testing purposes. Should probably define the model type in the future.
  */
-public class LRUCacheIntModel extends AbstractLRUCache<Integer, CacheElement<Integer, ? extends AbstractModel<?>>> {
+public class LRUCacheIntModel extends AbstractLRUCache<Integer, CacheElement<Integer, ? extends AbstractModel<?, java.util.UUID>>> {
 
     private static final String NAME = "LRUCacheIntModel";
 

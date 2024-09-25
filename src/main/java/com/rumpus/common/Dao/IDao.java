@@ -15,7 +15,7 @@ import com.rumpus.common.Model.AbstractModel;
  * @see AbstractModel
  * @see AbstractDao
  */
-public interface IDao<MODEL extends AbstractModel<MODEL>> extends ICommon {
+public interface IDao<MODEL extends AbstractModel<MODEL, ?>> extends ICommon {
 
     /**
      * Get a model by its id

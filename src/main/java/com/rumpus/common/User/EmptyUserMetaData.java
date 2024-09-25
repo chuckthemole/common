@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.util.Map;
 
 import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 public class EmptyUserMetaData<META extends AbstractCommonUserMetaData<META>> extends AbstractCommonUserMetaData<META> {
 
@@ -26,8 +28,21 @@ public class EmptyUserMetaData<META extends AbstractCommonUserMetaData<META>> ex
 
     @Override
     public TypeAdapter<META> createTypeAdapter() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTypeAdapter'");
+        return new TypeAdapter<META>() {
+
+            @Override
+            public void write(JsonWriter out, META value) throws IOException {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'write'");
+            }
+
+            @Override
+            public META read(JsonReader in) throws IOException {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'read'");
+            }
+            
+        };
     }
 
     @Override

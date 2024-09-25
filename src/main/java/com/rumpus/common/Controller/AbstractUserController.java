@@ -162,7 +162,7 @@ abstract public class AbstractUserController
             // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1, user.length() - 1) : user);
             LogBuilder log = new LogBuilder(true, "Update this user: ", user.toString());
             log.info();
-            if(this.userService.update(user.getId(), user) != null) { // if user was updated successfully, return session with status updateed
+            if(this.userService.update(user.getId().toString(), user) != null) { // if user was updated successfully, return session with status updateed
                 session.setAttribute("status", "user updated");
                 return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED);
 

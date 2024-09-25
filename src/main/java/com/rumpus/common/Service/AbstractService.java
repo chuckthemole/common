@@ -8,7 +8,7 @@ import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractService<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL> {
+abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IService<MODEL> {
 
     /**
      * The data access object for this service.

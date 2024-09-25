@@ -47,7 +47,7 @@ public class CommonWebSession implements WebSession {
 
     @Override
     public String getId() {
-        return this.session.getId();
+        return this.session.getId().toString();
     }
 
     @Override

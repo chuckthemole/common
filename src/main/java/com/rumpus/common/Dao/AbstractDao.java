@@ -14,7 +14,7 @@ import com.rumpus.common.AbstractCommonObject;
  * Abstract Data Access Object (Dao)
  * Implementations of {@link IDao} should extend this class
  */
-public abstract class AbstractDao<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IDao<MODEL> {
+public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IDao<MODEL> {
 
     // TODO: can we make all these fields private?
 

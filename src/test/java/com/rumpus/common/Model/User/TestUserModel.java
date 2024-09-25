@@ -15,6 +15,8 @@ import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractMetaData;
+import com.rumpus.common.Model.IModelIdManager;
+import com.rumpus.common.Model.SqlIdManager;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
@@ -53,7 +55,7 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
         user.setUsername(userMap.containsKey(USERNAME) ? (String) userMap.get(USERNAME) : EMPTY_FIELD);
         user.setUserPassword(userMap.containsKey(PASSWORD) ? (String) userMap.get(PASSWORD) : EMPTY_FIELD);
         user.setEmail(userMap.containsKey(EMAIL) ? (String) userMap.get(EMAIL) : EMPTY_FIELD);
-        user.setId(userMap.containsKey(ID) ? (String) userMap.get(ID) : EMPTY_FIELD);
+        user.setId(userMap.containsKey(ID) ? (java.util.UUID) userMap.get(ID) : EMPTY_UUID);
 
         // user meta data
         AbstractCommonUserMetaData<TestUserModelMetaData> meta = null;
@@ -79,13 +81,6 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
     public void serialize(TestUserModel object, OutputStream outputStream) throws IOException {
         LOG("TestUserModel::serialize()");
         this.getTypeAdapter().write(new JsonWriter(new OutputStreamWriter(outputStream)), object);
-    }
-
-    @Override
-    public Map<String, Object> getModelAttributesMap() {
-        LOG("TestUserModel::getModelAttributesMap()");
-        Map<String, Object> modelAttributesMap = Map.of(ID, this.getId(), EMAIL, this.getEmail());
-        return modelAttributesMap;
     }
 
     @Override
@@ -156,6 +151,11 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
                 return user;
             }
         };
+    }
+
+    @Override
+    public IModelIdManager getIdManager() {
+        return new SqlIdManager();
     }  
 }
 

@@ -37,7 +37,7 @@ import com.rumpus.common.util.Pair;
  * 
  * @param <MODEL> the model to map to
  */
-abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements RowMapper<MODEL> {
+abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements RowMapper<MODEL> {
     
     /**
      * The function to map the result set to the model.

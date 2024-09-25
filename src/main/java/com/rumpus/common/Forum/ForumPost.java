@@ -5,18 +5,21 @@ import java.io.OutputStream;
 import java.util.Map;
 
 import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractMetaData;
 import com.rumpus.common.Model.AbstractModel;
+import com.rumpus.common.Model.IModelIdManager;
 
 /**
  * Model for a single post
  */
-public class ForumPost extends AbstractModel<ForumPost> {
+public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
 
     private static final String GHOST_ID = "GHOST_ID";
     private static final String GHOST_BODY = "GHOST_BODY";
-    private final String userId; // id of user that makes post
+    private String userId; // id of user that makes post
     private ForumPostMeta metaData;
     private String body;
     private static final String MODEL_NAME = "ForumPost";
@@ -43,9 +46,9 @@ public class ForumPost extends AbstractModel<ForumPost> {
         return this.body;
     }
 
-    // public void setUserId(String userId) {
-    //     this.userId = userId;
-    // }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getUserId() {
         return userId;
@@ -65,23 +68,45 @@ public class ForumPost extends AbstractModel<ForumPost> {
         throw new UnsupportedOperationException("Unimplemented method 'serialize'");
     }
 
-    @Override
-    public Map<String, Object> getModelAttributesMap() {
-        LOG("ForumPost::getModelAtrributesMap()");
-        return(
-            Map.of(
-                "post_id", this.getId() != null ? this.getId() : EMPTY_FIELD, // id of this forum post
-                "user_id", this.userId != null ? this.userId : EMPTY_FIELD, // id of user that created this forum post
-                // "meta", this.metaData, // ForumPostMeta
-                "body", this.body != null ? this.body : EMPTY_FIELD // forum post content
-            )
-        );
-    }
-
+    // TODO: started this type adapter, need to finish.
     @Override
     public TypeAdapter<ForumPost> createTypeAdapter() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTypeAdapter'");
+        return new TypeAdapter<ForumPost>() {
+
+            @Override
+            public void write(JsonWriter out, ForumPost value) throws IOException {
+                out.beginObject();
+                out.name("userId");
+                out.value(value.getUserId());
+                out.name("body");
+                out.value(value.getBody());
+                out.name("metaData");
+                out.endObject();
+            }
+
+            @Override
+            public ForumPost read(JsonReader in) throws IOException {
+                ForumPost forumPost = ForumPost.createGhost();
+                in.beginObject();
+                String fieldname = null;
+
+                while (in.hasNext()) {
+                    fieldname = in.nextName();
+                    if("userId".equals(fieldname)) {
+                        forumPost.userId = in.nextString();
+                    }
+                    if("body".equals(fieldname)) {
+                        forumPost.body = in.nextString();
+                    }
+                    if("metaData".equals(fieldname)) {
+                        // forumPost.metaData = in.nextString();
+                    }
+                }
+                in.endObject();
+                return forumPost;
+            }
+            
+        };
     }
 
     @Override
@@ -147,13 +172,38 @@ public class ForumPost extends AbstractModel<ForumPost> {
 
         @Override
         public TypeAdapter<ForumPostMeta> createTypeAdapter() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'createTypeAdapter'");
+            return new TypeAdapter<ForumPostMeta>() {
+
+                @Override
+                public void write(JsonWriter out, ForumPostMeta value) throws IOException {
+                    // TODO Auto-generated method stub
+                    throw new UnsupportedOperationException("Unimplemented method 'write'");
+                }
+
+                @Override
+                public ForumPostMeta read(JsonReader in) throws IOException {
+                    // TODO Auto-generated method stub
+                    throw new UnsupportedOperationException("Unimplemented method 'read'");
+                }
+                
+            };
         }
 
         @Override
         public Map<String, Object> getMetaAttributesMap() {
             return Map.of(AbstractMetaData.NAME_KEY, NAME, AbstractMetaData.CREATION_TIME_KEY, this.getCreationTime());
         }
+    }
+
+    @Override
+    public int compareTo(ForumPost o) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
+    }
+
+    @Override
+    public IModelIdManager getIdManager() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIdManager'");
     }
 }

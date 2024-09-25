@@ -3,6 +3,8 @@ package com.rumpus.common;
 import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
 
+import java.util.UUID;
+
 /**
  * TODO: maybe make this an interface and have AbstractCommonObject implement it?
  * <p>
@@ -15,6 +17,7 @@ public interface ICommon {
 
     public final static String NO_ID = String.valueOf(-1);
 
+    public final static UUID EMPTY_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
     public final static String EMPTY_FIELD = "EMPTY_FIELD";
     public final static String NO_NAME = String.valueOf("NO_NAME");
     public final static String NO_PASS = String.valueOf("NO_PASS");

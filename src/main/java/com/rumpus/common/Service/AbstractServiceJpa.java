@@ -8,7 +8,7 @@ import com.rumpus.common.Dao.IDaoJpa;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject implements IService<MODEL> {
+abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IService<MODEL> {
 
     /**
      * The data access object for this service.

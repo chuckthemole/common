@@ -68,7 +68,7 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSe
             for(String setId : AbstractUniqueIdManager.uniqueIds.keySet()) {
                 listOfIds.append("  ").append(setId).append("\n");
             }
-            LOG("Set of ids with name '", name, "' does not exist.\nNames of available sets:\n", listOfIds.toString());
+            LOG("Set of ids with name '", name, "' does not exist.\nNames of available sets:\n", listOfIds.toString(), "\n");
             return null;
         }
     }

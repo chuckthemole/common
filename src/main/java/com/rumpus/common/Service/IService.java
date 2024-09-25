@@ -16,7 +16,7 @@ import com.rumpus.common.Model.AbstractModel;
  * This interface is used by the {@link AbstractService} class
  */
 @Service
-public interface IService<MODEL extends AbstractModel<MODEL>> extends IManageable {
+public interface IService<MODEL extends AbstractModel<MODEL, ?>> extends IManageable {
 
     /**
      * Get the MODEL with the given id

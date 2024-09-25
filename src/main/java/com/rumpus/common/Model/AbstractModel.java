@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import org.springframework.core.serializer.Serializer;
-import org.springframework.jdbc.support.KeyHolder;
 
 import jakarta.persistence.Id;
 
@@ -14,29 +13,66 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
-import com.rumpus.common.Builder.LogBuilder;
 
 import jakarta.persistence.MappedSuperclass;
 
+/**
+ * Abstract Model
+ * 
+ * @param <MODEL> the model type
+ */
 @MappedSuperclass
-public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends AbstractCommonObject
-    implements Serializable, Serializer<MODEL>, Comparable<AbstractModel<MODEL>> {
-
-    protected static final String NAME = "Model";
+public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID> extends AbstractCommonObject
+    implements Serializable, Serializer<MODEL>, Comparable<MODEL> {
 
     /**
      * The id of the model
      */
-    @Id private String id; // TODO: will have to use org.springframework.data.annotation.Id for NoSQL. Need to figure out how to handle this.
-
-    @JsonIgnore transient protected CommonKeyHolder key;
+    @Id private ID id; // TODO: will have to use org.springframework.data.annotation.Id for NoSQL. Need to figure out how to handle this.
     
+    /**
+     * The type adapter for this model
+     */
     @JsonIgnore transient private TypeAdapter<MODEL> typeAdapter;
 
-    // Ctors
     public AbstractModel(final String name) {
         super(name);
+        this.typeAdapter = this.createTypeAdapter();
     }
+
+    /******************************************************************************
+     *                       ID management / JSON                                 *
+     * ----------------------------------------------------------------------------
+     *  Purpose:                                                                  *
+     * ----------------------------------------------------------------------------
+     *****************************************************************************/
+
+    /**
+     * Generate a new ID for this model
+     */
+    public void generateId() {
+        this.id = getIdManager().generateId();
+    }
+
+    /**
+     * Validate the ID of this model
+     * 
+     * @return true if the ID is valid, false otherwise
+     */
+    public boolean validateId() {
+        return getIdManager().validateId(this.id);
+    }
+
+    /**
+     * Abstract method to implement the ID manager.
+     * 
+     * TODO: the ID manager should be a singleton, so this should be a static method, or a static member variable.
+     * for now, child class should have a static member variable, idManager, that implements and is used to return here.
+     * 
+     * @return the ID manager for this model
+     */
+    @JsonIgnore
+    public abstract IModelIdManager<ID> getIdManager();
 
     /**
      * Abstract method to implement type adapter creation.
@@ -45,34 +81,23 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends 
      */
     abstract public TypeAdapter<MODEL> createTypeAdapter();
 
-    /**
-     * Abstract method for return this model's attributes as a map
-     * Should be implemented in each model similar to below:
-     * {
-     *   Map<String, Object> modelAttributesMap = Map.of(ID, this.id, KEYHOLDER, this.key);
-     *   return modelAttributesMap;
-     * }
-     */
-    abstract public java.util.Map<String, Object> getModelAttributesMap();
+    //******************************************************************************
+    //*                      access/getters/setter                                 *
+    //* ----------------------------------------------------------------------------
+    //*  Purpose: Isn't it obvious                                                 *
+    //* ----------------------------------------------------------------------------
+    //******************************************************************************
 
-    public String getId() {
+    public ID getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(ID id) {
         this.id = id;
     }
 
     public boolean hasId() {
-        return this.id == null || this.id == NO_ID || this.id == EMPTY_FIELD ? false : true;
-    }
-
-    public KeyHolder getKey() {
-        return this.key;
-    }
-
-    public void setKey(CommonKeyHolder key) {
-        this.key = key;
+        return this.id != null;
     }
 
     public TypeAdapter<MODEL> getTypeAdapter() {
@@ -83,43 +108,25 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject> extends 
         this.typeAdapter = typeAdapter;
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(NAME).append("  id: ").append(id);
-        return sb.toString();
-    }
-
     public boolean equals(Object o) {
-        LOG("Model::equals()");
-        if (o == this) {
+        if (this == o) {
             return true;
-        } else if (!(o instanceof AbstractModel)) {
-            return false;
         }
-
-        @SuppressWarnings(UNCHECKED)
-        AbstractModel<MODEL> model = (AbstractModel<MODEL>) o;
-
-        if(!this.id.equals(model.id)) {
-            LogBuilder log = new LogBuilder(true, "\nIds are not equal", "\nModel 1: ", this.getId(), "\nModel 2: ", model.getId());
-            log.info();
-            return false;
+    
+        // Ensure the object is an instance of AbstractModel
+        if (o instanceof AbstractModel<?, ?>) {
+            AbstractModel<?, ?> model = (AbstractModel<?, ?>) o;
+    
+            // Compare the ids safely
+            if (this.id != null && this.id.equals(model.id)) {
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 
     @Override
     public void serialize(MODEL object, OutputStream outputStream) throws IOException {
-        LOG("AbstractModel::serialize()");
         this.getTypeAdapter().write(new JsonWriter(new OutputStreamWriter(outputStream)), object);
-    }
-
-    @Override
-    public int compareTo(AbstractModel<MODEL> model) {
-        return this.id.compareTo(model.id);
-    }
-
-    protected boolean idIsEqual(AbstractModel<MODEL> model) {
-        return this.id.equals(model.id) ? true : false;
     }
 }

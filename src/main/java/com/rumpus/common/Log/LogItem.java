@@ -2,13 +2,13 @@ package com.rumpus.common.Log;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
 
 import com.google.gson.TypeAdapter;
 import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Model.AbstractModel;
+import com.rumpus.common.Model.IModelIdManager;
 
-public class LogItem extends AbstractModel<LogItem> {
+public class LogItem extends AbstractModel<LogItem, java.util.UUID> {
 
     private String logName;
     private String time;
@@ -74,19 +74,57 @@ public class LogItem extends AbstractModel<LogItem> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'serialize'");
     }
+    
+    // TODO: look at this createTypeAdapter method more. - chuck
     @Override
     public TypeAdapter<LogItem> createTypeAdapter() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTypeAdapter'");
-    }
-    @Override
-    public Map<String, Object> getModelAttributesMap() {
-        return Map.of(
-            "logName", this.logName,
-            "time", this.time,
-            "username", this.username,
-            "userId", this.userId,
-            "action", this.action);
+        return new TypeAdapter<LogItem>() {
+            @Override
+            public void write(com.google.gson.stream.JsonWriter out, LogItem value) throws IOException {
+                out.beginObject();
+                out.name("logName");
+                out.value(value.getLogName());
+                out.name("time");
+                out.value(value.getTime());
+                out.name("username");
+                out.value(value.getUsername());
+                out.name("userId");
+                out.value(value.getUserId());
+                out.name("action");
+                out.value(value.getAction());
+                out.endObject();
+            }
+
+            @Override
+            public LogItem read(com.google.gson.stream.JsonReader in) throws IOException {
+                in.beginObject();
+                String logName = null;
+                String time = null;
+                String username = null;
+                String userId = null;
+                String action = null;
+                while (in.hasNext()) {
+                    String name = in.nextName();
+                    if (name.equals("logName")) {
+                        logName = in.nextString();
+                    }
+                    if (name.equals("time")) {
+                        time = in.nextString();
+                    }
+                    if (name.equals("username")) {
+                        username = in.nextString();
+                    }
+                    if (name.equals("userId")) {
+                        userId = in.nextString();
+                    }
+                    if (name.equals("action")) {
+                        action = in.nextString();
+                    }
+                }
+                in.endObject();
+                return LogItem.create(logName, time, username, userId, action);
+            }
+        };
     }
 
     @Override
@@ -96,5 +134,17 @@ public class LogItem extends AbstractModel<LogItem> {
             " user id: ", this.userId,
             " action: ", this.action,
             " time: ", this.time);
+    }
+
+    @Override
+    public int compareTo(LogItem o) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
+    }
+
+    @Override
+    public IModelIdManager getIdManager() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIdManager'");
     }
 }

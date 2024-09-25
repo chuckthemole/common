@@ -5,7 +5,7 @@ import java.util.Optional;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Model.AbstractModel;
 
-public class AbstractRedis<MODEL extends AbstractModel<MODEL>> extends AbstractCommonObject {
+public class AbstractRedis<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject {
 
     IRedisRepository<MODEL> repository;
 

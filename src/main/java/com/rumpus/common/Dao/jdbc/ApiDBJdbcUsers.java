@@ -117,8 +117,8 @@ public class ApiDBJdbcUsers
             LogBuilder.logBuilderFromStringArgs("- - - User with username '", newUser.getUsername(), "' already exists in the db. Returning null...").info();
             return null;
         }
-        if(this.getById(newUser.getId()) != null) {
-            LogBuilder.logBuilderFromStringArgs("- - - User with id '", newUser.getId(), "' already exists in the db. Returning null...").info();
+        if(this.getById(newUser.getId().toString()) != null) {
+            LogBuilder.logBuilderFromStringArgs("- - - User with id '", newUser.getId().toString(), "' already exists in the db. Returning null...").info();
             return null;
         }
 
@@ -133,8 +133,11 @@ public class ApiDBJdbcUsers
         // newUser.attributes.remove(PASSWORD);
 
         // check if user has an id, if not assign.
+        LOG("Checking if user has an id...");
+        LOG("User has id: " + newUser.hasId());
+        LOG("User id: " + newUser.getId());
         if(!newUser.hasId()) {
-            newUser.setId(AbstractDao.idManager.generateAndReceiveIdForGivenSet(newUser.name()));
+            newUser.setId(java.util.UUID.fromString(AbstractDao.idManager.generateAndReceiveIdForGivenSet(newUser.name())));
         }
         newUser = this.simpleAddUser(newUser);
 
@@ -149,7 +152,7 @@ public class ApiDBJdbcUsers
         Map<String, String> columnValues = Map.of(
             USERNAME, newUser.getUsername(),
             EMAIL, newUser.getEmail(),
-            ID, !newUser.hasId() ? NO_ID : newUser.getId() // TODO: should check that the id is unique if we getId() here
+            ID, !newUser.hasId() ? NO_ID : newUser.getId().toString() // TODO: should check that the id is unique if we getId() here
         );
         sqlBuilder.insert(this.getTable(), columnValues);
         LOG(sqlBuilder.toString());
@@ -170,11 +173,11 @@ public class ApiDBJdbcUsers
         }
         @SuppressWarnings(value = {UNCHECKED})
         Map<String, Object> columnValues = Map.of(
-            USERNAME, newUser.getUsername(),
-            EMAIL, newUser.getEmail(),
+            USERNAME, newUser.getUsername() != null ? newUser.getUsername() : "",
+            EMAIL, newUser.getEmail() != null ? newUser.getEmail() : "",
             // should check id is in correct format too
             // ID, newUser.hasId() ? newUser.getId() : ApiDB.idManager.generateAndReceiveIdForGivenSet(newUser.name) // TODO: should check that the id is unique if we getId() here
-            ID, newUser.getId(),
+            ID, newUser.getId() != null ? newUser.getId() : ICommon.NO_ID,
             USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithCommonBlob((META) newUser.getMetaData())
             // USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithClassSerializer((META) newUser.getMetaData())
         );

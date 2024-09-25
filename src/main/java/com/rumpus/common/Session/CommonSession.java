@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,14 +14,20 @@ import java.util.Set;
 import org.springframework.session.Session;
 
 import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Model.AbstractModel;
+import com.rumpus.common.Model.IModelIdManager;
 import com.rumpus.common.util.Random;
 
 import jakarta.servlet.http.HttpSession;
 
-public class CommonSession extends AbstractModel<CommonSession> implements Session {
+public class CommonSession extends AbstractCommonObject implements Session {
 
     private static final String NAME = "CommonSession";
+
+    private String id;
 
     // common attributes
     public static final String UTC_TIME_DIFFERENCE = "UTC_TIME_DIFFERENCE";
@@ -48,8 +53,8 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         super(NAME);
         this.creationTime = Instant.now();
         if(initialize) {
-            this.setId(getUniqueId());
-            CommonSession.sessionIds.add(this.getId());
+            this.id = getUniqueId();
+            CommonSession.sessionIds.add(this.getId().toString());
             this.lastAccessedTime = Instant.now();
             this.attributes = new HashMap<>();
             this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
@@ -58,8 +63,8 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
     }
     public CommonSession(Session session) {
         super(NAME);
-        this.setId(session.getId());
-        CommonSession.sessionIds.add(this.getId());
+        this.id = session.getId();
+        CommonSession.sessionIds.add(this.getId().toString());
         this.creationTime = session.getCreationTime();
         this.lastAccessedTime = session.getLastAccessedTime();
         Set<String> names = session.getAttributeNames();
@@ -72,8 +77,8 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
     }
     public CommonSession(HttpSession session) {
         super(NAME);
-        this.setId(session.getId());
-        CommonSession.sessionIds.add(this.getId());
+        this.id = session.getId();
+        CommonSession.sessionIds.add(this.getId().toString());
 
         // try to parse creation time, if not, set to now()
         Instant tempCreationTime = Instant.MAX;
@@ -130,7 +135,7 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
             Duration maxInactiveInterval,
             boolean isExpired) {
         super(NAME);
-        this.setId(id);
+        this.id = id;
         CommonSession.sessionIds.add(id);
         this.attributes = attributes;
         this.creationTime = creationTime;
@@ -185,7 +190,7 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         String tempId = getUniqueId();
         sessionIds.add(tempId);
         this.setId(tempId);
-        return this.getId();
+        return this.getId().toString();
     }
 
     public String setNoId() {
@@ -263,21 +268,13 @@ public class CommonSession extends AbstractModel<CommonSession> implements Sessi
         }
         return tempId;
     }
-    @Override
-    public void serialize(CommonSession object, OutputStream outputStream) throws IOException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'serialize'");
+
+    public void setId(String id) {
+        this.id = id;
     }
+    
     @Override
-    public Map<String, Object> getModelAttributesMap() {
-        LOG("CommonSession::getModelAtrributesMap()");
-        // TODO Auto-generated method stub
-        LOG("Unimplemented method 'getModelAttributesMap'");
-        return Map.of();
-    }
-    @Override
-    public TypeAdapter<CommonSession> createTypeAdapter() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTypeAdapter'");
+    public String getId() {
+        return this.id;
     }
 }
