@@ -13,19 +13,25 @@ import com.rumpus.common.Model.AbstractModel;
 /**
  * Implementation of FileReader for reading JSON files.
  */
-final public class JsonReader implements IFileReader {
+final public class JsonReader extends AbstractFileReader {
 
+    /**
+     * Gson instance for parsing JSON content.
+     */
     private static final Gson gson = new Gson();
 
-    private JsonReader() {}
-    
+    // Private constructor and factory method
+    private JsonReader() {
+        super("JsonReader");
+    }
+
     public static JsonReader create() {
         return new JsonReader();
     }
 
     @Override
     public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(String filePath, Type type) {
-        String jsonContent = Reader.readFileAsString(filePath);
+        final String jsonContent = ReaderUtil.readFileAsString(filePath);
 
         if (jsonContent.isEmpty()) {
             LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
@@ -33,6 +39,7 @@ final public class JsonReader implements IFileReader {
         }
 
         try {
+
             MODEL[] models = gson.fromJson(jsonContent, type);
             return Optional.ofNullable(models);
         } catch (JsonParseException e) {
