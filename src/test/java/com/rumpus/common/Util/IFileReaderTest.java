@@ -9,9 +9,9 @@ import java.util.Optional;
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.User.TestUserModel;
-import com.rumpus.common.util.ModelReader.IFileReader;
-import com.rumpus.common.util.ModelReader.JsonReader;
-import com.rumpus.common.util.ModelReader.ReaderUtil;
+import com.rumpus.common.util.Reader.IFileReader;
+import com.rumpus.common.util.Reader.JsonReader;
+import com.rumpus.common.util.Reader.ReaderUtil;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

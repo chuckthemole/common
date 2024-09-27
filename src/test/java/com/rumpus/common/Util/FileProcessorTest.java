@@ -13,9 +13,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.rumpus.common.Model.User.TestUserModel;
-import com.rumpus.common.util.ModelReader.FileProcessor;
-import com.rumpus.common.util.ModelReader.IFileReader;
+import com.rumpus.common.util.Reader.FileProcessor;
+import com.rumpus.common.util.Reader.IFileReader;
 
+/**
+ * Test class for the FileProcessor class.
+ */
 public class FileProcessorTest {
 
     private static final String JSON_USERS_FILE = "src/test/java/com/rumpus/common/test_data/users/test_users.json";

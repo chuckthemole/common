@@ -1,4 +1,4 @@
-package com.rumpus.common.util.ModelReader;
+package com.rumpus.common.util.Reader;
 
 import java.util.Optional;
 import java.util.UUID;

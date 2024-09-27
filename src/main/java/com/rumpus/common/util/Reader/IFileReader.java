@@ -1,4 +1,4 @@
-package com.rumpus.common.util.ModelReader;
+package com.rumpus.common.util.Reader;
 
 import java.lang.reflect.Type;
 import java.util.Optional;

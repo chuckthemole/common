@@ -1,4 +1,4 @@
-package com.rumpus.common.util.ModelReader;
+package com.rumpus.common.util.Reader;
 
 import com.rumpus.common.AbstractCommonObject;
 
