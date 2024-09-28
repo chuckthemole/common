@@ -13,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.rumpus.common.Model.User.TestUserModel;
-import com.rumpus.common.util.Reader.FileProcessor;
-import com.rumpus.common.util.Reader.IFileReader;
+import com.rumpus.common.util.FileIO.FileProcessor;
+import com.rumpus.common.util.FileIO.IFileReader;
 
 /**
  * Test class for the FileProcessor class.

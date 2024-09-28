@@ -1,4 +1,4 @@
-package com.rumpus.common.util.Reader;
+package com.rumpus.common.util.FileIO;
 
 import java.util.Optional;
 import java.util.UUID;

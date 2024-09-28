@@ -1,4 +1,4 @@
-package com.rumpus.common.util.Reader;
+package com.rumpus.common.util.FileIO;
 
 import java.io.IOException;
 import java.nio.file.Files;

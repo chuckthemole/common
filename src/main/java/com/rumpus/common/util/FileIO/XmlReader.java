@@ -1,4 +1,4 @@
-package com.rumpus.common.util.Reader;
+package com.rumpus.common.util.FileIO;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 /**
  * TODO: Look into using com.fasterxml.jackson.dataformat.xml.XmlMapper for parsing XML content.
  */
-public class XmlReader extends AbstractFileReader {
+final public class XmlReader extends AbstractFileIO {
 
     private XmlReader() {
         super("XmlReader");
@@ -70,5 +70,16 @@ public class XmlReader extends AbstractFileReader {
     private static void LOG_THIS(LogLevel level, String... args) {
         ICommon.LOG(XmlReader.class, level, args);
     }
-    
+
+    @Override
+    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(String filePath, Type type) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'readModelFromFile'");
+    }
+
+    @Override
+    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath, MODEL[] models) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'writeModelsToFile'");
+    }    
 }

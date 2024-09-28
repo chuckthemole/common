@@ -1,4 +1,4 @@
-package com.rumpus.common.util.Reader;
+package com.rumpus.common.util.FileIO;
 
 import java.lang.reflect.Type;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import com.rumpus.common.Model.AbstractModel;
 /**
  * Implementation of FileReader for reading JSON files.
  */
-final public class JsonReader extends AbstractFileReader {
+final public class JsonReader extends AbstractFileIO {
 
     /**
      * Gson instance for parsing JSON content.
@@ -27,6 +27,25 @@ final public class JsonReader extends AbstractFileReader {
 
     public static JsonReader create() {
         return new JsonReader();
+    }
+
+    @Override
+    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(String filePath, Type type) {
+        final String jsonContent = ReaderUtil.readFileAsString(filePath);
+
+        if (jsonContent.isEmpty()) {
+            LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
+            return Optional.empty();
+        }
+
+        try {
+            MODEL model = gson.fromJson(jsonContent, type);
+            return Optional.ofNullable(model);
+        } catch (JsonParseException e) {
+            LOG_THIS(LogLevel.ERROR, "Error parsing JSON from file: " + filePath, e.getClass().getSimpleName(), e.getMessage());
+        }
+
+        return Optional.empty();
     }
 
     @Override
@@ -47,6 +66,12 @@ final public class JsonReader extends AbstractFileReader {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath, MODEL[] models) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'writeModelsToFile'");
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
