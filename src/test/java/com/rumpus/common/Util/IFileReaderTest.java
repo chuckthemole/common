@@ -7,11 +7,11 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 import com.rumpus.common.ICommon;
+import com.rumpus.common.FileIO.IFileReader;
+import com.rumpus.common.FileIO.JsonReader;
+import com.rumpus.common.FileIO.ReaderUtil;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.User.TestUserModel;
-import com.rumpus.common.util.FileIO.IFileReader;
-import com.rumpus.common.util.FileIO.JsonReader;
-import com.rumpus.common.util.FileIO.ReaderUtil;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

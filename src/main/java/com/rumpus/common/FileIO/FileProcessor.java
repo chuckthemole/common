@@ -1,4 +1,4 @@
-package com.rumpus.common.util.FileIO;
+package com.rumpus.common.FileIO;
 
 import java.util.Optional;
 import java.util.UUID;

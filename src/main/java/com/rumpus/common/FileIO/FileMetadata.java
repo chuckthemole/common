@@ -1,4 +1,4 @@
-package com.rumpus.common.util.FileIO;
+package com.rumpus.common.FileIO;
 
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;

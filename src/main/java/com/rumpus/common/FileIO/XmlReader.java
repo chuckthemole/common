@@ -1,4 +1,4 @@
-package com.rumpus.common.util.FileIO;
+package com.rumpus.common.FileIO;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
