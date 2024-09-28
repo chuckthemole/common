@@ -54,3 +54,5 @@ src/main/resources/static/built
 ######################
 
 test.log
+
+.DS_Store

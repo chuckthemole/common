@@ -84,6 +84,9 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
 
     @Override
     public Optional<String> getLastError() {
+        if(lastError.isEmpty()) {
+            return Optional.empty();
+        }
         return Optional.of(lastError);
     }
 

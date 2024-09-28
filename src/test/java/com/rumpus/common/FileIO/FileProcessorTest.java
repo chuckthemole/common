@@ -1,4 +1,4 @@
-package com.rumpus.common.Util;
+package com.rumpus.common.FileIO;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -12,8 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.rumpus.common.FileIO.FileProcessor;
-import com.rumpus.common.FileIO.IFileReader;
 import com.rumpus.common.Model.User.TestUserModel;
 
 /**

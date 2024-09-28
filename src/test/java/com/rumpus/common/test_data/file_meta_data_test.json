@@ -1,0 +1,26 @@
+[
+    {
+        "fileName": "test_file_1.txt",
+        "fileSize": 100,
+        "fileType": "txt",
+        "fileExtension": "txt",
+        "fileLocation": "test_location_1",
+        "fileContent": "test_content_1"
+    },
+    {
+        "fileName": "test_file_2.txt",
+        "fileSize": 200,
+        "fileType": "txt",
+        "fileExtension": "txt",
+        "fileLocation": "test_location_2",
+        "fileContent": "test_content_2"
+    },
+    {
+        "fileName": "test_file_3.txt",
+        "fileSize": 300,
+        "fileType": "txt",
+        "fileExtension": "txt",
+        "fileLocation": "test_location_3",
+        "fileContent": "test_content_3"
+    }
+]
