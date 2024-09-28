@@ -11,7 +11,7 @@ import com.rumpus.common.Model.AbstractModel;
  *
  * @param <MODEL> The type of model to be returned after parsing.
  */
-public interface IFileReader extends ICommon {
+public interface IFileIO extends ICommon {
 
     /**
      * Reads and parses multiple models from the file at the given path.

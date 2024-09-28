@@ -10,7 +10,7 @@ import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 /**
  * Utility class for reading file contents.
  */
-final public class ReaderUtil {
+final public class FileIOUtil {
 
     /**
      * Reads the contents of a file as a string.
@@ -34,7 +34,7 @@ final public class ReaderUtil {
      * @param args Arguments to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(ReaderUtil.class, args);
+        ICommon.LOG(FileIOUtil.class, args);
     }
 
     /**
@@ -44,6 +44,6 @@ final public class ReaderUtil {
      * @param args  The log messages.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(ReaderUtil.class, level, args);
+        ICommon.LOG(FileIOUtil.class, level, args);
     }
 }

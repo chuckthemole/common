@@ -24,7 +24,7 @@ public class FileProcessorTest {
     private static final String JSON_USERS_FILE_INVALID = "src/test/java/com/rumpus/common/test_data/users/invalid_users_file.json";
 
     @Mock
-    private IFileReader mockFileReader;
+    private IFileIO mockFileReader;
 
     @InjectMocks
     private FileProcessor fileProcessor;

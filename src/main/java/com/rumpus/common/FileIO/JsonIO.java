@@ -13,7 +13,7 @@ import com.rumpus.common.Model.AbstractModel;
 /**
  * Implementation of FileReader for reading JSON files.
  */
-final public class JsonReader extends AbstractFileIO {
+final public class JsonIO extends AbstractFileIO {
 
     /**
      * Gson instance for parsing JSON content.
@@ -21,17 +21,17 @@ final public class JsonReader extends AbstractFileIO {
     private static final Gson gson = new Gson();
 
     // Private constructor and factory method
-    private JsonReader() {
+    private JsonIO() {
         super("JsonReader");
     }
 
-    public static JsonReader create() {
-        return new JsonReader();
+    public static JsonIO create() {
+        return new JsonIO();
     }
 
     @Override
     public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(String filePath, Type type) {
-        final String jsonContent = ReaderUtil.readFileAsString(filePath);
+        final String jsonContent = FileIOUtil.readFileAsString(filePath);
 
         if (jsonContent.isEmpty()) {
             LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
@@ -50,7 +50,7 @@ final public class JsonReader extends AbstractFileIO {
 
     @Override
     public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(String filePath, Type type) {
-        final String jsonContent = ReaderUtil.readFileAsString(filePath);
+        final String jsonContent = FileIOUtil.readFileAsString(filePath);
 
         if (jsonContent.isEmpty()) {
             LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
@@ -75,6 +75,6 @@ final public class JsonReader extends AbstractFileIO {
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(JsonReader.class, level, args);
+        ICommon.LOG(JsonIO.class, level, args);
     }
 }

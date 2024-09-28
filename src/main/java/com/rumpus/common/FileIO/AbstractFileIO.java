@@ -13,7 +13,7 @@ import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 /**
  * Abstract class for reading models from files.
  */
-abstract public class AbstractFileIO extends AbstractCommonObject implements IFileReader {
+abstract public class AbstractFileIO extends AbstractCommonObject implements IFileIO {
 
     /**
      * The last error message generated

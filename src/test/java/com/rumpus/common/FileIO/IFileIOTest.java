@@ -18,7 +18,7 @@ import org.mockito.MockedStatic;
  * Add tests for the readModelsFromFile method.
  * TODO: this will need to be done for xml when it is implemented.
  */
-class IFileReaderTest {
+class IFileIOTest {
 
     private static final String JSON_USERS_FILE = "src/test/java/com/rumpus/common/test_data/users/test_users.json";
     private static final String JSON_USER_FILE = "src/test/java/com/rumpus/common/test_data/users/test_user.json";
@@ -26,7 +26,7 @@ class IFileReaderTest {
     private static final String JSON_USERS_FILE_INVALID = "src/test/java/com/rumpus/common/test_data/users/invalid_users_file.json";
     private static final String JSON_META_DATA = "src/test/java/com/rumpus/common/test_data/file_meta_data_test.json";
     private static final int JSON_META_DATA_FILE_SIZE = 659;
-    private IFileReader jsonFileReader;
+    private IFileIO jsonFileReader;
 
     private static final String emptyJsonContent = "";
     private static final String invalidJsonContent = "{invalid json}";
@@ -129,28 +129,28 @@ class IFileReaderTest {
 
     @BeforeEach
     void setUp() {
-        this.jsonFileReader = JsonReader.create(); // Using the JsonReader implementation
+        this.jsonFileReader = JsonIO.create(); // Using the JsonReader implementation
     }
 
     @Test
     void testReadModelsFromFile_Success() {
 
         // Mocking the Reader.readFileAsString method
-        try (MockedStatic<ReaderUtil> readerMock = mockStatic(ReaderUtil.class)) {
-            readerMock.when(() -> ReaderUtil.readFileAsString(IFileReaderTest.JSON_USERS_FILE)).thenReturn(IFileReaderTest.jsonContent);
+        try (MockedStatic<FileIOUtil> readerMock = mockStatic(FileIOUtil.class)) {
+            readerMock.when(() -> FileIOUtil.readFileAsString(IFileIOTest.JSON_USERS_FILE)).thenReturn(IFileIOTest.jsonContent);
 
             // Act
             Optional<TestUserModel[]> result = this.jsonFileReader.readModelsFromFile(
-                IFileReaderTest.JSON_USERS_FILE,
+                IFileIOTest.JSON_USERS_FILE,
                 TestUserModel[].class);
 
             // Assert
             assertTrue(result.isPresent());
-            assertEquals(IFileReaderTest.jsonContentLength, result.get().length);
+            assertEquals(IFileIOTest.jsonContentLength, result.get().length);
 
             TestUserModel[] user = result.get();
             for (int i = 0; i < user.length; i++) {
-                assertEquals(IFileReaderTest.userNames[i], user[i].getUsername());
+                assertEquals(IFileIOTest.userNames[i], user[i].getUsername());
             }
         }
     }
@@ -159,12 +159,12 @@ class IFileReaderTest {
     void testReadModelsFromFile_EmptyFile() {
 
         // Mocking the Reader.readFileAsString method
-        try (MockedStatic<ReaderUtil> readerMock = mockStatic(ReaderUtil.class)) {
-            readerMock.when(() -> ReaderUtil.readFileAsString(IFileReaderTest.JSON_USERS_FILE_EMPTY)).thenReturn(IFileReaderTest.emptyJsonContent);
+        try (MockedStatic<FileIOUtil> readerMock = mockStatic(FileIOUtil.class)) {
+            readerMock.when(() -> FileIOUtil.readFileAsString(IFileIOTest.JSON_USERS_FILE_EMPTY)).thenReturn(IFileIOTest.emptyJsonContent);
 
             // Act
             Optional<TestUserModel[]> result = this.jsonFileReader.readModelsFromFile(
-                IFileReaderTest.JSON_USERS_FILE_EMPTY,
+                IFileIOTest.JSON_USERS_FILE_EMPTY,
                 TestUserModel[].class);
 
             // Assert
@@ -176,12 +176,12 @@ class IFileReaderTest {
     void testReadModelsFromFile_ParsingError() {
 
         // Mocking the Reader.readFileAsString method
-        try (MockedStatic<ReaderUtil> readerMock = mockStatic(ReaderUtil.class)) {
-            readerMock.when(() -> ReaderUtil.readFileAsString(IFileReaderTest.JSON_USERS_FILE_INVALID)).thenReturn(IFileReaderTest.invalidJsonContent);
+        try (MockedStatic<FileIOUtil> readerMock = mockStatic(FileIOUtil.class)) {
+            readerMock.when(() -> FileIOUtil.readFileAsString(IFileIOTest.JSON_USERS_FILE_INVALID)).thenReturn(IFileIOTest.invalidJsonContent);
 
             // Act
             Optional<TestUserModel[]> result = this.jsonFileReader.readModelsFromFile(
-                IFileReaderTest.JSON_USERS_FILE_INVALID,
+                IFileIOTest.JSON_USERS_FILE_INVALID,
                 TestUserModel[].class);
 
             // Assert
@@ -191,8 +191,8 @@ class IFileReaderTest {
 
     @Test
     void testReadModelFromFile_Success() {
-        try (MockedStatic<ReaderUtil> readerMock = mockStatic(ReaderUtil.class)) {
-            readerMock.when(() -> ReaderUtil.readFileAsString(JSON_USER_FILE)).thenReturn(
+        try (MockedStatic<FileIOUtil> readerMock = mockStatic(FileIOUtil.class)) {
+            readerMock.when(() -> FileIOUtil.readFileAsString(JSON_USER_FILE)).thenReturn(
                 "        {\n" +
                 "        \"userDetails\": {\n" +
                 "            \"username\": \"chuckthemole\",\n" +
@@ -204,7 +204,7 @@ class IFileReaderTest {
             );
 
             Optional<TestUserModel> result = this.jsonFileReader.readModelFromFile(
-                IFileReaderTest.JSON_USER_FILE,
+                IFileIOTest.JSON_USER_FILE,
                 TestUserModel.class);
             assertTrue(result.isPresent());
             assertEquals("chuckthemole", result.get().getUsername());
@@ -250,12 +250,12 @@ class IFileReaderTest {
     @Test
     void testReadRawFileContent_Success() {
         try (MockedStatic<Files> readerMock = mockStatic(Files.class)) {
-            final Path path = Path.of(IFileReaderTest.JSON_USERS_FILE);
-            readerMock.when(() -> Files.readString(path)).thenReturn(IFileReaderTest.jsonContent);
+            final Path path = Path.of(IFileIOTest.JSON_USERS_FILE);
+            readerMock.when(() -> Files.readString(path)).thenReturn(IFileIOTest.jsonContent);
 
-            Optional<String> result = this.jsonFileReader.readRawFileContent(IFileReaderTest.JSON_USERS_FILE);
+            Optional<String> result = this.jsonFileReader.readRawFileContent(IFileIOTest.JSON_USERS_FILE);
             assertTrue(result.isPresent());
-            assertEquals(IFileReaderTest.jsonContent, result.get());
+            assertEquals(IFileIOTest.jsonContent, result.get());
         }
     }
 
@@ -267,9 +267,9 @@ class IFileReaderTest {
 
     @Test
     void testGetFileMetadata_Success() {
-        Optional<FileMetadata> metadata = this.jsonFileReader.getFileMetadata(IFileReaderTest.JSON_META_DATA);
+        Optional<FileMetadata> metadata = this.jsonFileReader.getFileMetadata(IFileIOTest.JSON_META_DATA);
         assertTrue(metadata.isPresent());
-        assertEquals(IFileReaderTest.JSON_META_DATA_FILE_SIZE, metadata.get().getFileSize());
+        assertEquals(IFileIOTest.JSON_META_DATA_FILE_SIZE, metadata.get().getFileSize());
     }
 }
 

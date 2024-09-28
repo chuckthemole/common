@@ -21,14 +21,14 @@ import org.w3c.dom.Element;
 /**
  * TODO: Look into using com.fasterxml.jackson.dataformat.xml.XmlMapper for parsing XML content.
  */
-final public class XmlReader extends AbstractFileIO {
+final public class XmlIO extends AbstractFileIO {
 
-    private XmlReader() {
+    private XmlIO() {
         super("XmlReader");
     }
 
-    public static XmlReader create() {
-        return new XmlReader();
+    public static XmlIO create() {
+        return new XmlIO();
     }
 
     @Override
@@ -68,7 +68,7 @@ final public class XmlReader extends AbstractFileIO {
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(XmlReader.class, level, args);
+        ICommon.LOG(XmlIO.class, level, args);
     }
 
     @Override

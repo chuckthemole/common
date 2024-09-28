@@ -17,14 +17,14 @@ final public class FileProcessor {
      * <p>
      * Examples:
      * <p>
-     * - {@link JsonReader}
+     * - {@link JsonIO}
      * <p>
-     * - {@link XmlReader}
+     * - {@link XmlIO}
      */
-    private final IFileReader fileReader;
+    private final IFileIO fileReader;
 
     // Constructor accepting a FileReader (e.g., JsonFileReader, XmlFileReader)
-    public FileProcessor(IFileReader fileReader) {
+    public FileProcessor(IFileIO fileReader) {
         this.fileReader = fileReader;
     }
 
