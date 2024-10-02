@@ -1,5 +1,7 @@
 package com.rumpus.common.Model;
 
+import com.rumpus.common.AbstractCommonObject;
+
 /**
  * Parent class for AbstractMetaData.
  * <p>
@@ -7,9 +9,9 @@ package com.rumpus.common.Model;
  * <p>
  * This is needed since AbstractMetaData is Serializable. The parent class above the last Serializable class needs to have a no-arg constructor and AbstractCommonObject does not.
  */
-abstract public class AbstractMeta extends com.rumpus.common.AbstractCommonObject {
+abstract public class AbstractMeta extends AbstractCommonObject {
 
-    private static final String NAME = "AbstractMeta";
+    transient private static final String NAME = "AbstractMeta";
 
     public AbstractMeta() {
         super(NAME);

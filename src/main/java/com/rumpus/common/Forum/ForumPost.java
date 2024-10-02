@@ -165,31 +165,6 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
         }
 
         @Override
-        public void serialize(ForumPostMeta object, OutputStream outputStream) throws IOException {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'serialize'");
-        }
-
-        @Override
-        public TypeAdapter<ForumPostMeta> createTypeAdapter() {
-            return new TypeAdapter<ForumPostMeta>() {
-
-                @Override
-                public void write(JsonWriter out, ForumPostMeta value) throws IOException {
-                    // TODO Auto-generated method stub
-                    throw new UnsupportedOperationException("Unimplemented method 'write'");
-                }
-
-                @Override
-                public ForumPostMeta read(JsonReader in) throws IOException {
-                    // TODO Auto-generated method stub
-                    throw new UnsupportedOperationException("Unimplemented method 'read'");
-                }
-                
-            };
-        }
-
-        @Override
         public Map<String, Object> getMetaAttributesMap() {
             return Map.of(AbstractMetaData.NAME_KEY, NAME, AbstractMetaData.CREATION_TIME_KEY, this.getCreationTime());
         }

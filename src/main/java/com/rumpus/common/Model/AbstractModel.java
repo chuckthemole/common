@@ -32,6 +32,8 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID> exte
     
     /**
      * The type adapter for this model
+     * 
+     * TODO: take this out of here and use the serializer {@link com.rumpus.common.Serializer.AbstractCommonSerializer}
      */
     @JsonIgnore transient private TypeAdapter<MODEL> typeAdapter;
 

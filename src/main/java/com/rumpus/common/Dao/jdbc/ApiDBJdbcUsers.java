@@ -9,6 +9,8 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Blob.AbstractBlob;
+import com.rumpus.common.Blob.BlobUtil;
+import com.rumpus.common.Blob.IBlob;
 import com.rumpus.common.Blob.JdbcBlob;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
@@ -171,14 +173,14 @@ public class ApiDBJdbcUsers
             LogBuilder.logBuilderFromStringArgs("Given user is null, returning null.").error();
             return null;
         }
-        @SuppressWarnings(value = {UNCHECKED})
+        
         Map<String, Object> columnValues = Map.of(
             USERNAME, newUser.getUsername() != null ? newUser.getUsername() : "",
             EMAIL, newUser.getEmail() != null ? newUser.getEmail() : "",
             // should check id is in correct format too
             // ID, newUser.hasId() ? newUser.getId() : ApiDB.idManager.generateAndReceiveIdForGivenSet(newUser.name) // TODO: should check that the id is unique if we getId() here
             ID, newUser.getId() != null ? newUser.getId() : ICommon.NO_ID,
-            USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithCommonBlob((META) newUser.getMetaData())
+            USER_META_DATA, this.serializeUserMetaWithCommonBlob(newUser.getMetaData())
             // USER_META_DATA, (java.sql.Blob) this.serializeUserMetaWithClassSerializer((META) newUser.getMetaData())
         );
 
@@ -186,23 +188,26 @@ public class ApiDBJdbcUsers
         return newUser;
     }
 
-    private java.sql.Blob serializeUserMetaWithCommonBlob(META meta) {
+    private byte[] serializeUserMetaWithCommonBlob(META meta) {
         LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()", meta.toString()).info();
-        byte[] byteArray = AbstractBlob.serialize(meta);
-        return JdbcBlob.createFromByteArray(byteArray);
+        byte[] byteArray = BlobUtil.serialize(meta);
+        // return JdbcBlob.createFromByteArray(byteArray);
+        return byteArray;
     }
 
     // TODO: this needs to be tested more. I don't think it was working correctly last I tried. - chuck 2023/6/29
-    private java.sql.Blob serializeUserMetaWithClassSerializer(META meta) {
-        LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithClassSerializer()", meta.toString()).info();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
-            meta.serialize(meta, byteArrayOutputStream);
-        } catch (IOException e) {
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
-        }
-        return JdbcBlob.createFromByteArray(byteArrayOutputStream.toByteArray());
-    }
+    // private byte[] serializeUserMetaWithClassSerializer(META meta) {
+    //     LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithClassSerializer()", meta.toString()).info();
+    //     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    //     try {
+    //         meta.serialize(meta, byteArrayOutputStream);
+    //     } catch (IOException e) {
+    //         LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+    //     }
+    //     byte[] byteArray = byteArrayOutputStream.toByteArray();
+    //     // return JdbcBlob.createFromByteArray(byteArray);
+    //     return byteArray;
+    // }
 
     @Override
 	public USER update(String id, USER newUser) {

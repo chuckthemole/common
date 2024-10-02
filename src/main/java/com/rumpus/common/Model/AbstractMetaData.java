@@ -1,8 +1,13 @@
 package com.rumpus.common.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.TypeAdapter;
+
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Serializer.AbstractCommonSerializer;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * Abstract class for Model meta data. This holds some of the common member variables, like creationTime, and interface that each Model shares.
@@ -12,22 +17,23 @@ import com.rumpus.common.Builder.LogBuilder;
  * <p>
  * TODO: This class is implementing Serializable. According to Effective Java, this may not be a good idea. I should look into this more.
  */
-public abstract class AbstractMetaData<META extends AbstractMetaData<META>> extends AbstractMeta implements java.io.Serializable, org.springframework.core.serializer.Serializer<META> {
+public abstract class AbstractMetaData<
+    META extends AbstractMetaData<META>
+> extends AbstractMeta implements Serializable {
 
     private static final long serialVersionUID = META_DATA_UID;
 
-    private static final String NAME = "AbstractMetaData";
-    public static final String USER_CREATION_DATE_TIME = "user_creation_datetime";
-    protected static final String NAME_KEY = "name";
-    protected static final String CREATION_TIME_KEY = "creationTime";
+    transient public static final String USER_CREATION_DATE_TIME = "user_creation_datetime";
+    transient protected static final String NAME_KEY = "name";
+    transient protected static final String CREATION_TIME_KEY = "creationTime";
 
     protected String creationTime; // using epoch 1970
-    transient private TypeAdapter<META> typeAdapter; // keep this transient or will not serialize
 
-    public AbstractMetaData() {
-        super(NAME);
-        this.creationTime = String.valueOf(java.time.Instant.now().toEpochMilli());
-    }
+    /**
+     * Serializer for this object
+     */
+    private transient AbstractCommonSerializer<META> serializer;
+
     public AbstractMetaData(String name) {
         super(name);
         this.creationTime = String.valueOf(java.time.Instant.now().toEpochMilli());
@@ -48,13 +54,6 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
     }
 
     /**
-     * Abstract class to implement type adapter creation.
-     * 
-     * @return type adapter for this MetaData class
-     */
-    @JsonIgnore abstract public TypeAdapter<META> createTypeAdapter();
-
-    /**
      * Abstract method for return this MetaData's attributes as a map
      * Should be implemented in each model similar to below:
      * {
@@ -63,22 +62,6 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
      * }
      */
     @JsonIgnore abstract public java.util.Map<String, Object> getMetaAttributesMap();
-
-    /**
-     * 
-     * @return this type adapter
-     */
-    @JsonIgnore public TypeAdapter<META> getTypeAdapter() {
-        return this.typeAdapter;
-    }
-
-    /**
-     * 
-     * @param typeAdapter
-     */
-    @JsonIgnore public void setTypeAdapter(TypeAdapter<META> typeAdapter) {
-        this.typeAdapter = typeAdapter;
-    }
 
     /**
      * 
@@ -106,15 +89,16 @@ public abstract class AbstractMetaData<META extends AbstractMetaData<META>> exte
     }
 
     // overriding these serializer methods here. right now just using defaults but can customize
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+    protected void writeObject(ObjectOutputStream out) throws java.io.IOException {
         LOG("AbstractMetaData::writeObject()");
         out.defaultWriteObject();
     }
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+    protected void readObject(ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
         LOG("AbstractMetaData::readObject()");
         in.defaultReadObject();
     }
 
+    // TODO: should I be overriding equals and hashcode here? 2023/6/28
     @Override
     public boolean equals(Object o) {
 

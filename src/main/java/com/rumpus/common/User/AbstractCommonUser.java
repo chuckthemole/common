@@ -49,8 +49,9 @@ public abstract class AbstractCommonUser<
 
         /**
          * The {@link AbstractCommonUserMetaData} object.
+         * TODO: should I move this to AbstractModel?
          */
-        private AbstractCommonUserMetaData<USER_META> metaData;
+        private USER_META metaData;
 
         static {
             AbstractCommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // TODO: can I inject this?
@@ -138,11 +139,11 @@ public abstract class AbstractCommonUser<
             this.userPassword = userPassword;
         }
 
-        public AbstractCommonUserMetaData<USER_META> getMetaData() {
+        public USER_META getMetaData() {
             return this.metaData;
         }
 
-        public void setMetaData(AbstractCommonUserMetaData<USER_META> metaData) {
+        public void setMetaData(USER_META metaData) {
             this.metaData = metaData;
         }
 

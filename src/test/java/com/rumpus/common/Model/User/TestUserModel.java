@@ -58,10 +58,10 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
         user.setId(userMap.containsKey(ID) ? (java.util.UUID) userMap.get(ID) : EMPTY_UUID);
 
         // user meta data
-        AbstractCommonUserMetaData<TestUserModelMetaData> meta = null;
+        TestUserModelMetaData meta = null;
         if(userMap.containsKey(USER_META_DATA)) {
             // meta = TestUserModelMetaData.createFromListOfMaps((List<Map<String, String>>) userMap.get(USER_META_DATA));
-            meta = (AbstractCommonUserMetaData<TestUserModelMetaData>) userMap.get(USER_META_DATA);
+            meta = (TestUserModelMetaData) userMap.get(USER_META_DATA);
         }
 
         if(meta == null) {

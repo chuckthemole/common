@@ -26,7 +26,7 @@ public class EmptyUser<
             this.setEmail("EMPTY_EMAIL");
             this.setUsername("EMPTY_USERNAME");
             this.setUserDetails(CommonUserDetails.createEmptyUserDetails());
-            this.setMetaData(EmptyUserMetaData.createEmptyUserMetaData());
+            this.setMetaData(EmptyUserMetaData.<META>createEmptyUserMetaData());
             this.setPassword("EMPTY_PASSWORD");
             this.setTypeAdapter(null);
         }

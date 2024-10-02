@@ -51,7 +51,8 @@ final public class CommonJdbc extends AbstractCommonObject {
          * Insert a row into the database using the SimpleJdbcInsert.
          */
         private static int simpleInsert(final String table, final Map<String, ?> parameters) {
-            return new SimpleJdbcInsert(CommonJdbc.commonJdbcSingleton.getJdbcTemplate()).withTableName(table).execute(parameters);
+            final JdbcTemplate jdbcTemplate = CommonJdbc.commonJdbcSingleton.getJdbcTemplate();
+            return new SimpleJdbcInsert(jdbcTemplate).withTableName(table).execute(parameters);
         }
     }
 

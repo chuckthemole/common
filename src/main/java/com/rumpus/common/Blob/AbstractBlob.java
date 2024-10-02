@@ -1,180 +1,211 @@
 package com.rumpus.common.Blob;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
-import com.rumpus.common.Model.AbstractMetaData;
+import com.rumpus.common.Logger.CommonLogger;
+import com.rumpus.common.Logger.ICommonLogger;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Blob;
-
-// started here for inspo
-// https://stackoverflow.com/questions/14768439/deserialize-java-object-from-a-blob/17840811#17840811
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.io.OutputStream;
+import java.sql.SQLFeatureNotSupportedException;
 
 /**
- * Abstract helper class for blob handling (serialization).
- * Keeping the member variable blob here for now to be able to subclass if needed
+ * Abstract helper class for handling BLOB serialization and deserialization in database contexts.
+ * Provides methods for working with Java objects and SQL Blob types.
  * <p>
- * TODO: Write tests for this class. 2024/1/22 - chuck
+ * This class is designed to facilitate the conversion of Java objects to Blob types (serialization)
+ * and the reverse operation (deserialization).
  */
-public abstract class AbstractBlob<META extends AbstractMetaData<?>> extends com.rumpus.common.AbstractCommonObject implements Blob {
+public abstract class AbstractBlob extends AbstractCommonObject implements IBlob {
 
     protected Blob blob;
-    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(AbstractBlob.class);
+    private static final ICommonLogger LOG = CommonLogger.createLogger(AbstractBlob.class);
 
+    /**
+     * Constructs an AbstractBlob with a given name.
+     *
+     * @param name The name of the blob.
+     */
+    public AbstractBlob(final String name) {
+        super(name);
+        this.blob = null;
+    }
+
+    /**
+     * Constructs an AbstractBlob with a given name and Blob.
+     *
+     * @param name The name of the blob.
+     * @param blob The SQL Blob object.
+     */
     public AbstractBlob(final String name, Blob blob) {
         super(name);
         this.blob = blob;
     }
 
     /**
+     * Initialze the Blob object for this AbstractBlob.
+     * <p>
+     * This is needed if the Blob object is not set during construction.
      * 
-     * @param blob
-     * @param paramName
-     * @param fieldName
-     * @param value
-     * @return
+     * @param blob The Blob object to set.
      */
-    abstract public Blob updatedParamField(Blob blob, String paramName, String fieldName, String value);
+    abstract public void initBlob();
 
     /**
+     * Check if the Blob object is initialized.
      * 
-     * @param blob
+     * @return true if the Blob object is initialized, false otherwise.
      */
-    public void setBlob(Blob blob) {
-        this.blob = blob;
+    public boolean isInitialized() {
+        return this.blob == null;
     }
 
-    /**
-     * 
-     * @return
-     */
-    public Blob getBlob() {
-        return this.blob;
+    @Override
+    public long length() throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
+        }
+        return this.blob.length();
     }
 
-    /**
-     * public static method for serilizing AbstractMetaData object
-     * 
-     * @param <META> AbstractMetaData<?>
-     * @param object object to serialize
-     * @return byte array
-     */
-    public static <META extends AbstractMetaData<?>> byte[] serialize(META object) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = null;
-        try {
-            oos = new ObjectOutputStream(baos);
-        } catch (IOException e) {
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
+    @Override
+    public byte[] getBytes(long pos, int length) throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
         }
-        if(oos != null) {
-            try {
-                oos.writeObject(object);
-            } catch (IOException e) {
-                LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
-            }
-            try {
-                oos.close();
-            } catch (IOException e) {
-                LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
-            }
-        }
-        return baos.toByteArray();
+        return this.blob.getBytes(pos, length);
     }
 
-    /**
-     * public static method for obtaining AbstractMetaData object from Blob.
-     * 
-     * @param <META> AbstractMetaData<?>
-     * @param blob to deserialize and cast to META object
-     * @return META object
-     */
-    public static <META extends AbstractMetaData<?>> META getObjectFromBlob(Blob blob) {
-        LOG_THIS("AbstractBlob::getObjectFromBlob()");
-        if(blob == null) {
-            LOG_THIS("Error: the given blob has a value of null. Returning null.");
-            return null;
+    @Override
+    public InputStream getBinaryStream() throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
         }
-        try {
-            LOG_THIS("Provided blob is NOT null, continuing...");
-            if(blob.length() == 0) {
-                LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "Error: the given blob has a length of 0. Returning null.").info();
-                return null;
-            }
-        } catch (java.sql.SQLException e) {
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
-        }
-
-        try {
-            META object = deserialize(blob.getBinaryStream());
-            if(object == null) {
-                LOG_THIS("Error: deserializing params from blob.");
-                return null;
-            }
-            LogBuilder.logBuilderFromStringArgs("Blob deserialized, returning object.").info();
-            return object;
-        } catch (java.sql.SQLException e) {
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
-        } catch (Exception e) {
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
-        }
-        LogBuilder.logBuilderFromStringArgs("Returning empty object...");
-        return null;
+        return this.blob.getBinaryStream();
     }
 
-    @SuppressWarnings(UNCHECKED)
-    private static <META extends AbstractMetaData<?>> META deserialize(InputStream stream) {
-        ObjectInputStream ois = null;
-        try {
-            ois = new ObjectInputStream(stream);
-        } catch (IOException e) {
-            LOG.error("-- AbstractBlob::deserialize() IOException 1 --");
-            LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "InputStream stream: ", stream.toString()).info();
-            // TODO: this is using LogBuilder to stack trace. can we print the stack trace to different file than the log file so it's easier to read? Maybe use a file util and print to its own file using PrintWriter. 2024/1/22 - chuck
-            // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
-            LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "IOException: ", e.getMessage()).error();
-            return null;
+    @Override
+    public long position(byte[] pattern, long start) throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
         }
-        if(ois != null) {
-            try {
-                try {
-                    return (META) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    LOG.error("-- AbstractBlob::deserialize() ClassNotFoundException --");
-                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "ObjectInputStream ois: ", ois.toString()).info();
-                    // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
-                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "ClassNotFoundException: ", e.getMessage()).error();
-                    return null;
-                } catch (IOException e) {
-                    LOG.error("-- AbstractBlob::deserialize() IOException 2 --");
-                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "ObjectInputStream ois: ", ois.toString()).info();
-                    // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
-                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "IOException: ", e.getMessage()).error();
-                    return null;
-                }
-            } finally { // TODO: clean this up with my returns
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    LOG.error("-- AbstractBlob::deserialize() IOException 3 --");
-                    // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
-                    LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractBlob.class, "IOException: ", e.getMessage()).error();
-                    return null;
+        try {
+            // Attempt to use the driver's implementation
+            return this.blob.position(pattern, start);
+        } catch (SQLFeatureNotSupportedException e) {
+            LOG_THIS(LogLevel.ERROR, "Driver does not support position() for byte array. Using custom implementation.");
+
+            // Fallback to custom implementation
+            return positionFallback(pattern, start);
+        }
+    }
+
+    @Override
+    public long position(Blob pattern, long start) throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
+        }
+        try {
+            // Attempt to use the driver's implementation
+            return this.blob.position(pattern, start);
+        } catch (SQLFeatureNotSupportedException e) {
+            // Log the exception if needed
+            LOG_THIS(LogLevel.ERROR, "Driver does not support position() for Blob. Using custom implementation.");
+
+            // Fallback to custom implementation
+            return position(pattern.getBytes(1, (int) pattern.length()), start);
+        }
+    }
+
+    // Custom position logic
+    private long positionFallback(byte[] pattern, long start) throws SQLException {
+        if (start < 1 || start > length()) {
+            throw new SQLException("Start position out of bounds.");
+        }
+
+        // Retrieve the BLOB data as a byte array
+        byte[] blobData = getBytes(1, (int) length());
+
+        // Start searching for the pattern from the specified position
+        int position = indexOf(blobData, pattern, (int) start - 1);
+        return (position >= 0) ? position + 1 : -1; // Convert to 1-based index
+    }
+
+    // Helper method to find the index of a byte pattern in a byte array
+    private int indexOf(byte[] array, byte[] pattern, int startIndex) {
+        for (int i = startIndex; i <= array.length - pattern.length; i++) {
+            boolean found = true;
+            for (int j = 0; j < pattern.length; j++) {
+                if (array[i + j] != pattern[j]) {
+                    found = false;
+                    break;
                 }
             }
+            if (found) {
+                return i; // Return 0-based index
+            }
         }
-        return null;
+        return -1; // Pattern not found
     }
 
+    @Override
+    public int setBytes(long pos, byte[] bytes) throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
+        }
+        return this.blob.setBytes(pos, bytes);
+    }
+
+    @Override
+    public int setBytes(long pos, byte[] bytes, int offset, int len) throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
+        }
+        return this.blob.setBytes(pos, bytes, offset, len);
+    }
+
+    @Override
+    public OutputStream setBinaryStream(long pos) throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
+        }
+        return this.blob.setBinaryStream(pos);
+    }
+
+    @Override
+    public void truncate(long len) throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
+        }
+        this.blob.truncate(len);
+    }
+
+    @Override
+    public void free() throws SQLException {
+        if(this.blob == null) {
+            throw new ProcessingException("Blob object is null.");
+        }
+        this.blob.free();
+    }
+
+    /**
+     * Logs messages at default log level (INFO) for this class.
+     *
+     * @param args The message to log.
+     */
     private static void LOG_THIS(String... args) {
         ICommon.LOG(AbstractBlob.class, args);
     }
 
+    /**
+     * Logs messages at the specified log level for this class.
+     *
+     * @param level The log level to use.
+     * @param args  The message to log.
+     */
     private static void LOG_THIS(LogLevel level, String... args) {
         ICommon.LOG(AbstractBlob.class, level, args);
     }

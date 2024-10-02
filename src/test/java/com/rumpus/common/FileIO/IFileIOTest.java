@@ -16,7 +16,9 @@ import org.mockito.MockedStatic;
 /**
  * Test class for the IFileReader interface.
  * Add tests for the readModelsFromFile method.
+ * 
  * TODO: this will need to be done for xml when it is implemented.
+ * Right now it is only implemented for JSON.
  */
 class IFileIOTest {
 
@@ -135,7 +137,7 @@ class IFileIOTest {
     @Test
     void testReadModelsFromFile_Success() {
 
-        // Mocking the Reader.readFileAsString method
+        // Mocking the FileIOUtil.readFileAsString method
         try (MockedStatic<FileIOUtil> readerMock = mockStatic(FileIOUtil.class)) {
             readerMock.when(() -> FileIOUtil.readFileAsString(IFileIOTest.JSON_USERS_FILE)).thenReturn(IFileIOTest.jsonContent);
 

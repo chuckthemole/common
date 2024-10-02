@@ -2,6 +2,7 @@ package com.rumpus.common.views.Template;
 
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.EmptyUser;
 
 abstract public class AbstractUserTemplate
     <
@@ -37,7 +38,7 @@ abstract public class AbstractUserTemplate
             LOG("AbstractUserTemplate::getUser");
             if(user == null) {
                 LOG("AbstractUserTemplate::getUser: user is null");
-                return com.rumpus.common.User.EmptyUser.createEmptyUser();
+                return EmptyUser.<USER, USER_META>createEmptyUser();
             }
             return user;
         }

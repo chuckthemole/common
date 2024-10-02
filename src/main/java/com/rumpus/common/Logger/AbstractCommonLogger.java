@@ -4,12 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
+import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.ICommon;
+
 /**
  * Common logger class that implements the SLF4J {@link Logger} interface
  * <p>
  * This allows us to set the logger class for this object.
  */
-abstract public class AbstractCommonLogger extends com.rumpus.common.AbstractCommonObject implements ICommonLogger {
+abstract public class AbstractCommonLogger extends AbstractCommonObject implements ICommonLogger {
 
     // enum for log levels
     public enum LogLevel {
@@ -25,7 +28,7 @@ abstract public class AbstractCommonLogger extends com.rumpus.common.AbstractCom
     // Ctors
     public AbstractCommonLogger(String name) {
         super(name);
-        this.clazz = com.rumpus.common.ICommon.class;
+        this.clazz = ICommon.class;
     }
     public AbstractCommonLogger(String name, Class<?> clazz) {
         super(name);
