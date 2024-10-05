@@ -9,43 +9,42 @@ import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
-abstract public class AbstractUserService
-    <
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>
-    >
-    extends AbstractService<USER> implements IUserService<USER, USER_META> {
+abstract public class AbstractUserService<
+    USER extends AbstractCommonUser<USER, USER_META>,
+    USER_META extends AbstractCommonUserMetaData<USER_META>
+>
+extends AbstractService<USER> implements IUserService<USER, USER_META> {
 
-        protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
+    protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
 
-        public AbstractUserService(String name, IUserDao<USER, USER_META> userDao) {
-            super(name, userDao);
-            this.userDao = userDao;
-        }
+    public AbstractUserService(String name, IUserDao<USER, USER_META> userDao) {
+        super(name, userDao);
+        this.userDao = userDao;
+    }
 
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            LOG_THIS("loadUserByUsername(username)");
-            return this.userDao.loadUserByUsername(username);
-        }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        LOG_THIS("loadUserByUsername(username)");
+        return this.userDao.loadUserByUsername(username);
+    }
 
-        @Override
-        public USER getByUsername(String username) {
-            LOG_THIS("getByUsername(username)");
-            return this.userDao.getByUsername(username);
-        }
+    @Override
+    public USER getByUsername(String username) {
+        LOG_THIS("getByUsername(username)");
+        return this.userDao.getByUsername(username);
+    }
 
-        @Override
-        public String getKey() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'getKey'");
-        }
+    @Override
+    public String getKey() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getKey'");
+    }
 
-        private static void LOG_THIS(String... args) {
-            ICommon.LOG(AbstractUserService.class, args);
-        }
+    private static void LOG_THIS(String... args) {
+        ICommon.LOG(AbstractUserService.class, args);
+    }
 
-        private static void LOG_THIS(LogLevel level, String... args) {
-            ICommon.LOG(AbstractUserService.class, level, args);
-        }
+    private static void LOG_THIS(LogLevel level, String... args) {
+        ICommon.LOG(AbstractUserService.class, level, args);
+    }
 }

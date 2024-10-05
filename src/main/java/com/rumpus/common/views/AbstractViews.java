@@ -16,7 +16,7 @@ import java.util.List;
  * This class is the base class for all views. It acts as a manager of {@link AbstractTemplate}s.
  * TODO: define generics for this class, ie USER, USER_META, etc.
  */
-public abstract class AbstractViews extends AbstractCommonManager<AbstractTemplate>  {
+public abstract class AbstractViews extends AbstractCommonManager<String, AbstractTemplate>  {
 
     public static final String CURRENT_USER_TEMPLATE_KEY = "currentUserTemplate";
     protected final static String DEFAULT_NAVBAR_BRAND = "/images/default_brand.png";

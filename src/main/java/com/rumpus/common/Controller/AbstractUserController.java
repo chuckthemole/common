@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Serializer.AbstractCommonSerializer;
 import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -111,22 +112,25 @@ abstract public class AbstractUserController
             USER user = this.userService.add(newUser);
 
             AbstractUserController.currentUserLogin(user, request);
-            if (user == null) {
+            if(user == null) {
                 LOG("ERROR: User is null.");
                 session.setAttribute("status", "error creating user");
                 return ResponseEntity.badRequest().body(new CommonSession(session));
             }
             session.setAttribute("loggedIn", true);
 
-            Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                // .excludeFieldsWithoutExposeAnnotation()
-                .serializeNulls()
-                .disableHtmlEscaping()
-                // .registerTypeAdapter(USER.class, USER.getSerializer())
-                .registerTypeAdapter(AbstractCommonUser.class, user.getTypeAdapter())
-                .create();
-            session.setAttribute("user", gson.toJson(user));
+            
+            // Gson gson = new GsonBuilder()
+            //     .setPrettyPrinting()
+            //     // .excludeFieldsWithoutExposeAnnotation()
+            //     .serializeNulls()
+            //     .disableHtmlEscaping()
+            //     // .registerTypeAdapter(USER.class, USER.getSerializer())
+            //     .registerTypeAdapter(AbstractCommonUser.class, user.getTypeAdapter())
+            //     .create();
+            // session.setAttribute("user", gson.toJson(user));
+
+            session.setAttribute("user", this.userService.serializeObjectToJson(user));
 
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 

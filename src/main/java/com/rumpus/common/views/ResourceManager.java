@@ -11,7 +11,7 @@ import com.rumpus.common.views.Resource.StorageType;
  * The ResourceManager class is a manager for resources.
  * Creation of Resources should only be done through this class.
  */
-public class ResourceManager extends AbstractCommonManager<Resource> {
+public class ResourceManager extends AbstractCommonManager<String, Resource> {
 
     private static final String NAME = "ResourceManager";
 

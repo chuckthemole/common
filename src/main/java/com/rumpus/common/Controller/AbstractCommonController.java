@@ -3,6 +3,7 @@ package com.rumpus.common.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.env.Environment;
 
 import com.rumpus.common.Config.AbstractCommonUserConfig;
 import com.rumpus.common.views.ResourceManager;
@@ -21,12 +22,11 @@ public abstract class AbstractCommonController
 
     extends com.rumpus.common.AbstractCommonObject implements ICommonController {
 
-        @Autowired protected org.springframework.core.env.Environment environment;
+        @Autowired protected Environment environment;
         @Autowired @Qualifier(AbstractCommonUserConfig.USER_SERVICE) protected USER_SERVICE userService;
         @Autowired protected USER_TEMPLATE userTemplate;
         @Autowired protected ResourceLoader resourceLoader;
         @Autowired protected SERVICES serviceManager;
-        
 
         protected String currentBasePath;
         protected ResourceManager resourceManager;

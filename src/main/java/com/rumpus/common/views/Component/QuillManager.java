@@ -7,7 +7,7 @@ import com.rumpus.common.Manager.AbstractCommonManager;
 /**
  * AbsrtactCommonManager for Quill objects.
  */
-public class QuillManager extends AbstractCommonManager<Quill> {
+public class QuillManager extends AbstractCommonManager<String, Quill> {
 
     private static String NAME = "QuillManager";
 

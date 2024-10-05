@@ -11,7 +11,7 @@ import com.rumpus.common.Manager.AbstractCommonManager;
  * TODO: this class can be tested and looked at more closely. What happens when we remove an id? can we remove an id? etc.
  * 
  */
-public abstract class AbstractUniqueIdManager extends AbstractCommonManager<IdSet> {
+public abstract class AbstractUniqueIdManager extends AbstractCommonManager<String, IdSet> {
 
     private static Map<String, IdSet> uniqueIds; // map of unique ids. holds name of unique id set and IdSet (size and set)
 

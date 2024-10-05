@@ -10,7 +10,7 @@ import com.rumpus.common.Manager.AbstractCommonManager;
  * <p>
  * Instead I am going to override LOG in each class that needs it. And filled out LogBuilder with some more methods.
  */
-public class CommonLoggerManager extends AbstractCommonManager<ICommonLogger> {
+public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLogger> {
 
     private static final String NAME = "CommonLoggerManager";
 

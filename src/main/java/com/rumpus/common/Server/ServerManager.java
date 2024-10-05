@@ -6,7 +6,7 @@ import java.util.List;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Manager.AbstractCommonManager;
 
-public class ServerManager extends AbstractCommonManager<ManageableServerThread> {
+public class ServerManager extends AbstractCommonManager<String, ManageableServerThread> {
 
     private final static String NAME = "ServerManager";
 

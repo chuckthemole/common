@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.rumpus.common.Manager.AbstractCommonManager;
 
-public class ForumThreadManager extends AbstractCommonManager<ForumThread> {
+public class ForumThreadManager extends AbstractCommonManager<String, ForumThread> {
 
     private final static String NAME = "ForumThreadManager";
     // TODO: this should be private, right? it extends AbstractCommonManager which extends Map.

@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Serializer.ISerializerRegistry;
 
 /**
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.

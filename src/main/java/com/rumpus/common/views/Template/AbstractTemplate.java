@@ -10,7 +10,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  * <p>
  * A template is a manager of {@link AbstractComponent}s and is managed by a {@link com.rumpus.common.views.AbstractViews}.
  */
-public abstract class AbstractTemplate extends AbstractCommonManager<AbstractComponent> implements IManageable, ITemplate {
+public abstract class AbstractTemplate extends AbstractCommonManager<String, AbstractComponent> implements IManageable, ITemplate {
 
     public static final String TEMPLATE_ASIDE = "aside";
     public static final String TEMPLATE_BREADCRUMB = "breadcrumb";

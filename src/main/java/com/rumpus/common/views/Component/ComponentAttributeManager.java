@@ -4,7 +4,7 @@ import com.rumpus.common.Manager.AbstractCommonManager;
 import com.rumpus.common.views.Html.Attribute;
 import com.rumpus.common.views.Html.HtmlTagAttributes;
 
-public class ComponentAttributeManager extends AbstractCommonManager<HtmlTagAttributes> {
+public class ComponentAttributeManager extends AbstractCommonManager<String, HtmlTagAttributes> {
 
     private static final String NAME = "AttributeManager";
 

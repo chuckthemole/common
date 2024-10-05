@@ -1,18 +1,14 @@
 package com.rumpus.common.Model;
 
 import java.io.Serializable;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
-import org.springframework.core.serializer.Serializer;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 import jakarta.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Serializer.AbstractCommonSerializer;
 
 import jakarta.persistence.MappedSuperclass;
 
@@ -22,24 +18,23 @@ import jakarta.persistence.MappedSuperclass;
  * @param <MODEL> the model type
  */
 @MappedSuperclass
-public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID> extends AbstractCommonObject
-    implements Serializable, Serializer<MODEL>, Comparable<MODEL> {
+public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID>
+    extends AbstractCommonObject
+    implements Serializable, Comparable<MODEL> {
+
+    abstract public static class AbstractModelSerializer<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonSerializer<MODEL> {
+        public AbstractModelSerializer(String name, SerializationType serializationType) {
+            super(name, serializationType);
+        }
+    }
 
     /**
      * The id of the model
      */
     @Id private ID id; // TODO: will have to use org.springframework.data.annotation.Id for NoSQL. Need to figure out how to handle this.
-    
-    /**
-     * The type adapter for this model
-     * 
-     * TODO: take this out of here and use the serializer {@link com.rumpus.common.Serializer.AbstractCommonSerializer}
-     */
-    @JsonIgnore transient private TypeAdapter<MODEL> typeAdapter;
 
     public AbstractModel(final String name) {
         super(name);
-        this.typeAdapter = this.createTypeAdapter();
     }
 
     /******************************************************************************
@@ -76,12 +71,19 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID> exte
     @JsonIgnore
     public abstract IModelIdManager<ID> getIdManager();
 
-    /**
-     * Abstract method to implement type adapter creation.
-     * 
-     * @return type adapter for this MetaData class
-     */
-    abstract public TypeAdapter<MODEL> createTypeAdapter();
+    //******************************************************************************
+    //*                      java.io.Serializable                                  *
+    //* ----------------------------------------------------------------------------
+    //*  Purpose: overriding these serializer methods here. right now just using   *
+    //*  defaults but can customize.                                               *
+    //* ----------------------------------------------------------------------------
+    //******************************************************************************
+    protected void writeObject(ObjectOutputStream out) throws java.io.IOException {
+        out.defaultWriteObject();
+    }
+    protected void readObject(ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject();
+    }
 
     //******************************************************************************
     //*                      access/getters/setter                                 *
@@ -102,14 +104,9 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID> exte
         return this.id != null;
     }
 
-    public TypeAdapter<MODEL> getTypeAdapter() {
-        return this.typeAdapter;
-    }
-
-    public void setTypeAdapter(TypeAdapter<MODEL> typeAdapter) {
-        this.typeAdapter = typeAdapter;
-    }
-
+    /**
+     * Compare this model to another model
+     */
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -125,10 +122,5 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID> exte
             }
         }
         return false;
-    }
-
-    @Override
-    public void serialize(MODEL object, OutputStream outputStream) throws IOException {
-        this.getTypeAdapter().write(new JsonWriter(new OutputStreamWriter(outputStream)), object);
     }
 }

@@ -1,6 +1,7 @@
 package com.rumpus.common.Service;
 
 import com.rumpus.common.Manager.IManageable;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -69,4 +70,13 @@ public interface IService<MODEL extends AbstractModel<MODEL, ?>> extends IManage
      */
     @Transactional(rollbackFor = Exception.class)
     public MODEL update(String id, MODEL updatedModel);
+
+
+    /**
+     * Serialize an object to JSON
+     * 
+     * @param model the model to serialize
+     * @return The JSON string
+     */
+    public String serializeObjectToJson(MODEL model);
 }

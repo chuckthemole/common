@@ -6,16 +6,13 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
 
-import org.springframework.core.serializer.Serializer;
-import org.springframework.core.serializer.Deserializer;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.InputStreamReader;
 
-abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObject> extends AbstractCommonObject implements Serializer<OBJECT>, Deserializer<OBJECT> {
+abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObject> extends AbstractCommonObject implements ICommonSerializer<OBJECT> {
 
     // create enum for serialization type, ie JSON, XML, etc.
     public enum SerializationType {
@@ -46,7 +43,7 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
      * 
      * @return type adapter for this MetaData class
      */
-    @JsonIgnore public TypeAdapter<OBJECT> createTypeAdapter() {
+    @JsonIgnore protected TypeAdapter<OBJECT> createTypeAdapter() {
         return new TypeAdapter<OBJECT>() {
             @Override
             public void write(JsonWriter out, OBJECT object) throws IOException {
@@ -67,7 +64,7 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
      * @param object the object to serialize
      * @throws IOException if an error occurs during serialization
      */
-    @JsonIgnore abstract public void writeJson(JsonWriter out, OBJECT object) throws IOException;
+    @JsonIgnore abstract protected void writeJson(JsonWriter out, OBJECT object) throws IOException;
 
     /**
      * Deserialize the object from the input stream in JSON format
@@ -76,8 +73,15 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
      * @return the deserialized object
      * @throws IOException if an error occurs during deserialization
      */
-    @JsonIgnore abstract public OBJECT readJson(JsonReader in) throws IOException;
+    @JsonIgnore abstract protected OBJECT readJson(JsonReader in) throws IOException;
 
+    /******************************************************************************
+     *                             PUBLIC SERIALIZE METHODS                       *
+     * ----------------------------------------------------------------------------
+     *  Purpose: Publicly visible methods to serialize/deserialize                *
+     *          objects. Add custom methods here, eg serializeJson                *
+     * ----------------------------------------------------------------------------
+     *****************************************************************************/
     @Override
     public void serialize(OBJECT object, OutputStream outputStream) throws IOException {
         LOG("AbstractCommonSerializer::serialize()");
@@ -95,6 +99,11 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
         } else {
             throw new UnsupportedOperationException("Unsupported deserialization type");
         }
+    }
+
+    @Override
+    public String serializeToJson(OBJECT object) {
+        return this.typeAdapter.toJson(object);
     }
 
     // TODO: Should I have accessors for typeAdapter?
@@ -149,11 +158,9 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
      * @throws IOException if an error occurs during serialization
      */
     private void serializeJson(OBJECT object, OutputStream outputStream) throws IOException {
-        this.typeAdapter
-            .write(
-                new JsonWriter(new OutputStreamWriter(outputStream)),
-                object
-            );
+        JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(outputStream));
+        this.typeAdapter.write(jsonWriter, object);
+        jsonWriter.close();
     }
 
     /**

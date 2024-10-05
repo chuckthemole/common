@@ -1,11 +1,7 @@
 package com.rumpus.common.User;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.UUID;
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.Model.IModelIdManager;
 import com.rumpus.common.Model.SqlIdManager;
 
@@ -28,7 +24,6 @@ public class EmptyUser<
             this.setUserDetails(CommonUserDetails.createEmptyUserDetails());
             this.setMetaData(EmptyUserMetaData.<META>createEmptyUserMetaData());
             this.setPassword("EMPTY_PASSWORD");
-            this.setTypeAdapter(null);
         }
 
         public static <USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>> EmptyUser<USER, META> createEmptyUser() {
@@ -36,32 +31,7 @@ public class EmptyUser<
         }
 
         @Override
-        public void serialize(USER object, OutputStream outputStream) throws IOException {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'serialize'");
-        }
-
-        @Override
-        public TypeAdapter<USER> createTypeAdapter() {
-            return new TypeAdapter<USER>() {
-
-                @Override
-                public void write(JsonWriter out, USER value) throws IOException {
-                    // TODO Auto-generated method stub
-                    throw new UnsupportedOperationException("Unimplemented method 'write' - EmptyUser");
-                }
-
-                @Override
-                public USER read(JsonReader in) throws IOException {
-                    // TODO Auto-generated method stub
-                    throw new UnsupportedOperationException("Unimplemented method 'read' - EmptyUser");
-                }
-                
-            };
-        }
-
-        @Override
-        public IModelIdManager getIdManager() {
+        public IModelIdManager<UUID> getIdManager() {
             return new SqlIdManager();
         }
 

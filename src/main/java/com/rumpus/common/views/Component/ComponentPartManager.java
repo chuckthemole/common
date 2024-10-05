@@ -7,7 +7,7 @@ import com.rumpus.common.views.Html.Attribute;
 /**
  * ComponentPartManager is used to register and retrieve component parts.
  */
-public class ComponentPartManager extends AbstractCommonManager<AbstractHtmlObject> {
+public class ComponentPartManager extends AbstractCommonManager<String, AbstractHtmlObject> {
 
     private static final String NAME = "ComponentPartManager";
     private static ComponentPartManager singletonInstance = null;

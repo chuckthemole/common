@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -19,6 +20,7 @@ import com.google.gson.stream.JsonWriter;
 public class AbstractModelTest {
 
     private TestModel testModel;
+    final private TestModelSerializer serializer = new TestModelSerializer();
 
     @BeforeEach
     public void setUp() {
@@ -53,10 +55,7 @@ public class AbstractModelTest {
     @Test
     public void testTypeAdapterSerialization() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(outputStream));
-        testModel.getTypeAdapter().write(jsonWriter, testModel);
-        jsonWriter.close();
-
+        this.serializer.serialize(testModel, outputStream);
         String json = outputStream.toString();
         assertTrue(json.contains("\"id\":\"" + testModel.getId().toString() + "\""), "Serialized JSON should contain the model's ID");
     }
@@ -66,7 +65,8 @@ public class AbstractModelTest {
         final java.util.UUID expected_id = java.util.UUID.randomUUID();
         String json = "{\"id\":\"" + expected_id.toString() + "\"}";
         JsonReader jsonReader = new JsonReader(new java.io.StringReader(json));
-        TestModel deserializedModel = testModel.getTypeAdapter().read(jsonReader);
+        TypeAdapter<TestModel> typeAdapter = this.serializer.getTypeAdapter();
+        TestModel deserializedModel = typeAdapter.read(jsonReader);
 
         assertEquals(expected_id, deserializedModel.getId(), "Deserialized model should have the correct ID");
     }

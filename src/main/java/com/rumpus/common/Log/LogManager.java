@@ -3,7 +3,7 @@ package com.rumpus.common.Log;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Manager.AbstractCommonManager;
 
-public class LogManager extends AbstractCommonManager<LogCollection> {
+public class LogManager extends AbstractCommonManager<String, LogCollection> {
 
     private final static String NAME = "LogManager";
 
