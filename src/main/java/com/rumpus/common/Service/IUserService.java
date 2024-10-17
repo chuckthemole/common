@@ -18,6 +18,7 @@ public interface IUserService
          * 
          * @param username The username of the user to get.
          * @return The user with the given username. If no user is found, return null. If more than one user is found, return null.
+         * TODO: I don't like this. I think it should throw an exception if more than one user is found or maybe an Optional. - chuck
          */
         public USER getByUsername(String username);
 

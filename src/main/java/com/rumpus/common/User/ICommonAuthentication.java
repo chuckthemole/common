@@ -1,11 +1,13 @@
 package com.rumpus.common.User;
 
-public interface ICommonAuthentication extends org.springframework.security.core.Authentication {
+import org.springframework.security.core.Authentication;
+
+public interface ICommonAuthentication extends Authentication {
 
     /**
      * Get the authentication
      * 
-     * @return the {@link org.springframework.security.core.Authentication}
+     * @return the {@link Authentication}
      */
-    public org.springframework.security.core.Authentication getAuthentication();
+    public Authentication getAuthentication();
 }

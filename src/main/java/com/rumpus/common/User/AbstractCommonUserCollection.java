@@ -16,6 +16,7 @@ public abstract class AbstractCommonUserCollection
         /**
          * // TODO: look here: org.springframework.data.domain.Sort
          * Sort options for users
+         * Update: I don't like this. Can we make an enum? - chuck 10/17/2024
          */
         public enum Sort  {
             ID("id"),

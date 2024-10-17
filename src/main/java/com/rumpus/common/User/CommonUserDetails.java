@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
 
 import jakarta.persistence.Column;
@@ -18,7 +19,7 @@ import jakarta.persistence.Column;
 public class CommonUserDetails extends AbstractCommonObject implements UserDetails {
 
     private static final String NAME = "CommonUserDetails";
-    private static final GrantedAuthority USER = new CommonAuthority(ROLE_USER);
+    private static final GrantedAuthority GRANTED_AUTH_USER = new CommonAuthority(ICommon.ROLE_USER);
 
     @Column(name = "username") private String username;
     @Column(name = "password") private String password;
@@ -35,9 +36,9 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
         this.username = "";
         this.password = "";
         this.isEnabled = true;
-        // CommonAuthority auth = new CommonAuthority("USER");
+        // CommonAuthority auth = new CommonAuthority("GRANTED_AUTH_USER");
         // this.authority = new CommonAuthentication("", Set.of(auth), "", "", Map.of(), true);
-        this.authorities = Set.of(USER);
+        this.authorities = Set.of(GRANTED_AUTH_USER);
         this.isAccountNonExpired = false;
         this.isAccountNonLocked = false;
         this.isCredentialsNonExpired = false;
@@ -51,7 +52,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
         this.isAccountNonLocked = details.isAccountNonLocked();
         this.isCredentialsNonExpired = details.isCredentialsNonExpired();
         // this.authority = new CommonAuthentication(details.getUsername(), getAuthorities(), details.getPassword(), details.getUsername(), Map.of(), details.isAccountNonExpired());
-        this.authorities = details.getAuthorities() == null || details.getAuthorities().isEmpty() ? Set.of(USER) : Set.copyOf(details.getAuthorities());
+        this.authorities = details.getAuthorities() == null || details.getAuthorities().isEmpty() ? Set.of(GRANTED_AUTH_USER) : Set.copyOf(details.getAuthorities());
     }
     private CommonUserDetails(
         String username,
@@ -67,7 +68,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
             this.password = password;
             this.isEnabled = isEnabled;
             // this.authority = authority;
-            this.authorities = authorities == null || authorities.isEmpty() ? Set.of(USER) : authorities;
+            this.authorities = authorities == null || authorities.isEmpty() ? Set.of(GRANTED_AUTH_USER) : authorities;
             this.isAccountNonExpired = isAccountNonExpired;
             this.isAccountNonLocked = isAccountNonLocked;
             this.isCredentialsNonExpired = isCredentialsNonExpired;
@@ -77,7 +78,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
     protected static CommonUserDetails createEmptyUserDetails() {
         return new CommonUserDetails();
     }
-    protected static CommonUserDetails createFromUserDetails(UserDetails details) {
+    public static CommonUserDetails createFromUserDetails(UserDetails details) {
         return new CommonUserDetails(details);
     }
     protected static CommonUserDetails createFromUsernamePassword(
@@ -178,7 +179,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
 
     private void checkAndSetAuthoritiesIfEmpty() {
         if(this.authorities == null || this.authorities.isEmpty()) {
-            this.authorities.add(USER);
+            this.authorities.add(GRANTED_AUTH_USER);
         }
     }
 

@@ -3,7 +3,6 @@ package com.rumpus.common.Config;
 import javax.sql.DataSource;
 
 import org.jooq.DSLContext;
-import org.jooq.SQL;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import com.rumpus.common.AbstractCommonObject;
-import com.rumpus.common.Serializer.ISerializerRegistry;
 
 /**
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rumpus.common.Model.AbstractModel;
+import com.rumpus.common.Serializer.ICommonSerializer;
 
 /**
  * Service interface
@@ -34,7 +35,7 @@ public interface IService<MODEL extends AbstractModel<MODEL, ?>> extends IManage
      * @param value Column value to look for
      * @return MODEL if found, null if not
      */
-    public java.util.List<MODEL> getByColumnValue(String column, String value);
+    public List<MODEL> getByColumnValue(String column, String value);
 
     /**
      * Get all the MODELs from this service
@@ -70,13 +71,4 @@ public interface IService<MODEL extends AbstractModel<MODEL, ?>> extends IManage
      */
     @Transactional(rollbackFor = Exception.class)
     public MODEL update(String id, MODEL updatedModel);
-
-
-    /**
-     * Serialize an object to JSON
-     * 
-     * @param model the model to serialize
-     * @return The JSON string
-     */
-    public String serializeObjectToJson(MODEL model);
 }

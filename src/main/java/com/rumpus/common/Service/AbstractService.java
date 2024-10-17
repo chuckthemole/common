@@ -8,7 +8,6 @@ import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Serializer.ICommonSerializer;
-import com.rumpus.common.Serializer.ProcessingException;
 
 abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IService<MODEL> {
 
@@ -55,19 +54,6 @@ abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ?>> ext
     public MODEL update(String id, MODEL updatedModel) {
         LOG_THIS("update()");
         return this.dao.update(id, updatedModel);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked") // TODO: this line: final ICommonSerializer<MODEL> serializer = SerializerServiceUtil.getSerializer(model.getClass());
-    public String serializeObjectToJson(MODEL model) {
-
-        final ICommonSerializer<MODEL> serializer = SerializerServiceUtil.getSerializer(model.getClass());
-
-        if (serializer == null) {
-            throw new ProcessingException("No serializer found in serializer registry for class: " + model.getClass().getName());
-        }
-
-        return serializer.serializeToJson(model);
     }
 
     private static void LOG_THIS(String... args) {

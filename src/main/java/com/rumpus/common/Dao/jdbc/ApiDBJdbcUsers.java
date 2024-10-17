@@ -19,6 +19,7 @@ import com.rumpus.common.Dao.IUserDao;
 import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.CommonUserDetails;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,7 +80,8 @@ public class ApiDBJdbcUsers
         final List <USER> users = this.getByColumnValue(ICommon.USERNAME, username);
         if (users.size() == 1) {
             USER user = users.get(0);
-            UserDetails details = this.loadUserByUsername(username);
+            final UserDetails userDetails = this.loadUserByUsername(username);
+            final CommonUserDetails details = CommonUserDetails.createFromUserDetails(userDetails);
             user.setUserDetails(details);
             return user;
         } else if (users.size() == 0) {
@@ -98,7 +100,8 @@ public class ApiDBJdbcUsers
         if(users != null && !users.isEmpty()) {
             users.stream().forEach((user) -> {
                 // CommonUserDetails details = new CommonUserDetails(this.manager.loadUserByUsername(user.getUsername()));
-                final UserDetails details = this.manager.loadUserByUsername(user.getUsername());
+                final UserDetails userDetails = this.manager.loadUserByUsername(user.getUsername());
+                final CommonUserDetails details = CommonUserDetails.createFromUserDetails(userDetails);
                 user.setUserDetails(details);
             });
         } else {

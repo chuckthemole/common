@@ -6,21 +6,17 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.io.InputStreamReader;
 
 abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObject> extends AbstractCommonObject implements ICommonSerializer<OBJECT> {
-
-    // create enum for serialization type, ie JSON, XML, etc.
-    public enum SerializationType {
-        JSON,
-        XML,
-        CSV,
-        InputStream,
-    }
 
     /**
      * Serialization type for this object
@@ -102,8 +98,45 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
     }
 
     @Override
-    public String serializeToJson(OBJECT object) {
-        return this.typeAdapter.toJson(object);
+    public String serializeToString(OBJECT object, Charset charset) {
+        if(this.serializationType == SerializationType.JSON) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(outputStream));
+
+            try {
+                this.typeAdapter.write(jsonWriter, object);
+                jsonWriter.close();
+            } catch (IOException e) {
+                throw new ProcessingException("Error serializing object to string", e);
+            }
+
+            // Convert the byte stream to string with a proper charset, such as UTF-8
+            return outputStream.toString(charset != null ? charset : StandardCharsets.UTF_8);
+        } else {
+            throw new UnsupportedOperationException("Unsupported serialization type");
+        }
+    }
+
+    @Override
+    public OBJECT deserializeFromString(String stringObject, Charset charset) {
+        if(this.serializationType == SerializationType.JSON) {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(stringObject.getBytes(charset != null ? charset : StandardCharsets.UTF_8));
+            JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream, charset != null ? charset : StandardCharsets.UTF_8));
+
+            try {
+                return this.typeAdapter.read(jsonReader);
+            } catch (IOException e) {
+                throw new ProcessingException("Error deserializing object from string", e);
+            } finally {
+                try {
+                    jsonReader.close(); // Ensure reader is closed to prevent resource leak
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            throw new UnsupportedOperationException("Unsupported deserialization type");
+        }
     }
 
     // TODO: Should I have accessors for typeAdapter?
@@ -125,20 +158,12 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
         this.typeAdapter = typeAdapter;
     }
 
-    /**
-     * Get the serialization type for this object
-     * 
-     * @return this serialization type
-     */
+    @Override
     @JsonIgnore public SerializationType getSerializationType() {
         return this.serializationType;
     }
 
-    /**
-     * Set the serialization type for this object
-     * 
-     * @param serializationType the serialization type to set
-     */
+    @Override
     @JsonIgnore public void setSerializationType(SerializationType serializationType) {
         this.serializationType = serializationType;
     }

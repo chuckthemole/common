@@ -19,7 +19,6 @@ abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL, ?>> 
      * The data access object for this service.
      */
     private IDaoJpa<MODEL> daoJpa;
-    @Autowired private ISerializerRegistry serializerRegistry;
 
     public AbstractServiceJpa(String name, IDaoJpa<MODEL> daoJpa) {
         super(name);
@@ -61,19 +60,6 @@ abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL, ?>> 
     public MODEL update(String id, MODEL updatedModel) { // TODO: doesn't need id
         LOG_THIS("update()");
         return this.daoJpa.save(updatedModel);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public String serializeObjectToJson(MODEL model) {
-
-        ICommonSerializer<MODEL> serializer = (ICommonSerializer<MODEL>) serializerRegistry.getSerializer(model.getClass());
-
-        if (serializer == null) {
-            throw new ProcessingException("No serializer found in serializer registry for class: " + model.getClass().getName());
-        }
-
-        return serializer.serializeToJson(model);
     }
 
     private static void LOG_THIS(String... args) {

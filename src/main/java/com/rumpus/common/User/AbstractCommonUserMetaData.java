@@ -55,7 +55,12 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
     }
     protected void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         LOG("AbstractCommonUserMetaData::readObject()");
-        in.defaultReadObject();
+        try {
+            in.defaultReadObject();
+        } catch (IOException | ClassNotFoundException e) {
+            LOG("TODO: catch this error");
+            LOG(e.getMessage());
+        }
     }
 
     @Override 

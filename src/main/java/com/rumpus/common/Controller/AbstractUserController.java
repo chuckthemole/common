@@ -10,10 +10,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Serializer.AbstractCommonSerializer;
+import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -33,7 +31,7 @@ abstract public class AbstractUserController
         /////////////////////////
         // Define generics here//
         /////////////////////////
-        SERVICES extends com.rumpus.common.Manager.AbstractServiceManager<?>,
+        SERVICES extends AbstractServiceManager<?>, // TODO: can we have the wildcard be SERVICE?
         USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
@@ -106,17 +104,36 @@ abstract public class AbstractUserController
         @Override
         public ResponseEntity<CommonSession> userSubmit(@RequestBody USER newUser, HttpServletRequest request) {
             LOG("AbstractUserController::userSubmit()");
+
+            // generate UUID for user
+            newUser.setId(java.util.UUID.randomUUID());
+
+            // Check if user already exists
+            final String username = newUser.getUsername();
+            USER user = this.userService.getByUsername(username); // TODO: maybe ID?
+            if(user != null) {
+                LOG("User already exists.");
+                HttpSession session = request.getSession();
+                session.setAttribute("status", "user already exists");
+                return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
+
+            }
+
+            // User does not exist, create user
             HttpSession session = request.getSession();
             LOG("Creating user: " + newUser.toString());
             newUser.setMetaData(EmptyUserMetaData.createEmptyUserMetaData()); // new MetaData adds creation time
-            USER user = this.userService.add(newUser);
+            user = this.userService.add(newUser);
 
-            AbstractUserController.currentUserLogin(user, request);
+            // catch error creating user
             if(user == null) {
                 LOG("ERROR: User is null.");
                 session.setAttribute("status", "error creating user");
-                return ResponseEntity.badRequest().body(new CommonSession(session));
+                return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
             }
+
+            // log in user
+            AbstractUserController.currentUserLogin(user, request);
             session.setAttribute("loggedIn", true);
 
             
@@ -130,7 +147,7 @@ abstract public class AbstractUserController
             //     .create();
             // session.setAttribute("user", gson.toJson(user));
 
-            session.setAttribute("user", this.userService.serializeObjectToJson(user));
+            session.setAttribute("user", this.serializerService.serializeToString(user, null));
 
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 

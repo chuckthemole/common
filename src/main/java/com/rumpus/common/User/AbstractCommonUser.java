@@ -96,9 +96,9 @@ public abstract class AbstractCommonUser<
             }
         }
 
-        public void setUserDetails(UserDetails userDetails) {
-            this.userDetails = CommonUserDetails.createFromUserDetails(userDetails);
-        }
+        // public void setUserDetails(UserDetails userDetails) {
+        //     this.userDetails = CommonUserDetails.createFromUserDetails(userDetails);
+        // }
 
         public String getUsername() {
             return this.userDetails.getUsername();

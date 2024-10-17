@@ -13,7 +13,8 @@ import Admin from './admin';
 export default function ReactComponent({component_name}) {
 
     if(component_name === 'SignupModal') {
-        return (<SignupModal />);
+        // TODO: this is where Signup is failing. Need to supply a create_user_path
+        return (<SignupModal create_user_path={'/api/user'} />);
     } else if(component_name === 'LoginModal') {
         return (<LoginModal />);
     } else if(component_name === 'Logout') {
