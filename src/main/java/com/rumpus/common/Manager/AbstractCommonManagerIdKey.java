@@ -33,8 +33,7 @@ abstract public class AbstractCommonManagerIdKey<MANAGEE extends ISetItem> exten
      * @param name the name of the child class
      * @param collectionName the name of the collection of managees
      */
-    public AbstractCommonManagerIdKey(String name) {
-        super(name);
+    public AbstractCommonManagerIdKey() {
         this.manageeSet = new java.util.HashMap<>();
         this.idSet = com.rumpus.common.util.UniqueId.IdSet.createEmptyIdSetWithDefaultLength();
     }

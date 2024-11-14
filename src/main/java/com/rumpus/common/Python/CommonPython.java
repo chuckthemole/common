@@ -10,19 +10,16 @@ import org.python.util.PythonInterpreter;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.util.FileUtil;
 
 public class CommonPython extends AbstractCommonObject {
-    
-    static final String NAME = "CommonPython";
 
-    public CommonPython() {
-        super(NAME);
-    }
+    public CommonPython() {}
 
     private static PythonInterpreter interpreter = null;
     private static final String PYCOMMON_DIR = "../pycommon";
-    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(CommonPython.class);
+    private static final com.rumpus.common.Log.ICommonLogger LOG = com.rumpus.common.Log.application.JavaLogger.createLogger(CommonPython.class);
 
     public static PythonInterpreter getInterpreter() {
         if (interpreter == null) {
@@ -31,15 +28,15 @@ public class CommonPython extends AbstractCommonObject {
 
             boolean pathsExist = true;
             if(FileUtil.doesPathExist(PYTHON_HOME_PATH) == DOES_NOT_EXIST) {
-                LOG.error("PYTHON_HOME_PATH does not exist: " + PYTHON_HOME_PATH);
+                LOG.errorLevel("PYTHON_HOME_PATH does not exist: " + PYTHON_HOME_PATH);
                 pathsExist = false;
             }
             if(FileUtil.doesPathExist(PYTHON_PATH_PATH) == DOES_NOT_EXIST) {
-                LOG.error("PYTHON_PATH_PATH does not exist: " + PYTHON_PATH_PATH);
+                LOG.errorLevel("PYTHON_PATH_PATH does not exist: " + PYTHON_PATH_PATH);
                 pathsExist = false;
             }
             if(pathsExist) {
-                LOG.error("Setting python.home python.path: " + PYTHON_HOME_PATH + " " + PYTHON_PATH_PATH);
+                LOG.errorLevel("Setting python.home python.path: " + PYTHON_HOME_PATH + " " + PYTHON_PATH_PATH);
                 // props.setProperty("python.console.encoding", "UTF-8");
                 PySystemState systemState = Py.getSystemState();
                 systemState.path.append(new PyString(PYTHON_PATH_PATH)); 
@@ -59,7 +56,7 @@ public class CommonPython extends AbstractCommonObject {
     public static boolean addPycommontToPath() {
         LOG_THIS("Adding pycommon to path");
         if(FileUtil.doesPathExist(PYCOMMON_DIR) == DOES_NOT_EXIST) {
-            LOG.error("Pycommon directory does not exist: " + PYCOMMON_DIR);
+            LOG.errorLevel("Pycommon directory does not exist: " + PYCOMMON_DIR);
             return false;
         }
         interpreter.exec("import sys");
@@ -72,13 +69,15 @@ public class CommonPython extends AbstractCommonObject {
         try {
             interpreter.exec("from " + module + " import " + function);
         } catch (Exception e) {
-            LOG.error("Could not import module: " + module);
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+            LOG.errorLevel("Could not import module: " + module);
+            final String log = LogBuilder.logBuilderFromStackTraceElementArray(
+                e.getMessage(), e.getStackTrace()).toString();
+            LOG(CommonPython.class, LogLevel.ERROR, log);
             return null;
         }
         PyObject pyObjFunction = interpreter.get(function);
         if (pyObjFunction == null) {
-            LOG.error("Could not find function: " + function + " in module: " + module);
+            LOG.errorLevel("Could not find function: " + function + " in module: " + module);
         }
         return pyObjFunction;
     }
@@ -87,7 +86,13 @@ public class CommonPython extends AbstractCommonObject {
         com.rumpus.common.ICommon.LOG(CommonPython.class, args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
         com.rumpus.common.ICommon.LOG(CommonPython.class, level, args);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

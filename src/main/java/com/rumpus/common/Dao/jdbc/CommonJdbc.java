@@ -18,7 +18,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 /**
  * Singleton wrapper class around {@link JdbcTemplate} and {@link NamedParameterJdbcTemplate}.
@@ -56,8 +56,6 @@ final public class CommonJdbc extends AbstractCommonObject {
         }
     }
 
-    private final static String NAME = "JdbcTemplate";
-
     /**
      * The singleton instance of CommonJdbc.
      * The singleton instance, marked as volatile to ensure thread-safety.
@@ -79,7 +77,6 @@ final public class CommonJdbc extends AbstractCommonObject {
      * @param dataSource the DataSource to be used for the JdbcTemplate.
      */
     private CommonJdbc(DataSource dataSource) {
-        super(NAME);
         this.jdbcTemplate = new JdbcTemplate(dataSource);  // Initialize JdbcTemplate with the provided DataSource.
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate); // Initialize NamedParameterJdbcTemplate.
     }
@@ -236,17 +233,9 @@ final public class CommonJdbc extends AbstractCommonObject {
      * ----------------------------------------------------------------------------
      *****************************************************************************/
 
-    /******************************************************************************
-     *                             Logging                                        *
-     * ----------------------------------------------------------------------------
-     *  Purpose: These methods are used to log messages to the console.           *
-     * ----------------------------------------------------------------------------
-     *****************************************************************************/
-    private void LOG_THIS(String... args) {
-        ICommon.LOG(CommonJdbc.class, args);
-    }
-
-    private void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(CommonJdbc.class, level, args);
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

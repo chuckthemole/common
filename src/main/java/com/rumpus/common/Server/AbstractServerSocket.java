@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 /**
  * Abstract class for common server sockets.
@@ -22,8 +23,7 @@ abstract public class AbstractServerSocket extends AbstractCommonObject {
     private static final String CLIENT_GREETING = "hello server";
     private static final String SERVER_GREETING = "hello client";
 
-    public AbstractServerSocket(String name, final String port) {
-        super(name);
+    public AbstractServerSocket(final String port) {
         this.port = port;
     }
 
@@ -38,11 +38,11 @@ abstract public class AbstractServerSocket extends AbstractCommonObject {
             if(CLIENT_GREETING.equals(greeting)) {
                 this.out.println(SERVER_GREETING);
             } else {
-                LOG.error("Client did not greet server properly");
+                LOG(LogLevel.ERROR, "Client did not greet server properly");
                 return false;
             }
         } catch (IOException e) {
-            LOG.error(e.getMessage());
+            LOG(LogLevel.ERROR, e.getMessage());
             return false;
         }
         return true;
@@ -55,7 +55,7 @@ abstract public class AbstractServerSocket extends AbstractCommonObject {
             this.clientSocket.close();
             this.serverSocket.close();
         } catch (IOException e) {
-            LOG.error(e.getMessage());
+            LOG(LogLevel.ERROR, e.getMessage());
             return false;
         }
         return true;

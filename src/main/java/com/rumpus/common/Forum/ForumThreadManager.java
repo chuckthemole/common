@@ -7,16 +7,15 @@ import com.rumpus.common.Manager.AbstractCommonManager;
 
 public class ForumThreadManager extends AbstractCommonManager<String, ForumThread> {
 
-    private final static String NAME = "ForumThreadManager";
     // TODO: this should be private, right? it extends AbstractCommonManager which extends Map.
     protected Map<String, ForumThread> forumMap; // key: id  value: ForumThread
 
     private ForumThreadManager() {
-        super(NAME, false);
+        super(false);
         this.forumMap = new HashMap<>();
     }
     private ForumThreadManager(String... forumThreadIds) {
-        super(NAME, false);
+        super(false);
         this.forumMap = new HashMap<>();
         for(String forumThreadId : forumThreadIds) {
             this.forumMap.put(forumThreadId, ForumThread.create(null, forumThreadId));
@@ -38,6 +37,11 @@ public class ForumThreadManager extends AbstractCommonManager<String, ForumThrea
     public ForumThread createEmptyManagee(String name) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
     
 }

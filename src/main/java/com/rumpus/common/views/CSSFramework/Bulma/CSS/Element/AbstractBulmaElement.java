@@ -34,8 +34,8 @@ public abstract class AbstractBulmaElement extends AbstractBulmaObject {
     private static final AbstractBulmaObject.ObjectType OBJECT_TYPE = AbstractBulmaObject.ObjectType.ELEMENT;
     private ElementType elementType;
 
-    public AbstractBulmaElement(String name, AbstractHtmlObject.HtmlTagType htmlTagType, String body) {
-        super(name, OBJECT_TYPE, htmlTagType, body);
+    public AbstractBulmaElement(AbstractHtmlObject.HtmlTagType htmlTagType, String body) {
+        super(OBJECT_TYPE, htmlTagType, body);
     }
 
     public ElementType getElementType() {

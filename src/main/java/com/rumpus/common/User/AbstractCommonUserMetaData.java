@@ -18,12 +18,11 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
     protected String photoLink;
     protected String aboutMe;
     
-    public AbstractCommonUserMetaData(String name) {
-        super(name);
+    public AbstractCommonUserMetaData() {
         this.init();
     }
-    public AbstractCommonUserMetaData(String name, String creationTime) {
-        super(name, creationTime);
+    public AbstractCommonUserMetaData(String creationTime) {
+        super(creationTime);
         this.init();
     }
 

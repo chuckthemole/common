@@ -15,8 +15,7 @@ abstract public class AbstractNode<OBJECT extends AbstractCommonObject, NODE ext
         protected NODE previous;
         protected NODE headChild;
 
-        public AbstractNode(String name, OBJECT data) {
-            super(name);
+        public AbstractNode(OBJECT data) {
             this.data = data;
             this.next = null;
             this.previous = null;
@@ -122,19 +121,39 @@ abstract public class AbstractNode<OBJECT extends AbstractCommonObject, NODE ext
 
             boolean isEqual = true;
             if(!this.data.equals(node.data)) {
-                LogBuilder.logBuilderFromStringArgs("\nAbstractNode's are not equal:\n  data not equal: ", this.data.toString(), " not equal to ", node.data.toString()).info();
+                final String log = LogBuilder.logBuilderFromStringArgs(
+                    "\nAbstractNode's are not equal:\n  data not equal: ",
+                    this.data.toString(),
+                    " not equal to ",
+                    node.data.toString()).toString();
+                LOG(log);
                 isEqual = false;
             }
             if(!this.next.equals(node.next)) {
-                LogBuilder.logBuilderFromStringArgs("\nAbstractNode's are not equal:\n  next not equal: ", this.next.toString(), " not equal to ", node.next.toString()).info();
+                final String log = LogBuilder.logBuilderFromStringArgs(
+                    "\nAbstractNode's are not equal:\n  next not equal: ",
+                    this.next.toString(),
+                    " not equal to ",
+                    node.next.toString()).toString();
+                LOG(log);
                 isEqual = false;
             }
             if(!this.previous.equals(node.previous)) {
-                LogBuilder.logBuilderFromStringArgs("\nAbstractNode's are not equal:\n  previous not equal: ", this.previous.toString(), " not equal to ", node.previous.toString()).info();
+                final String log = LogBuilder.logBuilderFromStringArgs(
+                    "\nAbstractNode's are not equal:\n  previous not equal: ",
+                    this.previous.toString(),
+                    " not equal to ",
+                    node.previous.toString()).toString();
+                LOG(log);
                 isEqual = false;
             }
             if(!this.headChild.equals(node.headChild)) {
-                LogBuilder.logBuilderFromStringArgs("\nAbstractNode's are not equal:\n  headChild not equal: ", this.headChild.toString(), " not equal to ", node.headChild.toString()).info();
+                final String log = LogBuilder.logBuilderFromStringArgs(
+                    "\nAbstractNode's are not equal:\n  headChild not equal: ",
+                    this.headChild.toString(),
+                    " not equal to ",
+                    node.headChild.toString()).toString();
+                LOG(log);
                 isEqual = false;
             }
 

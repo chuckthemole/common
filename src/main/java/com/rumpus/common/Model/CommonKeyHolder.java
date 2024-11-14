@@ -17,16 +17,13 @@ import com.rumpus.common.AbstractCommonObject;
  */
 public class CommonKeyHolder extends AbstractCommonObject implements KeyHolder {
 
-    public static final String NAME = "CommonKeyHolder";
     private GeneratedKeyHolder key;
     // private List<Map<String, Object>> keyList;
 
     public CommonKeyHolder() {
-        super(NAME);
         this.key = new GeneratedKeyHolder();
     }
     public CommonKeyHolder(List<Map<String, Object>> keyList) {
-        super(NAME);
         this.key = new GeneratedKeyHolder(keyList);
     }
 
@@ -48,6 +45,11 @@ public class CommonKeyHolder extends AbstractCommonObject implements KeyHolder {
     @Override
     public List<Map<String, Object>> getKeyList() {
         return this.key.getKeyList();
+    }
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
     
 }

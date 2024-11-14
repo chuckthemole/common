@@ -15,9 +15,7 @@ import com.rumpus.common.util.Pair;
  */
 public class ObjectUserRowMapper extends AbstractJdbcRowMapper<TestUserModel> {
     
-    public ObjectUserRowMapper() {
-        super("TestMapper");
-    }
+    public ObjectUserRowMapper() {}
 
     @Override
     protected Function<Pair<ResultSet, Integer>, TestUserModel> initMapperFunction() {
@@ -33,5 +31,11 @@ public class ObjectUserRowMapper extends AbstractJdbcRowMapper<TestUserModel> {
                 return null;
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

@@ -13,14 +13,12 @@ import com.rumpus.common.views.Resource.StorageType;
  */
 public class ResourceManager extends AbstractCommonManager<String, Resource> {
 
-    private static final String NAME = "ResourceManager";
-
     // Ctors
     private ResourceManager() {
-        super(NAME, false);
+        super(false);
     }
     private ResourceManager(Map<String, Resource> resourceMap) {
-        super(NAME, resourceMap, false);
+        super(resourceMap, false);
     }
 
     // Factory methods
@@ -64,5 +62,10 @@ public class ResourceManager extends AbstractCommonManager<String, Resource> {
      */
     public List<Resource> getResources() {
         return List.of(this.values().toArray(new Resource[this.size()]));
+    }
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

@@ -8,9 +8,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  * 
  * TODO: this needs to be built out more and connected to the rumpus_quill.js object.
  */
-public class Quill extends AbstractHtmlObject implements IManageable {
-    
-        public static final String NAME = "Quill";
+public class Quill extends AbstractHtmlObject {
 
         // TODO may need to change types on some of these members. This will mirror the rumpus_quill.js object.
         private String modules;
@@ -20,8 +18,8 @@ public class Quill extends AbstractHtmlObject implements IManageable {
         private String setValue;
         private String editor_ref;
 
-        private Quill(String name, String modules, String formats, String placeholder, String value, String setValue, String editor_ref) {
-            super(name, HtmlTagType.DIV, "");
+        private Quill(String modules, String formats, String placeholder, String value, String setValue, String editor_ref) {
+            super(HtmlTagType.DIV, "");
             this.modules = modules;
             this.formats = formats;
             this.placeholder = placeholder;
@@ -31,11 +29,11 @@ public class Quill extends AbstractHtmlObject implements IManageable {
         }
 
         public static Quill create(String modules, String formats, String placeholder, String value, String setValue, String editor_ref) {
-            return new Quill(NAME, modules, formats, placeholder, value, setValue, editor_ref);
+            return new Quill(modules, formats, placeholder, value, setValue, editor_ref);
         }
 
         public static Quill createEmpty() {
-            return new Quill(NAME, "", "", "", "", "", "");
+            return new Quill("", "", "", "", "", "");
         }
 
         public String getModules() {

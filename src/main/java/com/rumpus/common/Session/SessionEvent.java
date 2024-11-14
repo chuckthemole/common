@@ -8,15 +8,12 @@ import com.rumpus.common.AbstractCommonObject;
 
 public class SessionEvent extends AbstractCommonObject {
 
-    private static final String NAME = "SessionEvent";
-
     protected Created createdEvent;
     protected Destroyed destroyedEvent;
     protected boolean isCreated;
     protected boolean isDestroyed;
 
     public SessionEvent() {
-        super(NAME);
         this.isCreated = false;
         this.isDestroyed = false;
         this.createdEvent = null;
@@ -55,5 +52,11 @@ public class SessionEvent extends AbstractCommonObject {
             super(source, session);
         }
 
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

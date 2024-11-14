@@ -13,9 +13,7 @@ abstract public class AbstractPlaceHolderTemplate extends AbstractTemplate {
     private AbstractBreadcrumb breadcrumb;
     private AbstractWelcome welcome;
 
-    public AbstractPlaceHolderTemplate(String name) {
-        super(name);
-    }
+    public AbstractPlaceHolderTemplate() {}
 
     @Override
     public void setComponents() {

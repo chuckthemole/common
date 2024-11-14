@@ -11,11 +11,7 @@ import com.rumpus.common.util.StringUtil;
  */
 public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute> implements IManageable {
     
-        private static final String NAME = "HtmlTagAttributes";
-    
-        private HtmlTagAttributes() {
-            super(NAME);
-        }
+        private HtmlTagAttributes() {}
     
         ////////////////////////////
         /// Static factory methods /

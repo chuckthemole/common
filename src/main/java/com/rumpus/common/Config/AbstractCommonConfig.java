@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 /**
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.
@@ -45,7 +46,7 @@ import com.rumpus.common.AbstractCommonObject;
  */
 @org.springframework.boot.context.properties.ConfigurationProperties(prefix = "properties")
 @org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.YamlPropertySourceFactory.class)
-public abstract class AbstractCommonConfig extends AbstractCommonObject {
+public abstract class AbstractCommonConfig extends AbstractCommonObject { // TODO: Can this just implement ICommon?
 
     protected static final String BEAN_PORT_MANAGER = "portManager";
     protected static final String BEAN_JDBC_USER_DETAILS_MANAGER = "jdbcUserDetailsManager";
@@ -67,6 +68,11 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject {
      */
     protected final String SCOPE_PROTOTYPE = "prototype";
 
+    /**
+     * The log level for this application.
+     */
+    private static volatile LogLevel g_logLevel = LogLevel.DEBUG2;
+
     ////////////////////////////////////////////////////////////////
     // Properties: list of properties in the properties.yml file. //
     ////////////////////////////////////////////////////////////////
@@ -85,8 +91,8 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject {
     protected static final String REDIS_HOST = "properties.redis.host";
     protected static final String REDIS_PORT = "properties.redis.port";
 
-    public AbstractCommonConfig(String name, Environment environment) {
-        super(name);
+    public AbstractCommonConfig(Environment environment) {
+        
         this.environment = environment;
     }
 
@@ -97,23 +103,23 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject {
 
         // A few checks before we proceed. This checks the environment for the properties we need.
         if(this.environment == null) {
-            LOG_THIS("Environment is null.");
+            LOG("Environment is null.");
             return null;
         }
         if(this.environment.getProperty(AbstractCommonConfig.USER) == null) {
-            LOG_THIS("USER is null.");
+            LOG("USER is null.");
             return null;
         }
         if(this.environment.getProperty(AbstractCommonConfig.PASSWORD) == null) {
-            LOG_THIS("PASSWORD is null.");
+            LOG("PASSWORD is null.");
             return null;
         }
         if(this.environment.getProperty(AbstractCommonConfig.DRIVER) == null) {
-            LOG_THIS("DRIVER is null.");
+            LOG("DRIVER is null.");
             return null;
         }
         if(this.environment.getProperty(AbstractCommonConfig.URL) == null) {
-            LOG_THIS("URL is null.");
+            LOG("URL is null.");
             return null;
         }
 
@@ -136,7 +142,7 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject {
 	}
 
     @Bean
-    abstract public String sqlDialect();
+    abstract public String sqlDialect(); // TODO: Can we have this return an enum?
 
     @Bean
     @DependsOn({AbstractCommonConfig.BEAN_DATA_SOURCE, AbstractCommonConfig.BEAN_SQL_DIALECT})
@@ -197,30 +203,44 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject {
     @Bean
     @Scope(SCOPE_SINGLETON)
     public com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties awsS3Bucket() {
-        LOG_THIS("Creating AwsS3Bucket bean...");
+        LOG("Creating AwsS3Bucket bean...");
         final String bucketName = this.environment.getProperty(AbstractCommonConfig.S3_BUCKET_NAME_PROPERTY);
         final String accessKey = this.environment.getProperty(AbstractCommonConfig.S3_ACCESS_KEY_PROPERTY);
         final String secretAccessKey = this.environment.getProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY);
         final String region = this.environment.getProperty(AbstractCommonConfig.S3_REGION_PROPERTY);
         if(bucketName == null) {
-            LOG_THIS("S3_BUCKET_NAME_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            LOG("S3_BUCKET_NAME_PROPERTY is null. Returning null for AwsS3Bucket bean.");
             return null;
         }
         if(accessKey == null) {
-            LOG_THIS("S3_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            LOG("S3_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
             return null;
         }
         if(secretAccessKey == null) {
-            LOG_THIS("S3_SECRET_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            LOG("S3_SECRET_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
             return null;
         }
         if(region == null) {
-            LOG_THIS("S3_REGION_PROPERTY is null. Returning null for AwsS3Bucket bean.");
+            LOG("S3_REGION_PROPERTY is null. Returning null for AwsS3Bucket bean.");
             return null;
         }
         com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties awsS3Bucket = com.rumpus.common.Cloud.Aws.AwsS3BucketProperties.create(bucketName, accessKey, secretAccessKey, region);
-        LOG_THIS("Created AwsS3Bucket bean with name: ", awsS3Bucket.getBucketName());
+        LOG("Created AwsS3Bucket bean with name: ", awsS3Bucket.getBucketName());
         return awsS3Bucket;
+    }
+
+    /**
+     * Get the log level for this application.
+     */
+    public static LogLevel getLogLevel() {
+        return g_logLevel;
+    }
+
+    /**
+     * Set the log level for this application.
+     */
+    public static void setLogLevel(LogLevel logLevel) {
+        g_logLevel = logLevel;
     }
 
     // TODO: come back to this. Allow for different config types, i.e. yaml, properties, etc.
@@ -230,8 +250,4 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject {
     // public Environment yamlEnvironment() {
     //     return this.applicationContext.getEnvironment();
     // }
-
-    private void LOG_THIS(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractCommonConfig.class, args).info();
-    }
 }

@@ -10,8 +10,6 @@ import com.rumpus.common.util.StringUtil;
  * TODO: need to look at this more and see how I'm using it - chuck
  */
 public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
-    
-        private static final String NAME = "CommonPaths";
 
         private static CommonPaths instance = null;
 
@@ -24,7 +22,7 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
         private static final String CURRENT_USER_INFO_PATH = "/current_user_info";
     
         private CommonPaths() {
-            super(NAME);
+            
             this.init();
         }
 
@@ -90,5 +88,11 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
             if(this.requestMap.get(basePath).remove(pathName) == null) {
                 LOG("Path does not exist. Not removing path.");
             }
+        }
+
+        @Override
+        public String toString() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'toString'");
         }
 }

@@ -84,14 +84,13 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      * @param attributes the list of attributes to init the htmlAttributeManager with
      */
     public AbstractComponent(
-        String name,
         String componentName,
         ComponentType componentType,
         String componentAsString,
         HtmlTagType htmlTagType,
         String body,
         String delimiter) {
-            super(name, htmlTagType, body);
+            super(htmlTagType, body);
             this.componentAttributeManager = this.initComponentAttributeManager();
             this.componentName = componentName;
             this.componentAsString = componentAsString;
@@ -106,17 +105,24 @@ public abstract class AbstractComponent extends AbstractHtmlObject {
      * Factory method for creating an empty component.
      */
     public static AbstractComponent createEmptyComponent() {
-        return new AbstractComponent("EMPTY_COMPONENT", "EMPTY_COMPONENT", ComponentType.EMPTY, "", HtmlTagType.EMPTY, "", AbstractComponent.DEFAULT_DELIMITER) {
-            @Override
-            protected ComponentAttributeManager initComponentAttributeManager() {
-                LOG("init() called in createEmptyComponent()");
-                return ComponentAttributeManager.create();
-            }
+        return new AbstractComponent(
+            "EMPTY_COMPONENT",
+            ComponentType.EMPTY,
+            "",
+            HtmlTagType.EMPTY,
+            "",
+            AbstractComponent.DEFAULT_DELIMITER) {
+                
+                @Override
+                protected ComponentAttributeManager initComponentAttributeManager() {
+                    LOG("init() called in createEmptyComponent()");
+                    return ComponentAttributeManager.create();
+                }
 
-            @Override
-            public void setChildrenForComponent() {
-                LOG("setChildrenForComponent() called in createEmptyComponent()");
-            }
+                @Override
+                public void setChildrenForComponent() {
+                    LOG("setChildrenForComponent() called in createEmptyComponent()");
+                }
         };
     }
 

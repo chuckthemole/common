@@ -12,9 +12,7 @@ public abstract class AbstractAdmin extends AbstractTemplate {
     // protected AbstractHtmlObject analytics;
     // protected List<AbstractHtmlObject> widgets;
 
-    public AbstractAdmin(String name) {
-        super(name);
-    }
+    public AbstractAdmin() {}
 
     @Override
     public void addComponentsToMap() {

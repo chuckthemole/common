@@ -9,7 +9,7 @@ import com.rumpus.common.ICommon;
 // TODO expand this helper 
 public class DateTimeHelpers implements ICommon {
 
-    private static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(DateTimeHelpers.class);
+    private static final com.rumpus.common.Log.ICommonLogger LOG = com.rumpus.common.Log.application.JavaLogger.createLogger(DateTimeHelpers.class);
 
     /**
      * 

@@ -37,7 +37,7 @@ public class LRUCacheIntModelTest extends AbstractCommonTest {
 
     @Test
     public void testSizeAndOrder1() {
-        LOG.atInfo().log("LRUCacheIntModelTest::testEquals()");
+        LOG("LRUCacheIntModelTest::testEquals()");
         LRUCacheIntModel cache = LRUCacheIntModel.create(3);
         cache.put(0, CacheElement.create(0, user0));
         cache.put(1, CacheElement.create(1, user1));
@@ -67,7 +67,7 @@ public class LRUCacheIntModelTest extends AbstractCommonTest {
 
     @Test
     public void testPut() {
-        LOG.atInfo().log("LRUCacheIntModelTest::testPut()");
+        LOG("LRUCacheIntModelTest::testPut()");
         LRUCacheIntModel cache = LRUCacheIntModel.create(4);
         assertEquals(0, cache.size());
 

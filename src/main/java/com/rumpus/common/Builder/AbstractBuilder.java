@@ -1,13 +1,18 @@
 package com.rumpus.common.Builder;
 
-import com.rumpus.common.Logger.AbstractCommonLogger;
+import com.rumpus.common.AbstractCommonObject;
 
-public abstract class AbstractBuilder extends AbstractCommonLogger {
+/**
+ * Abstract wrapper for {@link StringBuilder}
+ * 
+ * TODO: why is this extending AbstractCommonLogger? - chuck
+ */
+public abstract class AbstractBuilder extends AbstractCommonObject {
     
     protected StringBuilder builder;
 
-    public AbstractBuilder(String name) {
-        super(name);
+    public AbstractBuilder() {
+        
         this.builder = new StringBuilder();
     }
 
@@ -19,8 +24,8 @@ public abstract class AbstractBuilder extends AbstractCommonLogger {
      * @param name the name of the Builder
      * @param args the arguments to add to the Builder
      */
-    public AbstractBuilder(String name, String... args) {
-        super(name);
+    public AbstractBuilder(String... args) {
+        
         this.builder = new StringBuilder();
         for(String arg : args) {
             this.builder.append(arg).append(" ");
@@ -34,8 +39,8 @@ public abstract class AbstractBuilder extends AbstractCommonLogger {
      * @param addSpaces whether or not to add spaces between the arguments
      * @param args the arguments to add to the Builder
      */
-    public AbstractBuilder(String name, boolean addSpaces, String... args) {
-        super(name);
+    public AbstractBuilder(boolean addSpaces, String... args) {
+        
         this.builder = new StringBuilder();
         for(String arg : args) {
             if(addSpaces) {
@@ -48,61 +53,6 @@ public abstract class AbstractBuilder extends AbstractCommonLogger {
 
     public void clear() {
         this.builder = new StringBuilder();
-    }
-
-    // TODO: this is just sending the string to the logger, think about how to make this better. - chuck
-    /**
-     * This method is used to log the Builder's string using the logger's info level
-     */
-    public void info() {
-        this.info(this.toString());
-    }
-
-    /**
-     * This method is used to log the Builder's string using the logger's error level
-     */
-    public void error() {
-        this.error(this.toString());
-    }
-
-    /**
-     * This method is used to log the Builder's string using the logger's warn level
-     */
-    public void warn() {
-        this.warn(this.toString());
-    }
-
-    /**
-     * This method is used to log the Builder's string using the logger's debug level
-     */
-    public void debug() {
-        this.debug(this.toString());
-    }
-
-    /**
-     * This method is used to log the Builder's string using the logger's trace level
-     */
-    public void trace() {
-        this.trace(this.toString());
-    }
-
-    /**
-     * This method is used to log the Builder's string using the logger's level
-     * 
-     * @param level the level to log the Builder's string at
-     */
-    public void log(AbstractCommonLogger.LogLevel level) {
-        if(level == AbstractCommonLogger.LogLevel.TRACE) {
-            this.trace(this.toString());
-        } else if(level == AbstractCommonLogger.LogLevel.DEBUG) {
-            this.debug(this.toString());
-        } else if(level == AbstractCommonLogger.LogLevel.INFO) {
-            this.info(this.toString());
-        } else if(level == AbstractCommonLogger.LogLevel.WARN) {
-            this.warn(this.toString());
-        } else if(level == AbstractCommonLogger.LogLevel.ERROR) {
-            this.error(this.toString());
-        }
     }
 
     public void append(String... appendees) {

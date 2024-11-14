@@ -40,8 +40,8 @@ public abstract class AbstractCommonController
 
         static protected ICommonPaths commonPaths = null;
 
-        public AbstractCommonController(String name) {
-                super(name);
+        public AbstractCommonController() {
+                
                 this.init();
         }
 

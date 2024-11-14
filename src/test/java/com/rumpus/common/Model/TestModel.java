@@ -1,15 +1,16 @@
 package com.rumpus.common.Model;
 
+import java.util.UUID;
+
 public class TestModel extends AbstractModel<TestModel, java.util.UUID> {
 
-    private static IModelIdManager<java.util.UUID> idManager;
+    private static IModelIdManager<UUID> idManager;
 
     static {
         idManager = new SqlIdManager();
     }
 
-    public TestModel(String name) {
-        super(name);
+    public TestModel() {
         this.generateId();
     }
 
@@ -21,6 +22,12 @@ public class TestModel extends AbstractModel<TestModel, java.util.UUID> {
     @Override
     public int compareTo(TestModel o) {
         return this.getId().toString().compareTo(o.getId().toString());
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }
 

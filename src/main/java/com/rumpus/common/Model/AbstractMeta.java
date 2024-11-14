@@ -10,13 +10,5 @@ import com.rumpus.common.AbstractCommonObject;
  * This is needed since AbstractMetaData is Serializable. The parent class above the last Serializable class needs to have a no-arg constructor and AbstractCommonObject does not.
  */
 abstract public class AbstractMeta extends AbstractCommonObject {
-
-    transient private static final String NAME = "AbstractMeta";
-
-    public AbstractMeta() {
-        super(NAME);
-    }
-    public AbstractMeta(String name) {
-        super(name);
-    }
+    public AbstractMeta() {}
 }

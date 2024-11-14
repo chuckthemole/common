@@ -39,39 +39,39 @@ public class AbstractComponentPart extends AbstractHtmlObject {
     }
 
     protected static class Empty extends AbstractComponentPart {
-        protected Empty(String name) {
-            super(name, ComponentPartType.EMPTY, "");
+        protected Empty() {
+            super(ComponentPartType.EMPTY, "");
         }
     }
 
     protected static class Title extends AbstractComponentPart {
-        protected Title(String name, String body) {
-            super(name, ComponentPartType.TITLE, body);
+        protected Title(String body) {
+            super(ComponentPartType.TITLE, body);
         }
     }
 
     protected static class ListItem extends AbstractComponentPart {
-        protected ListItem(String name, String body) {
-            super(name, ComponentPartType.LIST_ITEM, body);
+        protected ListItem(String body) {
+            super(ComponentPartType.LIST_ITEM, body);
         }
     }
 
     protected static class List extends AbstractComponentPart {
-        protected List(String name, String body) {
-            super(name, ComponentPartType.LIST, body);
+        protected List(String body) {
+            super(ComponentPartType.LIST, body);
         }
     }
 
     protected static class Link extends AbstractComponentPart {
-        protected Link(String name, String body, String link) {
-            super(name, ComponentPartType.LINK, body);
+        protected Link(String body, String link) {
+            super(ComponentPartType.LINK, body);
             this.setLink(link);
         }
     }
 
     protected static class EmbeddedList extends AbstractComponentPart {
-        protected EmbeddedList(String name) {
-            super(name, ComponentPartType.EMBEDDED_LIST, "");
+        protected EmbeddedList() {
+            super(ComponentPartType.EMBEDDED_LIST, "");
         }
     }
 
@@ -81,14 +81,14 @@ public class AbstractComponentPart extends AbstractHtmlObject {
 
     private ComponentPartType componentPartType;
 
-    public AbstractComponentPart(String name, ComponentPartType componentPartType, String body) {
-        super(name, AbstractHtmlObject.HtmlTagType.DIV, body); // use div as default but will be changed in setHtmlTagTypeBasedOnAsidecomponentType()
+    public AbstractComponentPart(ComponentPartType componentPartType, String body) {
+        super(AbstractHtmlObject.HtmlTagType.DIV, body); // use div as default but will be changed in setHtmlTagTypeBasedOnAsidecomponentType()
         this.componentPartType = componentPartType;
         this.setHtmlTagTypeBasedOnAsidecomponentType(); // TODO: this may be redundant
     }
 
-    public static AbstractComponentPart createEmptyAbstractComponentPart(String name) {
-        return new AbstractComponentPart.Empty(name);
+    public static AbstractComponentPart createEmptyAbstractComponentPart() {
+        return new AbstractComponentPart.Empty();
     }
 
     public ComponentPartType getComponentPartType() {

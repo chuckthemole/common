@@ -14,8 +14,8 @@ public class AbstractCommonUserSerializer<
     USER_META extends AbstractCommonUserMetaData<USER_META>
 > extends AbstractCommonSerializer<USER> {
     
-    public AbstractCommonUserSerializer(String name, SerializationType serializationType) {
-        super(name, serializationType);
+    public AbstractCommonUserSerializer(SerializationType serializationType) {
+        super(serializationType);
     }
 
     @Override
@@ -28,6 +28,12 @@ public class AbstractCommonUserSerializer<
     public USER readJson(JsonReader in) throws java.io.IOException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'readJson'");
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
     
     

@@ -11,15 +11,16 @@ import com.rumpus.common.User.AbstractCommonUserMetaData;
 
 public class TestUserModelMetaDataSerializer extends AbstractMetaDataSerializer<TestUserModelMetaData> {
 
-    private static final String NAME = "TestUserModelMetaDataSerializer";
-
     public TestUserModelMetaDataSerializer() {
-        super(NAME, SerializationType.JSON);
+        super(SerializationType.JSON);
     }
 
     @Override
     public void writeJson(JsonWriter out, TestUserModelMetaData object) throws IOException {
-        LogBuilder.logBuilderFromStringArgs(TestUserModelMetaData.class, "TestUserModelMetaDataSerializer::createTypeAdapter()::write()").info();
+        final String log = LogBuilder.logBuilderFromStringArgs(
+            TestUserModelMetaData.class,
+            "TestUserModelMetaDataSerializer::createTypeAdapter()::write()").toString();
+        LOG(log);
         out.beginObject(); 
         out.name(AbstractCommonUserMetaData.USER_CREATION_DATE_TIME);
         out.value(object.getStandardFormattedCreationTime());
@@ -32,7 +33,10 @@ public class TestUserModelMetaDataSerializer extends AbstractMetaDataSerializer<
 
     @Override
     public TestUserModelMetaData readJson(JsonReader in) throws IOException {
-        LogBuilder.logBuilderFromStringArgs(TestUserModelMetaData.class, "TestUserModelMetaDataSerializer::createTypeAdapter()::read()").info();
+        final String log = LogBuilder.logBuilderFromStringArgs(
+            TestUserModelMetaData.class,
+            "TestUserModelMetaDataSerializer::createTypeAdapter()::read()").toString();
+        LOG(log);
         TestUserModelMetaData userMetaData = TestUserModelMetaData.createEmpty();
         in.beginObject();
         String fieldname = null;
@@ -65,5 +69,11 @@ public class TestUserModelMetaDataSerializer extends AbstractMetaDataSerializer<
         }
         in.endObject();
         return userMetaData;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

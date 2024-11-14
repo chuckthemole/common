@@ -2,10 +2,8 @@ package com.rumpus.common.views.CSSFramework.Bulma.CSS.Columns;
 
 public class Columns extends AbstractBulmaColumns {
 
-    private static final String NAME = "BulmaColumns";
-
     private Columns() {
-        super(NAME, ColumnsType.COLUMNS);
+        super(ColumnsType.COLUMNS);
         this.init();
     }
 

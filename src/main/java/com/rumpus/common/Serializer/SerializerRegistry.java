@@ -5,11 +5,8 @@ import com.rumpus.common.Manager.AbstractCommonManager;
 
 public class SerializerRegistry extends AbstractCommonManager<Class<?>, ICommonSerializer<?>> implements ISerializerRegistry {
 
-
-    private final static String NAME = "SerializerRegistry";
-
     private SerializerRegistry() {
-        super(NAME, false);
+        super(false);
     }
 
     public static SerializerRegistry create() {
@@ -37,6 +34,12 @@ public class SerializerRegistry extends AbstractCommonManager<Class<?>, ICommonS
     public ICommonSerializer<?> createEmptyManagee(String name) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
     
 }

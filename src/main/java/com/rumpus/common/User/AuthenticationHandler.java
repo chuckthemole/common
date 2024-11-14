@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class AuthenticationHandler implements AuthenticationSuccessHandler, Auth
     ActiveUserStore activeUserStore; // TODO: not using this rn. should look into more when using onAuthSuccess
     
     public AuthenticationHandler(ActiveUserStore activeUserStore) {
-        this.activeUserStore = activeUserStore;
+        this.activeUserStore = activeUserStore != null ? activeUserStore : new ActiveUserStore();
     }
 
     @Override
@@ -30,8 +30,9 @@ public class AuthenticationHandler implements AuthenticationSuccessHandler, Auth
         LOG_THIS("onAuthenticationSuccess");
         HttpSession session = request.getSession(false);
         if (session != null) {
-            LoggedUser user = new LoggedUser(authentication.getName(), activeUserStore);
-            session.setAttribute("user", user);
+            // Commenting this out for now. LoggedUser is causing trouble. Need to look into - chuck 2024/11/13
+            // LoggedUser user = new LoggedUser(authentication.getName(), activeUserStore);
+            // session.setAttribute("user", user);
         }
     }
 

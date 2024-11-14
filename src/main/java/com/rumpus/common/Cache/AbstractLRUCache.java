@@ -12,8 +12,8 @@ abstract public class AbstractLRUCache<KEY, VALUE extends CacheElement<KEY, ?>> 
     private java.util.LinkedHashMap<KEY, VALUE> linkedHashMap;
 
 
-    public AbstractLRUCache(String name, int capacity) {
-        super(name);
+    public AbstractLRUCache(int capacity) {
+        
         this.capacity = capacity;
         this.linkedHashMap = new java.util.LinkedHashMap<KEY, VALUE>(capacity, 0.75f, true) {
             @Override
@@ -60,7 +60,7 @@ abstract public class AbstractLRUCache<KEY, VALUE extends CacheElement<KEY, ?>> 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(name).append("  capacity: ").append(this.capacity);
+        sb.append("  capacity: ").append(this.capacity);
         // print the cache in order of lru
         sb.append("  Cache: ");
         for(KEY key : this.linkedHashMap.keySet()) {
@@ -74,7 +74,7 @@ abstract public class AbstractLRUCache<KEY, VALUE extends CacheElement<KEY, ?>> 
         com.rumpus.common.ICommon.LOG(AbstractLRUCache.class, args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
         com.rumpus.common.ICommon.LOG(AbstractLRUCache.class, level, args);
     }
 }

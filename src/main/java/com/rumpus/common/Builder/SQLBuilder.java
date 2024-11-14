@@ -6,8 +6,6 @@ import com.rumpus.common.util.StringUtil;
 
 public class SQLBuilder extends AbstractBuilder {
 
-    private static final String NAME = "SQLBuilder";
-
     private static final String SELECT = "SELECT";
     private static final String FROM = "FROM";
     private static final String INSERT_INTO = "INSERT INTO";
@@ -29,11 +27,11 @@ public class SQLBuilder extends AbstractBuilder {
     private String columnNameValue; // TODO: look below at some usage. This should be set with setter and have default for all be *
 
     public SQLBuilder() {
-        super(NAME);
+        
     }
 
     public SQLBuilder(String... args) {
-        super(NAME, args);
+        super(args);
     }
 
     /**

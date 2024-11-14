@@ -1,7 +1,9 @@
 package com.rumpus.common.views.Html;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.AbstractView;
@@ -206,8 +208,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     //     this.body = abstractHtmlObject.getBody();
     //     this.link = String.valueOf("");
     // }
-    public AbstractHtmlObject(String name, HtmlTagType htmlTagType, String body) {
-        super(name);
+    public AbstractHtmlObject(HtmlTagType htmlTagType, String body) {
         this.children = new java.util.ArrayList<>();
         this.htmlTagType = htmlTagType;
         this.htmlAttributes = HtmlTagAttributes.create();
@@ -236,11 +237,12 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      * @return the html object with the attributes set
      */
     public static AbstractHtmlObject getAndSetAttributesForHtmlObject(AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
-        LogBuilder.logBuilderFromStringArgsNoSpaces(
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
             "Getting and setting attributes for given html object :: Attributes: ",
             attributes,
             "Delimiter: ",
-            delimiter).info();
+            delimiter).toString();
+            LOG_THIS(log);
         if(attributes == null || attributes.isEmpty()) {
             LOG_THIS("attributes is null or empty, returning empty html object");
             return hTypeHtmlObject;
@@ -251,7 +253,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
             if(attributePropAndValue.length == 2) {
                 hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
             } else {
-                LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: ", attribute);
+                LOG_THIS(LogLevel.ERROR, "Invalid attribute: ", attribute);
             }
         }
         return hTypeHtmlObject;
@@ -269,11 +271,12 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      * @return the empty html object with the attributes set
      */
     public static AbstractHtmlObject getEmptyHtmlObjectWithAttributes(String attributes, String delimiter) {
-        LogBuilder.logBuilderFromStringArgsNoSpaces(
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
             "Creating empty html object and adding attributes :: Attributes: ",
             attributes,
             "Delimiter: ",
-            delimiter).info();
+            delimiter).toString();
+        LOG_THIS(log);
         return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(), attributes, delimiter);
     }
 
@@ -288,13 +291,14 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      * @return the empty html object with the attributes and html tag type set
      */
     public static AbstractHtmlObject getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType htmlTagType, String attributes, String delimiter) {
-        LogBuilder.logBuilderFromStringArgsNoSpaces(
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
             "Creating empty html object and adding attributes :: Tag Type: ",
             htmlTagType.getHtmlTagType(),
             "Attributes: ",
             attributes,
             "Delimiter: ",
-            delimiter).info();
+            delimiter).toString();
+        LOG_THIS(log);
         AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes, delimiter);
         hTypeHtmlObject.setHtmlTagType(htmlTagType);
         return hTypeHtmlObject;
@@ -453,7 +457,12 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
                 return true;
             }
         }
-        LogBuilder.logBuilderFromStringArgsNoSpaces("Could not remove value: ", value, " from attribute: ", attribute.toString()).info();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
+            "Could not remove value: ",
+            value,
+            " from attribute: ",
+            attribute.toString()).toString();
+        LOG_THIS(log);
         return false;
     }
 
@@ -482,7 +491,9 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
 
         // check if the attribute key is null or empty or if the attribute does not exist
         if(attributeKey == null || attributeKey.isEmpty() || this.htmlAttributes.get(attributeKey) == null) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("The given attribute key is null, is empty, or does not exist. Returning null.").info();
+            final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
+                "The given attribute key is null, is empty, or does not exist. Returning null.").toString();
+            LOG_THIS(log);
             return null;
         }
 
@@ -592,11 +603,16 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
 
     private boolean isGivenAttributeNullOrIsThisHtmlAttributesNull(Attribute attribute) {
         if(attribute == null) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("The given attribute is null.").info();
+            final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
+                "The given attribute is null.").toString();
+            LOG_THIS(log);
             return true;
         }
         if(this.htmlAttributes == null) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces("This htmlAttributes is null. Not adding attribute: ", attribute.toString()).info();
+            final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
+                "This htmlAttributes is null. Not adding attribute: ",
+                attribute.toString()).toString();
+            LOG_THIS(log);
             // LogBuilder.logBuilderFromStringArgsNoSpaces("Debug this AbstractHtmlObject: ", this.toString()).info();
             return true;
         }
@@ -604,10 +620,10 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractCommonObject.class, args);
+        ICommon.LOG(AbstractCommonObject.class, args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractCommonObject.class, level, args);
+    private static void LOG_THIS(LogLevel level, String... args) {
+        ICommon.LOG(AbstractCommonObject.class, level, args);
     }
 }

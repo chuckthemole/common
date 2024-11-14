@@ -44,11 +44,10 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>> extends
     }
 
     public AbstractDao(
-        String name,
         String table,
         String metaTable,
         RowMapper<MODEL> mapper) {
-            super(name);
+            
             this.table = table;
             this.metaTable = metaTable;
             this.mapper = mapper;

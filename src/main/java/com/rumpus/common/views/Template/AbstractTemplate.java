@@ -19,8 +19,8 @@ public abstract class AbstractTemplate extends AbstractCommonManager<String, Abs
     // private Set<String> resources; // names of resources that can be found in resource manager // TODO: maybe this should be in the template? look into when we start using resources
     private AbstractHtmlObject head; // this is the head of the html object that will be rendered, containing the components.
     
-    public AbstractTemplate(String name) {
-        super(name, false);
+    public AbstractTemplate() {
+        super(false);
         this.setComponents();
         this.addComponentsToMap();
         this.head = this.setHead();
@@ -32,7 +32,7 @@ public abstract class AbstractTemplate extends AbstractCommonManager<String, Abs
      * @return an empty template
      */
     public static AbstractTemplate createEmptyTemplate() {
-        return new AbstractTemplate("EMPTY_TEMPLATE") {
+        return new AbstractTemplate() {
             @Override
             public void addComponentsToMap() {
                 LOG("addComponentsToMap() called in createEmptyTemplate(), do nothing");

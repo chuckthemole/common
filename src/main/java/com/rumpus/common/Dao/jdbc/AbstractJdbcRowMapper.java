@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.util.Pair;
 
@@ -46,8 +46,8 @@ abstract public class AbstractJdbcRowMapper<MODEL extends AbstractModel<MODEL, ?
      */
     private Function<Pair<ResultSet, Integer>, MODEL> mapFunction;
 
-    public AbstractJdbcRowMapper(String name) {
-            super(name);
+    public AbstractJdbcRowMapper() {
+            
             this.init();
     }
 

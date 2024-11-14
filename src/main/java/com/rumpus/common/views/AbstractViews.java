@@ -27,8 +27,8 @@ public abstract class AbstractViews extends AbstractCommonManager<String, Abstra
     protected ITableBuilder userTable;
     protected ResourceManager resourceManager;
 
-	public AbstractViews(String name) {
-        super(name, false);
+	public AbstractViews() {
+        super(false);
         this.init();
 	}
 

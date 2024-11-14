@@ -19,8 +19,8 @@ abstract public class AbstractCommonUserConfig
         public static final String USER_SERVICE = "parentUserService";
         public static final String CHILD_USER_SERVICE = "childUserService";
 
-        public AbstractCommonUserConfig(String name, Environment environment) {
-            super(name, environment);
+        public AbstractCommonUserConfig(Environment environment) {
+            super(environment);
         }
 
         @Bean(name = AbstractCommonUserConfig.USER_SERVICE)

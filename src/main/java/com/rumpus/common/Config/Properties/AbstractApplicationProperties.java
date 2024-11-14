@@ -1,13 +1,16 @@
 package com.rumpus.common.Config.Properties;
 
 import org.springframework.core.env.Profiles;
+import org.springframework.core.env.Environment;
 
-public class AbstractApplicationProperties extends com.rumpus.common.AbstractCommonObject implements org.springframework.core.env.Environment {
+import com.rumpus.common.AbstractCommonObject;
+
+abstract public class AbstractApplicationProperties extends AbstractCommonObject implements Environment {
 
     java.util.Map<String, String> properties;
 
-    public AbstractApplicationProperties(String name) {
-        super(name);
+    public AbstractApplicationProperties() {
+        
         this.properties = new java.util.HashMap<String, String>();
     }
 
@@ -41,7 +44,7 @@ public class AbstractApplicationProperties extends com.rumpus.common.AbstractCom
     @Override
     public String getRequiredProperty(String key) throws IllegalStateException {
         if(this.properties.get(key) == null) {
-            LOG_THIS("Property '" + key + "' not found");
+            this.LOG("Property '" + key + "' not found");
             throw new IllegalStateException("Property '" + key + "' not found");
         }
         return this.properties.get(key);
@@ -87,9 +90,5 @@ public class AbstractApplicationProperties extends com.rumpus.common.AbstractCom
     public boolean acceptsProfiles(Profiles profiles) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'acceptsProfiles'");
-    }
-
-    private static void LOG_THIS(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractApplicationProperties.class, args).info();
     }
 }

@@ -15,10 +15,7 @@ public class EmptyUser<
         META extends AbstractCommonUserMetaData<META>
     > extends AbstractCommonUser<USER, META> {
 
-        private final static String NAME = "EmptyUser";
-
         private EmptyUser() {
-            super(NAME);
             this.setEmail("EMPTY_EMAIL");
             this.setUsername("EMPTY_USERNAME");
             this.setUserDetails(CommonUserDetails.createEmptyUserDetails());

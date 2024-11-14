@@ -2,16 +2,12 @@ package com.rumpus.common.Builder;
 
 public class LogBuilder extends AbstractBuilder {
 
-    public static final String NAME = "LogBuilder";
-
-    public LogBuilder(boolean addSpaces, String... args) {
-        super(NAME, addSpaces, args);
-        this.setClass(com.rumpus.common.ICommon.DEFAULT_LOGGER_CLASS);
+    private LogBuilder(boolean addSpaces, String... args) {
+        super(addSpaces, args);
     }
 
-    public LogBuilder(Class<?> clazz, boolean addSpaces, String... args) {
-        super(NAME, addSpaces, args);
-        this.setClass(clazz);
+    private LogBuilder(Class<?> clazz, boolean addSpaces, String... args) {
+        super(addSpaces, args);
     }
 
     /**
@@ -90,7 +86,7 @@ public class LogBuilder extends AbstractBuilder {
         for(int i = 1; i <= stack.length; i++) {
             elements[i] = new StringBuilder(stack[i - 1].toString()).append("\n").toString();
         }
-        return new LogBuilder(true, elements);
+        return LogBuilder.logBuilderFromStringArgs(elements);
     }
 
     /**

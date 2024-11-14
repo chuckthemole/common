@@ -33,10 +33,9 @@ abstract public class AbstractCloudProperties extends AbstractCommonObject {
     @JsonIgnore private java.util.Map<String, String> properties;
 
     public AbstractCloudProperties(
-        String name,
         CloudType cloudType,
         java.util.Map<String, String> properties) {
-            super(name);
+            
             this.cloudType = cloudType;
             this.properties = properties;
     }

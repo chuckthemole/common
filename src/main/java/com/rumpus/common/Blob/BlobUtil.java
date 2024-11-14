@@ -1,7 +1,7 @@
 package com.rumpus.common.Blob;
 
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractMetaData;
 
 import java.sql.Blob;

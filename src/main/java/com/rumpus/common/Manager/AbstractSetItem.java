@@ -1,12 +1,12 @@
 package com.rumpus.common.Manager;
 
+import com.rumpus.common.Builder.LogBuilder;
+
 public abstract class AbstractSetItem extends com.rumpus.common.AbstractCommonObject implements ISetItem {
 
     private String uniqueId = null;
 
-    public AbstractSetItem(String name) {
-        super(name);
-    }
+    public AbstractSetItem() {}
 
     @Override
     public void setUniqueId(String id) {
@@ -28,6 +28,7 @@ public abstract class AbstractSetItem extends com.rumpus.common.AbstractCommonOb
     }
 
     private void LOG_THIS(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractSetItem.class, args).info();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractSetItem.class, args).toString();
+        LOG(log);
     }
 }

@@ -59,12 +59,9 @@ public abstract class AbstractModelsCollection<
         COLLECTION extends Collection<MODEL>
     > extends AbstractCommonObject implements Collection<MODEL> {
 
-        private static final String NAME = "ModelsCollection";
-
         protected COLLECTION collection;
 
         public AbstractModelsCollection(COLLECTION collection) {
-            super(NAME);
             this.collection = collection;
             // this.modelsList = new ArrayList<>();
         }
@@ -83,7 +80,14 @@ public abstract class AbstractModelsCollection<
                     LOG_THIS("AbstractModelsCollection::getSortedByIdListFromCollection: userCollection is null");
                     return null;
                 }
-                return new AbstractModelsCollection<MODEL, COLLECTION>(userCollection) {}.sortById();
+
+                // TODO: what are we doing here?
+                return new AbstractModelsCollection<MODEL, COLLECTION>(userCollection) {
+                    @Override
+                    public String toString() {
+                        return "TODO: implement!!";
+                    }
+                }.sortById();
         }
 
         // add more sort methods in child classes depending on how you want to sort
@@ -168,7 +172,7 @@ public abstract class AbstractModelsCollection<
             com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class, args);
         }
 
-        private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+        private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
             com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class, level, args);
         }
 }

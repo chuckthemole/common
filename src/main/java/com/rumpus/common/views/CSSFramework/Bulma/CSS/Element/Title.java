@@ -52,7 +52,7 @@ public class Title extends AbstractBulmaElement {
     private TitleType titleType;
 
     private Title(String body, TitleSize titleSize, TitleType titleType) {
-        super(NAME, DEFAULT_HTML_TAG_TYPE, body);
+        super(DEFAULT_HTML_TAG_TYPE, body);
         this.init(titleSize, titleType);
     }
 

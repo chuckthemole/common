@@ -7,13 +7,12 @@ import com.rumpus.common.views.Html.HtmlTagAttributes;
 
 public class BulmaAside extends AbstractAside {
 
-    private static final String NAME = "BulmaAside";
     private static final String TITLE_HTML_ATTRIBUTES = "class=menu-label";
     private static final String ITEMS_HTML_ATTRIBUTES = "class=menu-list";
 
     private BulmaAside(String componentName, String asideGroups) {
         // super(NAME, componentName, asideGroups, TITLE_HTML_ATTRIBUTES, ITEMS_HTML_ATTRIBUTES);
-        super(NAME, componentName, asideGroups);
+        super(componentName, asideGroups);
         this.addHtmlTagAttribute("class", "menu is-hidden-mobile"); // TODO: look at this more
     }
 

@@ -1,7 +1,11 @@
 package com.rumpus.common;
 
+import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.IO.IRumpusIO;
 import com.rumpus.common.IO.RumpusIO;
+import com.rumpus.common.Log.ICommonLogger;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
+import com.rumpus.common.Log.application.JavaLogger;
 
 import java.util.UUID;
 
@@ -12,12 +16,19 @@ import java.util.UUID;
  */
 public interface ICommon {
     public static IRumpusIO io = new RumpusIO();
-    public static final Class<?> DEFAULT_LOGGER_CLASS = ICommon.class;
-    public static final com.rumpus.common.Logger.ICommonLogger LOG = com.rumpus.common.Logger.CommonLogger.createLogger(DEFAULT_LOGGER_CLASS);
+    public static final Class<ICommon> DEFAULT_LOGGER_CLASS = ICommon.class;
+
+    /**
+     * TODO: I don't like giving access to this, while people can change the class. I think I should make this private and have a getter for it. - chuck
+     */
+    public static ICommonLogger LOG_COMMON = JavaLogger.createLogger(DEFAULT_LOGGER_CLASS);
 
     public final static String NO_ID = String.valueOf(-1);
 
-    public final static UUID EMPTY_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    /**
+     * Be careful with this. It's used in a lot of places. It's a placeholder for an empty UUID.
+     */
+    public final static UUID EMPTY_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000"); // TODO: This is a placeholder. I believe a user already has this UUID.
     public final static String EMPTY_FIELD = "EMPTY_FIELD";
     public final static String NO_NAME = String.valueOf("NO_NAME");
     public final static String NO_PASS = String.valueOf("NO_PASS");
@@ -106,7 +117,10 @@ public interface ICommon {
      * @param args The message to log
      */
     public static void LOG(Class<?> clazz, String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).info();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
+        LOG_COMMON.setClass(clazz);
+        LOG_COMMON.infoLevel(log);
+        LOG_COMMON.setClass(DEFAULT_LOGGER_CLASS);
     }
 
     /**
@@ -116,7 +130,10 @@ public interface ICommon {
      * @param level the level to log the message at
      * @param args The message to log
      */
-    public static void LOG(Class<?> clazz, com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).log(level);
+    public static void LOG(Class<?> clazz, LogLevel level, String... args) {
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
+        LOG_COMMON.setClass(clazz);
+        LOG_COMMON.infoLevel(log);
+        LOG_COMMON.setClass(DEFAULT_LOGGER_CLASS);
     }
 }

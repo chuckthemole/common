@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Manager.AbstractCommonManager;
 
 public class ServerManager extends AbstractCommonManager<String, ManageableServerThread> {
 
-    private final static String NAME = "ServerManager";
-
     private ServerManager() {
-        super(NAME, false);
+        super(false);
     }
 
     public static ServerManager create() {
@@ -19,7 +18,10 @@ public class ServerManager extends AbstractCommonManager<String, ManageableServe
     }
 
     public ManageableServerThread addServer(String name, AbstractServer server) {
-        LogBuilder.logBuilderFromStringArgs("Creating new ManageableServerThread in map:\n", server.toString()).info();
+        final String log = LogBuilder.logBuilderFromStringArgs(
+            "Creating new ManageableServerThread in map:\n",
+            server.toString()).toString();
+        LOG(log);
         return this.put(name, new ManageableServerThread(server, server));
     }
 
@@ -30,48 +32,68 @@ public class ServerManager extends AbstractCommonManager<String, ManageableServe
     public synchronized void startServer(String name) {
         LOG("ServerManager starting server: " + name);
         ManageableServerThread serverThread = this.get(name);
-        LogBuilder.logBuilderFromStringArgs("Starting server:\n", serverThread.getManagee().toString()).info();
+        String log = LogBuilder.logBuilderFromStringArgs(
+            "Starting server:\n",
+            serverThread.getManagee().toString()).toString();
+        LOG(log);
         if(serverThread != null && !serverThread.isAlive()) {
             try {
                 serverThread.start();
             } catch (IllegalThreadStateException e) {
-                LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).toString();
+                LOG(LogLevel.ERROR, log);
             }
         }
-        LogBuilder.logBuilderFromStringArgs("Can't start server. Thread is null or is already alive.").info();
+        log = LogBuilder.logBuilderFromStringArgs(
+            "Can't start server. Thread is null or is already alive.").toString();
+        LOG(log);
     }
 
     public synchronized void stopServer(String name) {
         LOG("ServerManager stopping server: " + name);
         ManageableServerThread serverThread = this.get(name);
         if(serverThread != null) {
-            LogBuilder.logBuilderFromStringArgs("Thread is alive (before stopping thread): " + serverThread.isAlive()).info();
+            String log = LogBuilder.logBuilderFromStringArgs(
+                "Thread is alive (before stopping thread): ", String.valueOf(serverThread.isAlive())).toString();
+            LOG(log);
             if(serverThread.isAlive() && serverThread.stopThread()) {
                 try {
-                    LogBuilder.logBuilderFromStringArgs("Thread is alive (before joining thread): " + serverThread.isAlive()).info();
+                    log = LogBuilder.logBuilderFromStringArgs(
+                        "Thread is alive (before joining thread): " + serverThread.isAlive()).toString();
+                    LOG(log);
                     // serverThread.join(5000);
                     int aliveCounter = 0;
                     while(serverThread.isAlive()) {
                         Thread.sleep(1000);
                         LOG("Waiting for thread to stop...");
                         if(aliveCounter > 5) {
-                            LogBuilder.logBuilderFromStringArgs("Thread is alive (after waiting 5 seconds): " + serverThread.isAlive()).info();
+                            log = LogBuilder.logBuilderFromStringArgs(
+                                "Thread is alive (after waiting 5 seconds): " + serverThread.isAlive()).toString();
+                            LOG(log);
                             break;
                         }
                         else if(aliveCounter++ > 2) {
-                            LogBuilder.logBuilderFromStringArgs("Thread is alive (after waiting 2 seconds): " + serverThread.isAlive()).info();
+                            log = LogBuilder.logBuilderFromStringArgs(
+                                "Thread is alive (after waiting 2 seconds): " + serverThread.isAlive()).toString();
+                            LOG(log);
                             serverThread.stopThread();
                         }
                     }
-                    LogBuilder.logBuilderFromStringArgs("Creating new ManageableServerThread in map:\n", serverThread.getManagee().toString()).info();
+                    log = LogBuilder.logBuilderFromStringArgs(
+                        "Creating new ManageableServerThread in map:\n",
+                        serverThread.getManagee().toString()).toString();
+                    LOG(log);
                     AbstractServer server = serverThread.getManagee();
                     server.setIsRunning(false);
                     this.put(name, new ManageableServerThread(server, server));
                 } catch (InterruptedException e) {
-                    LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
+                    log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).toString();
+                    LOG(LogLevel.ERROR, log);
                 }
             }
-            LogBuilder.logBuilderFromStringArgs("Thread is alive (after stopping thread): " + serverThread.isAlive()).info();
+            log = LogBuilder.logBuilderFromStringArgs(
+                "Thread is alive (after stopping thread): " + serverThread.isAlive()).toString();
+            LOG(log);
         }
     }
     
@@ -101,5 +123,11 @@ public class ServerManager extends AbstractCommonManager<String, ManageableServe
     public ManageableServerThread createEmptyManagee(String name) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

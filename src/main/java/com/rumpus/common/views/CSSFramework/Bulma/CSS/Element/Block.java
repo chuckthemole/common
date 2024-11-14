@@ -11,12 +11,11 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  */
 public class Block extends AbstractBulmaElement {
 
-    private static final String NAME = "BulmaBlock";
     private static final String CLASS_NAME = "block";
     private static final AbstractHtmlObject.HtmlTagType HTML_TAG_TYPE = AbstractHtmlObject.HtmlTagType.DIV;
 
     private Block(String body) {
-        super(NAME, HTML_TAG_TYPE, body);
+        super(HTML_TAG_TYPE, body);
         this.init();
     }
 

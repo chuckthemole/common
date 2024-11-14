@@ -10,12 +10,10 @@ import java.util.List;
  */
 public class Footer extends AbstractView {
 
-    private static final String NAME = "Footer";
     private List<Column> columns;
     private static short size;
 
     public Footer() {
-        super(NAME);
         size = 0;
         columns = new ArrayList<>();
     }

@@ -28,8 +28,7 @@ abstract public class AbstractCommonSerializer<OBJECT extends AbstractCommonObje
      */
     transient private TypeAdapter<OBJECT> typeAdapter; // keep this transient or will not serialize. TODO: moved this from AbstractMetaData, see if should still be transient
 
-    public AbstractCommonSerializer(String name, SerializationType serializationType) {
-        super(name);
+    public AbstractCommonSerializer(SerializationType serializationType) {
         this.typeAdapter = this.createTypeAdapter();
         this.serializationType = serializationType;
     }

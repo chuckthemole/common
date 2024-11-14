@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.AbstractDao;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Model.CommonKeyHolder;
 
@@ -30,8 +30,8 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
      */
     private CommonJdbc jdbc;
 
-    public AbstractApiDBJdbc(String name, DataSource dataSource, String table, RowMapper<MODEL> mapper) {
-        super(name, table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to handle in future.
+    public AbstractApiDBJdbc(DataSource dataSource, String table, RowMapper<MODEL> mapper) {
+        super(table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to handle in future.
         this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
     }
 

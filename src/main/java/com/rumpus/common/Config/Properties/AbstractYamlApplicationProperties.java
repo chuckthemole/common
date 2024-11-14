@@ -2,13 +2,13 @@ package com.rumpus.common.Config.Properties;
 
 @org.springframework.boot.context.properties.ConfigurationProperties(prefix = "properties")
 @org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.YamlPropertySourceFactory.class)
-public class AbstractYamlApplicationProperties extends AbstractApplicationProperties {
+abstract public class AbstractYamlApplicationProperties extends AbstractApplicationProperties {
 
     private String name;
     private java.util.List<String> aliases;
 
-    public AbstractYamlApplicationProperties(String name) {
-        super(name);
+    public AbstractYamlApplicationProperties() {
+        
     }
 
     public String getName() {

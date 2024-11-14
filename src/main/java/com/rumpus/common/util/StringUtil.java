@@ -1,5 +1,8 @@
 package com.rumpus.common.util;
 
+import com.rumpus.common.ICommon;
+import com.rumpus.common.Builder.LogBuilder;
+
 /**
  * Feel free to implement static string helper methods here.
  * If you are doing something repeatedly in your code, consider adding it here.
@@ -259,6 +262,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
     }
 
     private static void LOG(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(StringUtil.class, args).info();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(StringUtil.class, args).toString();
+        ICommon.LOG(StringUtil.class, log);
     }
 }

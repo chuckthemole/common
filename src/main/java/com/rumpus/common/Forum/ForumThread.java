@@ -8,15 +8,13 @@ import com.rumpus.common.Structures.AbstractGraph;
  */
 public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> implements IManageable {
     
-    private static final String NAME = "ForumThread";
     private String pageID; // id of page
 
     private ForumThread() {
-        super(NAME);
         this.pageID = null;
     }
     private ForumThread(ForumPostNode head, String pageID) {
-        super(NAME, head);
+        super(head);
         this.pageID = pageID;
     }
 
@@ -51,5 +49,10 @@ public class ForumThread extends AbstractGraph<ForumPost, ForumPostNode> impleme
 
     public String getPageID() {
         return this.pageID;
+    }
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

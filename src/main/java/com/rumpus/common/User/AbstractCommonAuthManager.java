@@ -15,8 +15,8 @@ abstract public class AbstractCommonAuthManager
     USER_META extends AbstractCommonUserMetaData<USER_META>
 > extends AbstractUserService<USER, USER_META> implements AuthenticationManager {
 
-    public AbstractCommonAuthManager(String name, IUserDao<USER, USER_META> dao) {
-        super(name, dao);
+    public AbstractCommonAuthManager(IUserDao<USER, USER_META> dao) {
+        super(dao);
     }
 
     @Override

@@ -17,10 +17,8 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
     private String userId; // id of user that makes post
     private ForumPostMeta metaData;
     private String body;
-    private static final String MODEL_NAME = "ForumPost";
     
     private ForumPost(String userId, String body) {
-        super(MODEL_NAME);
         this.userId = userId;
         this.body = body;
         this.metaData = new ForumPostMeta();
@@ -86,35 +84,53 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
 
         boolean isEqual = true;
         if(!this.userId.equals(forumPost.userId)) {
-            LogBuilder.logBuilderFromStringArgs("\nForumPost's are not equal:\n  user IDs are not equal: ", this.userId, " not equal to ", forumPost.userId).info();
+            final String log = LogBuilder.logBuilderFromStringArgs(
+                "\nForumPost's are not equal:\n  user IDs are not equal: ",
+                this.userId,
+                " not equal to ",
+                forumPost.userId).toString();
+            LOG(log);
             isEqual = false;
         }
         if(!this.body.equals(forumPost.body)) {
-            LogBuilder.logBuilderFromStringArgs("\nForumPost's are not equal:\n  bodys are not equal: ", this.body, " not equal to ", forumPost.body).info();
+            final String log = LogBuilder.logBuilderFromStringArgs(
+                "\nForumPost's are not equal:\n  bodys are not equal: ",
+                this.body,
+                " not equal to ",
+                forumPost.body).toString();
+            LOG(log);
             isEqual = false;
         }
         if(!this.metaData.equals(forumPost.metaData)) {
-            LogBuilder.logBuilderFromStringArgs("\nForumPost's are not equal:\n  meta data is not equal: ", this.metaData.toString(), " not equal to ", forumPost.metaData.toString()).info();
+            final String log = LogBuilder.logBuilderFromStringArgs(
+                "\nForumPost's are not equal:\n  meta data is not equal: ",
+                this.metaData.toString(),
+                " not equal to ",
+                forumPost.metaData.toString()).toString();
+            LOG(log);
             isEqual = false;
         }
 
         return isEqual;
     }
 
-    public class ForumPostMeta extends AbstractMetaData<ForumPostMeta> {
+    final public class ForumPostMeta extends AbstractMetaData<ForumPostMeta> {
 
-        final static private String NAME = "ForumPostMeta";
-
-        public ForumPostMeta() {
-            super(NAME);
-        }
+        public ForumPostMeta() {}
         public ForumPostMeta(Map<String, Object> metaData) {
             super(metaData);
         }
 
         @Override
         public Map<String, Object> getMetaAttributesMap() {
-            return Map.of(AbstractMetaData.NAME_KEY, NAME, AbstractMetaData.CREATION_TIME_KEY, this.getCreationTime());
+            return Map.of(
+                AbstractMetaData.CREATION_TIME_KEY, this.getCreationTime()
+            );
+        }
+        @Override
+        public String toString() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'toString'");
         }
     }
 

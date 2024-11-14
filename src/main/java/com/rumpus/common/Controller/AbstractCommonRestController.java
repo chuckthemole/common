@@ -35,8 +35,8 @@ abstract public class AbstractCommonRestController
 
         public static final String COMMON_REST_API_PATH = "/common/api";
 
-        public AbstractCommonRestController(String name) {
-                super(name);
+        public AbstractCommonRestController() {
+                
         }
 
         /**

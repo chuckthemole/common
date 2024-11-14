@@ -15,8 +15,8 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<Stri
 
     private static Map<String, IdSet> uniqueIds; // map of unique ids. holds name of unique id set and IdSet (size and set)
 
-    public AbstractUniqueIdManager(String name) {
-        super(name, false);
+    public AbstractUniqueIdManager() {
+        super(false);
         AbstractUniqueIdManager.uniqueIds = new HashMap<>();
     }
 

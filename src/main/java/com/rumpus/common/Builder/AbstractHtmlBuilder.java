@@ -11,8 +11,8 @@ abstract class AbstractHtmlBuilder extends AbstractCommonObject implements IHtml
     protected static TagCreator tagCreator;
     private CSS cssFramework;
 
-    public AbstractHtmlBuilder(String name) {
-        super(name);
+    public AbstractHtmlBuilder() {
+        
         this.cssFramework = CSS.NONE;
     }
 

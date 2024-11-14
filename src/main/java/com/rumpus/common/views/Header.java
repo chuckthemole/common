@@ -4,8 +4,6 @@ import java.util.List;
 
 public class Header extends AbstractView {
 
-    public static final String NAME = "Header";
-
     private Style style;
 
     public enum Style {
@@ -29,7 +27,6 @@ public class Header extends AbstractView {
     private List<NavbarItem> navbarItemsEnd;
 
     private Header(NavbarItem navbarBrand, List<NavbarItem> navbarItemsStart, List<NavbarItem> navbarItemsEnd) {
-        super(NAME);
         this.style = Style.DEFAULT;
         this.navbarBrand = navbarBrand;
         this.navbarItemsStart = navbarItemsStart;
@@ -74,5 +71,11 @@ public class Header extends AbstractView {
 
     public void setNavbarItemsEnd(List<NavbarItem> navbarItemsEnd) {
         this.navbarItemsEnd = navbarItemsEnd;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

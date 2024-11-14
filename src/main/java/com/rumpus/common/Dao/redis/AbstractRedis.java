@@ -9,8 +9,7 @@ public class AbstractRedis<MODEL extends AbstractModel<MODEL, ?>> extends Abstra
 
     IRedisRepository<MODEL> repository;
 
-    public AbstractRedis(final String name, IRedisRepository<MODEL> repository) {
-        super(name);
+    public AbstractRedis(IRedisRepository<MODEL> repository) {
         this.repository = repository;
     }
 
@@ -32,5 +31,11 @@ public class AbstractRedis<MODEL extends AbstractModel<MODEL, ?>> extends Abstra
     public Iterable<MODEL> getAll() {
         LOG("AbstractRedis::getAll()");
         return this.repository.findAll();
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

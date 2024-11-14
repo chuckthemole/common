@@ -84,5 +84,11 @@ public class TestUserModelSerializer extends AbstractModelSerializer<TestUserMod
         in.endObject();
         return user;
     }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
+    }
     
 }

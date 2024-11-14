@@ -11,12 +11,9 @@ import com.rumpus.common.util.UniqueId.AbstractUniqueIdManager;
  */
 public class ModelUniqueIdManager extends AbstractUniqueIdManager implements Serializable { // TODO should this be Serializable?
 
-    private static final String NAME = "UniqueIdManager";
     private static ModelUniqueIdManager singletonInstance = null; // TODO: was geting some bugs with getSingletonInstatnce(), look into
 
-    private ModelUniqueIdManager() {
-        super(NAME);
-    }
+    private ModelUniqueIdManager() {}
 
     /**
      * Factory static constructor
@@ -25,5 +22,11 @@ public class ModelUniqueIdManager extends AbstractUniqueIdManager implements Ser
      */
     public static synchronized ModelUniqueIdManager getSingletonInstance() {
         return singletonInstance == null ? new ModelUniqueIdManager() : singletonInstance;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

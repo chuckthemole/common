@@ -1,5 +1,6 @@
 package com.rumpus.common.views.Component;
 
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 import com.rumpus.common.views.Html.Attribute;
 
@@ -46,42 +47,42 @@ public abstract class AbstractWelcome extends AbstractComponent {
     public static final String WELCOME_COMPONENT_DELIMITER = "><"; // this is the delimiter for the welcome components, Example: "h1><Hello, Someone! --- h2><this is a sub header --- h3><this is a sub sub header"
 
     public abstract class AbstractWelcomeComponentPart extends AbstractComponentPart {
-        public AbstractWelcomeComponentPart(String name, AbstractComponentPart.ComponentPartType partType, String body) {
-            super(name, partType, body);
+        public AbstractWelcomeComponentPart(AbstractComponentPart.ComponentPartType partType, String body) {
+            super(partType, body);
         }
 
         public static AbstractComponentPart createH1(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH1", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H1);
             return part;
         }
 
         public static AbstractComponentPart createH2(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH2", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H2);
             return part;
         }
 
         public static AbstractComponentPart createH3(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH3", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H3);
             return part;
         }
 
         public static AbstractComponentPart createH4(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH4", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H4);
             return part;
         }
 
         public static AbstractComponentPart createH5(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH5", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H5);
             return part;
         }
 
         public static AbstractComponentPart createH6(String body) {
-            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title("WelcomeH6", body);
+            AbstractComponentPart part = new AbstractWelcomeComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.H6);
             return part;
         }
@@ -99,11 +100,9 @@ public abstract class AbstractWelcome extends AbstractComponent {
      * @param welcomeComponents
      */
     public AbstractWelcome(
-        String name,
         String componentName,
         String welcomeComponents) {
             super(
-                name,
                 componentName,
                 AbstractComponent.ComponentType.WELCOME,
                 welcomeComponents,
@@ -117,7 +116,7 @@ public abstract class AbstractWelcome extends AbstractComponent {
      * Factory method for creating an empty welcome.
      */
     public static AbstractWelcome createEmptyWelcome() {
-        return new AbstractWelcome("EMPTY_WELCOM", "EMPTY_WELCOM", "") {
+        return new AbstractWelcome("EMPTY_WELCOM", "") {
             @Override
             protected ComponentAttributeManager initComponentAttributeManager() {
                 LOG("initComponentAttributeManager() called in createEmptyWelcome()");
@@ -164,7 +163,7 @@ public abstract class AbstractWelcome extends AbstractComponent {
                     htmlObject = AbstractWelcomeComponentPart.createH6(body);
                     htmlObject.setHtmlAttributes(super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
                 } else {
-                    LOG.error("Invalid welcome component h type: " + hType);
+                    LOG(LogLevel.ERROR, "Invalid welcome component h type: ", hType);
                     continue;
                 }
                 if(htmlObject != null) {

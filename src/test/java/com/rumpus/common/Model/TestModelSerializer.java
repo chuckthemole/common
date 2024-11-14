@@ -31,9 +31,15 @@ public class TestModelSerializer extends AbstractModelSerializer<TestModel> {
             }
         }
         in.endObject();
-        TestModel model = new TestModel("Test Model");
+        TestModel model = new TestModel();
         model.setId(java.util.UUID.fromString(id));
         return model;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
     
 }

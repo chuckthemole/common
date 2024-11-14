@@ -23,8 +23,8 @@ abstract public class AbstractCommonModelConfig
         public static final String PARENT_SERIALIZER_SERVICE = "parentSerializerService";
         public static final String CHILD_SERIALIZER_SERVICE = "childSerializerService";
 
-        public AbstractCommonModelConfig(String name, Environment environment) {
-            super(name, environment);
+        public AbstractCommonModelConfig(Environment environment) {
+            super(environment);
         }
 
         @Bean(name = AbstractCommonModelConfig.PARENT_SERVICES)

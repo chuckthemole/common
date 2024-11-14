@@ -8,7 +8,13 @@ import com.rumpus.common.ICommon;
  */
 public class PycommonServerSocket extends AbstractServerSocket {
 
-    public PycommonServerSocket(String name) {
-        super(name, ICommon.PYCOMMON_PORT);
+    public PycommonServerSocket() {
+        super(ICommon.PYCOMMON_PORT);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

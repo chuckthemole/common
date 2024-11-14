@@ -3,11 +3,9 @@ package com.rumpus.common.views.CSSFramework.Bulma.CSS.Layout;
 import com.rumpus.common.views.Html.Attribute;
 
 public class Container extends AbstractBulmaLayout {
-    
-    private static final String NAME = "BulmaContainer";
 
     private Container() {
-        super(NAME, LayoutType.CONTAINER);
+        super(LayoutType.CONTAINER);
         this.init();
     }
 

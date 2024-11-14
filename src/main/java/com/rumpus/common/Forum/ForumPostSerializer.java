@@ -47,5 +47,11 @@ public class ForumPostSerializer extends AbstractModelSerializer<ForumPost> {
         in.endObject();
         return forumPost;
     }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
+    }
     
 }

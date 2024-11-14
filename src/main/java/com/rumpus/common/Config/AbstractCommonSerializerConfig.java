@@ -11,8 +11,8 @@ abstract public class AbstractCommonSerializerConfig extends AbstractCommonConfi
     public static final String PARENT_SERIALIZER_REGISTRY = "parentSerializerRegistry";
     public static final String CHILD_SERIALIZER_REGISTRY = "childSerializerRegistry";
 
-    public AbstractCommonSerializerConfig(String name, Environment environment) {
-        super(name, environment);
+    public AbstractCommonSerializerConfig(Environment environment) {
+        super(environment);
     }
 
     @Bean(name = AbstractCommonSerializerConfig.PARENT_SERIALIZER_REGISTRY)

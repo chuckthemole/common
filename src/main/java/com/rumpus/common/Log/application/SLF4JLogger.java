@@ -1,47 +1,87 @@
-package com.rumpus.common.Logger;
+package com.rumpus.common.Log.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
-import com.rumpus.common.AbstractCommonObject;
-import com.rumpus.common.ICommon;
+import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Log.AbstractCommonLogger;
 
-/**
- * Common logger class that implements the SLF4J {@link Logger} interface
- * <p>
- * This allows us to set the logger class for this object.
- */
-abstract public class AbstractCommonLogger extends AbstractCommonObject implements ICommonLogger {
+final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
-    // enum for log levels
-    public enum LogLevel {
-        TRACE,
-        DEBUG,
-        INFO,
-        WARN,
-        ERROR
+    private SLF4JLogger(Class<?> clazz) {
+        super(clazz);
     }
 
-    private Class<?> clazz;
-
-    // Ctors
-    public AbstractCommonLogger(String name) {
-        super(name);
-        this.clazz = ICommon.class;
-    }
-    public AbstractCommonLogger(String name, Class<?> clazz) {
-        super(name);
-        this.clazz = clazz;
+    public static SLF4JLogger create(Class<?> clazz) {
+        return new SLF4JLogger(clazz);
     }
 
-    public void setClass(Class<?> clazz) {
-        this.clazz = clazz;
+    //////////////////////////////////////////////
+    ///////// ICommonLogger Overrides ////////////
+    //////////////////////////////////////////////
+
+    @Override
+    public void abstractInfo(String... message) {
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        this.info(log);
     }
 
-    public Class<?> getClass(Class<?> clazz) {
-        return this.clazz;
+
+    @Override
+    public void abstractDebug(String... message) {
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        this.debug(log);
     }
+
+
+    @Override
+    public void abstractWarn(String... message) {
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        this.warn(log);
+    }
+
+
+    @Override
+    public void abstractError(String... message) {
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        this.error(log);
+    }
+
+
+    @Override
+    public void abstractError(Throwable throwable, String... message) {
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        this.error(log, throwable);
+    }
+
+    @Override
+    protected void abstractDebug1(String... args) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'abstractDebug1'");
+    }
+
+    @Override
+    protected void abstractDebug2(String... args) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'abstractDebug2'");
+    }
+
+    @Override
+    protected void abstractDebug3(String... args) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'abstractDebug3'");
+    }
+
+    @Override
+    protected void abstractDebug4(String... args) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'abstractDebug4'");
+    }
+
+    //////////////////////////////////////////////
+    ///////// SLF4J Logger Overrides /////////////
+    //////////////////////////////////////////////
 
     @Override
     public String getName() {
@@ -346,5 +386,11 @@ abstract public class AbstractCommonLogger extends AbstractCommonObject implemen
     @Override
     public void error(Marker marker, String msg, Throwable t) {
         LoggerFactory.getLogger(this.clazz).error(marker, msg, t);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

@@ -24,7 +24,7 @@ public class AbstractModelTest {
 
     @BeforeEach
     public void setUp() {
-        testModel = new TestModel("Test Model"); // Initialize the TestModel object before each test
+        testModel = new TestModel(); // Initialize the TestModel object before each test
     }
 
     @Test
@@ -47,7 +47,7 @@ public class AbstractModelTest {
 
     @Test
     public void testCompareTo() {
-        TestModel anotherModel = new TestModel("Another Model");
+        TestModel anotherModel = new TestModel();
         anotherModel.setId(testModel.getId());
         assertEquals(0, testModel.compareTo(anotherModel), "Models with the same ID should be equal");
     }
@@ -73,7 +73,7 @@ public class AbstractModelTest {
 
     @Test
     public void testEquals() {
-        TestModel anotherModel = new TestModel("Another Model");
+        TestModel anotherModel = new TestModel();
         anotherModel.setId(testModel.getId());
 
         assertTrue(testModel.equals(anotherModel), "Models with the same ID should be equal");

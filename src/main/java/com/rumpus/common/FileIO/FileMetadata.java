@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 /**
  * Class representing metadata information for a file.

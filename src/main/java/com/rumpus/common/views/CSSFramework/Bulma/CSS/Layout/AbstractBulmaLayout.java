@@ -68,8 +68,8 @@ public abstract class AbstractBulmaLayout extends AbstractBulmaObject {
 
     private LayoutType layoutType;
 
-    public AbstractBulmaLayout(String name, LayoutType layoutType) {
-        super(name, OBJECT_TYPE, DEFAULT_HTML_TAG_TYPE, "");
+    public AbstractBulmaLayout(LayoutType layoutType) {
+        super(OBJECT_TYPE, DEFAULT_HTML_TAG_TYPE, "");
         this.layoutType = layoutType;
     }
 

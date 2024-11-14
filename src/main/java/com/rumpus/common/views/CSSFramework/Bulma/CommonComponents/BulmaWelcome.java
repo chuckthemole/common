@@ -7,8 +7,6 @@ import com.rumpus.common.views.Html.HtmlTagAttributes;
 
 public class BulmaWelcome extends AbstractWelcome {
 
-    private static final String NAME = "BulmaWelcome";
-
     // TODO: these can be altered to be more flexible
     // give the user the ability to change the class names
     private static final String SECTION_HTML_ATTRIBUTES = "class=hero is-info welcome is-small";
@@ -19,7 +17,6 @@ public class BulmaWelcome extends AbstractWelcome {
 
     private BulmaWelcome(String componentName, String welcomeComponents) {
         super(
-            NAME,
             componentName,
             welcomeComponents
         );

@@ -7,11 +7,10 @@ import com.rumpus.common.views.Html.HtmlTagAttributes;
 
 public class BulmaBreadcrumb extends AbstractBreadcrumb {
     
-    private static final String NAME = "BulmaBreadcrumb";
     private static final String NAV_HTML_ATTRIBUTES = "class=breadcrumb,aria-label=breadcrumbs";
 
     private BulmaBreadcrumb(String componentName, String breadcrumbItems) {
-        super(NAME, componentName, breadcrumbItems);
+        super(componentName, breadcrumbItems);
     }
 
     public static BulmaBreadcrumb create(String componentName, String breadcrumbItems) {

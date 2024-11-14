@@ -4,8 +4,8 @@ import com.rumpus.common.Service.IService;
 
 public abstract class AbstractServiceManager<SERVICE extends IService<?>> extends AbstractCommonManager<String, SERVICE> {
 
-    public AbstractServiceManager(String name) {
-        super(name, false);
+    public AbstractServiceManager() {
+        super(false);
     }
 
     @Override

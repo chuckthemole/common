@@ -53,11 +53,8 @@ import com.rumpus.common.views.Html.HtmlTagAttributes;
  */
 public class BulmaTile extends AbstractTile {
 
-    private static final String NAME = "BulmaTile";
-
     private BulmaTile(String componentName, TileType tileType, String tileComponents) {
         super(
-            NAME,
             componentName,
             tileType,
             tileComponents

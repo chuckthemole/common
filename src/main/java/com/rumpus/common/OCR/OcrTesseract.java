@@ -8,13 +8,10 @@ import net.sourceforge.tess4j.TesseractException;
 
 public class OcrTesseract extends AbstractCommonObject {
 
-    private static final String NAME = "OcrTesseract";
     public static final String PATH_TO_DATA = "src/main/resources/tessdata";
     public static final String DEFAULT_LANGUAGE = Language.LanguageCode.ENGLISH.getLanguage(); // TODO: this seems like a lot to do just to set the language
 
-    private OcrTesseract() {
-        super(NAME);
-    }
+    private OcrTesseract() {}
 
     /**
      * Perform OCR on an image file. TODO: overload this method to accept a language code and other params
@@ -35,5 +32,11 @@ public class OcrTesseract extends AbstractCommonObject {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

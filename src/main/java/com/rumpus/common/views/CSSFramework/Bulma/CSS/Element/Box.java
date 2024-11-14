@@ -10,17 +10,17 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
  */
 public class Box extends AbstractBulmaElement {
 
-    private static final String NAME = "BulmaBox";
-    private static final String CLASS_NAME = "box";
     private static final AbstractHtmlObject.HtmlTagType HTML_TAG_TYPE = AbstractHtmlObject.HtmlTagType.DIV;
 
     private Box(String body) {
-        super(NAME, HTML_TAG_TYPE, body);
+        super(HTML_TAG_TYPE, body);
         this.init();
     }
 
     private void init() {
-        this.addHtmlTagAttribute(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(), CLASS_NAME);
+        this.addHtmlTagAttribute(
+            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+            this.getClass().getSimpleName());
     }
 
     public static Box createWithBody(String body) {

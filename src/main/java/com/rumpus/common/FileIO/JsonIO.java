@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
 /**
@@ -21,9 +21,7 @@ final public class JsonIO extends AbstractFileIO {
     private static final Gson gson = new Gson();
 
     // Private constructor and factory method
-    private JsonIO() {
-        super("JsonReader");
-    }
+    private JsonIO() {}
 
     public static JsonIO create() {
         return new JsonIO();
@@ -76,5 +74,11 @@ final public class JsonIO extends AbstractFileIO {
 
     private static void LOG_THIS(LogLevel level, String... args) {
         ICommon.LOG(JsonIO.class, level, args);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

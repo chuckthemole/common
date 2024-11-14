@@ -1,10 +1,8 @@
 package com.rumpus.common.Blob;
 
 import com.rumpus.common.AbstractCommonObject;
-import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
-import com.rumpus.common.Logger.CommonLogger;
-import com.rumpus.common.Logger.ICommonLogger;
+import com.rumpus.common.Log.ICommonLogger;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 import java.sql.Blob;
 import java.io.InputStream;
@@ -22,15 +20,14 @@ import java.sql.SQLFeatureNotSupportedException;
 public abstract class AbstractBlob extends AbstractCommonObject implements IBlob {
 
     protected Blob blob;
-    private static final ICommonLogger LOG = CommonLogger.createLogger(AbstractBlob.class);
 
     /**
      * Constructs an AbstractBlob with a given name.
      *
      * @param name The name of the blob.
      */
-    public AbstractBlob(final String name) {
-        super(name);
+    public AbstractBlob() {
+        
         this.blob = null;
     }
 
@@ -40,8 +37,19 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
      * @param name The name of the blob.
      * @param blob The SQL Blob object.
      */
-    public AbstractBlob(final String name, Blob blob) {
-        super(name);
+    public AbstractBlob(Blob blob) {
+        
+        this.blob = blob;
+    }
+
+    /**
+     * Constructs an AbstractBlob with a given name and Blob.
+     *
+     * @param name The name of the blob.
+     * @param blob The SQL Blob object.
+     */
+    public AbstractBlob(Blob blob, ICommonLogger logger) {
+        super(logger);
         this.blob = blob;
     }
 
@@ -96,7 +104,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
             // Attempt to use the driver's implementation
             return this.blob.position(pattern, start);
         } catch (SQLFeatureNotSupportedException e) {
-            LOG_THIS(LogLevel.ERROR, "Driver does not support position() for byte array. Using custom implementation.");
+            LOG(LogLevel.ERROR, "Driver does not support position() for byte array. Using custom implementation.");
 
             // Fallback to custom implementation
             return positionFallback(pattern, start);
@@ -113,7 +121,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
             return this.blob.position(pattern, start);
         } catch (SQLFeatureNotSupportedException e) {
             // Log the exception if needed
-            LOG_THIS(LogLevel.ERROR, "Driver does not support position() for Blob. Using custom implementation.");
+            LOG(LogLevel.ERROR, "Driver does not support position() for Blob. Using custom implementation.");
 
             // Fallback to custom implementation
             return position(pattern.getBytes(1, (int) pattern.length()), start);
@@ -189,24 +197,5 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
             throw new ProcessingException("Blob object is null.");
         }
         this.blob.free();
-    }
-
-    /**
-     * Logs messages at default log level (INFO) for this class.
-     *
-     * @param args The message to log.
-     */
-    private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractBlob.class, args);
-    }
-
-    /**
-     * Logs messages at the specified log level for this class.
-     *
-     * @param level The log level to use.
-     * @param args  The message to log.
-     */
-    private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractBlob.class, level, args);
     }
 }

@@ -10,12 +10,10 @@ import com.rumpus.common.User.AbstractCommonUserMetaData;
  */
 public class UserServiceManager<META extends AbstractCommonUserMetaData<META>, USER extends AbstractCommonUser<USER, META>> extends AbstractCommonManager<String, IUserService<USER, META>> {
 
-    private static final String NAME = "UserServiceManager";
-
     private static UserServiceManager<?, ?> instance = null;
 
     private UserServiceManager() {
-        super(NAME, false);
+        super(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -36,6 +34,12 @@ public class UserServiceManager<META extends AbstractCommonUserMetaData<META>, U
     public IUserService<USER, META> createEmptyManagee(String name) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
     

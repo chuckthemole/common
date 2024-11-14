@@ -26,8 +26,8 @@ public abstract class AbstractBulmaObject extends AbstractHtmlObject {
 
     private ObjectType objectType;
 
-    public AbstractBulmaObject(String name, ObjectType objectType, AbstractHtmlObject.HtmlTagType htmlTagType, String body) {
-        super(name, htmlTagType, body);
+    public AbstractBulmaObject(ObjectType objectType, AbstractHtmlObject.HtmlTagType htmlTagType, String body) {
+        super(htmlTagType, body);
         this.objectType = objectType;
     }
 

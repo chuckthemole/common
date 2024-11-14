@@ -9,15 +9,19 @@ import com.rumpus.common.AbstractCommonObject;
 // not using now. Using ModelsCollection instead - chuck
 public class CommonComparator extends AbstractCommonObject {
 
-    private static final String NAME = "CommonComparator";
     protected Comparator<?> comparator; 
 
     public CommonComparator(Comparator<?> comparator) {
-        super(NAME);
         this.comparator = comparator;
     }
+    
     public CommonComparator(Function<?, Integer> comparator) {
-        super(NAME);
         this.comparator = Comparator.comparing(comparator);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

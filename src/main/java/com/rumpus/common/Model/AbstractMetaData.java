@@ -8,6 +8,9 @@ import com.rumpus.common.Serializer.AbstractCommonSerializer;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Abstract class for Model meta data. This holds some of the common member variables, like creationTime, and interface that each Model shares.
@@ -34,12 +37,11 @@ public abstract class AbstractMetaData<
      */
     private transient AbstractCommonSerializer<META> serializer;
 
-    public AbstractMetaData(String name) {
-        super(name);
-        this.creationTime = String.valueOf(java.time.Instant.now().toEpochMilli());
+    public AbstractMetaData() {
+        this.creationTime = String.valueOf(Instant.now().toEpochMilli());
     }
-    public AbstractMetaData(String name, String creationTime) {
-        super(name);
+
+    public AbstractMetaData(String creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -49,7 +51,6 @@ public abstract class AbstractMetaData<
      * @param attributesMap
      */
     public AbstractMetaData(java.util.Map<String, Object> attributesMap) {
-        super((String) attributesMap.get(NAME_KEY));
         this.creationTime = (String) attributesMap.get(CREATION_TIME_KEY);
     }
 
@@ -84,7 +85,16 @@ public abstract class AbstractMetaData<
      * @return LocalDateTime object to string using ZoneOffset.UTC <- TODO look into this more. may have to come up with standards for time.
      */
     public final String getStandardFormattedCreationTime() {
-        return java.time.LocalDateTime.ofInstant(java.time.Instant.ofEpochMilli(Long.valueOf(this.creationTime)), java.time.ZoneOffset.UTC).toString();
+        Long creationTimeLong = null;
+        try {
+            creationTimeLong = Long.valueOf(this.creationTime);
+        } catch (NumberFormatException e) {
+            LOG("Creation time is not a number: ", this.creationTime);
+            return "Invalid creation time";
+        }
+        return LocalDateTime.ofInstant(
+            Instant.ofEpochMilli(creationTimeLong),
+            ZoneOffset.UTC).toString();
         // return LocalDateTime.ofInstant(this.creationTime, ZoneOffset.UTC).toString();
     }
 
@@ -115,18 +125,34 @@ public abstract class AbstractMetaData<
         java.util.Map<String, Object> thisAttributeMap = this.getMetaAttributesMap();
         java.util.Map<String, Object> otherAttributeMap = meta.getMetaAttributesMap();
         if(thisAttributeMap.size() != otherAttributeMap.size()) {
-            LogBuilder.logBuilderFromStringArgs("Meta data not equal: different sizes ( ", String.valueOf(thisAttributeMap.size()), " : ", String.valueOf(otherAttributeMap.size()), " )").info();
+            final String log = LogBuilder.logBuilderFromStringArgs(
+                "Meta data not equal: different sizes ( ",
+                String.valueOf(thisAttributeMap.size()),
+                " : ",
+                String.valueOf(otherAttributeMap.size()),
+                " )").toString();
+            LOG(log);
             isEqual = false;
         } else {
             for(java.util.Map.Entry<String, Object> entrySet : thisAttributeMap.entrySet())  {
                 final String key = entrySet.getKey();
                 final Object value = entrySet.getValue();
                 if(!otherAttributeMap.containsKey(key)) {
-                    LogBuilder.logBuilderFromStringArgs("Meta data not equal: doesn't contain key ( ", key, " )").info();
+                    final String log = LogBuilder.logBuilderFromStringArgs(
+                        "Meta data not equal: doesn't contain key ( ",
+                        key,
+                        " )").toString();
+                    LOG(log);
                     isEqual = false;
                 } else {
                     if(!value.equals(otherAttributeMap.get(key))) {
-                        LogBuilder.logBuilderFromStringArgs("Meta data not equal: values not equal ( ", value.toString(), " : ", otherAttributeMap.get(key).toString(), " )").info();
+                        final String log = LogBuilder.logBuilderFromStringArgs(
+                            "Meta data not equal: values not equal ( ",
+                            value.toString(),
+                            " : ",
+                            otherAttributeMap.get(key).toString(),
+                            " )").toString();
+                        LOG(log);
                         isEqual = false;
                     }
                 }

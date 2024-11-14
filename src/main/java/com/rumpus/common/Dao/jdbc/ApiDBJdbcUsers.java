@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
@@ -16,7 +17,7 @@ import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Builder.SQLBuilder;
 import com.rumpus.common.Dao.AbstractDao;
 import com.rumpus.common.Dao.IUserDao;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.CommonUserDetails;
@@ -42,11 +43,10 @@ public class ApiDBJdbcUsers
     private JdbcUserDetailsManager manager;
 
     public ApiDBJdbcUsers(
-        final String name,
         JdbcUserDetailsManager manager,
         String table,
         RowMapper<USER> mapper) {
-            super(name, manager.getDataSource(), table, mapper);
+            super(manager.getDataSource(), table, mapper);
             this.manager = manager;
             this.manager.setJdbcTemplate(CommonJdbc.getInstance().getJdbcTemplate()); // TODO: may not need this. look into it.
             this.setDefaultQueries();
@@ -61,7 +61,7 @@ public class ApiDBJdbcUsers
     public boolean remove(String name) {
         LOG("ApiDBJdbcUsers::remove()");
         if(!super.remove(name)) {
-            LOG.error("ERROR: ApiDBJdbc.remove() could not remove with name = '" + name + "'");
+            LOG(LogLevel.ERROR, "ERROR: ApiDBJdbc.remove() could not remove with name = '", name, "'");
             return false;
         }
         this.manager.deleteUser(name);
@@ -70,13 +70,13 @@ public class ApiDBJdbcUsers
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        LOG_THIS("loadUserByUsername(username)");
+        LOG("loadUserByUsername(username)");
         return this.manager.loadUserByUsername(username);
-    }
+    }   
 
     @Override
     public USER getByUsername(String username) {
-        LOG_THIS("getByUsername(username)");
+        LOG("getByUsername(username)");
         final List <USER> users = this.getByColumnValue(ICommon.USERNAME, username);
         if (users.size() == 1) {
             USER user = users.get(0);
@@ -85,10 +85,10 @@ public class ApiDBJdbcUsers
             user.setUserDetails(details);
             return user;
         } else if (users.size() == 0) {
-            LOG_THIS("No user found with username: " + username);
+            LOG("No user found with username: " + username);
             return null;
         } else {
-            LOG_THIS("More than one user found with username: " + username);
+            LOG("More than one user found with username: " + username);
             return null;
         }
     }
@@ -117,18 +117,34 @@ public class ApiDBJdbcUsers
         LOG(newUser.toString());
 
         // check if user exists
-        LogBuilder.logBuilderFromStringArgs("- - - Checking if user '", newUser.getUsername(), "' already exists.").info();
+        String log = LogBuilder.logBuilderFromStringArgs(
+            "- - - Checking if user '",
+            newUser.getUsername(),
+            "' already exists.").toString();
+        LOG(log);
         if(this.getByUsername(newUser.getUsername()) != null) {
-            LogBuilder.logBuilderFromStringArgs("- - - User with username '", newUser.getUsername(), "' already exists in the db. Returning null...").info();
+            log = LogBuilder.logBuilderFromStringArgs(
+                "- - - User with username '",
+                newUser.getUsername(),
+                "' already exists in the db. Returning null...").toString();
+            LOG(log);
             return null;
         }
         if(this.getById(newUser.getId().toString()) != null) {
-            LogBuilder.logBuilderFromStringArgs("- - - User with id '", newUser.getId().toString(), "' already exists in the db. Returning null...").info();
+            log = LogBuilder.logBuilderFromStringArgs(
+                "- - - User with id '",
+                newUser.getId().toString(),
+                "' already exists in the db. Returning null...").toString();
+            LOG(log);
             return null;
         }
 
         // does not exist with id or name given, continue...
-        LogBuilder.logBuilderFromStringArgs("- - - User with name '", newUser.getUsername(), "' does not exist, continuing.").info();
+        log = LogBuilder.logBuilderFromStringArgs(
+            "- - - User with name '",
+            newUser.getUsername(),
+            "' does not exist, continuing.").toString();
+        LOG(log);
         // create user details in manager (user table). this saves username, password, and enabled.
         UserDetails details = newUser.getUserDetails();
         this.manager.createUser(details);
@@ -142,7 +158,12 @@ public class ApiDBJdbcUsers
         LOG("User has id: " + newUser.hasId());
         LOG("User id: " + newUser.getId());
         if(!newUser.hasId()) {
-            newUser.setId(java.util.UUID.fromString(AbstractDao.idManager.generateAndReceiveIdForGivenSet(newUser.name())));
+            newUser.setId(
+                UUID.fromString(
+                    AbstractDao
+                    .idManager
+                    .generateAndReceiveIdForGivenSet(
+                        newUser.getClass().getSimpleName())));
         }
         newUser = this.simpleAddUser(newUser);
 
@@ -173,7 +194,8 @@ public class ApiDBJdbcUsers
     private USER simpleAddUser(USER newUser) {
         LOG("ApiDBJdbcUsers::simpleAddUser()");
         if(newUser == null) {
-            LogBuilder.logBuilderFromStringArgs("Given user is null, returning null.").error();
+            final String log = LogBuilder.logBuilderFromStringArgs("Given user is null, returning null.").toString();
+            LOG(LogLevel.ERROR, log);
             return null;
         }
         
@@ -192,7 +214,8 @@ public class ApiDBJdbcUsers
     }
 
     private byte[] serializeUserMetaWithCommonBlob(META meta) {
-        LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()", meta.toString()).info();
+        final String log = LogBuilder.logBuilderFromStringArgs("ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()", meta.toString()).toString();
+        LOG(log);
         byte[] byteArray = BlobUtil.serialize(meta);
         // return JdbcBlob.createFromByteArray(byteArray);
         return byteArray;
@@ -217,8 +240,11 @@ public class ApiDBJdbcUsers
         LOG("ApiDBJdbcUsers::update()");
         USER user = super.getById(id); // get user in db
         if(user == null) { // if user not in db return null
-            LogBuilder log = new LogBuilder(true, "Error: Unable to update users with id: ", id, "  returning null...");
-            log.info();
+            final LogBuilder log = LogBuilder.logBuilderFromStringArgs(
+                "Error: Unable to update users with id: ",
+                id,
+                "  returning null...");
+            LOG(log.toString());
             return null;
         }
 
@@ -321,11 +347,9 @@ public class ApiDBJdbcUsers
             this.manager.setDeleteGroupAuthoritiesSql(JdbcUserDetailsManager.DEF_DELETE_GROUP_AUTHORITIES_SQL);
     }
 
-    private static void LOG_THIS(String... args) {
-        ICommon.LOG(ApiDBJdbcUsers.class, args);
-    }
-
-    private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(ApiDBJdbcUsers.class, level, args);
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

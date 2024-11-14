@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Log.ICommonLogger;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
+import com.rumpus.common.Log.application.SLF4JLogger;
 import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.Session.CommonSession;
@@ -61,8 +64,8 @@ abstract public class AbstractUserController
         private static final AbstractCommonUserCollection.Sort DEFAULT_SORT = AbstractCommonUserCollection.Sort.USERNAME;
         @Autowired protected ICommonAuthentication authentication;
 
-        public AbstractUserController(String name) {
-                super(name);
+        public AbstractUserController() {
+                
         }
 
         @Override
@@ -81,11 +84,13 @@ abstract public class AbstractUserController
                 } else if(sort.equals(AbstractCommonUserCollection.Sort.ID.getSort())) {
                     users = AbstractCommonUserCollection.getSortedByIdListFromCollection(this.userService.getAll());
                 } else {
-                    LogBuilder.logBuilderFromStringArgsNoSpaces("No proper sort was provided. Using default sort: ", DEFAULT_SORT.getSort()).info();
+                    final String log = LogBuilder.logBuilderFromStringArgsNoSpaces("No proper sort was provided. Using default sort: ", DEFAULT_SORT.getSort()).toString();
+                    LOG(log);
                     users = AbstractCommonUserCollection.getSortedByUsernameListFromCollection(this.userService.getAll());
                 }
             } else { // if no sort then use default sort.
-                LogBuilder.logBuilderFromStringArgsNoSpaces("No sort was provided. Using default sort: ", DEFAULT_SORT.getSort()).info();
+                final String log = LogBuilder.logBuilderFromStringArgsNoSpaces("No sort was provided. Using default sort: ", DEFAULT_SORT.getSort()).toString();
+                LOG(log);
                 users = AbstractCommonUserCollection.getSortedByUsernameListFromCollection(this.userService.getAll());
             }
             if(users == null) {
@@ -181,8 +186,8 @@ abstract public class AbstractUserController
             LOG("USERRestController POST: /api/update_user");
             HttpSession session = request.getSession();
             // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1, user.length() - 1) : user);
-            LogBuilder log = new LogBuilder(true, "Update this user: ", user.toString());
-            log.info();
+            LogBuilder log = LogBuilder.logBuilderFromStringArgs("Update this user: ", user.toString());
+            LOG(log.toString());
             if(this.userService.update(user.getId().toString(), user) != null) { // if user was updated successfully, return session with status updateed
                 session.setAttribute("status", "user updated");
                 return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED);
@@ -204,12 +209,12 @@ abstract public class AbstractUserController
             LOG("USERRestController::getUserById()");
             USER user = this.userService.getById(id);
             if(user != null) {
-                LogBuilder log = new LogBuilder(true, "Retrieved user: ", user.toString());
-                log.info();
+                LogBuilder log = LogBuilder.logBuilderFromStringArgs("Retrieved user: ", user.toString());
+                LOG(log.toString());
                 return new ResponseEntity<USER>(user, HttpStatus.ACCEPTED);
             }
-            LogBuilder log = new LogBuilder(true, "User with id '",  id, "' was not found.");
-            log.error();
+            LogBuilder log = LogBuilder.logBuilderFromStringArgs("User with id '",  id, "' was not found.");
+            LOG(LogLevel.ERROR, log.toString());
             return null;
         }
 
@@ -221,7 +226,7 @@ abstract public class AbstractUserController
                 final USER user = this.userService.getByUsername(username);
                 return new ResponseEntity<USER>(user, HttpStatus.ACCEPTED);
             }
-            LOG_THIS("No user found in authentication.");
+            LOG("No user found in authentication.");
             return null;
         }
 
@@ -257,7 +262,7 @@ abstract public class AbstractUserController
             USER extends AbstractCommonUser<USER, USER_META>,
             USER_META extends AbstractCommonUserMetaData<USER_META>>
             void currentUserLogin(USER user, HttpServletRequest request) {
-                LOG_THIS("RumpusController::currentUserLogin()");
+                LOG(AbstractUserController.class, "RumpusController::currentUserLogin()");
                 String password = user.getUserPassword();
                 String username = user.getUsername();
                 try {
@@ -268,12 +273,12 @@ abstract public class AbstractUserController
                         .append("  User Password: ")
                         .append(password)
                         .append("\n");
-                    LOG_THIS(sbLogInfo.toString());
+                    LOG(AbstractUserController.class, sbLogInfo.toString());
                     request.login(username, password);
                 } catch (ServletException exception) {
                     StringBuilder sbLogInfo = new StringBuilder();
                     sbLogInfo.append("\nError with log in request:\n").append("  ").append(exception.toString()).append("\n");
-                    LOG_THIS(sbLogInfo.toString());
+                    LOG(AbstractUserController.class, sbLogInfo.toString());
                 }
         }
 
@@ -285,13 +290,5 @@ abstract public class AbstractUserController
             sb.append("  User password: ").append(user.getPassword()).append("\n");
             LOG(sb.toString());
             return SUCCESS;
-        }
-
-        private static void LOG_THIS(String... args) {
-            com.rumpus.common.ICommon.LOG(AbstractUserController.class, args);
-        }
-
-        private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
-            com.rumpus.common.ICommon.LOG(AbstractUserController.class, level, args);
         }
 }

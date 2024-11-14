@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.IUserDaoJpa;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
@@ -19,8 +19,8 @@ abstract public class AbstractUserServiceJpa
 
         private IUserDaoJpa<USER, USER_META> userDaoJpa;
 
-        public AbstractUserServiceJpa(String name, IUserDaoJpa<USER, USER_META> userDaoJpa) {
-            super(name, userDaoJpa);
+        public AbstractUserServiceJpa(IUserDaoJpa<USER, USER_META> userDaoJpa) {
+            super(userDaoJpa);
             this.userDaoJpa = userDaoJpa;
         }
 

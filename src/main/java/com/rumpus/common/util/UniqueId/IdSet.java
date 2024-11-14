@@ -5,13 +5,11 @@ package com.rumpus.common.util.UniqueId;
  */
 public class IdSet extends AbstractIdSet {
 
-    private static final String NAME = "IdSet";
-
     private IdSet() {
-        super(NAME, AbstractIdSet.DEFAULT_ID_LENGTH);
+        super(AbstractIdSet.DEFAULT_ID_LENGTH);
     }
     private IdSet(final int length) {
-        super(NAME, length);
+        super(length);
     }
 
     ////////////////////////////////////////////////

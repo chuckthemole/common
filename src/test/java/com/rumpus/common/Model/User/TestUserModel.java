@@ -11,10 +11,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 
 public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserModelMetaData> {
 
-    private static final String NAME = "TestUserModel";
-
     private TestUserModel() {
-        super(NAME);
         this.setMetaData(TestUserModelMetaData.createEmpty());
     }
 
@@ -49,11 +46,18 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
         }
 
         if(meta == null) {
-            LogBuilder.logBuilderFromStringArgs(TestUserModel.class, "Failed building TestUserModelMetaData. Setting empty meta data.").info();
+            final String log = LogBuilder.logBuilderFromStringArgs(
+                TestUserModel.class,
+                "Failed building TestUserModelMetaData. Setting empty meta data.").toString();
+            LOG(TestUserModel.class, log);
             meta = TestUserModelMetaData.createEmpty();
         }
 
-        LogBuilder.logBuilderFromStringArgs(TestUserModel.class, "Success building TestUserModelMetaData:\n", meta.toString()).info();
+        final String log = LogBuilder.logBuilderFromStringArgs(
+            TestUserModel.class,
+            "Success building TestUserModelMetaData:\n",
+            meta.toString()).toString();
+        LOG(TestUserModel.class, log);
         user.setMetaData(meta);
         return user;
     }

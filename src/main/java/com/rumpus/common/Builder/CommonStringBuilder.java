@@ -2,10 +2,8 @@ package com.rumpus.common.Builder;
 
 public class CommonStringBuilder extends AbstractBuilder {
 
-    private static final String NAME = "CommonStringBuilder";
-
     private CommonStringBuilder(String... args) {
-        super(NAME, args);
+        super(args);
     }
 
     /**

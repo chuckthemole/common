@@ -8,7 +8,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 /**
  * Abstract class for reading models from files.
@@ -20,9 +20,7 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
      */
     private static String lastError = "";
 
-    public AbstractFileIO(final String name) {
-        super(name);
-    }
+    public AbstractFileIO() {}
 
     @Override
     public Optional<String> readRawFileContent(String filePath) {

@@ -1,4 +1,4 @@
-package com.rumpus.common.Log;
+package com.rumpus.common.Log.LogItem;
 
 import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Model.AbstractModel;
@@ -13,7 +13,6 @@ public class LogItem extends AbstractModel<LogItem, java.util.UUID> {
     private String action;
 
     private LogItem(String logName, String time, String username, String userId, String action) {
-        super("LogItem");
         this.logName = logName;
         this.time = time;
         this.username = username;

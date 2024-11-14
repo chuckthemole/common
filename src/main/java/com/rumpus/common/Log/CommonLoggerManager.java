@@ -1,6 +1,7 @@
-package com.rumpus.common.Logger;
+package com.rumpus.common.Log;
 
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Log.application.JavaLogger;
 import com.rumpus.common.Manager.AbstractCommonManager;
 
 /**
@@ -12,10 +13,8 @@ import com.rumpus.common.Manager.AbstractCommonManager;
  */
 public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLogger> {
 
-    private static final String NAME = "CommonLoggerManager";
-
     private CommonLoggerManager() {
-        super(NAME, false);
+        super(false);
     }
 
     /**
@@ -35,7 +34,11 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
         if(!this.containsKey(key)) {
             return super.put(key, value);
         }
-        LogBuilder.logBuilderFromStringArgsNoSpaces("This logger manager already contains the key: '", key, "'. Skipping put() and returning value.").info();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
+            "This logger manager already contains the key: '",
+            key,
+            "'. Skipping put() and returning value.").toString();
+        LOG(log);
         return this.get(key);
     }
 
@@ -51,14 +54,20 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
 
     @Override
     public ICommonLogger createEmptyManagee() {
-        return CommonLogger.createEmptyLogger();
+        return JavaLogger.createEmptyLogger();
     }
 
     @Override
     public ICommonLogger createEmptyManagee(String name) {
-        ICommonLogger logger = CommonLogger.createEmptyLogger();
+        ICommonLogger logger = JavaLogger.createEmptyLogger();
         this.put(name, logger);
         return logger;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
     
 }

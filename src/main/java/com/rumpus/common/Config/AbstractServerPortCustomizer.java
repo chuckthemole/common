@@ -2,6 +2,9 @@ package com.rumpus.common.Config;
 
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.core.env.Environment;
+
+import com.rumpus.common.Builder.LogBuilder;
 
 /**
  * Used to customize the port of a server.
@@ -22,30 +25,30 @@ public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig 
      * Ctor
      * @param port port to set
      */
-    public AbstractServerPortCustomizer(String name, org.springframework.core.env.Environment environment, com.rumpus.common.Server.Port.IPort port) {
-        super(name, environment);
+    public AbstractServerPortCustomizer(Environment environment, com.rumpus.common.Server.Port.IPort port) {
+        super(environment);
         if(port != null) {
             this.port = port;
         } else {
-            LOG_THIS_ERROR("Port is null. Setting port to NO_PORT.");
+            LOG("Port is null. Setting port to NO_PORT.");
             com.rumpus.common.Server.Port.Port.create(com.rumpus.common.Server.Port.IPort.NO_PORT);
         }
     }
 
     @Override
     public void customize(ConfigurableWebServerFactory factory) {
-        LOG_THIS("AbstractServerPortCustomizer::customize()");
-        LOG_THIS("Setting port to ", this.port.getPort(), ".");
+        LOG("AbstractServerPortCustomizer::customize()");
+        LOG("Setting port to ", this.port.getPort(), ".");
         if(this.port == null) {
-            LOG_THIS("Port is null. Not customize setting port.");
+            LOG("Port is null. Not customize setting port.");
             return;
         }
         if(this.port.getPort() == null) {
-            LOG_THIS("Port.getPort() null. Not customize setting port.");
+            LOG("Port.getPort() null. Not customize setting port.");
             return;
         }
         if(this.port.getPort().equals(com.rumpus.common.Server.Port.IPort.NO_PORT)) {
-            LOG_THIS("Port is NO_PORT. Not customize setting port.");
+            LOG("Port is NO_PORT. Not customize setting port.");
         }
         factory.setPort(Integer.valueOf(this.port.getPort()));
     }
@@ -56,13 +59,6 @@ public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig 
 
     public void setPort(String port) {
         this.port.setPort(port);
-    }
-
-    private static void LOG_THIS(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractServerPortCustomizer.class, args).info();
-    }
-    private static void LOG_THIS_ERROR(String... args) {
-        com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractServerPortCustomizer.class, args).error();
     }
 }
 

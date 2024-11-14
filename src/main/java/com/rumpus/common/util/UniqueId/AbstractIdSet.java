@@ -18,8 +18,7 @@ public abstract class AbstractIdSet extends com.rumpus.common.AbstractCommonObje
         private Set<String> idSet;
         public static final int DEFAULT_ID_LENGTH = 10;
 
-        public AbstractIdSet(String name, final int length) {
-            super(name);
+        public AbstractIdSet(final int length) {
             this.idLength = length;
             this.idSet = new HashSet<>();
         }
@@ -102,10 +101,6 @@ public abstract class AbstractIdSet extends com.rumpus.common.AbstractCommonObje
         @Override
         public String toString() {
             return this.printPretty();
-        }
-
-        private static void LOG_THIS(String... args) {
-            com.rumpus.common.ICommon.LOG(AbstractIdSet.class, args);
         }
     }
 

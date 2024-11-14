@@ -61,7 +61,12 @@ public abstract class AbstractCommonUserCollection
                     LOG_THIS("AbstractCommonUserCollection::getSortedByUsernameListFromCollection: userCollection is null");
                     return null;
                 }
-                return new AbstractCommonUserCollection<USER, COLLECTION>(userCollection){}.sortByUsername();
+                return new AbstractCommonUserCollection<USER, COLLECTION>(userCollection){
+                    @Override
+                    public String toString() {
+                        // TODO Auto-generated method stub
+                        throw new UnsupportedOperationException("Unimplemented method 'toString'");
+                    }}.sortByUsername();
         }
 
         /**
@@ -78,7 +83,12 @@ public abstract class AbstractCommonUserCollection
                     LOG_THIS("AbstractCommonUserCollection::getSortedByUsernameListFromCollection: userCollection is null");
                     return null;
                 }
-                return new AbstractCommonUserCollection<USER, COLLECTION>(userCollection) {}.sortByEmail();
+                return new AbstractCommonUserCollection<USER, COLLECTION>(userCollection) {
+                    @Override
+                    public String toString() {
+                        // TODO Auto-generated method stub
+                        throw new UnsupportedOperationException("Unimplemented method 'toString'");
+                    }}.sortByEmail();
         }
 
         /**
@@ -108,7 +118,7 @@ public abstract class AbstractCommonUserCollection
         com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class, args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
         com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class, level, args);
     }
 }

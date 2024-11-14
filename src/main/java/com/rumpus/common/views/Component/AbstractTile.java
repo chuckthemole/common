@@ -41,24 +41,24 @@ abstract public class AbstractTile extends AbstractComponent {
 
 
     public abstract class AbstractTileComponentPart extends AbstractComponentPart {
-        public AbstractTileComponentPart(String name, AbstractComponentPart.ComponentPartType partType, String body) {
-            super(name, partType, body);
+        public AbstractTileComponentPart(AbstractComponentPart.ComponentPartType partType, String body) {
+            super(partType, body);
         }
 
         public static AbstractComponentPart createTitle(String body) {
-            AbstractComponentPart part = new AbstractTileComponentPart.Title("TileTitle", body);
+            AbstractComponentPart part = new AbstractTileComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.P);
             return part;
         }
 
         public static AbstractComponentPart createSubtitle(String body) {
-            AbstractComponentPart part = new AbstractTileComponentPart.Title("TileSubtitle", body);
+            AbstractComponentPart part = new AbstractTileComponentPart.Title(body);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.P);
             return part;
         }
 
         public static AbstractComponentPart createLink(String body, String link) {
-            AbstractComponentPart part = new AbstractTileComponentPart.Link("TileLink", body, link);
+            AbstractComponentPart part = new AbstractTileComponentPart.Link(body, link);
             part.setHtmlTagType(AbstractHtmlObject.HtmlTagType.A);
             return part;
         }
@@ -80,12 +80,10 @@ abstract public class AbstractTile extends AbstractComponent {
      * @param tileComponents the tile components, ie title and subtitle, as a String separated by the default delimiter. Example: "title,subtitle" the default delimiter is ",".
      */
     public AbstractTile(
-        String name,
         String componentName,
         TileType tileType,
         String tileComponents) {
             super(
-                name,
                 componentName,
                 AbstractComponent.ComponentType.TILE,
                 tileComponents,

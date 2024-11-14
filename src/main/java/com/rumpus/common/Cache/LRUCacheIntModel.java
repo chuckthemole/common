@@ -7,10 +7,8 @@ import com.rumpus.common.Model.AbstractModel;
  */
 public class LRUCacheIntModel extends AbstractLRUCache<Integer, CacheElement<Integer, ? extends AbstractModel<?, java.util.UUID>>> {
 
-    private static final String NAME = "LRUCacheIntModel";
-
     private LRUCacheIntModel(int size) {
-        super(NAME, size);
+        super(size);
     }
 
     public static LRUCacheIntModel create(int size) {

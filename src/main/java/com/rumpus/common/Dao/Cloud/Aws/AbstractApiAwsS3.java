@@ -57,7 +57,7 @@ abstract public class AbstractApiAwsS3 { // TODO: extends com.rumpus.common.Dao.
         com.rumpus.common.ICommon.LOG(AbstractApiAwsS3.class, args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
         com.rumpus.common.ICommon.LOG(AbstractApiAwsS3.class, level, args);
     }
 }

@@ -1,5 +1,6 @@
 package com.rumpus.common.views.Component;
 
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 import com.rumpus.common.views.Html.Attribute;
 
@@ -9,34 +10,33 @@ public abstract class AbstractBreadcrumb extends AbstractComponent {
 
     public abstract class AbstractBreadcrumbComponentPart extends AbstractComponentPart {
 
-        public AbstractBreadcrumbComponentPart(String name, ComponentPartType breadcrumbComponentType, String body) {
-            super(name, breadcrumbComponentType, body);
+        public AbstractBreadcrumbComponentPart(ComponentPartType breadcrumbComponentType, String body) {
+            super(breadcrumbComponentType, body);
         }
     
         public static AbstractComponentPart createBreadcrumbTitle(String body) {
-            return new Title("BreadcrumbTitle", body);
+            return new Title(body);
         }
     
         public static AbstractComponentPart createBreadcrumbListItem(String body) {
-            return new ListItem("BreadcrumbListItem", body);
+            return new ListItem(body);
         }
     
         public static AbstractComponentPart createBreadcrumbList() {
-            return new List("BreadcrumbList", "");
+            return new List("");
         }
     
         public static AbstractComponentPart createBreadcrumbLink(String body, String link) {
-            return new Link("BreadcrumbLink", body, link);
+            return new Link(body, link);
         }
     
         public static AbstractComponentPart createBreadcrumbEmbeddedList() {
-            return new EmbeddedList("BreadcrumbEmbeddedList");
+            return new EmbeddedList();
         }
     }
 
-    public AbstractBreadcrumb(String name, String componentName, String breadcrumbs) {
+    public AbstractBreadcrumb(String componentName, String breadcrumbs) {
         super(
-            name,
             componentName,
             AbstractComponent.ComponentType.BREADCRUMB,
             breadcrumbs,
@@ -50,7 +50,7 @@ public abstract class AbstractBreadcrumb extends AbstractComponent {
      * Factory method for creating an empty breadcrumb.
      */
     public static AbstractBreadcrumb createEmptyBreadcrumb() {
-        return new AbstractBreadcrumb("EMPTY_BREADCRUMB", "EMPTY_BREADCRUMB", "") {
+        return new AbstractBreadcrumb("EMPTY_BREADCRUMB", "") {
             @Override
             public void setChildrenForComponent() {
                 LOG("setChildrenForComponent() called in createEmptyBreadcrumb()");
@@ -79,7 +79,7 @@ public abstract class AbstractBreadcrumb extends AbstractComponent {
                 final com.rumpus.common.views.Html.AbstractHtmlObject crumbAndLinkHtmlObject = AbstractBreadcrumbComponentPart.createBreadcrumbLink(crumbAndLink[0].strip(), crumbAndLink[1].strip());
                 htmlObject = AbstractBreadcrumbComponentPart.createBreadcrumbListItem("").addChild(crumbAndLinkHtmlObject);
             } else { // invalid crumbs
-                LOG.error("Invalid breadcrumb: " + crumbArray[crumbArrayIndex]);
+                LOG(LogLevel.ERROR, "Invalid breadcrumb: ", crumbArray[crumbArrayIndex]);
                 continue;
             }
 

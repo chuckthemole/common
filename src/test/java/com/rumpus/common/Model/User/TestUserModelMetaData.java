@@ -38,17 +38,34 @@ public class TestUserModelMetaData extends AbstractCommonUserMetaData<TestUserMo
     // TODO: this isn't really doing anything right now. 2024/1/22 - chuck
     // it's just printing out the metaList that is passed in
     private void init(List<Map<String, String>> metaList) {
-        LogBuilder.logBuilderFromStringArgs(TestUserModelMetaData.class, "TestUserModelMetaData::init()").info();
+        String log = LogBuilder.logBuilderFromStringArgs(
+            TestUserModelMetaData.class,
+            "TestUserModelMetaData::init()").toString();
+        LOG(log);
         // TestUserModelMetaDataSerializer serializer = new TestUserModelMetaDataSerializer();
         if(metaList == null) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces(TestUserModelMetaData.class, "Provided metaList is null").info();
+            log = LogBuilder.logBuilderFromStringArgsNoSpaces(
+                TestUserModelMetaData.class,
+                "Provided metaList is null").toString();
+            LOG(log);
         } else if(metaList.isEmpty()) {
-            LogBuilder.logBuilderFromStringArgsNoSpaces(TestUserModelMetaData.class, "Provided metaList is empty").info();
+            log = LogBuilder.logBuilderFromStringArgsNoSpaces(
+                TestUserModelMetaData.class,
+                "Provided metaList is empty").toString();
         } else {
             for(Map<String, String> map : metaList) {
-                LogBuilder.logBuilderFromStringArgs(TestUserModelMetaData.class, "New Map:").info();
+                log = LogBuilder.logBuilderFromStringArgs(
+                    TestUserModelMetaData.class,
+                    "New Map:").toString();
+                LOG(log);
                 map.forEach((key, value) -> {
-                    LogBuilder.logBuilderFromStringArgs(TestUserModelMetaData.class, "  ", key, value, "\n").info();;
+                    final String mapLog = LogBuilder.logBuilderFromStringArgs(
+                        TestUserModelMetaData.class,
+                        "  ",
+                        key,
+                        value,
+                        "\n").toString();
+                    LOG(mapLog);
                 });
             }
         }

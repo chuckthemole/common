@@ -7,12 +7,11 @@ import com.rumpus.common.AbstractCommonObject;
  */
 public class CacheElement<KEY, VALUE> extends AbstractCommonObject {
 
-    private static final String NAME = "CacheElement";
     private KEY key;
     private VALUE value;
 
     private CacheElement(KEY key, VALUE value) {
-        super(NAME);
+        
         this.key = key;
         this.value = value;
     }

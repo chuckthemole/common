@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.IUserDao;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
@@ -17,8 +17,8 @@ extends AbstractService<USER> implements IUserService<USER, USER_META> {
 
     protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
 
-    public AbstractUserService(String name, IUserDao<USER, USER_META> userDao) {
-        super(name, userDao);
+    public AbstractUserService(IUserDao<USER, USER_META> userDao) {
+        super(userDao);
         this.userDao = userDao;
     }
 

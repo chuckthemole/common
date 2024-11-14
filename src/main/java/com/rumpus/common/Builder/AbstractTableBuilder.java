@@ -12,11 +12,11 @@ public abstract class AbstractTableBuilder extends AbstractHtmlBuilder implement
 
     AbstractHtmlBuilder builder;
 
-    public AbstractTableBuilder(String name) {
-        super(name);
+    public AbstractTableBuilder() {
+        
     }
     public AbstractTableBuilder(String name, String css) {
-        super(name);
+        
         setCssFramework(css);
     }
 

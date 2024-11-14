@@ -4,8 +4,8 @@ import java.util.Properties;
 
 import com.mysql.cj.exceptions.ExceptionInterceptor;
 import com.mysql.cj.jdbc.Blob;
-import com.rumpus.common.Log.CommonExceptionInterceptor;
-import com.rumpus.common.Log.CommonLog;
+import com.rumpus.common.Log.db.MySQLExceptionInterceptor;
+import com.rumpus.common.Log.db.MySQLLogger;
 
 /**
  * JdbcBlob class extends AbstractBlob to provide functionality for handling
@@ -13,15 +13,13 @@ import com.rumpus.common.Log.CommonLog;
  */
 final public class JdbcBlob extends AbstractBlob {
 
-    private static final String NAME = "JdbcBlob";
-
     // Constructors
     private JdbcBlob(byte[] data, ExceptionInterceptor exceptionInterceptor) {
-        super(NAME, new Blob(data, exceptionInterceptor));
+        super(new Blob(data, exceptionInterceptor));
     }
 
     private JdbcBlob(byte[] data) {
-        this(data, new CommonExceptionInterceptor().init(new Properties(), new CommonLog()));
+        this(data, new MySQLExceptionInterceptor().init(new Properties(), new MySQLLogger()));
     }
 
     // Public factory methods
@@ -43,6 +41,12 @@ final public class JdbcBlob extends AbstractBlob {
 
     @Override
     public void initBlob() {
-        this.blob = new Blob(new byte[0], new CommonExceptionInterceptor().init(new Properties(), new CommonLog()));
+        this.blob = new Blob(new byte[0], new MySQLExceptionInterceptor().init(new Properties(), new MySQLLogger()));
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

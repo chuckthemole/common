@@ -21,8 +21,13 @@ public class AbstractAwsS3Service extends AbstractCommonObject {
     // @Autowired S3Client s3Client;
     @Autowired S3Template s3Template;
 
-    public AbstractAwsS3Service(String name) {
-        super(name);
+    public AbstractAwsS3Service() {
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
     // @Override

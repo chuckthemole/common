@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap; // TODO: maybe look into using LinkedHashMap instead of TreeMap. It has a lookup time of O(1) vs O(log n) for TreeMap - chuck
 
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Html.AbstractHtmlObject;
 
@@ -23,28 +24,28 @@ public abstract class AbstractAside extends AbstractComponent {
 
     public abstract class AbstractAsideComponentPart extends AbstractComponentPart {
     
-        public AbstractAsideComponentPart(String name, ComponentPartType asideComponentType, String body) {
-            super(name, asideComponentType, body);
+        public AbstractAsideComponentPart(ComponentPartType asideComponentType, String body) {
+            super(asideComponentType, body);
         }
     
         public static AbstractComponentPart createAsideTitle(String body) {
-            return new Title("AsideTitle", body);
+            return new Title(body);
         }
     
         public static AbstractComponentPart createAsideListItem(String body) {
-            return new ListItem("AsideListItem", body);
+            return new ListItem(body);
         }
     
         public static AbstractComponentPart createAsideList(String body) {
-            return new List("AsideList", body);
+            return new List(body);
         }
     
         public static AbstractComponentPart createAsideLink(String body, String link) {
-            return new Link("AsideLink", body, link);
+            return new Link(body, link);
         }
     
         public static AbstractComponentPart createAsideEmbeddedList() {
-            return new EmbeddedList("AsideEmbeddedList");
+            return new EmbeddedList();
         }
     }
 
@@ -52,9 +53,8 @@ public abstract class AbstractAside extends AbstractComponent {
     // AbstractAside class/
     ///////////////////////
 
-    public AbstractAside(String name, String componentName, String asideGroups) {
+    public AbstractAside(String componentName, String asideGroups) {
         super(
-            name,
             componentName,
             AbstractComponent.ComponentType.ASIDE,
             asideGroups,
@@ -68,7 +68,7 @@ public abstract class AbstractAside extends AbstractComponent {
      * Factory method for creating an empty aside.
      */
     public static AbstractAside createEmptyAside() {
-        return new AbstractAside("EMPTY_ASIDE", "EMPTY_ASIDE_COMPONENT_NAME", "") {
+        return new AbstractAside("EMPTY_ASIDE_COMPONENT_NAME", "") {
             @Override
             public void setChildrenForComponent() {
                 LOG("setChildrenForComponent() called in createEmptyAbstractHtmlObject()");
@@ -88,8 +88,8 @@ public abstract class AbstractAside extends AbstractComponent {
      * @param asideGroups groups of the sub aside
      * @return the sub aside
      */
-    private static AbstractAside createSubAside(String name, String componentName, String asideGroups) {
-        AbstractAside aside = new AbstractAside(name, componentName, asideGroups) {
+    private static AbstractAside createSubAside(String componentName, String asideGroups) {
+        AbstractAside aside = new AbstractAside(componentName, asideGroups) {
             @Override
             public void setChildrenForComponent() {
                 super.setChildrenForComponent();
@@ -149,7 +149,7 @@ public abstract class AbstractAside extends AbstractComponent {
                         listItem.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, listItemComponentPartId);
                         menuListHtmlObject.addChild(listItem);
                     } else {
-                        LOG.error("Item is null or empty. Item: " + item);
+                        LOG(LogLevel.ERROR, "Item is null or empty. Item: " + item);
                     }
                 }
 
@@ -157,7 +157,7 @@ public abstract class AbstractAside extends AbstractComponent {
                 menuListHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, menuListComponentPartId);
                 this.addChild(menuListHtmlObject); // TODO: these three lines seem like a lot of repitition. Can wwe add this to addChild maybe? keeping track of ids in AbstractHtmlObject?
             } else {
-                LOG.error("Title key is null or empty. Title key: " + titleKey);
+                LOG(LogLevel.ERROR, "Title key is null or empty. Title key: " + titleKey);
             }
         });
 
@@ -205,7 +205,7 @@ public abstract class AbstractAside extends AbstractComponent {
                             subStringArray[i - asideGroupArrayIndex - 1] = asideGroupArray[i];
                         }
                         String subList = String.join(super.defaultDelimiter, subStringArray);
-                        final AbstractHtmlObject subAside = AbstractAside.createSubAside(this.name, this.getComponentName(), subList);
+                        final AbstractHtmlObject subAside = AbstractAside.createSubAside(this.getComponentName(), subList);
                         asideComponent.addChild(subAside);
                         // increment till we find END_ASIDE_CHILD_LIST
                         while(!asideGroupArray[asideGroupArrayIndex].equals(END_ASIDE_CHILD_LIST)) {

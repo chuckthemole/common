@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Logger.AbstractCommonLogger.LogLevel;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -23,9 +23,7 @@ import org.w3c.dom.Element;
  */
 final public class XmlIO extends AbstractFileIO {
 
-    private XmlIO() {
-        super("XmlReader");
-    }
+    private XmlIO() {}
 
     public static XmlIO create() {
         return new XmlIO();
@@ -81,5 +79,11 @@ final public class XmlIO extends AbstractFileIO {
     public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath, MODEL[] models) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeModelsToFile'");
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }    
 }

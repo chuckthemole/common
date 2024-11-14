@@ -4,10 +4,8 @@ import com.rumpus.common.Structures.AbstractNode;
 
 public class ForumPostNode extends AbstractNode<ForumPost, ForumPostNode> {
 
-    private static final String NAME = "ForumPostNode";
-
     private ForumPostNode(ForumPost data) {
-        super(NAME, data);
+        super(data);
     }
 
     public static ForumPostNode createNodeFromForumPost(ForumPost post) {

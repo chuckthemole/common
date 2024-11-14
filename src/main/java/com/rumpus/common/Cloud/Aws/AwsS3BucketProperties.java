@@ -4,8 +4,6 @@ import com.rumpus.common.Cloud.AbstractCloudProperties;
 
 public class AwsS3BucketProperties extends AbstractCloudProperties implements IAwsS3BucketProperties {
     
-        private static final String NAME = "AwsS3Bucket";
-    
         public static final String BUCKET_NAME = "bucketName"; // TODO: what to do if we have multiple buckets? maybe use a delimiter? 
         public static final String ACCESS_KEY = "accessKey";
         public static final String SECRET_ACCESS_KEY = "secretAccessKey";
@@ -17,7 +15,6 @@ public class AwsS3BucketProperties extends AbstractCloudProperties implements IA
             String secretAccessKey,
             String region) {
                 super(
-                    NAME,
                     CloudType.AWS,
                     java.util.Map.of(
                     BUCKET_NAME, bucketName,

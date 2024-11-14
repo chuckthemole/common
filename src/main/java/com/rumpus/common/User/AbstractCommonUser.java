@@ -62,8 +62,7 @@ public abstract class AbstractCommonUser<
          *                       Constructors                                         *
          *****************************************************************************/
 
-        public AbstractCommonUser(String name) {
-            super(name);
+        public AbstractCommonUser() {
             init();
         }
 
@@ -150,7 +149,7 @@ public abstract class AbstractCommonUser<
         @Override 
         public String toString() {
             return CommonStringBuilder.buildString(
-                "\n Name: ", this.name, "\n",
+                "\n Class: ", this.getClass().getSimpleName(), "\n",
                 " Id: ", this.getId().toString(), "\n",
                 " Username: ", this.getUsername(), "\n",
                 " Password: ", this.getPassword(), "\n",
@@ -171,29 +170,47 @@ public abstract class AbstractCommonUser<
 
             boolean flag = true;
             if(!this.usernameIsEqual(user)) {
-                LogBuilder log = new LogBuilder(true, "\nUsernames are not equal", "\nUser 1: ", this.getUsername(), "\nUser 2: ", user.getUsername());
-                log.info();
+                LogBuilder log = LogBuilder.logBuilderFromStringArgs(
+                    "\nUsernames are not equal", "\nUser 1: ",
+                    this.getUsername(),
+                    "\nUser 2: ",
+                    user.getUsername());
+                LOG(log.toString());
                 flag = false;
             }
             if(!this.getId().equals(user.getId())) {
-                LogBuilder log = new LogBuilder(true, "\nIds are not equal", "\nUser 1: ", this.getId().toString(), "\nUser 2: ", user.getId().toString());
-                log.info();
+                LogBuilder log = LogBuilder.logBuilderFromStringArgs(
+                    "\nIds are not equal", "\nUser 1: ",
+                    this.getId().toString(),
+                    "\nUser 2: ",
+                    user.getId().toString());
+                LOG(log.toString());
                 flag = false;
             }
             // TODO need to do some work with passwords. come back to this later for equality - chuck 6/8/2023
             // if(!this.passwordIsEqual(user)) {
-            //     LogBuilder log = new LogBuilder(true, "\nPasswords are not equal", "\nUser 1: ", this.getPassword(), "\nUser 2: ", user.getPassword());
+            //     LogBuilder log = LogBuilder.logBuilderFromStringArgs("\nPasswords are not equal", "\nUser 1: ", this.getPassword(), "\nUser 2: ", user.getPassword());
             //     log.info();
             //     flag = false;
             // }
             if(!this.emailIsEqual(user)) {
-                LogBuilder log = new LogBuilder(true, "\nEmails are not equal", "\nUser 1: ", this.getEmail(), "\nUser 2: ", user.getEmail());
-                log.info();
+                LogBuilder log = LogBuilder.logBuilderFromStringArgs(
+                    "\nEmails are not equal",
+                    "\nUser 1: ",
+                    this.getEmail(),
+                    "\nUser 2: ",
+                    user.getEmail());
+                LOG(log.toString());
                 flag = false;
             }
             if(!this.userDetailsIsEqual(user)) {
-                LogBuilder log = new LogBuilder(true, "\nUser Details are not equal", "\nUser 1: ", this.getUserDetails().toString(), "\nUser 2: ", user.getUserDetails().toString());
-                log.info();
+                LogBuilder log = LogBuilder.logBuilderFromStringArgs(
+                    "\nUser Details are not equal",
+                    "\nUser 1: ",
+                    this.getUserDetails().toString(),
+                    "\nUser 2: ",
+                    user.getUserDetails().toString());
+                LOG(log.toString());
                 flag = false;
             }
             return flag;

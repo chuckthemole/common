@@ -18,7 +18,6 @@ import jakarta.persistence.Column;
  */
 public class CommonUserDetails extends AbstractCommonObject implements UserDetails {
 
-    private static final String NAME = "CommonUserDetails";
     private static final GrantedAuthority GRANTED_AUTH_USER = new CommonAuthority(ICommon.ROLE_USER);
 
     @Column(name = "username") private String username;
@@ -32,7 +31,6 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
 
     //  ctors
     private CommonUserDetails() {
-        super(NAME);
         this.username = "";
         this.password = "";
         this.isEnabled = true;
@@ -44,7 +42,6 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
         this.isCredentialsNonExpired = false;
     }
     private CommonUserDetails(UserDetails details) {
-        super(NAME);
         this.username = details.getUsername();
         this.password = details.getPassword();
         this.isEnabled = details.isEnabled();
@@ -63,7 +60,6 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
         boolean isAccountNonExpired,
         boolean isAccountNonLocked,
         boolean isCredentialsNonExpired) {
-            super(NAME);
             this.username = username;
             this.password = password;
             this.isEnabled = isEnabled;
@@ -186,7 +182,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
     @Override 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n Name: ").append(this.name).append("\n")
+        sb.append("\n Class: ").append(this.getClass().getSimpleName()).append("\n")
             .append(" Username: ").append(this.username).append("\n")
             .append(" Password: ").append(this.password).append("\n")
             .append(" isEnabled: ").append(this.isEnabled);
@@ -207,13 +203,18 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
 
         boolean flag = true;
         if(!this.usernameIsEqual(user)) {
-            LogBuilder log = new LogBuilder(true, "\nUsernames are not equal", "\nUser 1: ", this.username, "\nUser 2: ", user.username);
-            log.info();
+            LogBuilder log = LogBuilder.logBuilderFromStringArgs(
+                "\nUsernames are not equal",
+                "\nUser 1: ",
+                this.username,
+                "\nUser 2: ",
+                user.username);
+            LOG(log.toString());
             flag = false;
         }
         // TODO need to do some work with passwords. come back to this later for equality - chuck 6/8/2023
         // if(!this.passwordIsEqual(user)) {
-        //     LogBuilder log = new LogBuilder(true, "\nPasswords are not equal", "\nUser 1: ", this.password, "\nUser 2: ", user.password);
+        //     LogBuilder log = LogBuilder.logBuilderFromStringArgs("\nPasswords are not equal", "\nUser 1: ", this.password, "\nUser 2: ", user.password);
         //     log.info();
         //     flag = false;
         // }

@@ -1,4 +1,4 @@
-package com.rumpus.common.Log;
+package com.rumpus.common.Log.LogItem;
 
 import java.io.IOException;
 
@@ -58,5 +58,11 @@ public class LogItemSerializer extends AbstractModelSerializer<LogItem> {
         }
         in.endObject();
         return LogItem.create(logName, time, username, userId, action);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

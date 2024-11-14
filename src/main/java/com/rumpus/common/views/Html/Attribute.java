@@ -1,6 +1,7 @@
 package com.rumpus.common.views.Html;
 
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
 
@@ -26,7 +27,6 @@ import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
 public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     // changed to enum below. may delete these in the future. keeping for now so as not to break anything - chuck
-    private static final String NAME = "Attribute";
     public static final String CLASS_ATTRIBUTE_NAME = "class";
     public static final String ID_ATTRIBUTE_NAME = "id";
     public static final String STYLE_ATTRIBUTE_NAME = "style";
@@ -87,7 +87,6 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     // Ctor use static factory methods instead
     private Attribute(String propertyName, java.util.Set<String> value) {
-        super(NAME);
         this.propertyName = propertyName;
         this.value = value;
     }
@@ -292,7 +291,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
                 }
                 attributeList.add(new Attribute(attributePropAndValue[0].strip(), valueSet));
             } else {
-                LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
+                LOG_THIS(LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             }
         }
         return attributeList;
@@ -326,7 +325,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
             }
             return new Attribute(attributePropAndValue[0].strip(), valueSet);
         } else {
-            LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
+            LOG_THIS(LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             return Attribute.createEmptyAttribute(false);
         }
     }
@@ -360,11 +359,12 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
      * @return the html object with the attributes set
      */
     public static AbstractHtmlObject getAndSetAttributesForHtmlObject(AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
-        LogBuilder.logBuilderFromStringArgsNoSpaces(
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
             "Getting and setting attributes for given html object :: Attributes: ",
             attributes,
             "Delimiter: ",
-            delimiter).info();
+            delimiter).toString();
+        LOG_THIS(log);
         if(attributes == null || attributes.isEmpty()) {
             LOG_THIS("attributes is null or empty, returning empty html object");
             return hTypeHtmlObject;
@@ -375,7 +375,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
             if(attributePropAndValue.length == 2) {
                 hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
             } else {
-                LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel.ERROR, "Invalid attribute: ", attribute);
+                LOG_THIS(LogLevel.ERROR, "Invalid attribute: ", attribute);
             }
         }
         return hTypeHtmlObject;
@@ -391,11 +391,12 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
      * @return the empty html object with the attributes set
      */
     public static AbstractHtmlObject getEmptyHtmlObjectWithAttributes(String attributes, String delimiter) {
-        LogBuilder.logBuilderFromStringArgsNoSpaces(
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
             "Creating empty html object and adding attributes :: Attributes: ",
             attributes,
             "Delimiter: ",
-            delimiter).info();
+            delimiter).toString();
+        LOG_THIS(log);
         return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(), attributes, delimiter);
     }
 
@@ -410,13 +411,14 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
      * @return the empty html object with the attributes and html tag type set
      */
     public static AbstractHtmlObject getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType htmlTagType, String attributes, String delimiter) {
-        LogBuilder.logBuilderFromStringArgsNoSpaces(
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
             "Creating empty html object and adding attributes :: Tag Type: ",
             htmlTagType.getHtmlTagType(),
             "Attributes: ",
             attributes,
             "Delimiter: ",
-            delimiter).info();
+            delimiter).toString();
+        LOG_THIS(log);
         AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes, delimiter);
         hTypeHtmlObject.setHtmlTagType(htmlTagType);
         return hTypeHtmlObject;
@@ -524,7 +526,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
         com.rumpus.common.ICommon.LOG(Attribute.class, args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Logger.AbstractCommonLogger.LogLevel level, String... args) {
+    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
         com.rumpus.common.ICommon.LOG(Attribute.class, level, args);
     }
 }

@@ -23,8 +23,8 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID>
     implements Serializable, Comparable<MODEL> {
 
     abstract public static class AbstractModelSerializer<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonSerializer<MODEL> {
-        public AbstractModelSerializer(String name, SerializationType serializationType) {
-            super(name, serializationType);
+        public AbstractModelSerializer(SerializationType serializationType) {
+            super(serializationType);
         }
     }
 
@@ -33,9 +33,7 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID>
      */
     @Id private ID id; // TODO: will have to use org.springframework.data.annotation.Id for NoSQL. Need to figure out how to handle this.
 
-    public AbstractModel(final String name) {
-        super(name);
-    }
+    public AbstractModel() {}
 
     /******************************************************************************
      *                       ID management / JSON                                 *

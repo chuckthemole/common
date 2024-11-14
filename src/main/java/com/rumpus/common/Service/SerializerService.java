@@ -27,7 +27,6 @@ final public class SerializerService extends AbstractCommonObject implements ISe
     private ISerializerRegistry serializerRegistry;
 
     public SerializerService(ISerializerRegistry serializerRegistry) {
-        super("SerializerService");
         this.serializerRegistry = serializerRegistry;
     }
     
@@ -87,5 +86,11 @@ final public class SerializerService extends AbstractCommonObject implements ISe
             throw new RuntimeException("No serializer found for class: " + clazz.getName());
         }
 
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

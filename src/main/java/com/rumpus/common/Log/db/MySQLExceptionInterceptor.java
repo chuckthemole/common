@@ -1,4 +1,4 @@
-package com.rumpus.common.Log;
+package com.rumpus.common.Log.db;
 
 import java.util.Properties;
 
@@ -8,23 +8,23 @@ import com.mysql.cj.log.Log;
 /**
  * Exception interceptor class
  */
-public class CommonExceptionInterceptor implements ExceptionInterceptor {
+public class MySQLExceptionInterceptor implements ExceptionInterceptor {
 
     private Properties props; // TODO: maybe customize this, look into it. just using default in ctor rn.
-    private CommonLog log;
+    private MySQLLogger log;
     
-    public CommonExceptionInterceptor() {
+    public MySQLExceptionInterceptor() {
         this.props = new Properties();
-        this.log = new CommonLog();
+        this.log = new MySQLLogger();
     }
-    private CommonExceptionInterceptor(Properties props, Log log) {
-        this.log = new CommonLog(log);
+    private MySQLExceptionInterceptor(Properties props, Log log) {
+        this.log = new MySQLLogger(log);
         this.props = props;
     }
 
     @Override
     public ExceptionInterceptor init(Properties props, Log log) {
-        return new CommonExceptionInterceptor(props, log);
+        return new MySQLExceptionInterceptor(props, log);
     }
 
     @Override

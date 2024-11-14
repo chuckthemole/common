@@ -11,7 +11,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.Template.IUserTemplate;
 
-public class AbstractCloudController
+abstract public class AbstractCloudController
     <
         /////////////////////////
         // Define generics here//
@@ -36,8 +36,8 @@ public class AbstractCloudController
 
         @Autowired private IAwsS3BucketProperties awsS3BucketProperties;
 
-        public AbstractCloudController(String name) {
-            super(name);
+        public AbstractCloudController() {
+            
         }
 
         // TODO: think about security. this end point should not be available to the public

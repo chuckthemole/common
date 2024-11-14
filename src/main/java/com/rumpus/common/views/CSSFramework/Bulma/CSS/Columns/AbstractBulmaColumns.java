@@ -69,8 +69,8 @@ public abstract class AbstractBulmaColumns extends AbstractBulmaObject {
     private ColumnsType columnsType;
     private Size size;
 
-    public AbstractBulmaColumns(String name, ColumnsType columnsType) {
-        super(name, OBJECT_TYPE, DEFAULT_HTML_TAG_TYPE, "");
+    public AbstractBulmaColumns(ColumnsType columnsType) {
+        super(OBJECT_TYPE, DEFAULT_HTML_TAG_TYPE, "");
         this.columnsType = columnsType;
         this.size = Size.EMPTY;
     }

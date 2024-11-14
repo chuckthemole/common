@@ -17,8 +17,7 @@ abstract public class AbstractUserTemplate
         
         private AbstractCommonUser<USER, USER_META> user;
 
-        public AbstractUserTemplate(String name, AbstractCommonUser<USER, USER_META> user) {
-            super(name);
+        public AbstractUserTemplate(AbstractCommonUser<USER, USER_META> user) {
             this.user = user;
         }
 

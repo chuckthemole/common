@@ -25,8 +25,6 @@ import jakarta.servlet.http.HttpSession;
 
 public class CommonSession extends AbstractCommonObject implements Session {
 
-    private static final String NAME = "CommonSession";
-
     private String id;
 
     // common attributes
@@ -50,7 +48,6 @@ public class CommonSession extends AbstractCommonObject implements Session {
     }
 
     public CommonSession(boolean initialize) {
-        super(NAME);
         this.creationTime = Instant.now();
         if(initialize) {
             this.id = getUniqueId();
@@ -62,7 +59,6 @@ public class CommonSession extends AbstractCommonObject implements Session {
         }
     }
     public CommonSession(Session session) {
-        super(NAME);
         this.id = session.getId();
         CommonSession.sessionIds.add(this.getId().toString());
         this.creationTime = session.getCreationTime();
@@ -76,7 +72,6 @@ public class CommonSession extends AbstractCommonObject implements Session {
         this.isExpired = session.isExpired();
     }
     public CommonSession(HttpSession session) {
-        super(NAME);
         this.id = session.getId();
         CommonSession.sessionIds.add(this.getId().toString());
 
@@ -134,7 +129,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
             Instant lastAccessedTime,
             Duration maxInactiveInterval,
             boolean isExpired) {
-        super(NAME);
+        
         this.id = id;
         CommonSession.sessionIds.add(id);
         this.attributes = attributes;
@@ -144,7 +139,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
         this.isExpired = isExpired;
     }
     private CommonSession(Instant creationTime) {
-        super(NAME);
+        
         this.creationTime = creationTime;
     }
     public static CommonSession create() {
@@ -276,5 +271,10 @@ public class CommonSession extends AbstractCommonObject implements Session {
     @Override
     public String getId() {
         return this.id;
+    }
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }
