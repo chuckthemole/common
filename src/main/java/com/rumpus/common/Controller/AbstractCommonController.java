@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.env.Environment;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Config.AbstractCommonUserConfig;
 import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.Service.IUserService;
@@ -26,7 +27,7 @@ public abstract class AbstractCommonController
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>
     >
 
-    extends com.rumpus.common.AbstractCommonObject implements ICommonController {
+    extends AbstractCommonObject implements ICommonController {
 
         @Autowired protected Environment environment;
         @Autowired @Qualifier(AbstractCommonUserConfig.USER_SERVICE) protected USER_SERVICE userService;

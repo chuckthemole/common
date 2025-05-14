@@ -4,10 +4,8 @@ import java.util.Map;
 
 final public class EmptyUserMetaData extends AbstractCommonUserMetaData<EmptyUserMetaData> {
 
-    private final static String NAME = "EmptyUserMetaData";
-
     private EmptyUserMetaData() {
-        super(NAME);
+        super(null, null, Map.of());
     }
 
     public static <META extends AbstractCommonUserMetaData<?>> META createEmptyUserMetaData() {

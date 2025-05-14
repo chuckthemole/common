@@ -10,17 +10,16 @@ import com.rumpus.common.User.AbstractCommonUserMetaData;
 public class TestUserModelMetaData extends AbstractCommonUserMetaData<TestUserModelMetaData> {
 
     private static final long serialVersionUID = TEST_USER_META_DATA_UID;
-    private static final String NAME = "TestUserModelMetaData";
 
     // TODO: add more member variables for specific meta data here
 
     // ctors
     private TestUserModelMetaData(List<Map<String, String>> metaList) {
-        super(NAME);
+        super(null, null, null);
         this.init(metaList);
     }
     private TestUserModelMetaData(Map<String, String> metaMap) {
-        super(NAME);
+        super(null, null, null);
         this.init(List.of(metaMap));
     }
 

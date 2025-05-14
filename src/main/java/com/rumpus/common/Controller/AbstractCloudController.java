@@ -5,34 +5,37 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties;
 import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.Template.IUserTemplate;
 
-abstract public class AbstractCloudController
-    <
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        SERVICES extends com.rumpus.common.Manager.AbstractServiceManager<?>,
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>
-    >
-    extends AbstractCommonController
-    <
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        SERVICES,
-        USER,
-        USER_META,
-        USER_SERVICE,
-        USER_TEMPLATE
-    > implements ICommonCloudController {
+abstract public class AbstractCloudController extends AbstractCommonObject
+    // TODO: Commenting this out for now. We should decouple all these controllers so they don't depend on eachother so heavily.
+    // <
+    //     /////////////////////////
+    //     // Define generics here//
+    //     /////////////////////////
+    //     SERVICES extends com.rumpus.common.Manager.AbstractServiceManager<?>,
+    //     USER extends AbstractCommonUser<USER, USER_META>,
+    //     USER_META extends AbstractCommonUserMetaData<USER_META>,
+    //     USER_SERVICE extends IUserService<USER, USER_META>,
+    //     USER_TEMPLATE extends IUserTemplate<USER, USER_META>
+    // >
+    // extends AbstractCommonController
+    // <
+    //     /////////////////////////
+    //     // Define generics here//
+    //     /////////////////////////
+    //     SERVICES,
+    //     USER,
+    //     USER_META,
+    //     USER_SERVICE,
+    //     USER_TEMPLATE
+    // > 
+    implements ICommonCloudController {
 
         @Autowired private IAwsS3BucketProperties awsS3BucketProperties;
 

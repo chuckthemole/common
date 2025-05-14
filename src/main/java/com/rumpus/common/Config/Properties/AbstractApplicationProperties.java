@@ -5,13 +5,16 @@ import org.springframework.core.env.Environment;
 
 import com.rumpus.common.AbstractCommonObject;
 
+import java.util.Map;
+import java.util.HashMap;
+
 abstract public class AbstractApplicationProperties extends AbstractCommonObject implements Environment {
 
-    java.util.Map<String, String> properties;
+    Map<String, String> properties;
 
     public AbstractApplicationProperties() {
         
-        this.properties = new java.util.HashMap<String, String>();
+        this.properties = new HashMap<String, String>();
     }
 
     @Override

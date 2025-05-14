@@ -1,5 +1,7 @@
 package com.rumpus.common.Cloud;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rumpus.common.AbstractCommonObject;
 
@@ -30,11 +32,30 @@ abstract public class AbstractCloudProperties extends AbstractCommonObject {
      * <p>
      * Ignoring this field for json. Put getters that are visible in child classes. {@link AwsS3BucketProperties} for example.
      */
-    @JsonIgnore private java.util.Map<String, String> properties;
+    @JsonIgnore private Map<String, String> properties;
 
+    /**
+     * Default constructor.
+     * <p>
+     * Sets the cloud type to the given cloud type and initializes the properties map to an empty map.
+     * You should set the properties map after calling this constructor, since it is empty and unmodifiable.
+     * @param cloudType
+     */
+    public AbstractCloudProperties(CloudType cloudType) {
+        this.cloudType = cloudType;
+        this.properties = Map.of();
+    }
+
+    /**
+     * Constructor with properties.
+     * <p>
+     * Sets the cloud type to the given cloud type and initializes the properties map to the given properties.
+     * @param cloudType
+     * @param properties
+     */
     public AbstractCloudProperties(
         CloudType cloudType,
-        java.util.Map<String, String> properties) {
+        Map<String, String> properties) {
             
             this.cloudType = cloudType;
             this.properties = properties;
@@ -48,18 +69,18 @@ abstract public class AbstractCloudProperties extends AbstractCommonObject {
         this.cloudType = cloudType;
     }
 
-    public java.util.Map<String, String> getProperties() {
+    public Map<String, String> getProperties() {
         return this.properties;
     }
 
-    public void setProperties(java.util.Map<String, String> properties) {
+    public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
 
     @JsonIgnore
     public String getDelimitedProperties() {
         StringBuilder sb = new StringBuilder();
-        for(java.util.Map.Entry<String, String> entry : this.properties.entrySet()) {
+        for(Map.Entry<String, String> entry : this.properties.entrySet()) {
             sb.append(entry.getKey() + DEFAULT_KEY_VALUE_DELIM + entry.getValue() + DEFAULT_ENTRY_DELIM);
         }
         return sb.toString();
@@ -69,7 +90,7 @@ abstract public class AbstractCloudProperties extends AbstractCommonObject {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(java.util.Map.Entry<String, String> entry : this.properties.entrySet()) {
+        for(Map.Entry<String, String> entry : this.properties.entrySet()) {
             sb.append(entry.getKey() + ": " + entry.getValue() + ", ");
         }
         return sb.toString();

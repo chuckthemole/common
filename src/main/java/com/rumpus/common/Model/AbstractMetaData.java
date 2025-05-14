@@ -41,10 +41,6 @@ public abstract class AbstractMetaData<
         this.creationTime = String.valueOf(Instant.now().toEpochMilli());
     }
 
-    public AbstractMetaData(String creationTime) {
-        this.creationTime = creationTime;
-    }
-
     /**
      * Be sure to have NAME_KEY and CREATION_TIME_KEY as keys in your map if you use this
      * 

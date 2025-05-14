@@ -30,7 +30,10 @@ abstract public class AbstractAwsConfig {
     public S3Client s3Client() {
         return S3Client.builder()
             .region(Region.of(this.s3Region))
-            .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(this.s3AccessKey, this.s3SecretKey)))
+            .credentialsProvider(
+                StaticCredentialsProvider.create(
+                    AwsBasicCredentials.create(
+                        this.s3AccessKey, this.s3SecretKey)))
             .build();
     }
 

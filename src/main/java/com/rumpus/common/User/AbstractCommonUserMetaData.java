@@ -1,6 +1,7 @@
 package com.rumpus.common.User;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.rumpus.common.Builder.StringBuilderHelper;
 import com.rumpus.common.Model.AbstractMetaData;
@@ -15,20 +16,36 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
     transient public static final String USER_PHOTO_LINK = "user_photo_link";
     transient public static final String USER_ABOUT_ME = "user_about_me";
 
+    /**
+     * 
+     */
     protected String photoLink;
+    /**
+     * 
+     */
     protected String aboutMe;
+    /**
+     * Socials: twitter, linkedin, eg
+     */
+    protected Map<String, String> social;
     
-    public AbstractCommonUserMetaData() {
-        this.init();
-    }
-    public AbstractCommonUserMetaData(String creationTime) {
-        super(creationTime);
-        this.init();
+    public AbstractCommonUserMetaData(
+        String photoLink,
+        String aboutMe,
+        Map<String, String> social) {
+            this.init(
+                photoLink,
+                aboutMe,
+                social);
     }
 
-    private void init() {
-        this.photoLink = EMPTY_FIELD;
-        this.aboutMe = EMPTY_FIELD;
+    private void init(
+        String photoLink,
+        String aboutMe,
+        Map<String, String> social) {
+            this.photoLink = photoLink != null ? photoLink : EMPTY_FIELD;
+            this.aboutMe = aboutMe != null ? aboutMe : EMPTY_FIELD;
+            this.social = social != null ? social : Map.of();
     }
 
     public void setPhotoLink(String photoLink) {
@@ -45,6 +62,14 @@ public abstract class AbstractCommonUserMetaData<USER_META extends AbstractCommo
 
     public String getAboutMe() {
         return this.aboutMe;
+    }
+
+    public void setSocial(Map<String, String> social) {
+        this.social = social;
+    }
+
+    public Map<String, String> getSocial() {
+        return this.social;
     }
 
     // overriding these serializer methods here. right now just using defaults but can customize as commented out below. 2023/6/28

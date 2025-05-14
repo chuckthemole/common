@@ -16,7 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 // @Configuration(proxyBeanMethods = false)
 @EnableJdbcHttpSession
 @org.springframework.boot.context.properties.ConfigurationProperties(prefix = "properties")
-@org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.YamlPropertySourceFactory.class)
+@org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.yaml.YamlPropertySourceFactory.class)
 public abstract class AbstractJdbcHttpSessionConfig extends AbstractHttpSessionApplicationInitializer implements com.rumpus.common.ICommon {
 
     private static final String TABLE_NAME = "session";

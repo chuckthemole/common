@@ -9,6 +9,10 @@ public class AwsS3BucketProperties extends AbstractCloudProperties implements IA
         public static final String SECRET_ACCESS_KEY = "secretAccessKey";
         public static final String REGION = "region";
 
+        private AwsS3BucketProperties() {
+            super(CloudType.AWS);
+        }
+
         private AwsS3BucketProperties(
             String bucketName,
             String accessKey,
@@ -17,11 +21,15 @@ public class AwsS3BucketProperties extends AbstractCloudProperties implements IA
                 super(
                     CloudType.AWS,
                     java.util.Map.of(
-                    BUCKET_NAME, bucketName,
-                    ACCESS_KEY, accessKey,
-                    SECRET_ACCESS_KEY, secretAccessKey,
-                    REGION, region
-                ));
+                        BUCKET_NAME, bucketName,
+                        ACCESS_KEY, accessKey,
+                        SECRET_ACCESS_KEY, secretAccessKey,
+                        REGION, region
+                    ));
+        }
+
+        public static AwsS3BucketProperties createEmpty() {
+            return new AwsS3BucketProperties();
         }
 
         public static AwsS3BucketProperties create(

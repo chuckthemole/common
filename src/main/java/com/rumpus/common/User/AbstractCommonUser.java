@@ -13,6 +13,8 @@ import com.rumpus.common.Model.AbstractModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
+import java.util.UUID;
+
 /**
  * Abstract Common User
  * 
@@ -23,7 +25,7 @@ import jakarta.persistence.MappedSuperclass;
 public abstract class AbstractCommonUser<
         USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>
-    > extends AbstractModel<USER, java.util.UUID> {
+    > extends AbstractModel<USER, UUID> {
 
         /******************************************************************************
          *                       Member fields                                        *
@@ -42,7 +44,7 @@ public abstract class AbstractCommonUser<
         @Column(name = "email") private String email;
 
         /**
-         * The {@link CommonUserDetails} object. 
+         * The {@link CommonUserDetails} object.
          * This holds the username, password, and other user details.
          */
         private CommonUserDetails userDetails;

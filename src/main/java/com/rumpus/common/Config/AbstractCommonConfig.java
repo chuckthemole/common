@@ -22,6 +22,9 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
+import com.rumpus.common.Cloud.Aws.AwsS3BucketProperties;
+
+import com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties;
 
 /**
  * Common config for web app. Using jdbc template right now. Should abstract this to allow other impls.
@@ -45,7 +48,7 @@ import com.rumpus.common.Log.ICommonLogger.LogLevel;
  * @author: Chuck Thomas
  */
 @org.springframework.boot.context.properties.ConfigurationProperties(prefix = "properties")
-@org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.YamlPropertySourceFactory.class)
+@org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.yaml.YamlPropertySourceFactory.class)
 public abstract class AbstractCommonConfig extends AbstractCommonObject { // TODO: Can this just implement ICommon?
 
     protected static final String BEAN_PORT_MANAGER = "portManager";
@@ -202,29 +205,20 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     // TODO: Should I create a cloud config class? and put this bean in there?
     @Bean
     @Scope(SCOPE_SINGLETON)
-    public com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties awsS3Bucket() {
-        LOG("Creating AwsS3Bucket bean...");
+    public IAwsS3BucketProperties awsS3Bucket() {
+        if(!this.environment.containsProperty(AbstractCommonConfig.S3_BUCKET_NAME_PROPERTY) ||
+            !this.environment.containsProperty(AbstractCommonConfig.S3_ACCESS_KEY_PROPERTY) ||
+            !this.environment.containsProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY) ||
+            !this.environment.containsProperty(AbstractCommonConfig.S3_REGION_PROPERTY)) {
+                LOG("One or more of the S3 properties are missing. Returning null for AwsS3Bucket bean.");
+                return AwsS3BucketProperties.createEmpty();
+        }
         final String bucketName = this.environment.getProperty(AbstractCommonConfig.S3_BUCKET_NAME_PROPERTY);
         final String accessKey = this.environment.getProperty(AbstractCommonConfig.S3_ACCESS_KEY_PROPERTY);
         final String secretAccessKey = this.environment.getProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY);
         final String region = this.environment.getProperty(AbstractCommonConfig.S3_REGION_PROPERTY);
-        if(bucketName == null) {
-            LOG("S3_BUCKET_NAME_PROPERTY is null. Returning null for AwsS3Bucket bean.");
-            return null;
-        }
-        if(accessKey == null) {
-            LOG("S3_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
-            return null;
-        }
-        if(secretAccessKey == null) {
-            LOG("S3_SECRET_ACCESS_KEY_PROPERTY is null. Returning null for AwsS3Bucket bean.");
-            return null;
-        }
-        if(region == null) {
-            LOG("S3_REGION_PROPERTY is null. Returning null for AwsS3Bucket bean.");
-            return null;
-        }
-        com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties awsS3Bucket = com.rumpus.common.Cloud.Aws.AwsS3BucketProperties.create(bucketName, accessKey, secretAccessKey, region);
+        
+        IAwsS3BucketProperties awsS3Bucket = AwsS3BucketProperties.create(bucketName, accessKey, secretAccessKey, region);
         LOG("Created AwsS3Bucket bean with name: ", awsS3Bucket.getBucketName());
         return awsS3Bucket;
     }
