@@ -1,0 +1,10 @@
+{
+    "name": "@rumpushub/common-react",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "module": "dist/index.module.js",
+    "private": false,
+    "scripts": {
+        "build": "babel . --out-dir dist --copy-files"
+    }
+}
