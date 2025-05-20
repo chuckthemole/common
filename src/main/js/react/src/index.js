@@ -6,6 +6,7 @@ export { CommonRequests } from './components/common_requests';
 export { default as CommonUseFetcher } from './components/common_useFetcher';
 export { default as Dnd } from './components/dnd';
 export { default as Dropdown } from './components/dropdown';
+export { get_selected } from './components/dropdown';
 export { default as ErrorPage } from './components/error_page';
 export { default as Footer } from './components/footer';
 export { default as Header } from './components/header';
