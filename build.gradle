@@ -1,8 +1,11 @@
 plugins {
     id 'common'
+    id 'common-publisher'
     id 'org.springframework.boot' version '3.0.1'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
+
+println("Components: " + components.collect { it.name })
 
 // including for common test classes. See com.rumpus.common.Test
 dependencies {
