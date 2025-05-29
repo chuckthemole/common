@@ -35,7 +35,8 @@ class EnvLoader {
                 if (!trimmed.startsWith("#") && trimmed.contains("=")) {
                     def (key, value) = trimmed.split("=", 2)
                     key = key.trim()
-                    value = value.trim()
+                    // This strips leading/trailing quotes (both single and double), and trims whitespace
+                    value = value.trim().replaceAll(/^['"]|['"]$/, '')
                     println "EnvLoader: Setting project.ext property: ${key} = ${value}"
                     project.ext.set(key, value)
                 } else {

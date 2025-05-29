@@ -19,3 +19,6 @@ bootJar {
 jar {
     enabled = true
 }
+
+group = 'com.rumpushub.common'
+version = '0.1.3'
