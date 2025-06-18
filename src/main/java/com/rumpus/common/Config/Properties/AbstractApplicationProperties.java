@@ -8,12 +8,13 @@ import com.rumpus.common.AbstractCommonObject;
 import java.util.Map;
 import java.util.HashMap;
 
+// TODO: i believe I can just delete this class. Not using for anything at the moment. If we keep, maybe jsut get rid of the implements Environment - chuck 2025/06/17
 abstract public class AbstractApplicationProperties extends AbstractCommonObject implements Environment {
 
     Map<String, String> properties;
 
     public AbstractApplicationProperties() {
-        
+
         this.properties = new HashMap<String, String>();
     }
 
@@ -46,7 +47,7 @@ abstract public class AbstractApplicationProperties extends AbstractCommonObject
 
     @Override
     public String getRequiredProperty(String key) throws IllegalStateException {
-        if(this.properties.get(key) == null) {
+        if (this.properties.get(key) == null) {
             this.LOG("Property '" + key + "' not found");
             throw new IllegalStateException("Property '" + key + "' not found");
         }
