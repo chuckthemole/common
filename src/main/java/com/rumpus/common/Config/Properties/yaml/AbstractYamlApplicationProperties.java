@@ -9,7 +9,7 @@ import java.util.List;
 
 @ConfigurationProperties(prefix = "properties")
 @PropertySource(value = "classpath:properties.yml", factory = YamlPropertySourceFactory.class)
-abstract public class AbstractYamlApplicationProperties extends AbstractApplicationProperties {
+abstract public class AbstractYamlApplicationProperties {
 
     private String name;
     private List<String> aliases;
