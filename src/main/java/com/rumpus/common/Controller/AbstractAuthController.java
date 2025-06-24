@@ -2,6 +2,9 @@ package com.rumpus.common.Controller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +35,8 @@ abstract public class AbstractAuthController<
                 /////////////////////////
                 SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
+    private static final Logger logger = LoggerFactory.getLogger(AbstractAuthController.class);
+
     public static final String COMMON_REST_API_PATH = "/auth";
 
     /**
@@ -55,21 +60,27 @@ abstract public class AbstractAuthController<
      * Handle OAuth2 callback for any supported provider
      */
     @GetMapping("/{provider}/callback")
-    public ResponseEntity<?> handleCallback(@PathVariable String provider,
+    public ResponseEntity<?> handleCallback(
+            @PathVariable String provider,
             @RequestParam("code") String code,
             @RequestParam(value = "state", required = false) String state,
             @RequestParam Map<String, String> allParams) {
+
+        logger.info("handleCallback");
 
         if (!OAuth2Provider.isSupported(provider)) {
             return ResponseEntity.badRequest().body("Unsupported OAuth2 provider: " + provider);
         }
 
         OAuth2Provider oauthProvider = OAuth2Provider.fromString(provider);
+        logger.info(provider);
 
         try {
             // Validate state parameter if present
             if (state != null && !validateState(state)) {
-                return ResponseEntity.badRequest().body("Invalid state parameter");
+                final String msg = String.valueOf("Invalid state parameter");
+                logger.error(msg);
+                return ResponseEntity.badRequest().body(msg);
             }
 
             // Exchange code for access token
@@ -116,7 +127,8 @@ abstract public class AbstractAuthController<
      * This is where each app can implement their own logic (create user, generate
      * JWT, etc.)
      */
-    protected abstract ResponseEntity<?> handleUserAuthentication(OAuth2Provider provider,
+    protected abstract ResponseEntity<?> handleUserAuthentication(
+            OAuth2Provider provider,
             Map<String, Object> userInfo,
             String accessToken);
 

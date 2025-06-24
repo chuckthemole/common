@@ -83,8 +83,12 @@ public enum OAuth2Provider {
     private final String userInfoUrl;
     private final String defaultScopes;
 
-    OAuth2Provider(String providerId, String authorizationUrl, String tokenUrl,
-            String userInfoUrl, String defaultScopes) {
+    private OAuth2Provider(
+            String providerId,
+            String authorizationUrl,
+            String tokenUrl,
+            String userInfoUrl,
+            String defaultScopes) {
         this.providerId = providerId;
         this.authorizationUrl = authorizationUrl;
         this.tokenUrl = tokenUrl;
