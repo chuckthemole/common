@@ -1,4 +1,7 @@
+import React from 'react';
+
 console.log('Common lib React version:', React.version);
+
 export { default as Admin } from './components/admin';
 export { default as AwsGetResource } from './components/aws_get_resource';
 export { AwsProperties } from './components/aws_properties';
