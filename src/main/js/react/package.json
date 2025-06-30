@@ -24,7 +24,8 @@
         "react-quill": "^2.0.0",
         "react-router-dom": "^6.0.0",
         "swr": "^2.0.0",
-        "react-tooltip": "^5.0.0"
+        "react-tooltip": "^5.0.0",
+        "lucide-react": "^0.525.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.22.0",
