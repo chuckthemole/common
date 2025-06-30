@@ -1,7 +1,7 @@
 import React from 'react';
 import { Github, Mail, Linkedin, User, MessageCircle, Twitter, Apple, GitBranch, Slack } from 'lucide-react';
 
-// OAuth2 Provider Configuration matching your backend enum
+// OAuth2 Provider Configuration
 const OAUTH_PROVIDERS = {
     google: {
         name: 'Google',
@@ -113,10 +113,12 @@ const OAuth2Button = ({
     size = 'medium',
     fullWidth = false,
     baseUrl = 'http://localhost:8888',
+    customEndpoints = {},
     onAuthStart,
     onAuthError,
     className = '',
-    children
+    children,
+    iconOnly = false
 }) => {
     const providerConfig = OAUTH_PROVIDERS[provider.toLowerCase()];
 
@@ -125,13 +127,23 @@ const OAuth2Button = ({
         return null;
     }
 
-    const { name, icon: Icon, colors, endpoint } = providerConfig;
+    const { name, icon: Icon, colors, endpoint: defaultEndpoint } = providerConfig;
+
+    // Use custom endpoint if provided, otherwise fall back to default
+    const endpoint = customEndpoints[provider.toLowerCase()] || defaultEndpoint;
 
     // Size classes
     const sizeClasses = {
-        small: 'px-3 py-2 text-sm',
-        medium: 'px-4 py-2.5 text-base',
-        large: 'px-6 py-3 text-lg'
+        small: iconOnly ? 'p-2' : 'px-3 py-2 text-sm',
+        medium: iconOnly ? 'p-2.5' : 'px-4 py-2.5 text-base',
+        large: iconOnly ? 'p-3' : 'px-6 py-3 text-lg'
+    };
+
+    // Icon sizes
+    const iconSizes = {
+        small: 16,
+        medium: 20,
+        large: 24
     };
 
     // Variant classes
@@ -149,13 +161,8 @@ const OAuth2Button = ({
     const handleAuth = async () => {
         try {
             onAuthStart?.();
-
-            // Store the current page for redirect after auth
             sessionStorage.setItem('oauth_redirect_url', window.location.pathname);
-
-            // Redirect to your Spring Boot OAuth2 endpoint
             window.location.href = `${baseUrl}${endpoint}`;
-
         } catch (error) {
             console.error('OAuth2 authentication error:', error);
             onAuthError?.(error);
@@ -177,122 +184,158 @@ const OAuth2Button = ({
         ${fullWidth ? 'w-full' : ''}
         ${className}
       `}
+            title={iconOnly ? `${actionText} with ${name}` : undefined}
         >
-            <Icon size={size === 'small' ? 16 : size === 'large' ? 24 : 20} />
-            {children || `${actionText} with ${name}`}
+            <Icon size={iconSizes[size]} />
+            {!iconOnly && (children || `${actionText} with ${name}`)}
         </button>
     );
 };
 
-// OAuth2 Provider Group Component
+// Main OAuth2 Button Group Component
 const OAuth2ButtonGroup = ({
     providers = ['google', 'github'],
     action = 'sign-in',
     variant = 'filled',
     size = 'medium',
-    fullWidth = true,
+    layout = 'vertical', // 'vertical', 'horizontal', 'grid'
     baseUrl = 'http://localhost:8888',
+    customEndpoints = {}, // Object to override default endpoints
     onAuthStart,
     onAuthError,
-    className = ''
+    className = '',
+    buttonClassName = '',
+    showText = true,
+    columns = 2 // For grid layout
 }) => {
+    // Filter out invalid providers
+    const validProviders = providers.filter(provider =>
+        OAUTH_PROVIDERS[provider.toLowerCase()]
+    );
+
+    if (validProviders.length === 0) {
+        console.warn('OAuth2ButtonGroup: No valid providers specified');
+        return null;
+    }
+
+    // Layout classes
+    const getLayoutClasses = () => {
+        switch (layout) {
+            case 'horizontal':
+                return 'flex flex-wrap gap-3';
+            case 'grid':
+                return `grid gap-3 grid-cols-${Math.min(columns, validProviders.length)}`;
+            default: // vertical
+                return 'space-y-3';
+        }
+    };
+
+    // Determine if buttons should be full width
+    const shouldBeFullWidth = layout === 'vertical';
+
     return (
-        <div className={`space-y-3 ${className}`}>
-            {providers.map((provider) => (
+        <div className={`${getLayoutClasses()} ${className}`}>
+            {validProviders.map((provider) => (
                 <OAuth2Button
                     key={provider}
                     provider={provider}
                     action={action}
                     variant={variant}
                     size={size}
-                    fullWidth={fullWidth}
+                    fullWidth={shouldBeFullWidth}
                     baseUrl={baseUrl}
+                    customEndpoints={customEndpoints}
                     onAuthStart={onAuthStart}
                     onAuthError={onAuthError}
+                    className={buttonClassName}
+                    iconOnly={!showText}
                 />
             ))}
         </div>
     );
 };
 
-// Demo Component
-const OAuth2Demo = () => {
-    const handleAuthStart = () => {
-        console.log('Authentication started...');
-    };
-
-    const handleAuthError = (error) => {
-        console.error('Authentication failed:', error);
-        alert('Authentication failed. Please try again.');
-    };
+// Demo component to show usage examples
+const Demo = () => {
+    const handleAuthStart = () => console.log('Auth started');
+    const handleAuthError = (err) => console.error('Auth error:', err);
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg space-y-8">
-            <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-                <p className="text-gray-600">Sign in to your account</p>
+        <div className="max-w-4xl mx-auto p-6 space-y-8">
+            <h1 className="text-3xl font-bold text-center mb-8">OAuth2 Button Group Examples</h1>
+
+            <div className="grid md:grid-cols-2 gap-8">
+                {/* Vertical Layout */}
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold">Vertical Layout</h2>
+                    <OAuth2ButtonGroup
+                        providers={['google', 'github', 'microsoft']}
+                        layout="vertical"
+                        onAuthStart={handleAuthStart}
+                        onAuthError={handleAuthError}
+                    />
+                </div>
+
+                {/* Horizontal Layout */}
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold">Horizontal Layout</h2>
+                    <OAuth2ButtonGroup
+                        providers={['google', 'github', 'discord', 'apple']}
+                        layout="horizontal"
+                        variant="outlined"
+                        onAuthStart={handleAuthStart}
+                        onAuthError={handleAuthError}
+                    />
+                </div>
+
+                {/* Grid Layout */}
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold">Grid Layout (2 columns)</h2>
+                    <OAuth2ButtonGroup
+                        providers={['google', 'github', 'microsoft', 'discord']}
+                        layout="grid"
+                        columns={2}
+                        variant="ghost"
+                        onAuthStart={handleAuthStart}
+                        onAuthError={handleAuthError}
+                    />
+                </div>
+
+                {/* Custom Endpoints Example */}
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold">Custom Endpoints</h2>
+                    <OAuth2ButtonGroup
+                        providers={['google', 'github', 'microsoft']}
+                        layout="vertical"
+                        customEndpoints={{
+                            google: '/auth/google/login',
+                            github: '/auth/github/login',
+                            microsoft: '/auth/microsoft/login'
+                        }}
+                        onAuthStart={handleAuthStart}
+                        onAuthError={handleAuthError}
+                    />
+                </div>
             </div>
 
-            {/* Single Button Examples */}
+            {/* Large Example */}
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Single Buttons</h3>
-
-                <OAuth2Button
-                    provider="google"
-                    action="sign-in"
-                    fullWidth
-                    onAuthStart={handleAuthStart}
-                    onAuthError={handleAuthError}
-                />
-
-                <OAuth2Button
-                    provider="microsoft"
-                    action="sign-up"
-                    variant="outlined"
-                    fullWidth
-                    onAuthStart={handleAuthStart}
-                    onAuthError={handleAuthError}
-                />
-
-                <OAuth2Button
-                    provider="discord"
-                    variant="ghost"
+                <h2 className="text-xl font-semibold">All Providers (Grid 3 columns)</h2>
+                <OAuth2ButtonGroup
+                    providers={['google', 'github', 'microsoft', 'facebook', 'discord', 'twitter', 'linkedin', 'apple', 'gitlab']}
+                    layout="grid"
+                    columns={3}
                     size="small"
                     onAuthStart={handleAuthStart}
                     onAuthError={handleAuthError}
                 />
             </div>
-
-            {/* Button Group Example */}
-            <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Button Group</h3>
-
-                <OAuth2ButtonGroup
-                    providers={['google', 'github', 'microsoft', 'discord']}
-                    action="sign-in"
-                    onAuthStart={handleAuthStart}
-                    onAuthError={handleAuthError}
-                />
-            </div>
-
-            {/* Custom Styled Example */}
-            <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Custom Style</h3>
-
-                <OAuth2Button
-                    provider="google"
-                    variant="outlined"
-                    size="large"
-                    fullWidth
-                    className="shadow-md hover:shadow-lg"
-                    onAuthStart={handleAuthStart}
-                    onAuthError={handleAuthError}
-                >
-                    Continue with Google
-                </OAuth2Button>
-            </div>
         </div>
     );
 };
 
-export default OAuth2Demo;
+// Export the main component
+export default OAuth2ButtonGroup;
+
+// Also export individual components for flexibility
+export { OAuth2Button, OAuth2ButtonGroup };

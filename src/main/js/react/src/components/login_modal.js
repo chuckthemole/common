@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { EMPTY } from './common';
 import { isModalActive, modal_style, setModalActive, setModalInactive } from './modal_manager';
 import { isCurrentUserAuthenticated } from './common_requests';
+import OAuth2ButtonGroup from './oauth2';
 
 export default function LoginModal() {
 
@@ -60,6 +61,7 @@ export default function LoginModal() {
                 >
                     <div className="modal-content">
                         <form action="/login" method="post" className='box'>
+                            <OAuth2ButtonGroup providers={['google']} customEndpoints={{google: '/auth/google/authorize'}} />
                             <div className="field">
                                 <label htmlFor="" className="label">Username</label>
                                 <div className="control has-icons-left">
