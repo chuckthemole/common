@@ -68,7 +68,7 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     protected static final String BEAN_SQL_DIALECT = "sqlDialect";
 
     protected Environment environment;
-    
+
     @Autowired
     protected ApplicationContext applicationContext;
 
@@ -113,6 +113,12 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     // OAUTH2
     public static final String OAUTH2_GOOGLE_CLIENT_ID = "properties.oauth2.client.registration.google.client-id";
     public static final String OAUTH2_GOOGLE_CLIENT_SECRET = "properties.oauth2.client.registration.google.client-secret";
+    // CORS Allowed Origins
+    public static final String CORS_ALLOWED_FRONTEND_ORIGINS = "properties.frontend.origins"; // TODO:
+                                                                                              // environment.getProperty()
+                                                                                              // has a tough time
+                                                                                              // parsing to List
+    public static final String CORS_ALLOWED_FRONTEND_ALLOWED_METHODS = "properties.frontend.methods";
 
     public AbstractCommonConfig(Environment environment) {
 
