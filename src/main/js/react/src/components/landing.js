@@ -2,9 +2,19 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { getApi } from '../api';
 
 export async function loader({ params }) {
-    return await fetch(`/api/profile/${params.user_name}`);
+    const api = getApi();
+    try {
+        const response = await api.get(`/api/profile/${params.user_name}`);
+        return response.data;
+    } catch (error) {
+        const err = new Error('Failed to load profile.');
+        err.status = error.response?.status || 500;
+        err.info = error.response?.data || null;
+        throw err;
+    }
 }
 
 export default function Landing() {

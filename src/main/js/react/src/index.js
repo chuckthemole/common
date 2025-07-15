@@ -17,17 +17,24 @@ export { default as Header } from './components/header';
 export { default as Json } from './components/json';
 export { default as Landing } from './components/landing';
 export { default as Log } from './components/log';
-export { default as LoginModal } from './components/login_modal';
+export { default as LoginModal } from './components/modal/login_modal';
 export { default as Logout } from './components/logout';
 export { ModalManager } from './components/modal_manager';
 export { default as ReactComponent } from './components/react_component';
 export { default as RumpusQuill } from './components/rumpus_quill';
 export { default as RumpusQuillForm } from './components/rumpus_quill_form';
 export { default as Section } from './components/section';
-export { default as SignupModal } from './components/signup_modal';
+export { default as SignupModal } from './components/modal/signup_modal';
 export { UserCommon } from './components/user_common';
 export { default as UserIcon } from './components/user_icon';
 export { default as UserInfo } from './components/user_info';
+export { AuthProvider, useAuth } from './components/auth_context';
+export { default as AuthRoot } from './components/auth_root';
+
+export { default as api } from './api';
+export { createApiClient } from './api'
+export { getApi } from './api'
+export { setApi } from './api'
 
 export * as Common from './components/common'
 // export * as Client from './client'

@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle, faUser } from '@fortawesome/free-solid-svg-icons';
 import { getCommonPaths, isCurrentUserAuthenticated } from './common_requests';
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+import api from '../api';
+
+const fetcher = (url, config) => api(url, config).then((res) => res.data);
 
 /**
  * TODO: Am I using this? I don't think so. Maybe prune. - chuck
