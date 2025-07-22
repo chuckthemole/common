@@ -8,7 +8,7 @@ export function useAuthStatus() {
     const fetchStatus = async () => {
         setIsLoading(true);
         try {
-            const res = await getApi().get('/auth/is_authenticated');
+            const res = await getApi().get('/auth/is_authenticated'); // TODO: need to pass this endpoint in
             setIsAuthenticated(res.data);
         } catch (err) {
             setIsAuthenticated({ authenticated: false });

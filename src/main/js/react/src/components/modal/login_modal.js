@@ -27,7 +27,7 @@ export default function LoginModal({ redirectTo = "/" }) {
     const [password, setPassword] = useState('');
 
     const { isLoading, isAuthenticated, refreshAuth } = useAuth();
-    console.log(isAuthenticated);
+    // console.log(isAuthenticated);
 
     // Modal open/close state
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -72,8 +72,6 @@ export default function LoginModal({ redirectTo = "/" }) {
         e.preventDefault();
         await login(username, password);
     }
-
-    console.log(isAuthenticated);
 
     // Show loading indicator while auth status is being resolved
     if (isLoading || isAuthenticated === undefined) {

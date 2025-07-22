@@ -6,7 +6,7 @@ import { EMPTY } from '../common';
 import { isModalActive, modal_style, setModalActive, setModalInactive } from '../modal_manager';
 import { isCurrentUserAuthenticated } from '../common_requests';
 import { useSignup } from '../hooks/use_signup';
-import { useAuthStatus } from '../hooks/use_auth_status';
+import { useAuth } from '../auth_context';
 import Spinner from '../ui/spinning_wheel';
 
 /**
@@ -21,7 +21,7 @@ import Spinner from '../ui/spinning_wheel';
  * @returns {JSX.Element|null}
  */
 export default function SignupModal({ btn, redirectTo = "/" }) {
-    const { isLoading, isAuthenticated, refetch } = useAuthStatus();
+    const { isLoading, isAuthenticated, refreshAuth } = useAuth();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -71,7 +71,7 @@ export default function SignupModal({ btn, redirectTo = "/" }) {
         );
     }
 
-    if (isAuthenticated.authenticated) {
+    if (isAuthenticated) {
         return null;
     }
 
