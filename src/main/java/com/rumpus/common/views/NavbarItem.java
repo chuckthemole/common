@@ -9,7 +9,9 @@ public class NavbarItem extends AbstractView {
 
     private String title;
     private String href;
-    private String image; // TODO: I am making this a string for now. I should think about how to handle images in the future, maybe an image class. Thinking of createNavbarBrandWithAwsS3CloudImage and getDelimitedProperties
+    private String image; // TODO: I am making this a string for now. I should think about how to handle
+                          // images in the future, maybe an image class. Thinking of
+                          // createNavbarBrandWithAwsS3CloudImage and getDelimitedProperties
     private boolean active;
     private List<NavbarItem> dropdown;
     private ItemType itemType;
@@ -19,57 +21,57 @@ public class NavbarItem extends AbstractView {
     private Map<String, String> meta;
 
     private NavbarItem(
-        String title,
-        String href,
-        boolean active,
-        List<NavbarItem> dropdown,
-        ItemType itemType,
-        String reactComponent,
-        String image) {
-            this.init(title, href, active, dropdown, itemType, reactComponent, image);
+            String title,
+            String href,
+            boolean active,
+            List<NavbarItem> dropdown,
+            ItemType itemType,
+            String reactComponent,
+            String image) {
+        this.init(title, href, active, dropdown, itemType, reactComponent, image);
     }
 
     private void init(
-        String title,
-        String href,
-        boolean active,
-        List<NavbarItem> dropdown,
-        ItemType itemType,
-        String reactComponent,
-        String image) {
-            this.title = title;
-            this.href = href;
-            this.active = active;
-            this.dropdown = dropdown;
-            this.itemType = itemType;
-            this.image = image;
-            this.reactComponent = reactComponent;
+            String title,
+            String href,
+            boolean active,
+            List<NavbarItem> dropdown,
+            ItemType itemType,
+            String reactComponent,
+            String image) {
+        this.title = title;
+        this.href = href;
+        this.active = active;
+        this.dropdown = dropdown;
+        this.itemType = itemType;
+        this.image = image;
+        this.reactComponent = reactComponent;
 
-            // if(com.rumpus.common.util.Uri.isValidURL(href, true)) {
-            //     LOG_THIS("Valid http/https URL: ", href);
-            // } else {
-            //     LOG_THIS("Invalid http/https URL: ", href);
-            // }
-            if(image != null) {
-                if(com.rumpus.common.util.FileUtil.doesPathExist(image) != SUCCESS) {
-                    LOG_THIS("Image path does not exist: ", image);
-                    LOG_THIS("Trying isValidURL http/https check...");
-                    if(!com.rumpus.common.util.Uri.isValidURL(image, true)) {
-                        LOG_THIS("Invalid http/https URL: ", image);
-                        LOG_THIS("Trying isValidURL without http/https check...");
-                        if(!com.rumpus.common.util.Uri.isValidURL(image, false)) {
-                            LOG_THIS("Invalid URL: ", image);
-                        } else {
-                            LOG_THIS("Valid URL: ", image);
-                        }
+        // if(com.rumpus.common.util.Uri.isValidURL(href, true)) {
+        // LOG_THIS("Valid http/https URL: ", href);
+        // } else {
+        // LOG_THIS("Invalid http/https URL: ", href);
+        // }
+        if (image != null) {
+            if (com.rumpus.common.util.FileUtil.doesPathExist(image) != SUCCESS) {
+                LOG_THIS("Image path does not exist: ", image);
+                LOG_THIS("Trying isValidURL http/https check...");
+                if (!com.rumpus.common.util.Uri.isValidURL(image, true)) {
+                    LOG_THIS("Invalid http/https URL: ", image);
+                    LOG_THIS("Trying isValidURL without http/https check...");
+                    if (!com.rumpus.common.util.Uri.isValidURL(image, false)) {
+                        LOG_THIS("Invalid URL: ", image);
                     } else {
-                        LOG_THIS("Valid http/https URL: ", image);
+                        LOG_THIS("Valid URL: ", image);
                     }
                 } else {
-                    LOG_THIS("Image path exists: ", image);
+                    LOG_THIS("Valid http/https URL: ", image);
                 }
-                
+            } else {
+                LOG_THIS("Image path exists: ", image);
             }
+
+        }
     }
 
     public static NavbarItem create(String title, String href, boolean active, ItemType itemType) {
@@ -85,28 +87,35 @@ public class NavbarItem extends AbstractView {
     }
 
     public static NavbarItem createNavbarBrandWithLocalImage(String title, String href, boolean active, String image) {
-        if(image != null && !image.isEmpty()) {
+        if (image != null && !image.isEmpty()) {
             LOG_THIS("Setting image path: ", image);
-            return new NavbarItem(title, href, active, null, ItemType.BRAND, null, image);
+            return new NavbarItem(
+                    title,
+                    href,
+                    active,
+                    null,
+                    ItemType.BRAND,
+                    null,
+                    image);
         } else {
             LOG_THIS("Image path is null. Placing default navbar brand image path.");
             return new NavbarItem(
-                title,
-                href,
-                active,
-                null,
-                ItemType.BRAND,
-                null,
-                AbstractViews.DEFAULT_NAVBAR_BRAND);
+                    title,
+                    href,
+                    active,
+                    null,
+                    ItemType.BRAND,
+                    null,
+                    AbstractViews.DEFAULT_NAVBAR_BRAND);
         }
     }
 
     public static NavbarItem createNavbarBrandWithAwsS3CloudImage(
-        String title,
-        String href,
-        boolean active,
-        String image) {
-            return new NavbarItem(
+            String title,
+            String href,
+            boolean active,
+            String image) {
+        return new NavbarItem(
                 title,
                 href,
                 active,
@@ -118,13 +127,13 @@ public class NavbarItem extends AbstractView {
 
     public static NavbarItem createDropdownDivider(String title, boolean active) {
         return new NavbarItem(
-            title,
-            null,
-            active,
-            null,
-            ItemType.DROPDOWN_DIVIDER,
-            null,
-            null);
+                title,
+                null,
+                active,
+                null,
+                ItemType.DROPDOWN_DIVIDER,
+                null,
+                null);
     }
 
     public String getTitle() {
@@ -228,18 +237,18 @@ public class NavbarItem extends AbstractView {
 
     @Override
     public boolean equals(Object o) {
-            
-            if (o == this) {
-                return true;
-            }
-    
-            if (!(o instanceof NavbarItem)) {
-                return false;
-            }
-    
-            NavbarItem navbarItem = (NavbarItem) o;
-    
-            return navbarItem.href.equals(this.href) &&
+
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof NavbarItem)) {
+            return false;
+        }
+
+        NavbarItem navbarItem = (NavbarItem) o;
+
+        return navbarItem.href.equals(this.href) &&
                 navbarItem.active == this.active &&
                 navbarItem.dropdown.equals(this.dropdown) &&
                 navbarItem.itemType.equals(this.itemType);
