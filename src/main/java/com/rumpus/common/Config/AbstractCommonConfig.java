@@ -32,6 +32,9 @@ import com.rumpus.common.Cloud.Aws.AwsS3BucketProperties;
 import com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties;
 import com.rumpus.common.Config.Properties.yaml.YamlPropertySourceFactory;
 
+
+import jakarta.annotation.PostConstruct;
+
 /**
  * Common config for web app. Using jdbc template right now. Should abstract
  * this to allow other impls.
@@ -278,4 +281,39 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     // public Environment yamlEnvironment() {
     // return this.applicationContext.getEnvironment();
     // }
+
+    @PostConstruct
+    protected void debugProperties() {
+        printIfExists(URL);
+        printIfExists(USER);
+        printIfExists(DRIVER);
+        printIfExists(PASSWORD);
+        printIfExists(PORT);
+
+        printIfExists(S3_BUCKET_NAME_PROPERTY);
+        printIfExists(S3_ACCESS_KEY_PROPERTY);
+        printIfExists(S3_SECRET_ACCESS_KEY_PROPERTY);
+        printIfExists(S3_REGION_PROPERTY);
+
+        printIfExists(REDIS_HOST);
+        printIfExists(REDIS_PORT);
+
+        printIfExists(JWT_SECRET);
+        printIfExists(JWT_EXPIRATION);
+
+        printIfExists(OAUTH2_GOOGLE_CLIENT_ID);
+        printIfExists(OAUTH2_GOOGLE_CLIENT_SECRET);
+
+        printIfExists(CORS_ALLOWED_FRONTEND_ORIGINS);
+        printIfExists(CORS_ALLOWED_FRONTEND_ALLOWED_METHODS);
+    }
+
+    private void printIfExists(String propertyKey) {
+        String value = environment.getProperty(propertyKey);
+        if (value != null) {
+            System.out.println(propertyKey + " = " + value);
+        } else {
+            System.out.println(propertyKey + " is not defined");
+        }
+    }
 }
