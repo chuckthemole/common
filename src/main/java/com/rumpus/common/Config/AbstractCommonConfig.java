@@ -10,7 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -30,8 +29,6 @@ import com.rumpus.common.Service.JwtService;
 import com.rumpus.common.Cloud.Aws.AwsS3BucketProperties;
 
 import com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties;
-import com.rumpus.common.Config.Properties.yaml.YamlPropertySourceFactory;
-
 
 import jakarta.annotation.PostConstruct;
 
@@ -60,7 +57,6 @@ import jakarta.annotation.PostConstruct;
  * @author: Chuck Thomas
  */
 @ConfigurationProperties(prefix = "properties")
-@PropertySource(value = "classpath:properties.yml", factory = YamlPropertySourceFactory.class)
 public abstract class AbstractCommonConfig extends AbstractCommonObject { // TODO: Can this just implement ICommon?
 
     protected static final String BEAN_PORT_MANAGER = "portManager";
