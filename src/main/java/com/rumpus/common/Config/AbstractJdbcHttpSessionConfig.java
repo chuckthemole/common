@@ -10,26 +10,31 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 import org.springframework.session.jdbc.config.annotation.web.http.JdbcHttpSessionConfiguration;
 import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.rumpus.common.ICommon;
 
 // TODO: Need to look at Sessions more closely and plan how to implement.
 
 // @Configuration(proxyBeanMethods = false)
 @EnableJdbcHttpSession
-@org.springframework.boot.context.properties.ConfigurationProperties(prefix = "properties")
-@org.springframework.context.annotation.PropertySource(value = "classpath:properties.yml", factory = com.rumpus.common.Config.Properties.yaml.YamlPropertySourceFactory.class)
-public abstract class AbstractJdbcHttpSessionConfig extends AbstractHttpSessionApplicationInitializer implements com.rumpus.common.ICommon {
+@ConfigurationProperties(prefix = "properties")
+// @org.springframework.context.annotation.PropertySource(value =
+// "classpath:properties.yml", factory =
+// com.rumpus.common.Config.Properties.yaml.YamlPropertySourceFactory.class)
+public abstract class AbstractJdbcHttpSessionConfig extends AbstractHttpSessionApplicationInitializer
+        implements ICommon {
 
     private static final String TABLE_NAME = "session";
-    
+
     @Autowired
-	public DataSource dataSource;
+    public DataSource dataSource;
 
     public AbstractJdbcHttpSessionConfig() {
         super(JdbcHttpSessionConfiguration.class);
     }
 
     @Bean
-    @DependsOn({"dataSource"})
+    @DependsOn({ "dataSource" })
     public PlatformTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource);
     }
@@ -37,8 +42,8 @@ public abstract class AbstractJdbcHttpSessionConfig extends AbstractHttpSessionA
     // Not using rn
     // @Bean
     // @DependsOn({"transactionManager"})
-    // public TransactionTemplate transactionTemplate(PlatformTransactionManager manager) {
-    //     return new TransactionTemplate(manager);
+    // public TransactionTemplate transactionTemplate(PlatformTransactionManager
+    // manager) {
+    // return new TransactionTemplate(manager);
     // }
- }
-
+}

@@ -29,7 +29,7 @@ public class JwtService {
     private String jwtSecret;
 
     @Value(AbstractCommonConfig.JWT_SECRET_EXPIRATION_ANNOTATION)
-    private long jwtExpiration;
+    private Long jwtExpiration;
 
     /**
      * Creates a cryptographic signing key from the JWT secret for token signing and
@@ -52,7 +52,7 @@ public class JwtService {
      */
     public String generateToken(OAuth2User oAuth2User) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+        Date expiryDate = new Date(now.getTime() + jwtExpiration.toString());
 
         return Jwts.builder()
                 .subject(oAuth2User.getAttribute("email")) // setSubject() → subject()
@@ -77,7 +77,7 @@ public class JwtService {
      */
     public String generateToken(OAuth2Provider provider, Map<String, Object> userInfo) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+        Date expiryDate = new Date(now.getTime() + jwtExpiration.toString());
 
         String email = provider.extractEmail(userInfo);
         String name = provider.extractName(userInfo);
@@ -108,7 +108,7 @@ public class JwtService {
      */
     public String generateToken(String email, String name, String picture, String provider) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+        Date expiryDate = new Date(now.getTime() + jwtExpiration.toString());
 
         return Jwts.builder()
                 .subject(email) // setSubject() → subject()

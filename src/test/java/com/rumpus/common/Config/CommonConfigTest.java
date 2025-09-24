@@ -42,5 +42,10 @@ class CommonConfigTest {
             // Return a dummy value just for testing
             return "DEFAULT";
         }
+
+        @Override 
+        public String toString() {
+            return "TODO: implement";
+        }
     }
 }
