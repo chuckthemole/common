@@ -7,26 +7,61 @@ import com.rumpus.common.ICommon;
 
 /**
  * Represents a single item in the navigation bar.
- * Can be a link, dropdown, React component, brand image, etc.
+ * <p>
+ * Supported item types include:
+ * <ul>
+ * <li>{@link ItemType#BRAND}</li>
+ * <li>{@link ItemType#AWS_S3_CLOUD_IMAGE}</li>
+ * <li>{@link ItemType#LINK}</li>
+ * <li>{@link ItemType#DROPDOWN}</li>
+ * <li>{@link ItemType#DROPDOWN_DIVIDER}</li>
+ * <li>{@link ItemType#REACT_COMPONENT}</li>
+ * <li>{@link ItemType#ICON}</li>
+ * <li>{@link ItemType#BUTTON}</li>
+ * </ul>
+ * </p>
  */
 public class NavbarItem extends AbstractView {
 
+    /** Display title or label for the item. */
     private String title;
+
+    /** Hyperlink reference. May be absolute (http/https) or relative. */
     private String href;
-    private String image; // TODO: Consider a dedicated Image class in the future.
+
+    /** Image path or URL associated with the item. */
+    private String image; // TODO: Consider a dedicated Image class for stronger typing.
+
+    /** Indicates whether the item is currently active/selected. */
     private boolean active;
+
+    /** Child items if this item represents a dropdown menu. */
     private List<NavbarItem> dropdown;
+
+    /** Type of the navigation item (brand, link, dropdown, etc.). */
     private ItemType itemType;
+
+    /**
+     * Optional React component name if this item is rendered as a React component.
+     */
     private String reactComponent;
 
     /**
-     * Component-specific props to be serialized to frontend for React components.
-     * Example: SignupModal might require { "create_user_path": "/api/user" }.
+     * Component-specific props serialized to the frontend when using
+     * {@link ItemType#REACT_COMPONENT}.
+     * <p>
+     * Example: SignupModal may require
+     * <code>{"create_user_path": "/api/user"}</code>
+     * </p>
      */
     private Map<String, Object> componentProps;
 
-    // Optional metadata for custom use cases
+    /** Arbitrary metadata for custom use cases. */
     private Map<String, String> meta;
+
+    // ------------------------------------------------------------------------
+    // Constructors
+    // ------------------------------------------------------------------------
 
     private NavbarItem(
             String title,
@@ -37,9 +72,13 @@ public class NavbarItem extends AbstractView {
             String reactComponent,
             String image,
             Map<String, Object> componentProps) {
+
         this.init(title, href, active, dropdown, itemType, reactComponent, image, componentProps);
     }
 
+    /**
+     * Common initializer used by all factory methods.
+     */
     private void init(
             String title,
             String href,
@@ -49,6 +88,7 @@ public class NavbarItem extends AbstractView {
             String reactComponent,
             String image,
             Map<String, Object> componentProps) {
+
         this.title = title;
         this.href = href;
         this.active = active;
@@ -58,74 +98,110 @@ public class NavbarItem extends AbstractView {
         this.reactComponent = reactComponent;
         this.componentProps = componentProps;
 
-        // Validate image path or URL
-        if (image != null) {
-            if (com.rumpus.common.util.FileUtil.doesPathExist(image) != SUCCESS) {
-                LOG_THIS("Image path does not exist: ", image);
-                if (!com.rumpus.common.util.Uri.isValidURL(image, true)) {
-                    LOG_THIS("Invalid URL: ", image);
-                } else {
-                    LOG_THIS("Valid http/https URL: ", image);
-                }
-            } else {
-                LOG_THIS("Image path exists: ", image);
-            }
-        }
+        validateImage(image);
     }
 
     /**
-     * Factory method for a standard link item.
+     * Validate the image path/URL, logging warnings if the path does not exist or
+     * is invalid.
+     *
+     * @param image candidate image path or URL
+     */
+    private void validateImage(String image) {
+        if (image == null) {
+            return;
+        }
+
+        if (com.rumpus.common.util.FileUtil.doesPathExist(image) != SUCCESS) {
+            LOG_THIS("Image path does not exist: ", image);
+            if (!com.rumpus.common.util.Uri.isValidURL(image, true)) {
+                LOG_THIS("Invalid URL: ", image);
+            } else {
+                LOG_THIS("Valid http/https URL: ", image);
+            }
+        } else {
+            LOG_THIS("Image path exists: ", image);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Factory Methods
+    // ------------------------------------------------------------------------
+
+    /**
+     * Creates a standard link item.
      */
     public static NavbarItem create(String title, String href, boolean active, ItemType itemType) {
         return new NavbarItem(title, href, active, null, itemType, null, null, null);
     }
 
     /**
-     * Factory method for creating a React component item.
+     * Creates a React component item.
      *
      * @param title          Display title
      * @param reactComponent Name of the React component
      * @param active         Whether this item is active
      * @param componentProps Optional props to pass to the React component
-     * @return NavbarItem representing a React component
      */
-    public static NavbarItem createAsReactComponent(String title, String reactComponent, boolean active,
+    public static NavbarItem createAsReactComponent(
+            String title,
+            String reactComponent,
+            boolean active,
             Map<String, Object> componentProps) {
-        return new NavbarItem(title, null, active, null, ItemType.REACT_COMPONENT, reactComponent, null,
-                componentProps);
+
+        return new NavbarItem(title, null, active, null, ItemType.REACT_COMPONENT,
+                reactComponent, null, componentProps);
     }
 
     /**
-     * Factory method for a dropdown menu item.
+     * Creates a dropdown menu item.
      */
     public static NavbarItem createAsDropdown(String title, String href, boolean active, List<NavbarItem> dropdown) {
         return new NavbarItem(title, href, active, dropdown, ItemType.DROPDOWN, null, null, null);
     }
 
-    // Example factory methods for brand images
+    /**
+     * Creates a brand item using a local image path.
+     */
     public static NavbarItem createNavbarBrandWithLocalImage(String title, String href, boolean active, String image) {
-        if (image != null && !image.isEmpty()) {
-            LOG_THIS("Setting image path: ", image);
-            return new NavbarItem(title, href, active, null, ItemType.BRAND, null, image, null);
-        } else {
-            LOG_THIS("Image path is null. Using default navbar brand image path.");
-            return new NavbarItem(title, href, active, null, ItemType.BRAND, null, AbstractViews.DEFAULT_NAVBAR_BRAND,
-                    null);
-        }
+        String resolvedImage = (image != null && !image.isEmpty())
+                ? image
+                : AbstractViews.DEFAULT_NAVBAR_BRAND;
+
+        LOG_THIS("Setting local brand image: ", resolvedImage);
+        return new NavbarItem(title, href, active, null, ItemType.BRAND, null, resolvedImage, null);
     }
 
-    public static NavbarItem createNavbarBrandWithAwsS3CloudImage(String title, String href, boolean active,
-            String image) {
+    /**
+     * Creates a brand item using a remote image URL.
+     */
+    public static NavbarItem createNavbarBrandWithRemoteImage(String title, String href, boolean active, String image) {
+        String resolvedImage = (image != null && !image.isEmpty())
+                ? image
+                : AbstractViews.DEFAULT_NAVBAR_BRAND;
+
+        LOG_THIS("Setting remote brand image: ", resolvedImage);
+        return new NavbarItem(title, href, active, null, ItemType.BRAND, null, resolvedImage, null);
+    }
+
+    /**
+     * Creates a brand item that loads its image from AWS S3.
+     */
+    public static NavbarItem createNavbarBrandWithAwsS3CloudImage(
+            String title, String href, boolean active, String image) {
         return new NavbarItem(title, href, active, null, ItemType.AWS_S3_CLOUD_IMAGE, null, image, null);
     }
 
+    /**
+     * Creates a divider item for dropdown menus.
+     */
     public static NavbarItem createDropdownDivider(String title, boolean active) {
         return new NavbarItem(title, null, active, null, ItemType.DROPDOWN_DIVIDER, null, null, null);
     }
 
-    // -------------------
+    // ------------------------------------------------------------------------
     // Getters & Setters
-    // -------------------
+    // ------------------------------------------------------------------------
 
     public String getTitle() {
         return title;
@@ -196,10 +272,21 @@ public class NavbarItem extends AbstractView {
         this.componentProps = componentProps;
     }
 
-    // -------------------
-    // Enums
-    // -------------------
+    public Map<String, String> getMeta() {
+        return meta;
+    }
 
+    public void setMeta(Map<String, String> meta) {
+        this.meta = meta;
+    }
+
+    // ------------------------------------------------------------------------
+    // Enums
+    // ------------------------------------------------------------------------
+
+    /**
+     * Enumerates the supported navigation item types.
+     */
     public enum ItemType {
         BRAND("brand"),
         AWS_S3_CLOUD_IMAGE("aws-s3-cloud-image"),
@@ -212,7 +299,7 @@ public class NavbarItem extends AbstractView {
 
         private final String type;
 
-        private ItemType(String type) {
+        ItemType(String type) {
             this.type = type;
         }
 
@@ -221,9 +308,9 @@ public class NavbarItem extends AbstractView {
         }
     }
 
-    // -------------------
+    // ------------------------------------------------------------------------
     // Overrides
-    // -------------------
+    // ------------------------------------------------------------------------
 
     @Override
     public String toString() {
@@ -234,21 +321,22 @@ public class NavbarItem extends AbstractView {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this)
+        if (this == o)
             return true;
         if (!(o instanceof NavbarItem))
             return false;
         NavbarItem other = (NavbarItem) o;
-        return ((href == null && other.href == null) || (href != null && href.equals(other.href)))
-                && active == other.active
+
+        return active == other.active
+                && ((href == null && other.href == null) || (href != null && href.equals(other.href)))
                 && ((dropdown == null && other.dropdown == null)
                         || (dropdown != null && dropdown.equals(other.dropdown)))
                 && itemType == other.itemType;
     }
 
-    // -------------------
+    // ------------------------------------------------------------------------
     // Logging helper
-    // -------------------
+    // ------------------------------------------------------------------------
 
     private static void LOG_THIS(String... args) {
         ICommon.LOG(NavbarItem.class, args);
