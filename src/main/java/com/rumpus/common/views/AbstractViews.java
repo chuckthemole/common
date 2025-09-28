@@ -29,7 +29,7 @@ public abstract class AbstractViews extends AbstractCommonManager<String, Abstra
 
 	public AbstractViews() {
         super(false);
-        this.init();
+        // this.init();
 	}
 
     protected int init() { // TODO: make private?
