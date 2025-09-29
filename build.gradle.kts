@@ -5,6 +5,7 @@ import com.rumpushub.buildlogic.plugins.CommonDBDependenciesPlugin
 import com.rumpushub.buildlogic.plugins.CommonSessionDependencies
 import com.rumpushub.buildlogic.plugins.RumpusTest
 import com.rumpushub.buildlogic.plugins.RumpusTestConventions
+import com.rumpushub.buildlogic.plugins.RumpusDependenciesPlugin
 
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.gradle.jvm.tasks.Jar
@@ -61,6 +62,64 @@ configure<RumpusTestConventions.TestConventionsExtension> {
     showStandardStreams = true
 }
 
+apply<RumpusDependenciesPlugin>()
+
+configure<RumpusDependenciesPlugin.RumpusDepsExtension> {
+    core.addAll(listOf(
+        rumpusLibs.rumpusSpringBoot.get(),
+        rumpusLibs.springBootWeb.get()
+    ))
+
+    web.addAll(listOf(
+        rumpusLibs.webFlux.get(),
+        rumpusLibs.webSocket.get()
+    ))
+
+    db.addAll(listOf(
+        rumpusLibs.jpa.get(),
+        rumpusLibs.jdbc.get(),
+        rumpusLibs.mysql.get()
+    ))
+
+    security.addAll(listOf(
+        rumpusLibs.springSecurity.get(),
+        rumpusLibs.oauth2Client.get(),
+        rumpusLibs.jjwtApi.get(),
+        rumpusLibs.jjwtImpl.get(),
+        rumpusLibs.jjwtJackson.get()
+    ))
+
+    cloud.addAll(listOf(
+        rumpusLibs.springCloudAws.get(),
+        rumpusLibs.springCloudAwsS3.get()
+    ))
+
+    devTools.addAll(listOf(
+        rumpusLibs.devTools.get()
+    ))
+
+    testing.addAll(listOf(
+        rumpusLibs.junit.get(),
+        rumpusLibs.mockito.get()
+    ))
+
+    // 👇 Miscellaneous dependencies that don’t neatly fit in other buckets
+    additionalDeps.addAll(listOf(
+        rumpusLibs.springBootActuator.get(),
+        rumpusLibs.springBootAdminClient.get(),
+        rumpusLibs.springBootAdminServer.get(),
+        rumpusLibs.commonsValidator.get(),
+        rumpusLibs.bootstrap.get(),
+        rumpusLibs.htmlunit.get(),
+        rumpusLibs.unirest.get(),
+        rumpusLibs.jsr305.get(),
+        rumpusLibs.j2html.get(),
+        rumpusLibs.jython.get(),
+        rumpusLibs.tess4j.get(),
+        rumpusLibs.oauth2ResourceServer.get()
+    ))
+
+}
 
 // --------------------------------------------------------------------------
 // Plugins
