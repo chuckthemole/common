@@ -8,38 +8,52 @@ import org.gradle.jvm.tasks.Jar
 // common/build.gradle.kts
 // --------------------------------------------------------------------------
 // This build file configures the 'common' module, which contains shared
-// code and utilities for the Rumpus project.
+// utilities, data models, and helper classes used across Rumpus subprojects.
+//
+// Key responsibilities:
+// - Provides reusable code for multiple Rumpus modules.
+// - Configures compilation, dependencies, and artifact publishing.
+// - Ensures consistent plugin versions and Gradle conventions.
 // --------------------------------------------------------------------------
 
-apply<CommonPlugin>()
-apply<CommonPublisherPlugin>()
+apply<CommonPlugin>()             // Applies project-specific conventions for 'common' module
+apply<CommonPublisherPlugin>()    // Configures publishing logic for the module
 
+// --------------------------------------------------------------------------
+// Plugins
+// --------------------------------------------------------------------------
+// External plugins are applied via the version catalog for centralized
+// version management:
+// - Spring Boot: provides BootJar tasks, auto-configuration support
+// - Dependency Management: allows consistent dependency versions across modules
 plugins {
-    // Spring Boot plugin (3.x)
-    id("org.springframework.boot") version "3.0.1"
-
-    // Dependency management plugin for centralized version control
-    id("io.spring.dependency-management") version "1.1.0"
+    alias(rumpusLibs.plugins.springBoot)
+    alias(rumpusLibs.plugins.dependencyManagement)
 }
 
 // --------------------------------------------------------------------------
 // Project Metadata
 // --------------------------------------------------------------------------
-group = "com.rumpushub.common"
-version = "1.1.0"
+// Group and version are sourced from the centralized version catalog,
+// enabling consistent artifact coordinates across all projects.
+group = rumpusLibs.versions.commonGroup.get()
+version = rumpusLibs.versions.common.get()
 
 // --------------------------------------------------------------------------
 // Dependencies
 // --------------------------------------------------------------------------
+// JUnit dependency is included for unit testing.
+// All versions are managed centrally in `libs.versions.toml`.
 dependencies {
-    // Include JUnit 5 API for testing shared classes
-    add("implementation", "org.junit.jupiter:junit-jupiter-api:5.8.1")
+    add("implementation", rumpusLibs.junit)
 }
 
 // --------------------------------------------------------------------------
 // Jar / BootJar Configuration
 // --------------------------------------------------------------------------
-// Disable Spring Boot fat jar; only build a standard JAR for publishing
+// - Spring Boot BootJar is disabled because this module produces a plain JAR.
+// - Standard Jar task is enabled to produce artifacts suitable for publishing
+//   or consumption by other modules.
 tasks.named<BootJar>("bootJar") {
     enabled = false
 }
@@ -49,13 +63,11 @@ tasks.named<Jar>("jar") {
 }
 
 // --------------------------------------------------------------------------
-// Notes
+// Notes / Best Practices
 // --------------------------------------------------------------------------
-// 1. Keep plugin versions in sync with project requirements.
-// 2. This module is designed to produce a standard JAR artifact for reuse
-//    across other modules or published artifacts.
-// 3. Tests should reside under src/test/java or src/test/kotlin and use
-//    the included JUnit dependency.
-// 4. Using Kotlin DSL ensures type-safe Gradle configuration and better
-//    IDE support for builds.
+// 1. Keep version catalog entries up to date; avoid hardcoding versions here.
+// 2. Ensure all shared code is backward compatible with modules consuming this artifact.
+// 3. Tests should be placed in src/test/java or src/test/kotlin using the JUnit dependency.
+// 4. Kotlin DSL ensures type-safe access to Gradle APIs and improves IDE support.
+// 5. Use `CommonPlugin` and `CommonPublisherPlugin` to enforce project-wide conventions.
 // --------------------------------------------------------------------------
