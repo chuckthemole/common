@@ -26,9 +26,13 @@ import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Log.LogItem.LogItemCollectionManager;
 import com.rumpus.common.Server.Port.IPort;
 import com.rumpus.common.Service.JwtService;
+import com.rumpus.common.Integrations.NotionIntegrationLoader;
+import com.rumpus.common.Integrations.NotionIntegrationRegistry;
+import com.rumpus.common.Integrations.NotionResourceType;
 import com.rumpus.common.Cloud.Aws.AwsS3BucketProperties;
 
 import com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties;
+import com.rumpus.common.Integrations.NotionIntegrationEntry;
 
 import jakarta.annotation.PostConstruct;
 
@@ -118,8 +122,10 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     public static final String CORS_ALLOWED_FRONTEND_CREDENTIALS = "properties.frontend.credentials";
     public static final String CORS_ALLOWED_FRONTEND_ALLOWED_METHODS = "properties.frontend.methods";
 
-    public AbstractCommonConfig(Environment environment) {
+    // Notion
+    public static final String NOTION_DATABASES = "properties.notion.database";
 
+    public AbstractCommonConfig(Environment environment) {
         this.environment = environment;
     }
 
@@ -252,6 +258,18 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     public LogItemCollectionManager logManager() {
         LogItemCollectionManager manager = LogItemCollectionManager.createWithMainAndAdmin();
         return manager;
+    }
+
+    @Bean
+    @Scope(SCOPE_SINGLETON)
+    public NotionIntegrationRegistry notionIntegrationKeyValue() {
+        NotionIntegrationRegistry registry = new NotionIntegrationRegistry();
+        NotionIntegrationLoader.load(
+                this.environment,
+                registry,
+                AbstractCommonConfig.NOTION_DATABASES,
+                NotionResourceType.DATABASE);
+        return registry;
     }
 
     /**
