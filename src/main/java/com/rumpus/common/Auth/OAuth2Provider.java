@@ -174,8 +174,9 @@ public enum OAuth2Provider {
             case APPLE:
                 return (String) userInfo.get("email");
             case SLACK:
-                Map<String, Object> user = (Map<String, Object>) userInfo.get("user");
-                return user != null ? (String) user.get("email") : null;
+                // Map<String, Object> user = (Map<String, Object>) userInfo.get("user");
+                // return user != null ? (String) user.get("email") : null;
+                return null; // TODO: implement
             default:
                 return (String) userInfo.get("email");
         }
@@ -202,8 +203,9 @@ public enum OAuth2Provider {
             case LINKEDIN:
                 return extractLinkedInName(userInfo);
             case SLACK:
-                Map<String, Object> user = (Map<String, Object>) userInfo.get("user");
-                return user != null ? (String) user.get("name") : null;
+                // Map<String, Object> user = (Map<String, Object>) userInfo.get("user");
+                // return user != null ? (String) user.get("name") : null;
+                return null; // TODO: implement
             default:
                 return (String) userInfo.get("name");
         }
@@ -221,12 +223,12 @@ public enum OAuth2Provider {
                 return (String) userInfo.get("avatar_url");
             case MICROSOFT:
                 return (String) userInfo.get("picture");
-            case FACEBOOK:
-                Map<String, Object> picture = (Map<String, Object>) userInfo.get("picture");
-                if (picture != null) {
-                    Map<String, Object> data = (Map<String, Object>) picture.get("data");
-                    return data != null ? (String) data.get("url") : null;
-                }
+            case FACEBOOK: // TODO: implement
+                // Map<String, Object> picture = (Map<String, Object>) userInfo.get("picture");
+                // if (picture != null) {
+                //     Map<String, Object> data = (Map<String, Object>) picture.get("data");
+                //     return data != null ? (String) data.get("url") : null;
+                // }
                 return null;
             case DISCORD:
                 String avatar = (String) userInfo.get("avatar");
@@ -241,8 +243,9 @@ public enum OAuth2Provider {
             case GITLAB:
                 return (String) userInfo.get("avatar_url");
             case SLACK:
-                Map<String, Object> user = (Map<String, Object>) userInfo.get("user");
-                return user != null ? (String) user.get("image_192") : null;
+                // Map<String, Object> user = (Map<String, Object>) userInfo.get("user");
+                // return user != null ? (String) user.get("image_192") : null;
+                // TODO: implement
             default:
                 return (String) userInfo.get("picture");
         }
@@ -253,6 +256,7 @@ public enum OAuth2Provider {
         return (String) userInfo.get("emailAddress");
     }
 
+    @SuppressWarnings("unchecked") // TODO: LOOK into
     private String extractLinkedInName(Map<String, Object> userInfo) {
         Map<String, Object> localizedFirstName = (Map<String, Object>) userInfo.get("localizedFirstName");
         Map<String, Object> localizedLastName = (Map<String, Object>) userInfo.get("localizedLastName");
@@ -263,6 +267,7 @@ public enum OAuth2Provider {
         return (firstName + " " + lastName).trim();
     }
 
+    @SuppressWarnings("unchecked") // TODO: LOOK into
     private String extractLinkedInPicture(Map<String, Object> userInfo) {
         Map<String, Object> profilePicture = (Map<String, Object>) userInfo.get("profilePicture");
         if (profilePicture != null) {

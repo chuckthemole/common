@@ -260,18 +260,6 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
         return manager;
     }
 
-    @Bean
-    @Scope(SCOPE_SINGLETON)
-    public NotionIntegrationRegistry notionIntegrationKeyValue() {
-        NotionIntegrationRegistry registry = new NotionIntegrationRegistry();
-        NotionIntegrationLoader.load(
-                this.environment,
-                registry,
-                AbstractCommonConfig.NOTION_DATABASES,
-                NotionResourceType.DATABASE);
-        return registry;
-    }
-
     /**
      * Get the log level for this application.
      */
@@ -295,6 +283,9 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     // return this.applicationContext.getEnvironment();
     // }
 
+    /**
+     * TODO: this is printing secrets. let's make sure this is only in debug mode.
+     */
     @PostConstruct
     protected void debugProperties() {
         printIfExists(URL);
@@ -319,6 +310,7 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
 
         printIfExists(CORS_ALLOWED_FRONTEND_ORIGINS);
         printIfExists(CORS_ALLOWED_FRONTEND_ALLOWED_METHODS);
+        printIfExists(NOTION_DATABASES);
     }
 
     private void printIfExists(String propertyKey) {

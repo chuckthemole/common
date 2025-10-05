@@ -82,8 +82,13 @@ public class NotionIntegrationRegistry {
 
     @Override
     public String toString() {
-        return "NotionIntegrationRegistry{" +
-                "integrations=" + integrations +
-                '}';
+        if (integrations.isEmpty()) {
+            return "NotionIntegrationRegistry{No integrations registered}";
+        }
+
+        StringBuilder sb = new StringBuilder("NotionIntegrationRegistry{\n");
+        integrations.forEach((key, entry) -> sb.append("  [").append(key).append("] -> ").append(entry).append("\n"));
+        sb.append('}');
+        return sb.toString();
     }
 }

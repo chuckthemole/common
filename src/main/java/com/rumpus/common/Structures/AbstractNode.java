@@ -117,6 +117,7 @@ abstract public class AbstractNode<OBJECT extends AbstractCommonObject, NODE ext
                 return false;
             }
 
+            @SuppressWarnings("unchecked")
             AbstractNode<OBJECT, NODE> node = (AbstractNode<OBJECT, NODE>) o;
 
             boolean isEqual = true;

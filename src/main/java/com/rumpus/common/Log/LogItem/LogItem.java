@@ -4,7 +4,9 @@ import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Model.AbstractModel;
 import com.rumpus.common.Model.IModelIdManager;
 
-public class LogItem extends AbstractModel<LogItem, java.util.UUID> {
+import java.util.UUID;
+
+public class LogItem extends AbstractModel<LogItem, UUID> {
 
     private String logName;
     private String time;
@@ -80,7 +82,7 @@ public class LogItem extends AbstractModel<LogItem, java.util.UUID> {
     }
 
     @Override
-    public IModelIdManager getIdManager() {
+    public IModelIdManager<UUID> getIdManager() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getIdManager'");
     }
