@@ -10,6 +10,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import com.rumpus.common.AbstractCommonObject;
+
 /**
  * Abstract base class for making HTTP requests to external integrations.
  * Provides common methods for GET, POST, PUT, and DELETE.
@@ -17,7 +19,7 @@ import java.util.Map;
  * Subclasses can extend this to handle authentication, logging,
  * retries, or response parsing in a consistent way.
  */
-public abstract class AbstractIntegration {
+public abstract class AbstractIntegration extends AbstractCommonObject {
 
     // Default timeouts (in ms) — can be overridden by subclasses
     private static final int CONNECT_TIMEOUT = 10_000; // 10 seconds

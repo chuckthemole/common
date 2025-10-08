@@ -3,6 +3,10 @@ package com.rumpus.common.Integrations;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.rumpus.common.Log.ICommonLogger.LogLevel;
+
 /**
  * Integration client for interacting with the Notion API.
  * 
@@ -71,16 +75,75 @@ public class NotionIntegration extends AbstractIntegration {
     }
 
     /**
-     * Creates a new page in Notion.
+     * Creates a new page in a Notion database.
      *
-     * @param databaseId The target database ID
-     * @param jsonBody   JSON request body (must follow Notion API spec)
-     * @return JSON response body as String
-     * @throws Exception if request fails
+     * Automatically injects the `parent.database_id` into the payload
+     * so the frontend does not need to provide it.
      */
     public String createPage(String databaseId, String jsonBody) throws Exception {
         String url = BASE_URL + ENDPOINT_PAGES;
-        return post(url, defaultHeaders(), jsonBody);
+
+        // Ensure the request body includes the parent field
+        final String wrappedBody = wrapWithDatabaseParent(databaseId, jsonBody);
+
+        // Pretty-print the wrapped body for debugging
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Object json = mapper.readValue(wrappedBody, Object.class);
+            ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+            String prettyJson = writer.writeValueAsString(json);
+
+            LOG(
+                    NotionIntegration.class,
+                    LogLevel.DEBUG,
+                    "createPage() -> Final JSON payload being sent to Notion:\n" + prettyJson);
+        } catch (Exception e) {
+            LOG(
+                    NotionIntegration.class,
+                    LogLevel.DEBUG,
+                    "createPage() -> Failed to pretty-print JSON, raw body:\n" + wrappedBody);
+        }
+
+        return post(url, defaultHeaders(), wrappedBody);
+    }
+
+    /**
+     * Wraps a frontend-provided JSON payload (just properties)
+     * with the required Notion `parent` object for database creation.
+     *
+     * Example:
+     * frontend sends: { "properties": { "Title": {...} } }
+     * backend transforms into:
+     * {
+     * "parent": { "database_id": "xxxxx" },
+     * "properties": { "Title": {...} }
+     * }
+     */
+    private String wrapWithDatabaseParent(String databaseId, String jsonBody) {
+        try {
+            com.google.gson.JsonElement body = com.google.gson.JsonParser.parseString(jsonBody);
+
+            com.google.gson.JsonObject finalObject = new com.google.gson.JsonObject();
+            com.google.gson.JsonObject parent = new com.google.gson.JsonObject();
+            parent.addProperty("database_id", databaseId);
+
+            finalObject.add("parent", parent);
+
+            if (body.isJsonObject()) {
+                com.google.gson.JsonObject bodyObj = body.getAsJsonObject();
+                // merge the rest of the body (like properties)
+                for (var entry : bodyObj.entrySet()) {
+                    finalObject.add(entry.getKey(), entry.getValue());
+                }
+            }
+
+            return finalObject.toString();
+
+        } catch (Exception e) {
+            LOG("wrapWithDatabaseParent() -> ERROR wrapping payload:", e.getMessage());
+            // Fallback: minimal valid JSON if parsing fails
+            return String.format("{\"parent\":{\"database_id\":\"%s\"},\"properties\":{}}", databaseId);
+        }
     }
 
     /**
@@ -137,5 +200,10 @@ public class NotionIntegration extends AbstractIntegration {
         // So if AbstractIntegration doesn’t support PATCH, add it there (like we did
         // with PUT).
         return put(url, headers, body); // safe fallback to PUT, though PATCH is preferable
+    }
+
+    @Override
+    public String toString() {
+        return new String("TODO: IMPLEMENT");
     }
 }
