@@ -63,6 +63,19 @@ public class NotionIntegration extends AbstractIntegration {
     // ==============================
 
     /**
+     * Lists all users in the Notion workspace associated with this integration.
+     *
+     * Calls the Notion API endpoint: GET /v1/users
+     *
+     * @return JSON response body as String
+     * @throws Exception if request fails
+     */
+    public String listUsers() throws Exception {
+        String url = BASE_URL + "/users";
+        return get(url, defaultHeaders());
+    }
+
+    /**
      * Queries a Notion database.
      *
      * @param databaseId The ID of the database to query

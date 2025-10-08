@@ -101,6 +101,21 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
     }
 
     // ==============================
+    // Users
+    // ==============================
+    @GetMapping(BASE_PATH + "/users")
+    public ResponseEntity<String> getUsers(@PathVariable String integrationKey) {
+        LOG("AbstractNotionIntegrationController::getUsers() -> called with integrationKey:", integrationKey);
+
+        return handleRequest(integrationKey, notion -> {
+            LOG("getUsers() -> Fetching users for integrationKey:", integrationKey);
+            String response = notion.listUsers();
+            LOG("getUsers() -> Successfully fetched users for integrationKey:", integrationKey);
+            return response;
+        });
+    }
+
+    // ==============================
     // CRUD Endpoints
     // ==============================
 
