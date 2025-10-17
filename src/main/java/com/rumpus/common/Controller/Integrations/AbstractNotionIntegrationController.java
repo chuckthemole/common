@@ -4,11 +4,13 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Integrations.NotionIntegration;
 import com.rumpus.common.Integrations.NotionIntegrationEntry;
 import com.rumpus.common.Integrations.NotionIntegrationRegistry;
+import com.rumpus.common.util.StringUtil;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -103,15 +105,85 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
     // ==============================
     // Users
     // ==============================
+    
+    /**
+     * Retrieves and optionally filters the list of Notion users for a given
+     * integration key.
+     * <p>
+     * Supports inclusion and exclusion of specific JSON fields, as well as
+     * exclusion
+     * of user entries by their names (or other attributes, via the
+     * {@code filterJson} utility).
+     * </p>
+     *
+     * <h3>Example Request</h3>
+     * 
+     * <pre>{@code
+     * GET /integrations/notion/myKey/users?include=name,email&exclude=avatar_url&type&excludeNames=Alice,Bob
+     * }</pre>
+     *
+     * <h3>Query Parameters</h3>
+     * <ul>
+     * <li><b>include</b> — Comma-separated list of fields to include in the
+     * response (e.g. {@code name,email}).</li>
+     * <li><b>exclude</b> — Comma-separated list of fields to exclude from the
+     * response (e.g. {@code avatar_url}).</li>
+     * <li><b>excludeNames</b> — Comma-separated list of user names (or other
+     * matching values) to exclude from results.</li>
+     * </ul>
+     *
+     * <h3>Behavior</h3>
+     * <ul>
+     * <li>If no filters are provided, returns the full Notion user list
+     * unmodified.</li>
+     * <li>Otherwise, the response JSON is filtered using
+     * {@link StringUtil#filterJson}.</li>
+     * <li>Errors in parsing or filtering fall back to the unmodified JSON
+     * response.</li>
+     * </ul>
+     *
+     * @param integrationKey the Notion integration key identifying the target
+     *                       workspace
+     * @param include        optional CSV string of fields to include
+     * @param exclude        optional CSV string of fields to exclude
+     * @param excludeNames   optional CSV string of names (or values) to exclude
+     *                       from the results
+     * @return HTTP 200 OK with filtered JSON, or error status if the Notion API
+     *         call fails
+     */
     @GetMapping(BASE_PATH + "/users")
-    public ResponseEntity<String> getUsers(@PathVariable String integrationKey) {
-        LOG("AbstractNotionIntegrationController::getUsers() -> called with integrationKey:", integrationKey);
+    public ResponseEntity<String> getUsers(
+            @PathVariable String integrationKey,
+            @RequestParam(required = false) String include,
+            @RequestParam(required = false) String exclude,
+            @RequestParam(required = false, name = "excludeNames") String excludeNames) {
 
+        LOG("getUsers() -> called with integrationKey:", integrationKey,
+                "include:", include, "exclude:", exclude, "excludeNames:", excludeNames);
+
+        // Parse optional CSV parameters into lists
+        List<String> includeFields = StringUtil.parseCsv(include);
+        List<String> excludeFields = StringUtil.parseCsv(exclude);
+        List<String> excludedNames = StringUtil.parseCsv(excludeNames);
+
+        // Delegate API handling to a common request wrapper
         return handleRequest(integrationKey, notion -> {
             LOG("getUsers() -> Fetching users for integrationKey:", integrationKey);
             String response = notion.listUsers();
             LOG("getUsers() -> Successfully fetched users for integrationKey:", integrationKey);
-            return response;
+            LOG("getUsers() -> Got raw response length:", String.valueOf(response.length()));
+
+            // If no filters are specified, return the unmodified JSON from Notion
+            if (includeFields.isEmpty() && excludeFields.isEmpty() && excludedNames.isEmpty()) {
+                return response;
+            }
+
+            // Otherwise, apply filtering logic
+            return StringUtil.filterJson(
+                    response,
+                    includeFields,
+                    excludeFields,
+                    Map.of("name", excludedNames));
         });
     }
 

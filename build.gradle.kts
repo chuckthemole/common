@@ -103,7 +103,7 @@ configure<RumpusDependenciesPlugin.RumpusDepsExtension> {
         rumpusLibs.mockito.get()
     ))
 
-    // 👇 Miscellaneous dependencies that don’t neatly fit in other buckets
+    // Miscellaneous dependencies that don’t neatly fit in other buckets
     additionalDeps.addAll(listOf(
         rumpusLibs.springBootActuator.get(),
         rumpusLibs.springBootAdminClient.get(),
