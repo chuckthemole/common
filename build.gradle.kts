@@ -6,6 +6,7 @@ import com.rumpushub.buildlogic.plugins.CommonSessionDependencies
 import com.rumpushub.buildlogic.plugins.RumpusTest
 import com.rumpushub.buildlogic.plugins.RumpusTestConventions
 import com.rumpushub.buildlogic.plugins.RumpusDependenciesPlugin
+import com.rumpushub.buildlogic.plugins.OpenApiDependenciesPlugin
 
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.gradle.jvm.tasks.Jar
@@ -62,8 +63,12 @@ configure<RumpusTestConventions.TestConventionsExtension> {
     showStandardStreams = true
 }
 
-apply<RumpusDependenciesPlugin>()
+apply<OpenApiDependenciesPlugin>()
+configure<OpenApiDependenciesPlugin.OpenApiExtension> {
+    springdocCore = rumpusLibs.openApiCore
+}
 
+apply<RumpusDependenciesPlugin>()
 configure<RumpusDependenciesPlugin.RumpusDepsExtension> {
     core.addAll(listOf(
         rumpusLibs.rumpusSpringBoot.get(),
