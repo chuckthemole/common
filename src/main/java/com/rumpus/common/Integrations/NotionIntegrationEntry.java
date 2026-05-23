@@ -6,7 +6,7 @@ import java.util.Objects;
  * Represents a mapping between an internal key name and a Notion resource.
  * <p>
  * Example:
- * 
+ *
  * <pre>
  * NotionIntegrationEntry map = new NotionIntegrationEntry(
  *         "PROJECTS_DB",
@@ -42,11 +42,16 @@ public class NotionIntegrationEntry {
     /**
      * All-args constructor.
      *
-     * @param name        the internal key name
-     * @param type        the Notion object type
-     * @param notionId    the Notion ID
-     * @param description optional description
-     * @param active      whether active
+     * @param name
+     *            the internal key name
+     * @param type
+     *            the Notion object type
+     * @param notionId
+     *            the Notion ID
+     * @param description
+     *            optional description
+     * @param active
+     *            whether active
      */
     public NotionIntegrationEntry(String name,
             NotionResourceType type,
@@ -63,9 +68,12 @@ public class NotionIntegrationEntry {
     /**
      * Convenience constructor with required fields only.
      *
-     * @param name     the internal key name
-     * @param type     the Notion object type
-     * @param notionId the Notion ID
+     * @param name
+     *            the internal key name
+     * @param type
+     *            the Notion object type
+     * @param notionId
+     *            the Notion ID
      */
     public NotionIntegrationEntry(String name,
             NotionResourceType type,
@@ -136,14 +144,14 @@ public class NotionIntegrationEntry {
             return false;
         NotionIntegrationEntry that = (NotionIntegrationEntry) o;
         return active == that.active &&
-                Objects.equals(name, that.name) &&
+                Objects.equals(name,that.name) &&
                 type == that.type &&
-                Objects.equals(notionId, that.notionId) &&
-                Objects.equals(description, that.description);
+                Objects.equals(notionId,that.notionId) &&
+                Objects.equals(description,that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, type, notionId, description, active);
+        return Objects.hash(name,type,notionId,description,active);
     }
 }

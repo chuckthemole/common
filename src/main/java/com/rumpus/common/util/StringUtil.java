@@ -14,9 +14,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rumpus.common.Builder.LogBuilder;
 
 /**
- * Feel free to implement static string helper methods here.
- * If you are doing something repeatedly in your code, consider adding it here.
- * 
+ * Feel free to implement static string helper methods here. If you are doing
+ * something repeatedly in your code, consider adding it here.
+ *
  * @brief String utilities
  */
 public class StringUtil implements com.rumpus.common.ICommon {
@@ -25,8 +25,9 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * Build a string from args
      * <p>
      * TODO: should this be Object or String?
-     * 
-     * @param args args to build string from
+     *
+     * @param args
+     *            args to build string from
      * @return string built from args
      */
     public static String buildStringFromArgs(Object... args) {
@@ -39,7 +40,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
     /**
      * @brief Checks if string is surrouned in given char
-     * 
+     *
      * @return true if string is surrounded by given chars
      */
     public static boolean isSurrounded(String inputString, char start, char end) {
@@ -51,22 +52,22 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
     /**
      * @brief is surrounded by same char at beginning and end
-     * 
+     *
      * @return true if string is surrounded by same given char
      */
     public static boolean isSurrounded(String inpuString, char inputChar) {
-        return StringUtil.isSurrounded(inpuString, inputChar, inputChar);
+        return StringUtil.isSurrounded(inpuString,inputChar,inputChar);
     }
 
     /**
      * @brief remove surrounding chars
-     * 
+     *
      * @return string without surrounding chars, if string is surrounded by given
      *         chars, otherwise returns original string
      */
     public static String trimStartAndEnd(String inputString, char startChar, char endChar) {
-        if (StringUtil.isSurrounded(inputString, startChar, endChar)) {
-            return inputString.substring(1, inputString.length() - 1);
+        if (StringUtil.isSurrounded(inputString,startChar,endChar)) {
+            return inputString.substring(1,inputString.length() - 1);
         }
         LOG("String is not surrounded by given chars. Returning original string.");
         return inputString;
@@ -75,21 +76,25 @@ public class StringUtil implements com.rumpus.common.ICommon {
     /**
      * @brief remove surrounding chars. Same as the overload but uses same char for
      *        beginning and end.
-     * 
-     * @param inputString string to trim
-     * @param inputChar   char to trim
+     *
+     * @param inputString
+     *            string to trim
+     * @param inputChar
+     *            char to trim
      * @return string without surrounding chars, if string is surrounded by given
      *         char, otherwise returns original string
      */
     public static String trimStartAndEnd(String inputString, char inputChar) {
-        return StringUtil.trimStartAndEnd(inputString, inputChar, inputChar);
+        return StringUtil.trimStartAndEnd(inputString,inputChar,inputChar);
     }
 
     /**
      * @brief remove surrounding String sequence.
-     * 
-     * @param trimmee string to trim
-     * @param trimmer string to trim
+     *
+     * @param trimmee
+     *            string to trim
+     * @param trimmer
+     *            string to trim
      * @return string without surrounding String, if string is surrounded by given
      *         String, otherwise returns original string
      */
@@ -102,7 +107,8 @@ public class StringUtil implements com.rumpus.common.ICommon {
         for (int i = 0; i < charsLength; i++) {
             // LOG("Trimming char: " + chars[i] + " from string: " + modifiedString + ".");
             String previous = String.valueOf(modifiedString);
-            modifiedString = StringUtil.trimStartAndEnd(modifiedString, chars[i], chars[charsLength - 1 - i]);
+            modifiedString = StringUtil.trimStartAndEnd(modifiedString,chars[i],
+                    chars[charsLength - 1 - i]);
             if (previous.equals(modifiedString)) {
                 LOG("String is not surrounded by given chars. Returning original string.");
                 return trimee;
@@ -117,7 +123,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
         if (StringUtil.isStringNullOrEmpty(inputString)) {
             return inputString;
         }
-        return trimEnd(trimBegin(inputString, inputChar), inputChar);
+        return trimEnd(trimBegin(inputString,inputChar),inputChar);
     }
 
     // trimStartOrEnd same as above but uses String instead of char
@@ -125,12 +131,12 @@ public class StringUtil implements com.rumpus.common.ICommon {
         if (StringUtil.isStringNullOrEmpty(inputString)) {
             return inputString;
         }
-        return trimEnd(trimBegin(inputString, inputStringToTrim), inputStringToTrim);
+        return trimEnd(trimBegin(inputString,inputStringToTrim),inputStringToTrim);
     }
 
     /**
      * @brief remove beginning char
-     * 
+     *
      * @return string without beginning char, if string starts with given char,
      *         otherwise returns original string
      */
@@ -147,7 +153,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
     /**
      * @brief remove beginning String
-     * 
+     *
      * @return string without beginning String, if string starts with given String,
      *         otherwise returns original string
      */
@@ -164,7 +170,8 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
     /**
      * @brief remove end char
-     * @param inpuString string to trim
+     * @param inpuString
+     *            string to trim
      * @return string without end char, if string ends with given char, otherwise
      *         returns original string
      */
@@ -176,12 +183,13 @@ public class StringUtil implements com.rumpus.common.ICommon {
             LOG("Input string does not end with given char. Returning original string.");
             return inpuString;
         }
-        return inpuString.substring(0, inpuString.length() - 1);
+        return inpuString.substring(0,inpuString.length() - 1);
     }
 
     /**
      * @brief remove end String
-     * @param inpuString string to trim
+     * @param inpuString
+     *            string to trim
      * @return string without end String, if string ends with given String,
      *         otherwise returns original string
      */
@@ -193,21 +201,25 @@ public class StringUtil implements com.rumpus.common.ICommon {
             LOG("Input string does not end with given String. Returning original string.");
             return inpuString;
         }
-        return inpuString.substring(0, inpuString.length() - inputStringToTrim.length());
+        return inpuString.substring(0,inpuString.length() - inputStringToTrim.length());
     }
 
     /**
      * Note: if you do NOT want to add a char to the beginning or end of the string,
      * pass null for that char.
-     * 
+     *
      * @brief add char to beginning and/or end of string
-     * 
-     * @param inpuString string to add char to
-     * @param startChar  char to add to beginning of string
-     * @param endChar    char to add to end of string
+     *
+     * @param inpuString
+     *            string to add char to
+     * @param startChar
+     *            char to add to beginning of string
+     * @param endChar
+     *            char to add to end of string
      * @return string with given chars added to beginning and/or end of string
      */
-    public static String addCharToStartAndOrEnd(String inpuString, Character startChar, Character endChar) {
+    public static String addCharToStartAndOrEnd(String inpuString, Character startChar,
+            Character endChar) {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (StringUtil.isStringNullOrEmpty(inpuString)) {
@@ -225,17 +237,18 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
     /**
      * @brief is surrounded by "" or ''
-     * 
+     *
      * @return true if string is surrounded by "" or ''
      */
     public static boolean isQuoted(String inpuString) {
-        return (StringUtil.isSurrounded(inpuString, Character.valueOf('\''))
-                || StringUtil.isSurrounded(inpuString, Character.valueOf('"')));
+        return (StringUtil.isSurrounded(inpuString,Character.valueOf('\''))
+                || StringUtil.isSurrounded(inpuString,Character.valueOf('"')));
     }
 
     /**
-     * 
-     * @param str string to quote
+     *
+     * @param str
+     *            string to quote
      * @return single quoted string
      */
     public static String singleQuote(String str) {
@@ -245,8 +258,9 @@ public class StringUtil implements com.rumpus.common.ICommon {
     }
 
     /**
-     * 
-     * @param str string to quote
+     *
+     * @param str
+     *            string to quote
      * @return double quoted string
      */
     public static String doubleQuote(String str) {
@@ -257,7 +271,8 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
     /**
      * @brief Checks if string is null or empty
-     * @param str string to check
+     * @param str
+     *            string to check
      * @return true if string is null or empty
      */
     public static boolean isStringNullOrEmpty(String str) {
@@ -272,9 +287,9 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * Parses a comma-separated string into a list of trimmed, non-empty values.
      * <p>
      * This utility method is useful for converting configuration or user input
-     * fields (e.g., CSV lists from environment variables or form data) into
-     * a clean list of strings. It automatically trims whitespace around each
-     * entry and ignores empty values.
+     * fields (e.g., CSV lists from environment variables or form data) into a clean
+     * list of strings. It automatically trims whitespace around each entry and
+     * ignores empty values.
      * </p>
      *
      * <h3>Behavior</h3>
@@ -285,13 +300,14 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * </ul>
      *
      * <h3>Example</h3>
-     * 
+     *
      * <pre>{@code
      * List<String> values = JsonUtil.parseCsv("apple, banana, , orange");
      * // Result: ["apple", "banana", "orange"]
      * }</pre>
      *
-     * @param csv a comma-separated string to parse; may be {@code null} or empty
+     * @param csv
+     *            a comma-separated string to parse; may be {@code null} or empty
      * @return an immutable list of trimmed, non-empty values
      */
     public static List<String> parseCsv(String csv) {
@@ -312,7 +328,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
         try {
             je = com.google.gson.JsonParser.parseString(json);
         } catch (com.google.gson.JsonSyntaxException e) {
-            LOG("The given json is not valid, returning original json:\n", json);
+            LOG("The given json is not valid, returning original json:\n",json);
             return json;
         }
         return gson.toJson(je);
@@ -320,14 +336,12 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
     /**
      * Filters and transforms a JSON string containing a top-level "results" array
-     * based on
-     * inclusion, exclusion, and conditional filtering rules.
+     * based on inclusion, exclusion, and conditional filtering rules.
      * <p>
      * This method allows selective inclusion and exclusion of fields for each
-     * object
-     * within the "results" array. Additionally, it supports exclusion of entire
-     * objects
-     * based on field-value matching criteria (defined in {@code excludeEntries}).
+     * object within the "results" array. Additionally, it supports exclusion of
+     * entire objects based on field-value matching criteria (defined in
+     * {@code excludeEntries}).
      * </p>
      *
      * <h3>Behavior</h3>
@@ -345,28 +359,29 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * <h3>Special Cases</h3>
      * <ul>
      * <li>If {@code includeFields} contains "email" and an object lacks a top-level
-     * "email" field,
-     * the method will attempt to extract it from a nested "person" object (e.g.
-     * {@code person.email}).</li>
+     * "email" field, the method will attempt to extract it from a nested "person"
+     * object (e.g. {@code person.email}).</li>
      * </ul>
      *
      * <h3>Example</h3>
-     * 
+     *
      * <pre>{@code
-     * Map<String, List<String>> excludeEntries = Map.of("name", List.of("admin", "test"));
+     * Map<String, List<String>> excludeEntries = Map.of("name",List.of("admin","test"));
      * String result = JsonUtil.filterJson(jsonString,
-     *         List.of("id", "name", "email"),
+     *         List.of("id","name","email"),
      *         List.of("password"),
      *         excludeEntries);
      * }</pre>
      *
-     * @param json           the input JSON string containing a "results" array
-     * @param includeFields  list of field names to include; if empty, all fields
-     *                       are included
-     * @param excludeFields  list of field names to remove from each object
-     * @param excludeEntries a mapping of field names to lists of values; objects
-     *                       matching these
-     *                       key/value pairs are excluded entirely
+     * @param json
+     *            the input JSON string containing a "results" array
+     * @param includeFields
+     *            list of field names to include; if empty, all fields are included
+     * @param excludeFields
+     *            list of field names to remove from each object
+     * @param excludeEntries
+     *            a mapping of field names to lists of values; objects matching
+     *            these key/value pairs are excluded entirely
      * @return a formatted JSON string with filtered results; returns the original
      *         JSON if parsing fails
      *
@@ -387,8 +402,8 @@ public class StringUtil implements com.rumpus.common.ICommon {
 
             for (JsonNode item : results) {
                 // Check if this item should be excluded
-                if (shouldExclude(item, excludeEntries)) {
-                    LOG("filterJson() -> Skipping excluded item:", item.toString());
+                if (shouldExclude(item,excludeEntries)) {
+                    LOG("filterJson() -> Skipping excluded item:",item.toString());
                     continue;
                 }
 
@@ -398,12 +413,12 @@ public class StringUtil implements com.rumpus.common.ICommon {
                 if (!includeFields.isEmpty()) {
                     for (String field : includeFields) {
                         if (item.has(field)) {
-                            filteredItem.set(field, item.get(field));
+                            filteredItem.set(field,item.get(field));
                         } else if (field.equals("email")) {
                             // special case for nested email
                             JsonNode person = item.path("person");
                             if (person.has("email")) {
-                                filteredItem.put("email", person.get("email").asText());
+                                filteredItem.put("email",person.get("email").asText());
                             }
                         }
                     }
@@ -420,11 +435,11 @@ public class StringUtil implements com.rumpus.common.ICommon {
                 filteredResults.add(filteredItem);
             }
 
-            ((ObjectNode) root).set("results", filteredResults);
+            ((ObjectNode) root).set("results",filteredResults);
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
 
         } catch (Exception e) {
-            LOG("filterJson() -> ERROR parsing JSON:", e.getMessage());
+            LOG("filterJson() -> ERROR parsing JSON:",e.getMessage());
             return json; // Fallback to unmodified JSON
         }
     }
@@ -451,7 +466,8 @@ public class StringUtil implements com.rumpus.common.ICommon {
     }
 
     private static void LOG(String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(StringUtil.class, args).toString();
-        ICommon.LOG(StringUtil.class, log);
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(StringUtil.class,args)
+                .toString();
+        ICommon.LOG(StringUtil.class,log);
     }
 }

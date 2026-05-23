@@ -24,10 +24,11 @@ public class SQLBuilder extends AbstractBuilder {
 
     // private static final String USERNAME = "username";
 
-    private String columnNameValue; // TODO: look below at some usage. This should be set with setter and have default for all be *
+    private String columnNameValue; // TODO: look below at some usage. This should be set with
+                                    // setter and have default for all be *
 
     public SQLBuilder() {
-        
+
     }
 
     public SQLBuilder(String... args) {
@@ -36,183 +37,190 @@ public class SQLBuilder extends AbstractBuilder {
 
     /**
      * Create sql to select all entries from table
-     * @param table to select from
+     *
+     * @param table
+     *            to select from
      */
     public void selectAll(final String table) {
         this.builder
-            .append(SELECT)
-            .append(SPACE)
-            .append(STAR)
-            .append(SPACE)
-            .append(FROM)
-            .append(SPACE)
-            .append(table)
-            .append(SEMI);
+                .append(SELECT)
+                .append(SPACE)
+                .append(STAR)
+                .append(SPACE)
+                .append(FROM)
+                .append(SPACE)
+                .append(table)
+                .append(SEMI);
     }
 
     /**
-     * 
+     *
      * @param table
      * @param constraint
      */
     public void select(final String table, final String constraint) {
         this.builder
-            .append(SELECT)
-            .append(SPACE)
-            .append(STAR)
-            .append(SPACE)
-            .append(FROM)
-            .append(SPACE)
-            .append(table)
-            .append(SPACE)
-            .append(WHERE)
-            .append(SPACE)
-            .append(SEMI);
+                .append(SELECT)
+                .append(SPACE)
+                .append(STAR)
+                .append(SPACE)
+                .append(FROM)
+                .append(SPACE)
+                .append(table)
+                .append(SPACE)
+                .append(WHERE)
+                .append(SPACE)
+                .append(SEMI);
 
     }
 
     /**
-     * 
+     *
      * @param table
      * @param username
      */
     public void selectUserByUsername(final String table, final String username) {
         this.builder
-            .append(SELECT)
-            .append(SPACE)
-            .append(STAR)
-            .append(SPACE)
-            .append(FROM)
-            .append(SPACE)
-            .append(table)
-            .append(SPACE)
-            .append(WHERE)
-            .append(SPACE)
-            .append(USERNAME)
-            .append(EQUALS)
-            .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
-            .append(SEMI);
+                .append(SELECT)
+                .append(SPACE)
+                .append(STAR)
+                .append(SPACE)
+                .append(FROM)
+                .append(SPACE)
+                .append(table)
+                .append(SPACE)
+                .append(WHERE)
+                .append(SPACE)
+                .append(USERNAME)
+                .append(EQUALS)
+                .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
+                .append(SEMI);
 
     }
 
     /**
-     * 
+     *
      * @param table
      * @param id
      */
     public void selectById(final String table, final String id) {
         this.builder
-            .append(SELECT)
-            .append(SPACE)
-            .append(STAR)
-            .append(SPACE)
-            .append(FROM)
-            .append(SPACE)
-            .append(table)
-            .append(SPACE)
-            .append(WHERE)
-            .append(SPACE)
-            .append(ID)
-            .append(EQUALS)
-            .append(StringUtil.isQuoted(id) ? id : StringUtil.singleQuote(id))
-            .append(SPACE)
-            .append(SEMI);
+                .append(SELECT)
+                .append(SPACE)
+                .append(STAR)
+                .append(SPACE)
+                .append(FROM)
+                .append(SPACE)
+                .append(table)
+                .append(SPACE)
+                .append(WHERE)
+                .append(SPACE)
+                .append(ID)
+                .append(EQUALS)
+                .append(StringUtil.isQuoted(id) ? id : StringUtil.singleQuote(id))
+                .append(SPACE)
+                .append(SEMI);
 
     }
 
     /**
      * DELETE FROM 'table' WHERE username = ?;
-     * 
-     * @param table user table to use
-     * @param username user to delete
+     *
+     * @param table
+     *            user table to use
+     * @param username
+     *            user to delete
      */
     public void deleteByUsername(final String table, final String username) {
         this.builder
-            .append(DELETE)
-            .append(SPACE)
-            .append(FROM)
-            .append(SPACE)
-            .append(table)
-            .append(SPACE)
-            .append(WHERE)
-            .append(SPACE)
-            .append(USERNAME)
-            .append(EQUALS)
-            .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
-            .append(SEMI);
+                .append(DELETE)
+                .append(SPACE)
+                .append(FROM)
+                .append(SPACE)
+                .append(table)
+                .append(SPACE)
+                .append(WHERE)
+                .append(SPACE)
+                .append(USERNAME)
+                .append(EQUALS)
+                .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
+                .append(SEMI);
 
     }
 
     /**
      * DELETE FROM user WHERE username = ?;
-     * 
+     *
      * Same as deleteByUsername but for 'user' table specifically
-     * 
-     * @param username user to delete
+     *
+     * @param username
+     *            user to delete
      */
     public void deleteUserByUsername(final String username) {
         final String table = "user";
         this.builder
-            .append(DELETE)
-            .append(SPACE)
-            .append(FROM)
-            .append(SPACE)
-            .append(table)
-            .append(SPACE)
-            .append(WHERE)
-            .append(SPACE)
-            .append(USERNAME)
-            .append(EQUALS)
-            .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
-            .append(SEMI);
+                .append(DELETE)
+                .append(SPACE)
+                .append(FROM)
+                .append(SPACE)
+                .append(table)
+                .append(SPACE)
+                .append(WHERE)
+                .append(SPACE)
+                .append(USERNAME)
+                .append(EQUALS)
+                .append(StringUtil.isQuoted(username) ? username : StringUtil.singleQuote(username))
+                .append(SEMI);
 
     }
 
     /**
      * DELETE FROM 'table' WHERE 'id' = ?;
-     * 
-     * @param table table to use
-     * @param id identifier to delete
+     *
+     * @param table
+     *            table to use
+     * @param id
+     *            identifier to delete
      */
     public void deleteById(final String table, final String id) {
         this.builder
-            .append(SELECT)
-            .append(SPACE)
-            .append(STAR)
-            .append(SPACE)
-            .append(FROM)
-            .append(SPACE)
-            .append(table)
-            .append(SPACE)
-            .append(WHERE)
-            .append(SPACE)
-            .append(ID)
-            .append(EQUALS)
-            .append(StringUtil.isQuoted(id) ? id : StringUtil.singleQuote(id))
-            .append(SPACE)
-            .append(SEMI);
+                .append(SELECT)
+                .append(SPACE)
+                .append(STAR)
+                .append(SPACE)
+                .append(FROM)
+                .append(SPACE)
+                .append(table)
+                .append(SPACE)
+                .append(WHERE)
+                .append(SPACE)
+                .append(ID)
+                .append(EQUALS)
+                .append(StringUtil.isQuoted(id) ? id : StringUtil.singleQuote(id))
+                .append(SPACE)
+                .append(SEMI);
 
     }
-    
+
     /**
-     * 
+     *
      * @param table
      * @param columnNameValue
      */
     public void insert(final String table, Map<String, String> columnNameValue) {
-         if(!columnNameValue.isEmpty()) {
+        if (!columnNameValue.isEmpty()) {
             this.builder
-                .append(INSERT_INTO)
-                .append(SPACE)
-                .append(table)
-                .append(SPACE)
-                .append(LEFT_PARENTH);
+                    .append(INSERT_INTO)
+                    .append(SPACE)
+                    .append(table)
+                    .append(SPACE)
+                    .append(LEFT_PARENTH);
 
             StringBuilder valuesBuilder = new StringBuilder();
             valuesBuilder.append(LEFT_PARENTH);
             columnNameValue.forEach((column, value) -> {
                 this.builder.append(column).append(COMMA);
-                if(!StringUtil.isQuoted(value)) {
+                if (!StringUtil.isQuoted(value)) {
                     valuesBuilder.append(StringUtil.singleQuote(value));
                 } else {
                     valuesBuilder.append(value);
@@ -226,45 +234,45 @@ public class SQLBuilder extends AbstractBuilder {
 
             valuesBuilder.append(RIGHT_PARENTH);
             this.builder
-                .append(RIGHT_PARENTH)
-                .append(SPACE)
-                .append(VALUES)
-                .append(SPACE)
-                .append(valuesBuilder.toString())
-                .append(SEMI);
-         } else {
+                    .append(RIGHT_PARENTH)
+                    .append(SPACE)
+                    .append(VALUES)
+                    .append(SPACE)
+                    .append(valuesBuilder.toString())
+                    .append(SEMI);
+        } else {
             LOG("Error: No values given to perform an insert.");
-         }
+        }
     }
 
     /**
-     * 
+     *
      * @param table
      * @param columnNameValue
      */
     public void update(String table, Map<String, String> columnNameValue) {
-        if(!columnNameValue.isEmpty()) {
+        if (!columnNameValue.isEmpty()) {
             this.builder
-                .append(UPDATE)
-                .append(SPACE)
-                .append(table)
-                .append(SPACE)
-                .append(SET)
-                .append(SPACE);
+                    .append(UPDATE)
+                    .append(SPACE)
+                    .append(table)
+                    .append(SPACE)
+                    .append(SET)
+                    .append(SPACE);
             columnNameValue.forEach((column, value) -> {
                 this.builder.append(column)
-                .append(SPACE)
-                .append(EQUALS)
-                .append(SPACE)
-                .append(value)
-                .append(COMMA)
-                .append(SPACE);
+                        .append(SPACE)
+                        .append(EQUALS)
+                        .append(SPACE)
+                        .append(value)
+                        .append(COMMA)
+                        .append(SPACE);
             });
 
-                // delete trailing comma and space
-                this.builder.deleteCharAt(this.builder.length() - 1);
-                this.builder.deleteCharAt(this.builder.length() - 1);
-                this.builder.append(SEMI);
+            // delete trailing comma and space
+            this.builder.deleteCharAt(this.builder.length() - 1);
+            this.builder.deleteCharAt(this.builder.length() - 1);
+            this.builder.append(SEMI);
         } else {
             LOG("Error: No values given to perform an update.");
         }
@@ -272,33 +280,35 @@ public class SQLBuilder extends AbstractBuilder {
 
     /**
      * Use if you have a condition
+     *
      * @param table
      * @param columnNameValue
      * @param where
      */
     public void update(String table, Map<String, String> columnNameValue, String where) {
-        if(!columnNameValue.isEmpty()) {
+        if (!columnNameValue.isEmpty()) {
             this.builder
-                .append(UPDATE)
-                .append(SPACE)
-                .append(table)
-                .append(SPACE)
-                .append(SET)
-                .append(SPACE);
-                columnNameValue.forEach((column, value) -> {
-                    if(!StringUtil.isQuoted(value)) {
-                        value = StringUtil.singleQuote(value);
-                    }
-                    this.builder.append(column)
+                    .append(UPDATE)
                     .append(SPACE)
-                    .append(EQUALS)
+                    .append(table)
                     .append(SPACE)
-                    .append(value)
-                    .append(COMMA)
+                    .append(SET)
                     .append(SPACE);
-                });
-                this.builder.deleteCharAt(this.builder.length() - 2); // delete trailing comma
-                this.builder.append(SPACE).append(WHERE).append(SPACE).append(where).append(SEMI); // WHERE clause
+            columnNameValue.forEach((column, value) -> {
+                if (!StringUtil.isQuoted(value)) {
+                    value = StringUtil.singleQuote(value);
+                }
+                this.builder.append(column)
+                        .append(SPACE)
+                        .append(EQUALS)
+                        .append(SPACE)
+                        .append(value)
+                        .append(COMMA)
+                        .append(SPACE);
+            });
+            this.builder.deleteCharAt(this.builder.length() - 2); // delete trailing comma
+            this.builder.append(SPACE).append(WHERE).append(SPACE).append(where).append(SEMI); // WHERE
+                                                                                               // clause
         } else {
             LOG("Error: No values given to perform an update.");
         }

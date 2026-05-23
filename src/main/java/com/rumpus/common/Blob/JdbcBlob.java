@@ -8,8 +8,8 @@ import com.rumpus.common.Log.db.MySQLExceptionInterceptor;
 import com.rumpus.common.Log.db.MySQLLogger;
 
 /**
- * JdbcBlob class extends AbstractBlob to provide functionality for handling
- * SQL BLOB types using the MySQL JDBC Blob implementation.
+ * JdbcBlob class extends AbstractBlob to provide functionality for handling SQL
+ * BLOB types using the MySQL JDBC Blob implementation.
  */
 final public class JdbcBlob extends AbstractBlob {
 
@@ -19,7 +19,7 @@ final public class JdbcBlob extends AbstractBlob {
     }
 
     private JdbcBlob(byte[] data) {
-        this(data, new MySQLExceptionInterceptor().init(new Properties(), new MySQLLogger()));
+        this(data, new MySQLExceptionInterceptor().init(new Properties(),new MySQLLogger()));
     }
 
     // Public factory methods
@@ -27,7 +27,8 @@ final public class JdbcBlob extends AbstractBlob {
         return new JdbcBlob(data);
     }
 
-    public static JdbcBlob createFromByteArrayAndInterceptor(byte[] data, ExceptionInterceptor exceptionInterceptor) {
+    public static JdbcBlob createFromByteArrayAndInterceptor(byte[] data,
+            ExceptionInterceptor exceptionInterceptor) {
         return new JdbcBlob(data, exceptionInterceptor);
     }
 
@@ -35,13 +36,15 @@ final public class JdbcBlob extends AbstractBlob {
         return new JdbcBlob(new byte[0]);
     }
 
-    public static JdbcBlob createEmptyBlobWithInterceptor(ExceptionInterceptor exceptionInterceptor) {
+    public static JdbcBlob createEmptyBlobWithInterceptor(
+            ExceptionInterceptor exceptionInterceptor) {
         return new JdbcBlob(new byte[0], exceptionInterceptor);
     }
 
     @Override
     public void initBlob() {
-        this.blob = new Blob(new byte[0], new MySQLExceptionInterceptor().init(new Properties(), new MySQLLogger()));
+        this.blob = new Blob(new byte[0],
+                new MySQLExceptionInterceptor().init(new Properties(),new MySQLLogger()));
     }
 
     @Override

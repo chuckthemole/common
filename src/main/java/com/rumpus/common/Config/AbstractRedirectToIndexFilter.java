@@ -11,7 +11,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * 
+ *
  */
 public class AbstractRedirectToIndexFilter implements Filter {
 
@@ -32,13 +32,13 @@ public class AbstractRedirectToIndexFilter implements Filter {
 
         for (String startOfURINotFiltered : startOfURIsNotFiltered) {
             if (requestURI.startsWith(startOfURINotFiltered)) {
-                chain.doFilter(request, response);
+                chain.doFilter(request,response);
                 return;
             }
         }
 
         // all requests not api or static will be forwarded to index page.
-        request.getRequestDispatcher("/").forward(request, response);
+        request.getRequestDispatcher("/").forward(request,response);
     }
 
 }

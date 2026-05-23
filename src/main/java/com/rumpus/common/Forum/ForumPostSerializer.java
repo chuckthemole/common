@@ -34,13 +34,13 @@ public class ForumPostSerializer extends AbstractModelSerializer<ForumPost> {
 
         while (in.hasNext()) {
             fieldname = in.nextName();
-            if("userId".equals(fieldname)) {
+            if ("userId".equals(fieldname)) {
                 forumPost.setUserId(in.nextString());
             }
-            if("body".equals(fieldname)) {
+            if ("body".equals(fieldname)) {
                 forumPost.setBody(in.nextString());
             }
-            if("metaData".equals(fieldname)) {
+            if ("metaData".equals(fieldname)) {
                 // forumPost.metaData = in.nextString();
             }
         }
@@ -53,5 +53,5 @@ public class ForumPostSerializer extends AbstractModelSerializer<ForumPost> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
-    
+
 }

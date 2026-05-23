@@ -15,7 +15,8 @@ final public class FileIOUtil {
     /**
      * Reads the contents of a file as a string.
      *
-     * @param filePath The path to the file.
+     * @param filePath
+     *            The path to the file.
      * @return The file contents as a string, or an empty string if reading fails.
      */
     public static String readFileAsString(final String filePath) {
@@ -23,7 +24,7 @@ final public class FileIOUtil {
             return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException | OutOfMemoryError | SecurityException e) {
             // Log error with the appropriate level and exception message.
-            LOG_THIS("Error reading file: ", filePath, e.getClass().getSimpleName(), e.getMessage());
+            LOG_THIS("Error reading file: ",filePath,e.getClass().getSimpleName(),e.getMessage());
         }
         return "";
     }
@@ -31,19 +32,22 @@ final public class FileIOUtil {
     /**
      * Helper method for logging errors with class context and log level.
      *
-     * @param args Arguments to log.
+     * @param args
+     *            Arguments to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(FileIOUtil.class, args);
+        ICommon.LOG(FileIOUtil.class,args);
     }
 
     /**
      * Overloaded helper method for logging errors with specified log level.
      *
-     * @param level The log level (e.g., ERROR, WARN, INFO).
-     * @param args  The log messages.
+     * @param level
+     *            The log level (e.g., ERROR, WARN, INFO).
+     * @param args
+     *            The log messages.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(FileIOUtil.class, level, args);
+        ICommon.LOG(FileIOUtil.class,level,args);
     }
 }

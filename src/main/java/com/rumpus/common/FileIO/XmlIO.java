@@ -14,27 +14,28 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import org.w3c.dom.Element;
 
 /**
- * TODO: Look into using com.fasterxml.jackson.dataformat.xml.XmlMapper for parsing XML content.
+ * TODO: Look into using com.fasterxml.jackson.dataformat.xml.XmlMapper for
+ * parsing XML content.
  */
 final public class XmlIO extends AbstractFileIO {
 
-    private XmlIO() {}
+    private XmlIO() {
+    }
 
     public static XmlIO create() {
         return new XmlIO();
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(final String filePath, final Type type) {
+    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(
+            final String filePath, final Type type) {
 
         // If the file content is empty, log an error and return an empty Optional
         if (filePath.isEmpty()) {
-            LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
+            LOG_THIS(LogLevel.ERROR,"File content is empty or could not be read: " + filePath);
             return Optional.empty();
         }
 
@@ -45,7 +46,8 @@ final public class XmlIO extends AbstractFileIO {
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            LOG_THIS(LogLevel.ERROR, "Error creating XML document builder: ", e.getClass().getSimpleName(), e.getMessage());
+            LOG_THIS(LogLevel.ERROR,"Error creating XML document builder: ",
+                    e.getClass().getSimpleName(),e.getMessage());
             return Optional.empty();
         }
 
@@ -53,30 +55,36 @@ final public class XmlIO extends AbstractFileIO {
         try {
             doc = builder.parse(filePath);
         } catch (SAXException | IOException e) {
-            LOG_THIS(LogLevel.ERROR, "Error parsing XML from file: " + filePath, e.getClass().getSimpleName(), e.getMessage());
+            LOG_THIS(LogLevel.ERROR,"Error parsing XML from file: " + filePath,
+                    e.getClass().getSimpleName(),e.getMessage());
             return Optional.empty();
         }
 
-        // TODO: Stopped here. Need to implement parsing of XML content into an array of models.
-        // I'm looking into different ways to do this. I stopped when I was looking through buildSrc. 
-        // I should use this: com.fasterxml.jackson.dataformat.xml.XmlMapper but I need to add it to the buildSrc. Trying to figure out the best spot.
+        // TODO: Stopped here. Need to implement parsing of XML content into an array of
+        // models.
+        // I'm looking into different ways to do this. I stopped when I was looking
+        // through buildSrc.
+        // I should use this: com.fasterxml.jackson.dataformat.xml.XmlMapper but I need
+        // to add it to the buildSrc. Trying to figure out the best spot.
         doc.getDocumentElement().normalize();
 
         return Optional.empty();
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(XmlIO.class, level, args);
+        ICommon.LOG(XmlIO.class,level,args);
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(String filePath, Type type) {
+    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(
+            String filePath, Type type) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'readModelFromFile'");
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath, MODEL[] models) {
+    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath,
+            MODEL[] models) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeModelsToFile'");
     }
@@ -85,5 +93,5 @@ final public class XmlIO extends AbstractFileIO {
     public String toString() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
-    }    
+    }
 }

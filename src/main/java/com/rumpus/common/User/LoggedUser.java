@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpSessionBindingListener;
 
 public class LoggedUser implements HttpSessionBindingListener, Serializable {
     private static final long serialVersionUID = 1L;
-    private String username; 
+    private String username;
     private ActiveUserStore activeUserStore;
-    
-    public LoggedUser() {}
+
+    public LoggedUser() {
+    }
+
     public LoggedUser(String username, ActiveUserStore activeUserStore) {
         this.username = username;
         this.activeUserStore = activeUserStore;

@@ -13,13 +13,14 @@ public class Tag extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Tag createWithBody(String body) {
         return new Tag(body);
     }
+
     public static Tag createWithNoBody() {
         return new Tag("");
     }

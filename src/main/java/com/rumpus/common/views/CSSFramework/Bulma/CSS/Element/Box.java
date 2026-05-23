@@ -4,9 +4,11 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 
 /**
  * Bulma Box
+ *
  * @link https://bulma.io/documentation/elements/box/
- * 
- * note: this will default to a div tag. you can change it to a different tag by using the setHtmlTagType method.
+ *
+ *       note: this will default to a div tag. you can change it to a different
+ *       tag by using the setHtmlTagType method.
  */
 public class Box extends AbstractBulmaElement {
 
@@ -19,13 +21,14 @@ public class Box extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Box createWithBody(String body) {
         return new Box(body);
     }
+
     public static Box createWithNoBody() {
         return new Box("");
     }

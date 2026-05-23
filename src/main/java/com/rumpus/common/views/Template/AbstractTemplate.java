@@ -8,17 +8,24 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 /**
  * An AbstractTemplate is a template that can be rendered.
  * <p>
- * A template is a manager of {@link AbstractComponent}s and is managed by a {@link com.rumpus.common.views.AbstractViews}.
+ * A template is a manager of {@link AbstractComponent}s and is managed by a
+ * {@link com.rumpus.common.views.AbstractViews}.
  */
-public abstract class AbstractTemplate extends AbstractCommonManager<String, AbstractComponent> implements IManageable, ITemplate {
+public abstract class AbstractTemplate extends AbstractCommonManager<String, AbstractComponent>
+        implements
+            IManageable,
+            ITemplate {
 
     public static final String TEMPLATE_ASIDE = "aside";
     public static final String TEMPLATE_BREADCRUMB = "breadcrumb";
     public static final String TEMPLATE_WELCOME = "welcome";
 
-    // private Set<String> resources; // names of resources that can be found in resource manager // TODO: maybe this should be in the template? look into when we start using resources
-    private AbstractHtmlObject head; // this is the head of the html object that will be rendered, containing the components.
-    
+    // private Set<String> resources; // names of resources that can be found in
+    // resource manager // TODO: maybe this should be in the template? look into
+    // when we start using resources
+    private AbstractHtmlObject head; // this is the head of the html object that will be rendered,
+                                     // containing the components.
+
     public AbstractTemplate() {
         super(false);
         this.setComponents();
@@ -28,7 +35,7 @@ public abstract class AbstractTemplate extends AbstractCommonManager<String, Abs
 
     /**
      * Factory static method for creating an empty template.
-     * 
+     *
      * @return an empty template
      */
     public static AbstractTemplate createEmptyTemplate() {
@@ -52,13 +59,15 @@ public abstract class AbstractTemplate extends AbstractCommonManager<String, Abs
             @Override
             public AbstractComponent createEmptyManagee() {
                 // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+                throw new UnsupportedOperationException(
+                        "Unimplemented method 'createEmptyManagee'");
             }
 
             @Override
             public AbstractComponent createEmptyManagee(String name) {
                 // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'createEmptyManagee'");
+                throw new UnsupportedOperationException(
+                        "Unimplemented method 'createEmptyManagee'");
             }
         };
     }
@@ -92,7 +101,7 @@ public abstract class AbstractTemplate extends AbstractCommonManager<String, Abs
     @Override
     public AbstractComponent createEmptyManagee(String name) {
         AbstractComponent component = AbstractComponent.createEmptyComponent();
-        return this.put(name, component);
+        return this.put(name,component);
     }
 
     @Override

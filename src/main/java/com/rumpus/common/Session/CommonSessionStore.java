@@ -9,12 +9,12 @@ import reactor.core.publisher.Mono;
 
 public class CommonSessionStore implements WebSessionStore {
 
-	// private final ReactiveSessionRepository<CommonSession> sessions;
+    // private final ReactiveSessionRepository<CommonSession> sessions;
     private final CommonSessionRepo sessions;
 
-	public CommonSessionStore(CommonSessionRepo reactiveSessionRepository) {
-		this.sessions = reactiveSessionRepository;
-	}
+    public CommonSessionStore(CommonSessionRepo reactiveSessionRepository) {
+        this.sessions = reactiveSessionRepository;
+    }
 
     @Override
     public Mono<WebSession> createWebSession() {

@@ -10,13 +10,15 @@ import com.mysql.cj.log.Log;
  */
 public class MySQLExceptionInterceptor implements ExceptionInterceptor {
 
-    private Properties props; // TODO: maybe customize this, look into it. just using default in ctor rn.
+    private Properties props; // TODO: maybe customize this, look into it. just using default in
+                              // ctor rn.
     private MySQLLogger log;
-    
+
     public MySQLExceptionInterceptor() {
         this.props = new Properties();
         this.log = new MySQLLogger();
     }
+
     private MySQLExceptionInterceptor(Properties props, Log log) {
         this.log = new MySQLLogger(log);
         this.props = props;
@@ -40,5 +42,5 @@ public class MySQLExceptionInterceptor implements ExceptionInterceptor {
     public Exception interceptException(Exception sqlEx) {
         return sqlEx;
     }
-    
+
 }

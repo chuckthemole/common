@@ -17,13 +17,15 @@ final public class BlobUtil implements ICommon {
     /**
      * Serializes an AbstractMetaData object into a byte array.
      *
-     * @param object The object to serialize.
-     * @param <META> The type of the object extending AbstractMetaData.
+     * @param object
+     *            The object to serialize.
+     * @param <META>
+     *            The type of the object extending AbstractMetaData.
      * @return A byte array representing the serialized object.
      */
     public static <META extends AbstractMetaData<META>> byte[] serialize(META object) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+                ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(object);
             return baos.toByteArray();
         } catch (IOException e) {
@@ -34,22 +36,26 @@ final public class BlobUtil implements ICommon {
     /**
      * Deserializes an AbstractMetaData object from a Blob.
      *
-     * @param blob The Blob object to deserialize from.
-     * @param <META> The type of the object extending AbstractMetaData.
-     * @return An Optional containing the deserialized object, or an empty Optional if an error occurs.
+     * @param blob
+     *            The Blob object to deserialize from.
+     * @param <META>
+     *            The type of the object extending AbstractMetaData.
+     * @return An Optional containing the deserialized object, or an empty Optional
+     *         if an error occurs.
      */
-    public static <META extends AbstractMetaData<META>> Optional<META> getObjectFromBlob(Blob blob) {
+    public static <
+            META extends AbstractMetaData<META>> Optional<META> getObjectFromBlob(Blob blob) {
         LOG_THIS("Attempting to deserialize Blob into META object.");
 
         if (blob == null) {
-            LOG_THIS(LogLevel.ERROR, "Blob is null. Returning empty Optional.");
+            LOG_THIS(LogLevel.ERROR,"Blob is null. Returning empty Optional.");
             // return an Optional with an empty Blob object
             return Optional.empty();
         }
 
         try {
             if (blob.length() == 0) {
-                LOG_THIS(LogLevel.ERROR, "Blob length is 0. Returning empty Optional.");
+                LOG_THIS(LogLevel.ERROR,"Blob length is 0. Returning empty Optional.");
                 return Optional.empty();
             }
 
@@ -74,7 +80,7 @@ final public class BlobUtil implements ICommon {
     public static Optional<ObjectInputStream> getObjectInputStream(Blob blob) {
         try {
             if (blob == null || blob.length() == 0) {
-                LOG_THIS(LogLevel.ERROR, "Blob length is 0. Returning empty Optional.");
+                LOG_THIS(LogLevel.ERROR,"Blob length is 0. Returning empty Optional.");
                 return Optional.empty();
             }
 
@@ -93,14 +99,17 @@ final public class BlobUtil implements ICommon {
                 }
             }
         }
-    } 
+    }
 
     /**
      * Deserializes an AbstractMetaData object from an InputStream.
      *
-     * @param stream The InputStream to deserialize from.
-     * @param <META> The type of the object extending AbstractMetaData.
-     * @return An Optional containing the deserialized object, or an empty Optional if an error occurs.
+     * @param stream
+     *            The InputStream to deserialize from.
+     * @param <META>
+     *            The type of the object extending AbstractMetaData.
+     * @return An Optional containing the deserialized object, or an empty Optional
+     *         if an error occurs.
      */
     private static <META extends AbstractMetaData<META>> META deserialize(InputStream stream) {
         try (ObjectInputStream ois = new ObjectInputStream(stream)) {
@@ -113,19 +122,22 @@ final public class BlobUtil implements ICommon {
     /**
      * Logs messages at default log level (INFO) for this class.
      *
-     * @param args The message to log.
+     * @param args
+     *            The message to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(BlobUtil.class, args);
+        ICommon.LOG(BlobUtil.class,args);
     }
 
     /**
      * Logs messages at the specified log level for this class.
      *
-     * @param level The log level to use.
-     * @param args  The message to log.
+     * @param level
+     *            The log level to use.
+     * @param args
+     *            The message to log.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(BlobUtil.class, level, args);
+        ICommon.LOG(BlobUtil.class,level,args);
     }
 }

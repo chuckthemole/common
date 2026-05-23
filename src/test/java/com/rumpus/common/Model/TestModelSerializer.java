@@ -41,5 +41,5 @@ public class TestModelSerializer extends AbstractModelSerializer<TestModel> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
-    
+
 }

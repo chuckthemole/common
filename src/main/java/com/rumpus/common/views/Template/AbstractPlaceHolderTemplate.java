@@ -5,15 +5,16 @@ import com.rumpus.common.views.Component.AbstractBreadcrumb;
 import com.rumpus.common.views.Component.AbstractWelcome;
 
 /**
- * Just a template for a template that has a placeholder for the aside, breadcrumb, and welcome.
- * Not using right now. Should maybe delete later.
+ * Just a template for a template that has a placeholder for the aside,
+ * breadcrumb, and welcome. Not using right now. Should maybe delete later.
  */
 abstract public class AbstractPlaceHolderTemplate extends AbstractTemplate {
     private AbstractAside aside;
     private AbstractBreadcrumb breadcrumb;
     private AbstractWelcome welcome;
 
-    public AbstractPlaceHolderTemplate() {}
+    public AbstractPlaceHolderTemplate() {
+    }
 
     @Override
     public void setComponents() {
@@ -24,24 +25,26 @@ abstract public class AbstractPlaceHolderTemplate extends AbstractTemplate {
 
     @Override
     public void addComponentsToMap() {
-        this.put(AbstractTemplate.TEMPLATE_ASIDE, this.aside);
-        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB, this.breadcrumb);
-        this.put(AbstractTemplate.TEMPLATE_WELCOME, this.welcome);
+        this.put(AbstractTemplate.TEMPLATE_ASIDE,this.aside);
+        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB,this.breadcrumb);
+        this.put(AbstractTemplate.TEMPLATE_WELCOME,this.welcome);
     }
-    
+
     /**
-     * This method is used to set the aside of the template.
-     * Use its setter to set the aside.
+     * This method is used to set the aside of the template. Use its setter to set
+     * the aside.
      */
     abstract public AbstractAside initAside();
+
     /**
-     * This method is used to set the breadcrumb of the template.
-     * Use its setter to set the breadcrumb.
+     * This method is used to set the breadcrumb of the template. Use its setter to
+     * set the breadcrumb.
      */
     abstract public AbstractBreadcrumb initBreadcrumb();
+
     /**
-     * This method is used to set the welcome of the template.
-     * Use its setter to set the welcome.
+     * This method is used to set the welcome of the template. Use its setter to set
+     * the welcome.
      */
     abstract public AbstractWelcome initWelcome();
 

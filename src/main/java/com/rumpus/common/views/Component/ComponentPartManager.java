@@ -17,11 +17,11 @@ public class ComponentPartManager extends AbstractCommonManager<String, Abstract
     }
 
     // public static ComponentPartManager createEmptyManager() {
-    //     return new ComponentPartManager("ComponentPartManager", false);
+    // return new ComponentPartManager("ComponentPartManager", false);
     // }
     /**
      * Factory static constructor
-     * 
+     *
      * @return instance of this class
      */
     public static synchronized ComponentPartManager getSingletonInstance() {
@@ -29,9 +29,12 @@ public class ComponentPartManager extends AbstractCommonManager<String, Abstract
     }
 
     /**
-     * Register a component with the manager. This will create a unique id set for the component.
-     * 
-     * @param component a unique name of the component to register. ie: "BulmaBreadcrumb" or "BulmaWelcome"
+     * Register a component with the manager. This will create a unique id set for
+     * the component.
+     *
+     * @param component
+     *            a unique name of the component to register. ie: "BulmaBreadcrumb"
+     *            or "BulmaWelcome"
      */
     public void registerComponent(String component) {
         LOG("Registering component: '" + component + "'");
@@ -40,14 +43,15 @@ public class ComponentPartManager extends AbstractCommonManager<String, Abstract
 
     public String registerComponentPart(String componentName, AbstractHtmlObject componentPart) {
         final String id = componentUniqueIds.generateAndReceiveIdForGivenSet(componentName.strip());
-        componentPart.addHtmlTagAttribute(Attribute.create(AbstractComponent.COMPONENT_PART_ID, id));
+        componentPart.addHtmlTagAttribute(Attribute.create(AbstractComponent.COMPONENT_PART_ID,id));
 
         // TODO: look at this. this is what I've been looking for, bug.
         // if(this.put(id, componentPart) != null) {
-        this.put(id, componentPart);
+        this.put(id,componentPart);
         return id;
         // }
-        // LOG.errorLevel("Error registering component part with name: '" + componentName + "'");
+        // LOG.errorLevel("Error registering component part with name: '" +
+        // componentName + "'");
         // return null;
     }
 
@@ -59,7 +63,7 @@ public class ComponentPartManager extends AbstractCommonManager<String, Abstract
     @Override
     public AbstractHtmlObject createEmptyManagee(String name) {
         AbstractHtmlObject htmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
-        return this.put(name.strip(), htmlObject);
+        return this.put(name.strip(),htmlObject);
     }
 
     @Override

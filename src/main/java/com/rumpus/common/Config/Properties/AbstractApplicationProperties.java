@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 // TODO: i believe I can just delete this class. Not using for anything at the moment. If we keep, maybe jsut get rid of the implements Environment - chuck 2025/06/17
-abstract public class AbstractApplicationProperties extends AbstractCommonObject implements Environment {
+abstract public class AbstractApplicationProperties extends AbstractCommonObject
+        implements
+            Environment {
 
     Map<String, String> properties;
 
@@ -30,7 +32,7 @@ abstract public class AbstractApplicationProperties extends AbstractCommonObject
 
     @Override
     public String getProperty(String key, String defaultValue) {
-        return this.properties.getOrDefault(key, defaultValue);
+        return this.properties.getOrDefault(key,defaultValue);
     }
 
     @Override
@@ -69,7 +71,8 @@ abstract public class AbstractApplicationProperties extends AbstractCommonObject
     @Override
     public String resolveRequiredPlaceholders(String text) throws IllegalArgumentException {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resolveRequiredPlaceholders'");
+        throw new UnsupportedOperationException(
+                "Unimplemented method 'resolveRequiredPlaceholders'");
     }
 
     @Override

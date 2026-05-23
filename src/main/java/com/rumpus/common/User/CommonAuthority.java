@@ -10,6 +10,7 @@ public class CommonAuthority implements GrantedAuthority {
     public CommonAuthority(String authority) {
         this.authority = authority;
     }
+
     public CommonAuthority(GrantedAuthority authority) {
         this.authority = authority.getAuthority();
     }
@@ -18,5 +19,5 @@ public class CommonAuthority implements GrantedAuthority {
     public String getAuthority() {
         return this.authority;
     }
-    
+
 }

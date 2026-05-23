@@ -17,10 +17,11 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A very simple method that takes in a message to display on the console 
-     * and then waits for a integer answer from the user to return.
+     * A very simple method that takes in a message to display on the console and
+     * then waits for a integer answer from the user to return.
      *
-     * @param msg - String of information to display to the user.
+     * @param msg
+     *            - String of information to display to the user.
      *
      */
     @Override
@@ -30,10 +31,11 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A simple method that takes in a message to display on the console, 
-     * and then waits for an answer from the user to return.
+     * A simple method that takes in a message to display on the console, and then
+     * waits for an answer from the user to return.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
      * @return the answer to the message as string
      */
     @Override
@@ -44,11 +46,12 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A simple method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter an integer
+     * A simple method that takes in a message to display on the console, and
+     * continually reprompts the user with that message until they enter an integer
      * to be returned as the answer to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
      * @return the answer to the message as integer
      */
     @Override
@@ -72,14 +75,19 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A slightly more complex method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter an integer
-     * within the specified min/max range to be returned as the answer to that message.
+     * A slightly more complex method that takes in a message to display on the
+     * console, and continually reprompts the user with that message until they
+     * enter an integer within the specified min/max range to be returned as the
+     * answer to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
-     * @param min - minimum acceptable value for return
-     * @param max - maximum acceptable value for return
-     * @return an integer value as an answer to the message prompt within the min/max range
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
+     * @param min
+     *            - minimum acceptable value for return
+     * @param max
+     *            - maximum acceptable value for return
+     * @return an integer value as an answer to the message prompt within the
+     *         min/max range
      */
     @Override
     public int readInt(String msgPrompt, int min, int max) {
@@ -93,11 +101,12 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A simple method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter a long
-     * to be returned as the answer to that message.
+     * A simple method that takes in a message to display on the console, and
+     * continually reprompts the user with that message until they enter a long to
+     * be returned as the answer to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
      * @return the answer to the message as long
      */
     @Override
@@ -112,14 +121,19 @@ public class RumpusIO implements IRumpusIO {
     }
 
     /**
-     * A slightly more complex method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter a double
-     * within the specified min/max range to be returned as the answer to that message.
+     * A slightly more complex method that takes in a message to display on the
+     * console, and continually reprompts the user with that message until they
+     * enter a double within the specified min/max range to be returned as the
+     * answer to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
-     * @param min - minimum acceptable value for return
-     * @param max - maximum acceptable value for return
-     * @return an long value as an answer to the message prompt within the min/max range
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
+     * @param min
+     *            - minimum acceptable value for return
+     * @param max
+     *            - maximum acceptable value for return
+     * @return an long value as an answer to the message prompt within the min/max
+     *         range
      */
     @Override
     public long readLong(String msgPrompt, long min, long max) {
@@ -133,11 +147,12 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A simple method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter a float
-     * to be returned as the answer to that message.
+     * A simple method that takes in a message to display on the console, and
+     * continually reprompts the user with that message until they enter a float to
+     * be returned as the answer to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
      * @return the answer to the message as float
      */
     @Override
@@ -153,14 +168,19 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A slightly more complex method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter a float
-     * within the specified min/max range to be returned as the answer to that message.
+     * A slightly more complex method that takes in a message to display on the
+     * console, and continually reprompts the user with that message until they
+     * enter a float within the specified min/max range to be returned as the answer
+     * to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
-     * @param min - minimum acceptable value for return
-     * @param max - maximum acceptable value for return
-     * @return an float value as an answer to the message prompt within the min/max range
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
+     * @param min
+     *            - minimum acceptable value for return
+     * @param max
+     *            - maximum acceptable value for return
+     * @return an float value as an answer to the message prompt within the min/max
+     *         range
      */
     @Override
     public float readFloat(String msgPrompt, float min, float max) {
@@ -174,11 +194,12 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A simple method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter a double
-     * to be returned as the answer to that message.
+     * A simple method that takes in a message to display on the console, and
+     * continually reprompts the user with that message until they enter a double to
+     * be returned as the answer to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
      * @return the answer to the message as double
      */
     @Override
@@ -194,14 +215,19 @@ public class RumpusIO implements IRumpusIO {
 
     /**
      *
-     * A slightly more complex method that takes in a message to display on the console, 
-     * and continually reprompts the user with that message until they enter a double
-     * within the specified min/max range to be returned as the answer to that message.
+     * A slightly more complex method that takes in a message to display on the
+     * console, and continually reprompts the user with that message until they
+     * enter a double within the specified min/max range to be returned as the
+     * answer to that message.
      *
-     * @param msgPrompt - String explaining what information you want from the user.
-     * @param min - minimum acceptable value for return
-     * @param max - maximum acceptable value for return
-     * @return an double value as an answer to the message prompt within the min/max range
+     * @param msgPrompt
+     *            - String explaining what information you want from the user.
+     * @param min
+     *            - minimum acceptable value for return
+     * @param max
+     *            - maximum acceptable value for return
+     * @return an double value as an answer to the message prompt within the min/max
+     *         range
      */
     @Override
     public double readDouble(String msgPrompt, double min, double max) {

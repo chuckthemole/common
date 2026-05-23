@@ -13,13 +13,14 @@ public class ProgressBars extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static ProgressBars createWithBody(String body) {
         return new ProgressBars(body);
     }
+
     public static ProgressBars createWithNoBody() {
         return new ProgressBars("");
     }

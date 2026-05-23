@@ -1,7 +1,5 @@
 package com.rumpus.common.Session;
 
-import java.util.List;
-
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 
@@ -14,5 +12,5 @@ public class CommonWebSecurity implements WebSecurityCustomizer {
     public void customize(WebSecurity web) {
         web.ignoring().requestMatchers(IGNORING);
     }
-    
+
 }

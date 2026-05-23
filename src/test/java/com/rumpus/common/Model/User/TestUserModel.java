@@ -31,33 +31,36 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
     }
 
     public static TestUserModel createFromMap(Map<String, Object> userMap) {
-        ICommon.LOG(TestUserModel.class, "TestUserModel::createFromMap()");
+        ICommon.LOG(TestUserModel.class,"TestUserModel::createFromMap()");
         TestUserModel user = new TestUserModel();
-        user.setUsername(userMap.containsKey(USERNAME) ? (String) userMap.get(USERNAME) : EMPTY_FIELD);
-        user.setUserPassword(userMap.containsKey(PASSWORD) ? (String) userMap.get(PASSWORD) : EMPTY_FIELD);
+        user.setUsername(
+                userMap.containsKey(USERNAME) ? (String) userMap.get(USERNAME) : EMPTY_FIELD);
+        user.setUserPassword(
+                userMap.containsKey(PASSWORD) ? (String) userMap.get(PASSWORD) : EMPTY_FIELD);
         user.setEmail(userMap.containsKey(EMAIL) ? (String) userMap.get(EMAIL) : EMPTY_FIELD);
         user.setId(userMap.containsKey(ID) ? (java.util.UUID) userMap.get(ID) : EMPTY_UUID);
 
         // user meta data
         TestUserModelMetaData meta = null;
-        if(userMap.containsKey(USER_META_DATA)) {
-            // meta = TestUserModelMetaData.createFromListOfMaps((List<Map<String, String>>) userMap.get(USER_META_DATA));
+        if (userMap.containsKey(USER_META_DATA)) {
+            // meta = TestUserModelMetaData.createFromListOfMaps((List<Map<String, String>>)
+            // userMap.get(USER_META_DATA));
             meta = (TestUserModelMetaData) userMap.get(USER_META_DATA);
         }
 
-        if(meta == null) {
+        if (meta == null) {
             final String log = LogBuilder.logBuilderFromStringArgs(
-                TestUserModel.class,
-                "Failed building TestUserModelMetaData. Setting empty meta data.").toString();
-            LOG(TestUserModel.class, log);
+                    TestUserModel.class,
+                    "Failed building TestUserModelMetaData. Setting empty meta data.").toString();
+            LOG(TestUserModel.class,log);
             meta = TestUserModelMetaData.createEmpty();
         }
 
         final String log = LogBuilder.logBuilderFromStringArgs(
-            TestUserModel.class,
-            "Success building TestUserModelMetaData:\n",
-            meta.toString()).toString();
-        LOG(TestUserModel.class, log);
+                TestUserModel.class,
+                "Success building TestUserModelMetaData:\n",
+                meta.toString()).toString();
+        LOG(TestUserModel.class,log);
         user.setMetaData(meta);
         return user;
     }
@@ -68,6 +71,5 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
     @Override
     public IModelIdManager<UUID> getIdManager() {
         return new SqlIdManager();
-    }  
+    }
 }
-

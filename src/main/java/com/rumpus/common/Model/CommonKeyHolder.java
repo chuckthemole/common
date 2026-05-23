@@ -1,6 +1,5 @@
 package com.rumpus.common.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.rumpus.common.AbstractCommonObject;
-
 
 // TODO think about adding protected methods, addKey setKey etc. would this be benificial?
 /**
@@ -23,6 +21,7 @@ public class CommonKeyHolder extends AbstractCommonObject implements KeyHolder {
     public CommonKeyHolder() {
         this.key = new GeneratedKeyHolder();
     }
+
     public CommonKeyHolder(List<Map<String, Object>> keyList) {
         this.key = new GeneratedKeyHolder(keyList);
     }
@@ -46,10 +45,11 @@ public class CommonKeyHolder extends AbstractCommonObject implements KeyHolder {
     public List<Map<String, Object>> getKeyList() {
         return this.key.getKeyList();
     }
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
-    
+
 }

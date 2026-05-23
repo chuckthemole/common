@@ -22,7 +22,8 @@ public class LogItem extends AbstractModel<LogItem, UUID> {
         this.action = action;
     }
 
-    public static LogItem create(String logName, String time, String username, String userId, String action) {
+    public static LogItem create(String logName, String time, String username, String userId,
+            String action) {
         return new LogItem(logName, time, username, userId, action);
     }
 
@@ -69,10 +70,10 @@ public class LogItem extends AbstractModel<LogItem, UUID> {
     @Override
     public String toString() {
         return CommonStringBuilder.buildString(
-            "username: ", this.username,
-            " user id: ", this.userId,
-            " action: ", this.action,
-            " time: ", this.time);
+                "username: ",this.username,
+                " user id: ",this.userId,
+                " action: ",this.action,
+                " time: ",this.time);
     }
 
     @Override

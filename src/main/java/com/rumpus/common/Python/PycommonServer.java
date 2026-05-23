@@ -18,7 +18,8 @@ public class PycommonServer extends AbstractServer {
     private static final String HOST_IP = "localhost";
     private static final String PORT = "8000";
     private static final String PYTHON_VERSION = "python3";
-    private static final String RUNSERVER_DJANGO = "os.system('" + PYTHON_VERSION + " manage.py runserver " + HOST_IP + ":" + PORT + " &> logs/run.log')";
+    private static final String RUNSERVER_DJANGO = "os.system('" + PYTHON_VERSION
+            + " manage.py runserver " + HOST_IP + ":" + PORT + " &> logs/run.log')";
     private static final String DJANGO_START_PATH = "config/dev/scripts/django_server_start.sh";
     private static final String DJANGO_STOP_PATH = "config/dev/scripts/django_server_stop.sh";
 
@@ -32,14 +33,17 @@ public class PycommonServer extends AbstractServer {
     public static PycommonServer createAndDoNotStartServer() {
         return new PycommonServer(false);
     }
+
     public static PycommonServer createAndStartServer() {
         return new PycommonServer(true);
     }
 
     private void init(boolean run) {
         // PycommonServer.interpreter = CommonPython.getInterpreter();
-        this.isRunning = !ServerUtil.isPortAvailable(this.port); // if port is available, server is not running, if port is not available, server is running
-        if(run) {
+        this.isRunning = !ServerUtil.isPortAvailable(this.port); // if port is available, server is
+                                                                 // not running, if port is not
+                                                                 // available, server is running
+        if (run) {
             this.run();
         }
     }
@@ -64,13 +68,13 @@ public class PycommonServer extends AbstractServer {
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.setOut(out);
         StringBuilder scriptBuilder = new StringBuilder();
-            scriptBuilder
+        scriptBuilder
                 .append("import sys\n")
                 .append("import os \n")
                 .append("os.chdir(r'" + PYCOMMON_DIR + "')\n")
                 .append("print('Current working directory: ' + os.getcwd())\n")
                 .append("sys.path.append('" + PYCOMMON_DIR + "')\n")
-                .append(RUNSERVER_DJANGO  + "\n");
+                .append(RUNSERVER_DJANGO + "\n");
         LOG(scriptBuilder.toString());
         // PycommonServer.interpreter.exec(scriptBuilder.toString());
         // PycommonServer.interpreter.close();
@@ -82,15 +86,15 @@ public class PycommonServer extends AbstractServer {
 
     private boolean runWithBashScript() {
         String log = LogBuilder.logBuilderFromStringArgs(
-            "PycommonServer::runWithbashScript()").toString();
+                "PycommonServer::runWithbashScript()").toString();
         LOG(log);
         log = LogBuilder.logBuilderFromStringArgs(
-            "Current working directory (before execution of django start script): ",
-            FileUtil.getCurrentWorkingDirectory()).toString();
+                "Current working directory (before execution of django start script): ",
+                FileUtil.getCurrentWorkingDirectory()).toString();
         LOG(log);
-        if(FileUtil.doesPathExist(DJANGO_START_PATH) == DOES_NOT_EXIST) {
-            LOG("Working Directory = ", System.getProperty("user.dir"));
-            LOG(LogLevel.ERROR, "Django bash script does not exist: ", DJANGO_START_PATH);
+        if (FileUtil.doesPathExist(DJANGO_START_PATH) == DOES_NOT_EXIST) {
+            LOG("Working Directory = ",System.getProperty("user.dir"));
+            LOG(LogLevel.ERROR,"Django bash script does not exist: ",DJANGO_START_PATH);
             return false;
         }
         ProcessBuilder processBuilder = new ProcessBuilder(DJANGO_START_PATH);
@@ -98,32 +102,34 @@ public class PycommonServer extends AbstractServer {
         try {
             Process process = processBuilder.start();
             log = LogBuilder.logBuilderFromStringArgs(
-                "Current working directory (after execution of django start script): ",
-                FileUtil.getCurrentWorkingDirectory()).toString();
+                    "Current working directory (after execution of django start script): ",
+                    FileUtil.getCurrentWorkingDirectory()).toString();
             LOG(log);
             // int waitCounter = 0;
             // while(process.isAlive()) {
-            //     Thread.sleep(1000);
-            //     LOG("Waiting kill script process runWithBashScript...");
-            //     if(waitCounter == 5) {
-            //         process.destroy();
-            //         LOG("Destroying runWithBashScript process...");
-            //     }
-            //     waitCounter++;
+            // Thread.sleep(1000);
+            // LOG("Waiting kill script process runWithBashScript...");
+            // if(waitCounter == 5) {
+            // process.destroy();
+            // LOG("Destroying runWithBashScript process...");
+            // }
+            // waitCounter++;
             // }
             // if(!process.isAlive()) {
-            //     LOG("runWithBashScript process has stopped.");
+            // LOG("runWithBashScript process has stopped.");
             // }
         } catch (IOException e) {
-            LOG(LogLevel.ERROR, "Could not start process: " + processBuilder.toString());
-            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).toString();
+            LOG(LogLevel.ERROR,"Could not start process: " + processBuilder.toString());
+            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+                    .toString();
             LOG(log);
             return false;
         }
         // catch (InterruptedException e) {
-        //     LOG(LogLevel.ERROR, "Could not start process: " + processBuilder.toString());
-        //     LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).error();
-        //     return false;
+        // LOG(LogLevel.ERROR, "Could not start process: " + processBuilder.toString());
+        // LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(),
+        // e.getStackTrace()).error();
+        // return false;
         // }
         return true;
     }
@@ -134,13 +140,13 @@ public class PycommonServer extends AbstractServer {
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.setOut(out);
         StringBuilder scriptBuilder = new StringBuilder();
-            scriptBuilder
+        scriptBuilder
                 .append("import sys\n")
                 .append("import os \n")
                 .append("os.chdir(r'" + PYCOMMON_DIR + "')\n")
                 .append("print('Current working directory: ' + os.getcwd())\n")
                 .append("sys.path.append('" + PYCOMMON_DIR + "')\n")
-                .append("os.system('lsof -t -i tcp:" + PORT + " | xargs kill -9')"  + "\n");
+                .append("os.system('lsof -t -i tcp:" + PORT + " | xargs kill -9')" + "\n");
         LOG(scriptBuilder.toString());
         interpreter.exec(scriptBuilder.toString());
         interpreter.close();
@@ -149,15 +155,16 @@ public class PycommonServer extends AbstractServer {
     }
 
     private boolean onStopWithBashScript() {
-        String log = LogBuilder.logBuilderFromStringArgs("PycommonServer::onStopWithBashScript()").toString();
+        String log = LogBuilder.logBuilderFromStringArgs("PycommonServer::onStopWithBashScript()")
+                .toString();
         LOG(log);
         log = LogBuilder.logBuilderFromStringArgs(
-            "Current working directory (before execution of django stop script): ",
-            FileUtil.getCurrentWorkingDirectory()).toString();
+                "Current working directory (before execution of django stop script): ",
+                FileUtil.getCurrentWorkingDirectory()).toString();
         LOG(log);
-        if(FileUtil.doesPathExist(DJANGO_STOP_PATH) == DOES_NOT_EXIST) {
+        if (FileUtil.doesPathExist(DJANGO_STOP_PATH) == DOES_NOT_EXIST) {
             LOG("Working Directory = " + System.getProperty("user.dir"));
-            LOG(LogLevel.ERROR, "Django bash script does not exist: " + DJANGO_STOP_PATH);
+            LOG(LogLevel.ERROR,"Django bash script does not exist: " + DJANGO_STOP_PATH);
             return false;
         }
         ProcessBuilder processBuilder = new ProcessBuilder(DJANGO_STOP_PATH);
@@ -165,39 +172,40 @@ public class PycommonServer extends AbstractServer {
         try {
             Process process = processBuilder.start();
             int waitCounter = 0;
-            while(process.isAlive()) {
+            while (process.isAlive()) {
                 Thread.sleep(1000);
                 LOG("Waiting kill script process to stop...");
-                if(waitCounter == 5) {
+                if (waitCounter == 5) {
                     process.destroy();
                     LOG("Killing kill script process...");
                 }
                 waitCounter++;
             }
-            if(!process.isAlive()) {
+            if (!process.isAlive()) {
                 LOG("Kill script process stopped.");
             }
             log = LogBuilder.logBuilderFromStringArgs(
-                "Current working directory (after execution of django stop script): ",
-                FileUtil.getCurrentWorkingDirectory()).toString();
+                    "Current working directory (after execution of django stop script): ",
+                    FileUtil.getCurrentWorkingDirectory()).toString();
             LOG(log);
             log = LogBuilder.logBuilderFromStringArgs(
-                "Exit value: ",
-                String.valueOf(exitValue),
-                "OutputStream: \n",
-                process.getOutputStream().toString()).toString();
+                    "Exit value: ",
+                    String.valueOf(exitValue),
+                    "OutputStream: \n",
+                    process.getOutputStream().toString()).toString();
             LOG(log);
         } catch (IOException e) {
-            LOG(LogLevel.ERROR, "Could not start process: ", processBuilder.toString());
+            LOG(LogLevel.ERROR,"Could not start process: ",processBuilder.toString());
             log = LogBuilder.logBuilderFromStackTraceElementArray(
-                e.getMessage(),
-                e.getStackTrace()).toString();
+                    e.getMessage(),
+                    e.getStackTrace()).toString();
             LOG(log);
             return false;
         } catch (InterruptedException e) {
-            LOG(LogLevel.ERROR, "Could not start process: ", processBuilder.toString());
-            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).toString();
-            LOG(LogLevel.ERROR, log);
+            LOG(LogLevel.ERROR,"Could not start process: ",processBuilder.toString());
+            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+                    .toString();
+            LOG(LogLevel.ERROR,log);
             return false;
         }
         return true;

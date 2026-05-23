@@ -13,7 +13,7 @@ import com.rumpus.common.Log.ICommonLogger.LogLevel;
  * Abstract class for common server sockets.
  */
 abstract public class AbstractServerSocket extends AbstractCommonObject {
-    
+
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private String port;
@@ -33,16 +33,17 @@ abstract public class AbstractServerSocket extends AbstractCommonObject {
             this.serverSocket = new ServerSocket(portNumber);
             this.clientSocket = this.serverSocket.accept();
             this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
-            this.in = new BufferedReader(new java.io.InputStreamReader(this.clientSocket.getInputStream()));
+            this.in = new BufferedReader(
+                    new java.io.InputStreamReader(this.clientSocket.getInputStream()));
             final String greeting = this.in.readLine();
-            if(CLIENT_GREETING.equals(greeting)) {
+            if (CLIENT_GREETING.equals(greeting)) {
                 this.out.println(SERVER_GREETING);
             } else {
-                LOG(LogLevel.ERROR, "Client did not greet server properly");
+                LOG(LogLevel.ERROR,"Client did not greet server properly");
                 return false;
             }
         } catch (IOException e) {
-            LOG(LogLevel.ERROR, e.getMessage());
+            LOG(LogLevel.ERROR,e.getMessage());
             return false;
         }
         return true;
@@ -55,10 +56,10 @@ abstract public class AbstractServerSocket extends AbstractCommonObject {
             this.clientSocket.close();
             this.serverSocket.close();
         } catch (IOException e) {
-            LOG(LogLevel.ERROR, e.getMessage());
+            LOG(LogLevel.ERROR,e.getMessage());
             return false;
         }
         return true;
     }
-    
+
 }

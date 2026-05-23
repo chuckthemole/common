@@ -7,14 +7,13 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 
 /**
- * Stores key-value pairs of site color settings.
- * Uses a JSON column in MySQL for easy serialization/deserialization.
+ * Stores key-value pairs of site color settings. Uses a JSON column in MySQL
+ * for easy serialization/deserialization.
  */
 public class Colors {
 
     /**
-     * Map of color keys to values.
-     * Example: "primary" -> "#8A4D76"
+     * Map of color keys to values. Example: "primary" -> "#8A4D76"
      */
     private Map<String, String> colors = new HashMap<>();
 
@@ -34,7 +33,7 @@ public class Colors {
 
     @JsonAnySetter
     public void setColor(String key, String value) {
-        this.colors.put(key, value);
+        this.colors.put(key,value);
     }
 
     public void setColors(Map<String, String> colors) {

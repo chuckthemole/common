@@ -4,9 +4,10 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 
 /**
  * Bulma Block
- * 
- * note: this will default to a div tag. you can change it to a different tag by using the setHtmlTagType method.
- * 
+ *
+ * note: this will default to a div tag. you can change it to a different tag by
+ * using the setHtmlTagType method.
+ *
  * @link https://bulma.io/documentation/elements/block/
  */
 public class Block extends AbstractBulmaElement {
@@ -20,12 +21,14 @@ public class Block extends AbstractBulmaElement {
     }
 
     private void init() {
-        this.addHtmlTagAttribute(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(), CLASS_NAME);
+        this.addHtmlTagAttribute(
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),CLASS_NAME);
     }
 
     public static Block createWithBody(String body) {
         return new Block(body);
     }
+
     public static Block createWithNoBody() {
         return new Block("");
     }

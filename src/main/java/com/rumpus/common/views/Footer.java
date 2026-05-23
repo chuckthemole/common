@@ -5,8 +5,8 @@ import java.util.List;
 
 /**
  * @author Charles Thomas
- * 
- * Footer view
+ *
+ *         Footer view
  */
 public class Footer extends AbstractView {
 
@@ -46,7 +46,7 @@ public class Footer extends AbstractView {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(Column column : this.columns) {
+        for (Column column : this.columns) {
             sb.append(column.toString());
         }
         return sb.toString();
@@ -73,7 +73,7 @@ public class Footer extends AbstractView {
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("Title: ").append(this.title).append("\n");
-            for(String item : this.items) {
+            for (String item : this.items) {
                 sb.append("  ").append(item).append("\n");
             }
             return sb.toString();

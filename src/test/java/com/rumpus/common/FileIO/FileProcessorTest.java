@@ -31,10 +31,10 @@ public class FileProcessorTest {
 
     private final Type type = TestUserModel[].class;
     private final int userModelsLength = 3;
-    private final TestUserModel[] userModels = new TestUserModel[] {
-        TestUserModel.create("username1", "password1", "email1@email.com"),
-        TestUserModel.create("username2", "password2", "email2@email.com"),
-        TestUserModel.create("username3", "password3", "email3@email.com")
+    private final TestUserModel[] userModels = new TestUserModel[]{
+            TestUserModel.create("username1","password1","email1@email.com"),
+            TestUserModel.create("username2","password2","email2@email.com"),
+            TestUserModel.create("username3","password3","email3@email.com")
     };
 
     @BeforeEach
@@ -44,7 +44,7 @@ public class FileProcessorTest {
 
     @Test
     void testProcessFile_Success() {
-        
+
         // Mock the file reader response
         when(this.mockFileReader.<TestUserModel>readModelsFromFile(FileProcessorTest.JSON_USERS_FILE, this.type)).thenReturn(Optional.of(this.userModels));
 

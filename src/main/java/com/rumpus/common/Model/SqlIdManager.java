@@ -14,4 +14,3 @@ public class SqlIdManager implements IModelIdManager<java.util.UUID> {
         return id instanceof UUID;
     }
 }
-

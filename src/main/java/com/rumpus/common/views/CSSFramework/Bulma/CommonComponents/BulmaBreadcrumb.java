@@ -6,7 +6,7 @@ import com.rumpus.common.views.Html.Attribute;
 import com.rumpus.common.views.Html.HtmlTagAttributes;
 
 public class BulmaBreadcrumb extends AbstractBreadcrumb {
-    
+
     private static final String NAV_HTML_ATTRIBUTES = "class=breadcrumb,aria-label=breadcrumbs";
 
     private BulmaBreadcrumb(String componentName, String breadcrumbItems) {
@@ -22,9 +22,10 @@ public class BulmaBreadcrumb extends AbstractBreadcrumb {
         ComponentAttributeManager manager = ComponentAttributeManager.create();
 
         HtmlTagAttributes navHtmlTagAttributes = HtmlTagAttributes.create();
-        navHtmlTagAttributes.addAll(Attribute.getAttributesFromStringOfAttributes(NAV_HTML_ATTRIBUTES, ","));
-        manager.put(AbstractBreadcrumb.NAV_ATTRIBUTES, navHtmlTagAttributes);
-        
+        navHtmlTagAttributes
+                .addAll(Attribute.getAttributesFromStringOfAttributes(NAV_HTML_ATTRIBUTES,","));
+        manager.put(AbstractBreadcrumb.NAV_ATTRIBUTES,navHtmlTagAttributes);
+
         return manager;
     }
 }

@@ -1,10 +1,11 @@
 package com.rumpus.common.Manager;
 
 /**
- * TODO: need to implement!
- * TODO: think about this a bit more. Maybe we can control this with the manageeMap in AbstractCommonManager?
+ * TODO: need to implement! TODO: think about this a bit more. Maybe we can
+ * control this with the manageeMap in AbstractCommonManager?
  */
-abstract public class AbstractCommonSingletonManager<KEY, MANAGEE extends IManageable> extends AbstractCommonManager<KEY, MANAGEE> {
+abstract public class AbstractCommonSingletonManager<KEY,
+        MANAGEE extends IManageable> extends AbstractCommonManager<KEY, MANAGEE> {
 
     private static AbstractCommonSingletonManager<? extends Object, ? extends IManageable> instance = null;
 

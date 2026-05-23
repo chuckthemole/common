@@ -13,13 +13,14 @@ public class Button extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Button createWithBody(String body) {
         return new Button(body);
     }
+
     public static Button createWithNoBody() {
         return new Button("");
     }

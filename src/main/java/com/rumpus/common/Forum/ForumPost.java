@@ -17,7 +17,7 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
     private String userId; // id of user that makes post
     private ForumPostMeta metaData;
     private String body;
-    
+
     private ForumPost(String userId, String body) {
         this.userId = userId;
         this.body = body;
@@ -27,6 +27,7 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
     public static ForumPost create(String userId, String body) {
         return new ForumPost(userId, body);
     }
+
     public static ForumPost createGhost() {
         return new ForumPost(GHOST_ID, GHOST_BODY);
     }
@@ -59,14 +60,14 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb
-            .append("\nForumPost:\n")
-            .append("  User ID: ")
-            .append(this.userId)
-            .append("\n")
-            .append("  Creation time: ")
-            .append(this.metaData.getCreationTime())
-            .append("\n")
-            .append(this.body);
+                .append("\nForumPost:\n")
+                .append("  User ID: ")
+                .append(this.userId)
+                .append("\n")
+                .append("  Creation time: ")
+                .append(this.metaData.getCreationTime())
+                .append("\n")
+                .append(this.body);
         return sb.toString();
     }
 
@@ -83,30 +84,30 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
         ForumPost forumPost = (ForumPost) o;
 
         boolean isEqual = true;
-        if(!this.userId.equals(forumPost.userId)) {
+        if (!this.userId.equals(forumPost.userId)) {
             final String log = LogBuilder.logBuilderFromStringArgs(
-                "\nForumPost's are not equal:\n  user IDs are not equal: ",
-                this.userId,
-                " not equal to ",
-                forumPost.userId).toString();
+                    "\nForumPost's are not equal:\n  user IDs are not equal: ",
+                    this.userId,
+                    " not equal to ",
+                    forumPost.userId).toString();
             LOG(log);
             isEqual = false;
         }
-        if(!this.body.equals(forumPost.body)) {
+        if (!this.body.equals(forumPost.body)) {
             final String log = LogBuilder.logBuilderFromStringArgs(
-                "\nForumPost's are not equal:\n  bodys are not equal: ",
-                this.body,
-                " not equal to ",
-                forumPost.body).toString();
+                    "\nForumPost's are not equal:\n  bodys are not equal: ",
+                    this.body,
+                    " not equal to ",
+                    forumPost.body).toString();
             LOG(log);
             isEqual = false;
         }
-        if(!this.metaData.equals(forumPost.metaData)) {
+        if (!this.metaData.equals(forumPost.metaData)) {
             final String log = LogBuilder.logBuilderFromStringArgs(
-                "\nForumPost's are not equal:\n  meta data is not equal: ",
-                this.metaData.toString(),
-                " not equal to ",
-                forumPost.metaData.toString()).toString();
+                    "\nForumPost's are not equal:\n  meta data is not equal: ",
+                    this.metaData.toString(),
+                    " not equal to ",
+                    forumPost.metaData.toString()).toString();
             LOG(log);
             isEqual = false;
         }
@@ -116,7 +117,9 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
 
     final public class ForumPostMeta extends AbstractMetaData<ForumPostMeta> {
 
-        public ForumPostMeta() {}
+        public ForumPostMeta() {
+        }
+
         public ForumPostMeta(Map<String, Object> metaData) {
             super(metaData);
         }
@@ -124,9 +127,9 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
         @Override
         public Map<String, Object> getMetaAttributesMap() {
             return Map.of(
-                AbstractMetaData.CREATION_TIME_KEY, this.getCreationTime()
-            );
+                    AbstractMetaData.CREATION_TIME_KEY,this.getCreationTime());
         }
+
         @Override
         public String toString() {
             // TODO Auto-generated method stub

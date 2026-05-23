@@ -16,10 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Order;
 
 /**
- * Tests {@link ForumPostNode} and in turn {@link AbstractNode} since the previous inherrits from the latter
+ * Tests {@link ForumPostNode} and in turn {@link AbstractNode} since the
+ * previous inherrits from the latter
  */
 public class ForumPostNodeTest {
-    
+
     private static String creationTime;
     private static BigDecimal differenceInTime;
 
@@ -35,8 +36,8 @@ public class ForumPostNodeTest {
 
     @BeforeAll
     public static void setUpClass() {
-        ForumPostNodeTest.post1 = ForumPost.create(userId1, body1);
-        ForumPostNodeTest.post2 = ForumPost.create(userId2, body2);
+        ForumPostNodeTest.post1 = ForumPost.create(userId1,body1);
+        ForumPostNodeTest.post2 = ForumPost.create(userId2,body2);
     }
 
     @AfterAll
@@ -59,16 +60,16 @@ public class ForumPostNodeTest {
     void testSetGetData() {
 
         // test getter
-        assertEquals(ForumPostNodeTest.post1, ForumPostNodeTest.postNode1.getData());
-        assertEquals(ForumPostNodeTest.post2, ForumPostNodeTest.postNode2.getData());
+        assertEquals(ForumPostNodeTest.post1,ForumPostNodeTest.postNode1.getData());
+        assertEquals(ForumPostNodeTest.post2,ForumPostNodeTest.postNode2.getData());
 
         // switch data
         ForumPostNodeTest.postNode1.setData(post2);
         ForumPostNodeTest.postNode2.setData(post1);
 
         // make sure setter wored above
-        assertEquals(ForumPostNodeTest.post2, ForumPostNodeTest.postNode1.getData());
-        assertEquals(ForumPostNodeTest.post1, ForumPostNodeTest.postNode2.getData());
+        assertEquals(ForumPostNodeTest.post2,ForumPostNodeTest.postNode1.getData());
+        assertEquals(ForumPostNodeTest.post1,ForumPostNodeTest.postNode2.getData());
     }
 
     @Test
@@ -76,71 +77,72 @@ public class ForumPostNodeTest {
     void testSetGetNext() {
 
         // test getter returns null
-        assertEquals(null, ForumPostNodeTest.postNode1.getNext(), "TODO: message...");
-        assertEquals(null, ForumPostNodeTest.postNode2.getNext(), "TODO: message...");
+        assertEquals(null,ForumPostNodeTest.postNode1.getNext(),"TODO: message...");
+        assertEquals(null,ForumPostNodeTest.postNode2.getNext(),"TODO: message...");
 
         ForumPostNodeTest.postNode1.setNext(ForumPostNodeTest.postNode2);
-        assertEquals(ForumPostNodeTest.postNode2, ForumPostNodeTest.postNode1.getNext(), "TODO: message...");
+        assertEquals(ForumPostNodeTest.postNode2,ForumPostNodeTest.postNode1.getNext(),
+                "TODO: message...");
     }
 
     @Test
     @Order(3)
     void testSetGetPrevious() {
         // test getter returns null
-        assertEquals(null, ForumPostNodeTest.postNode1.getPrevious(), "TODO: message...");
-        assertEquals(null, ForumPostNodeTest.postNode2.getPrevious(), "TODO: message...");
+        assertEquals(null,ForumPostNodeTest.postNode1.getPrevious(),"TODO: message...");
+        assertEquals(null,ForumPostNodeTest.postNode2.getPrevious(),"TODO: message...");
 
         ForumPostNodeTest.postNode1.setPrevious(ForumPostNodeTest.postNode2);
-        assertEquals(ForumPostNodeTest.postNode2, ForumPostNodeTest.postNode1.getPrevious(), "TODO: message...");
+        assertEquals(ForumPostNodeTest.postNode2,ForumPostNodeTest.postNode1.getPrevious(),
+                "TODO: message...");
     }
 
     @Test
     @Order(4)
     void testSetGetHeadChild() {
         // test getter returns null
-        assertEquals(null, ForumPostNodeTest.postNode1.getHeadChild(), "TODO: message...");
-        assertEquals(null, ForumPostNodeTest.postNode2.getHeadChild(), "TODO: message...");
+        assertEquals(null,ForumPostNodeTest.postNode1.getHeadChild(),"TODO: message...");
+        assertEquals(null,ForumPostNodeTest.postNode2.getHeadChild(),"TODO: message...");
 
         ForumPostNodeTest.postNode1.setHeadChild(ForumPostNodeTest.postNode2);
-        assertEquals(ForumPostNodeTest.postNode2, ForumPostNodeTest.postNode1.getHeadChild(), "TODO: message...");
+        assertEquals(ForumPostNodeTest.postNode2,ForumPostNodeTest.postNode1.getHeadChild(),
+                "TODO: message...");
     }
 
     @Test
     @Order(5)
     void testAddChildAndChildrenSize() {
-        List<ForumPostNode> expectedChildren =
-            List.of(
-                ForumPostNode.createNodeFromBody("1", "1body"),
-                ForumPostNode.createNodeFromBody("2", "2body"),
-                ForumPostNode.createNodeFromBody("3", "3body"),
-                ForumPostNode.createNodeFromBody("4", "4body"),
-                ForumPostNode.createNodeFromBody("5", "5body")
-            );
+        List<ForumPostNode> expectedChildren = List.of(
+                ForumPostNode.createNodeFromBody("1","1body"),
+                ForumPostNode.createNodeFromBody("2","2body"),
+                ForumPostNode.createNodeFromBody("3","3body"),
+                ForumPostNode.createNodeFromBody("4","4body"),
+                ForumPostNode.createNodeFromBody("5","5body"));
 
         // test child size
         assertTrue(!ForumPostNodeTest.postNode1.hasChildren());
-        assertEquals(0, ForumPostNodeTest.postNode1.childrenSize());
-        
+        assertEquals(0,ForumPostNodeTest.postNode1.childrenSize());
+
         // add children to node
-        for(ForumPostNode child : expectedChildren) {
+        for (ForumPostNode child : expectedChildren) {
             ForumPostNodeTest.postNode1.addChild(child);
         }
 
         // test children size
         assertTrue(ForumPostNodeTest.postNode1.hasChildren());
-        assertEquals(5, ForumPostNodeTest.postNode1.childrenSize());
+        assertEquals(5,ForumPostNodeTest.postNode1.childrenSize());
 
         // get children from node and store in actualChildren, get child count
         List<ForumPostNode> actualChildren = new LinkedList<>();
         ForumPostNode currentNode = ForumPostNodeTest.postNode1.getHeadChild();
         int count = 0;
-        while(currentNode != null) {
+        while (currentNode != null) {
             actualChildren.add(currentNode);
             currentNode = currentNode.getNext();
             count++;
         }
 
-        assertEquals(5, count, "Expected size not equal to 5. Actual size=" + count);
-        assertEquals(expectedChildren, actualChildren);
+        assertEquals(5,count,"Expected size not equal to 5. Actual size=" + count);
+        assertEquals(expectedChildren,actualChildren);
     }
 }

@@ -10,27 +10,30 @@ import com.rumpus.common.views.Html.HtmlTagAttributes;
 /**
  * Create an {@link AbstractTile} object for the Bulma CSS framework.
  * <p>
- * Bulma Tile documentation: <a href="https://bulma.io/documentation/layout/tiles/">https://bulma.io/documentation/layout/tiles/</a>
+ * Bulma Tile documentation: <a href=
+ * "https://bulma.io/documentation/layout/tiles/">https://bulma.io/documentation/layout/tiles/</a>
  * <p>
  * Use the static factory methods to create a new BulmaTile object.
  * <p>
  * Example usage:
+ *
  * <pre>
  *  {@code
- *  AbstractTile ancestor = BulmaTile.createAncestorTile("AncestorTile");
- *  AbstractTile parent = BulmaTile.createParentTile("ParentTile");
- *  AbstractTile child1 = BulmaTile.createChildTile("ChildTile", "ChildTitle, ChildSubtitle");
- *  AbstractTile child2 = BulmaTile.createChildTile("ChildTile", "ChildComponents");
- *  parent.addChild(child1);
- *  parent.addChild(child2);
- *  parent.addChild(BulmaTile.createEmptyChildTile("ChildTile"));
- *  parent.addChild(BulmaTile.createContainerTile("ContainerTile"));
- *  // Add the tiles to ancestor tile
- *  ancestor.addChild(parent);
- *  }
+ * AbstractTile ancestor = BulmaTile.createAncestorTile("AncestorTile");
+ * AbstractTile parent = BulmaTile.createParentTile("ParentTile");
+ * AbstractTile child1 = BulmaTile.createChildTile("ChildTile","ChildTitle, ChildSubtitle");
+ * AbstractTile child2 = BulmaTile.createChildTile("ChildTile","ChildComponents");
+ * parent.addChild(child1);
+ * parent.addChild(child2);
+ * parent.addChild(BulmaTile.createEmptyChildTile("ChildTile"));
+ * parent.addChild(BulmaTile.createContainerTile("ContainerTile"));
+ * // Add the tiles to ancestor tile
+ * ancestor.addChild(parent);
+ * }
  * </pre>
  * <p>
  * Example output:
+ *
  * <pre>
  * {@code
  * <div class="tile is-ancestor">
@@ -55,32 +58,27 @@ public class BulmaTile extends AbstractTile {
 
     private BulmaTile(String componentName, TileType tileType, String tileComponents) {
         super(
-            componentName,
-            tileType,
-            tileComponents
-        );
+                componentName,
+                tileType,
+                tileComponents);
     }
 
     public static BulmaTile createAncestorTile(String componentName) {
         return new BulmaTile(
-            componentName,
-            TileType.ANCESTOR,
-            StringUtil.buildStringFromArgs(
-                AbstractTile.ANCESTOR_ATTRIBUTE,
-                AbstractTile.TILE_TYPE_DELIMITER
-            )
-        );
+                componentName,
+                TileType.ANCESTOR,
+                StringUtil.buildStringFromArgs(
+                        AbstractTile.ANCESTOR_ATTRIBUTE,
+                        AbstractTile.TILE_TYPE_DELIMITER));
     }
 
     public static BulmaTile createParentTile(String componentName) {
         return new BulmaTile(
-            componentName,
-            TileType.PARENT,
-            StringUtil.buildStringFromArgs(
-                AbstractTile.PARENT_ATTRIBUTE,
-                AbstractTile.TILE_TYPE_DELIMITER
-            )
-        );
+                componentName,
+                TileType.PARENT,
+                StringUtil.buildStringFromArgs(
+                        AbstractTile.PARENT_ATTRIBUTE,
+                        AbstractTile.TILE_TYPE_DELIMITER));
     }
 
     public static BulmaTile createChildTile(String componentName, String title, String subtitle) {
@@ -88,15 +86,13 @@ public class BulmaTile extends AbstractTile {
         sb.append("child::");
         sb.append(title).append(AbstractComponent.DEFAULT_DELIMITER).append(subtitle);
         return new BulmaTile(
-            componentName,
-            TileType.CHILD,
-            StringUtil.buildStringFromArgs(
-                AbstractTile.CHILD_ATTRIBUTE,
-                AbstractTile.TILE_TYPE_DELIMITER,
-                title,
-                AbstractComponent.DEFAULT_DELIMITER, subtitle
-            )
-        );
+                componentName,
+                TileType.CHILD,
+                StringUtil.buildStringFromArgs(
+                        AbstractTile.CHILD_ATTRIBUTE,
+                        AbstractTile.TILE_TYPE_DELIMITER,
+                        title,
+                        AbstractComponent.DEFAULT_DELIMITER,subtitle));
     }
 
     public static BulmaTile createChildTile(String componentName, String tileComponents) {
@@ -105,24 +101,20 @@ public class BulmaTile extends AbstractTile {
 
     public static BulmaTile createEmptyChildTile(String componentName) {
         return new BulmaTile(
-            componentName,
-            TileType.CHILD,
-            StringUtil.buildStringFromArgs(
-                AbstractTile.CHILD_ATTRIBUTE,
-                AbstractTile.TILE_TYPE_DELIMITER
-            )
-        );
+                componentName,
+                TileType.CHILD,
+                StringUtil.buildStringFromArgs(
+                        AbstractTile.CHILD_ATTRIBUTE,
+                        AbstractTile.TILE_TYPE_DELIMITER));
     }
 
     public static BulmaTile createContainerTile(String componentName) {
         return new BulmaTile(
-            componentName,
-            TileType.CONTAINER,
-            StringUtil.buildStringFromArgs(
-                AbstractTile.CONTAINER_ATTRIBUTE,
-                AbstractTile.TILE_TYPE_DELIMITER
-            )
-        );
+                componentName,
+                TileType.CONTAINER,
+                StringUtil.buildStringFromArgs(
+                        AbstractTile.CONTAINER_ATTRIBUTE,
+                        AbstractTile.TILE_TYPE_DELIMITER));
     }
 
     @Override
@@ -131,28 +123,29 @@ public class BulmaTile extends AbstractTile {
         ComponentAttributeManager manager = ComponentAttributeManager.create();
 
         HtmlTagAttributes ancestorAttributes = HtmlTagAttributes.create();
-        ancestorAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile", "is-ancestor")));
-        manager.put(AbstractTile.ANCESTOR_ATTRIBUTE, ancestorAttributes);
+        ancestorAttributes
+                .add(Attribute.createClassAttribute(java.util.Set.of("tile","is-ancestor")));
+        manager.put(AbstractTile.ANCESTOR_ATTRIBUTE,ancestorAttributes);
 
         HtmlTagAttributes parentAttributes = HtmlTagAttributes.create();
-        parentAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile", "is-parent")));
-        manager.put(AbstractTile.PARENT_ATTRIBUTE, parentAttributes);
+        parentAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile","is-parent")));
+        manager.put(AbstractTile.PARENT_ATTRIBUTE,parentAttributes);
 
         HtmlTagAttributes childAttributes = HtmlTagAttributes.create();
-        childAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile", "is-child")));
-        manager.put(AbstractTile.CHILD_ATTRIBUTE, childAttributes);
+        childAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile","is-child")));
+        manager.put(AbstractTile.CHILD_ATTRIBUTE,childAttributes);
 
         HtmlTagAttributes containerAttributes = HtmlTagAttributes.create();
         containerAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile")));
-        manager.put(AbstractTile.CONTAINER_ATTRIBUTE, containerAttributes);
+        manager.put(AbstractTile.CONTAINER_ATTRIBUTE,containerAttributes);
 
         HtmlTagAttributes titleAttributes = HtmlTagAttributes.create();
         titleAttributes.add(Attribute.createClassAttribute(java.util.Set.of("title")));
-        manager.put(AbstractTile.TITLE_ATTRIBUTE, titleAttributes);
+        manager.put(AbstractTile.TITLE_ATTRIBUTE,titleAttributes);
 
         HtmlTagAttributes subtitleAttributes = HtmlTagAttributes.create();
         subtitleAttributes.add(Attribute.createClassAttribute(java.util.Set.of("subtitle")));
-        manager.put(AbstractTile.SUBTITLE_ATTRIBUTE, subtitleAttributes);
+        manager.put(AbstractTile.SUBTITLE_ATTRIBUTE,subtitleAttributes);
 
         return manager;
     }

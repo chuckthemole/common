@@ -139,7 +139,8 @@ public class MySQLLogger extends AbstractCommonLogger implements Log {
     }
 
     @Override
-    public void logInfo(Object msg, Throwable thrown) { // TODO: should I make a LOG method in AbstractCommonObject to take Throwable?
+    public void logInfo(Object msg, Throwable thrown) { // TODO: should I make a LOG method in
+                                                        // AbstractCommonObject to take Throwable?
         // LOG((String) msg, thrown.getMessage());
     }
 
@@ -226,5 +227,5 @@ public class MySQLLogger extends AbstractCommonLogger implements Log {
     public String toString() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
-    }       
+    }
 }

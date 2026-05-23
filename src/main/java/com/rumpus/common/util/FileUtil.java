@@ -9,8 +9,9 @@ public class FileUtil implements ICommon {
 
     /**
      * Check if a path exists.
-     * 
-     * @param path The path to check.
+     *
+     * @param path
+     *            The path to check.
      * @return SUCCESS if the path exists, DOES_NOT_EXIST if it does not.
      */
     static public int doesPathExist(String path) {
@@ -26,7 +27,7 @@ public class FileUtil implements ICommon {
         File directory; // desired current working directory
         directory = new File(directoryPath).getAbsoluteFile();
         if (directory.exists() || directory.mkdirs()) {
-            result = (System.setProperty("user.dir", directory.getAbsolutePath()) != null);
+            result = (System.setProperty("user.dir",directory.getAbsolutePath()) != null);
         }
         return result;
     }
@@ -35,8 +36,8 @@ public class FileUtil implements ICommon {
         PrintWriter output = null; // file to open for writing
         try {
             output = new PrintWriter(new File(fileName).getAbsoluteFile());
+        } catch (Exception exception) {
         }
-        catch (Exception exception) {}
         return output;
     }
 

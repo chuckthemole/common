@@ -30,4 +30,3 @@ public class TestModel extends AbstractModel<TestModel, java.util.UUID> {
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }
-

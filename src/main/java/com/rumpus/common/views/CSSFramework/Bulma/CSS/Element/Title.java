@@ -11,12 +11,8 @@ public class Title extends AbstractBulmaElement {
     // TODO: enum for H1, H2, H3, H4, H5, H6 etc
     // TODO: getters setters for size
     public enum TitleSize {
-        SIZE_1("is-1"),
-        SIZE_2("is-2"),
-        SIZE_3("is-3"),
-        SIZE_4("is-4"),
-        SIZE_5("is-5"),
-        SIZE_6("is-6");
+        SIZE_1("is-1"), SIZE_2("is-2"), SIZE_3("is-3"), SIZE_4("is-4"), SIZE_5("is-5"), SIZE_6(
+                "is-6");
 
         private String size;
 
@@ -30,12 +26,7 @@ public class Title extends AbstractBulmaElement {
     }
 
     public enum TitleType {
-        H1("h1"),
-        H2("h2"),
-        H3("h3"),
-        H4("h4"),
-        H5("h5"),
-        H6("h6");
+        H1("h1"), H2("h2"), H3("h3"), H4("h4"), H5("h5"), H6("h6");
 
         private String type;
 
@@ -53,14 +44,18 @@ public class Title extends AbstractBulmaElement {
 
     private Title(String body, TitleSize titleSize, TitleType titleType) {
         super(DEFAULT_HTML_TAG_TYPE, body);
-        this.init(titleSize, titleType);
+        this.init(titleSize,titleType);
     }
 
     private void init(TitleSize titleSize, TitleType titleType) {
-        super.setHtmlTagType(this.getHtmlTagTypeFromTitleType(titleType)); // setting the corret tag type here, was set to DEFAULT_HTML_TAG_TYPE
+        super.setHtmlTagType(this.getHtmlTagTypeFromTitleType(titleType)); // setting the corret tag
+                                                                           // type here, was set to
+                                                                           // DEFAULT_HTML_TAG_TYPE
         StringBuilder sb = new StringBuilder();
         sb.append(CLASS_NAME).append(" ").append(titleSize.getSize());
-        this.addHtmlTagAttribute(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(), sb.toString());
+        this.addHtmlTagAttribute(
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                sb.toString());
         this.titleSize = titleSize;
         this.titleType = titleType;
     }
@@ -68,6 +63,7 @@ public class Title extends AbstractBulmaElement {
     public static Title createWithBody(String body, TitleSize titleSize, TitleType titleType) {
         return new Title(body, titleSize, titleType);
     }
+
     public static Title createWithNoBody(TitleSize titleSize, TitleType titleType) {
         return new Title("", titleSize, titleType);
     }
@@ -90,19 +86,19 @@ public class Title extends AbstractBulmaElement {
 
     private AbstractHtmlObject.HtmlTagType getHtmlTagTypeFromTitleType(TitleType titleType) {
         switch (titleType) {
-            case H1:
+            case H1 :
                 return AbstractHtmlObject.HtmlTagType.H1;
-            case H2:
+            case H2 :
                 return AbstractHtmlObject.HtmlTagType.H2;
-            case H3:
+            case H3 :
                 return AbstractHtmlObject.HtmlTagType.H3;
-            case H4:
+            case H4 :
                 return AbstractHtmlObject.HtmlTagType.H4;
-            case H5:
+            case H5 :
                 return AbstractHtmlObject.HtmlTagType.H5;
-            case H6:
+            case H6 :
                 return AbstractHtmlObject.HtmlTagType.H6;
-            default:
+            default :
                 return AbstractHtmlObject.HtmlTagType.H1;
         }
     }

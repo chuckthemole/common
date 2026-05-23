@@ -10,15 +10,16 @@ public interface IPort extends com.rumpus.common.Manager.ISetItem {
 
     /**
      * Returns the port.
-     * 
+     *
      * @return the port or null if there is no port
      */
     public String getPort();
 
     /**
      * Sets the port.
-     * 
-     * @param port the port to set. Must be a number between PORT_MIN and PORT_MAX.
+     *
+     * @param port
+     *            the port to set. Must be a number between PORT_MIN and PORT_MAX.
      */
     public void setPort(String port);
 }

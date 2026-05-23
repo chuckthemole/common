@@ -12,25 +12,26 @@ import java.util.List;
 
 /**
  * @author Charles Thomas
- * 
- * This class is the base class for all views. It acts as a manager of {@link AbstractTemplate}s.
- * TODO: define generics for this class, ie USER, USER_META, etc.
+ *
+ *         This class is the base class for all views. It acts as a manager of
+ *         {@link AbstractTemplate}s. TODO: define generics for this class, ie
+ *         USER, USER_META, etc.
  */
-public abstract class AbstractViews extends AbstractCommonManager<String, AbstractTemplate>  {
+public abstract class AbstractViews extends AbstractCommonManager<String, AbstractTemplate> {
 
     public static final String CURRENT_USER_TEMPLATE_KEY = "currentUserTemplate";
     protected final static String DEFAULT_NAVBAR_BRAND = "/images/default_brand.png";
-    
+
     protected Footer footer;
     protected Header header;
     protected AbstractHtmlObject landingPageBody;
     protected ITableBuilder userTable;
     protected ResourceManager resourceManager;
 
-	public AbstractViews() {
+    public AbstractViews() {
         super(false);
         // this.init();
-	}
+    }
 
     protected int init() { // TODO: make private?
         this.resourceManager = ResourceManager.createEmptyManager();
@@ -45,31 +46,42 @@ public abstract class AbstractViews extends AbstractCommonManager<String, Abstra
 
     /**
      * Init footer
+     *
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initFooter();
+
     /**
      * Init header
+     *
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initHeader();
+
     /**
      * Landing page body
+     *
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initBody();
+
     /**
      * Init user table
+     *
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initUserTable();
+
     /**
      * Init resource manager
+     *
      * @return SUCCESS if successful, otherwise FAILURE
      */
     abstract protected int initResourceManager();
+
     /**
      * Init templates for views
+     *
      * @return SUCCESS if successful, otherwise FAILURE
      * @see {@link AbstractTemplate}
      */
@@ -118,13 +130,15 @@ public abstract class AbstractViews extends AbstractCommonManager<String, Abstra
     // TODO: this should have defined generics. Do this for this class.
     @SuppressWarnings("unchecked")
     public AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> getCurrentUserTemplate() {
-        return (AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>>) this.get(AbstractViews.CURRENT_USER_TEMPLATE_KEY);
+        return (AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>>) this
+                .get(AbstractViews.CURRENT_USER_TEMPLATE_KEY);
     }
 
     /**
      * Get a particular resource by name
-     * 
-     * @param name the name of the resource
+     *
+     * @param name
+     *            the name of the resource
      * @return the resource or null if not found
      * @see Map.get()
      */
@@ -140,6 +154,6 @@ public abstract class AbstractViews extends AbstractCommonManager<String, Abstra
     @Override
     public AbstractTemplate createEmptyManagee(String name) {
         AbstractTemplate template = AbstractTemplate.createEmptyTemplate();
-        return this.put(name, template);
+        return this.put(name,template);
     }
 }

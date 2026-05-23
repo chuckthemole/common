@@ -15,7 +15,8 @@ abstract public class AbstractOAuth2FailureHandler extends AbstractFailureHandle
     abstract public String getBaseRedirectUrl();
 
     @Override
-    public void onFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
+    public void onFailure(HttpServletRequest request, HttpServletResponse response,
+            AuthenticationException exception)
             throws IOException, ServletException {
         final String baseRedirectUrl = this.getBaseRedirectUrl();
         String redirectUrl = baseRedirectUrl + "?error=" +

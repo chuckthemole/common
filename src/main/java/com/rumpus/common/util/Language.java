@@ -1,8 +1,8 @@
 package com.rumpus.common.util;
 
 /**
- * TODO: This could probably use more language codes and a better way to handle them.
- * Just using the ISO 639-3 standard for now.
+ * TODO: This could probably use more language codes and a better way to handle
+ * them. Just using the ISO 639-3 standard for now.
  */
 public final class Language {
 
@@ -13,17 +13,9 @@ public final class Language {
     // create an enum for the languages
     // language the language code, which follows ISO 639-3 standard.
     public enum LanguageCode {
-        ENGLISH("eng"),
-        GERMAN("deu"),
-        FRENCH("fra"),
-        SPANISH("spa"),
-        ITALIAN("ita"),
-        DUTCH("nld"),
-        PORTUGUESE("por"),
-        RUSSIAN("rus"),
-        JAPANESE("jpn"),
-        CHINESE("chi_sim"),
-        KOREAN("kor");
+        ENGLISH("eng"), GERMAN("deu"), FRENCH("fra"), SPANISH("spa"), ITALIAN("ita"), DUTCH(
+                "nld"), PORTUGUESE(
+                        "por"), RUSSIAN("rus"), JAPANESE("jpn"), CHINESE("chi_sim"), KOREAN("kor");
 
         private final String language;
 

@@ -20,7 +20,8 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
      */
     private static String lastError = "";
 
-    public AbstractFileIO() {}
+    public AbstractFileIO() {
+    }
 
     @Override
     public Optional<String> readRawFileContent(String filePath) {
@@ -35,7 +36,7 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
         } catch (IOException e) {
             // Set the last error message when an exception occurs
             lastError = "Error reading file at " + filePath + ": " + e.getMessage();
-            LOG_THIS("Error reading file: ", filePath, e.getClass().getSimpleName(), e.getMessage());
+            LOG_THIS("Error reading file: ",filePath,e.getClass().getSimpleName(),e.getMessage());
             return Optional.empty();
         }
     }
@@ -49,7 +50,7 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
             lastError = "";
 
             // Retrieve basic file attributes
-            BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+            BasicFileAttributes attributes = Files.readAttributes(path,BasicFileAttributes.class);
 
             // Create a FileMetadata object
             FileMetadata metadata = FileMetadata.createFromAttributes(attributes);
@@ -75,14 +76,15 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
         } catch (SecurityException e) {
             // Set the last error message when an exception occurs
             lastError = "Error validating file at " + filePath + ": " + e.getMessage();
-            LOG_THIS("Error validating file: ", filePath, e.getClass().getSimpleName(), e.getMessage());
+            LOG_THIS("Error validating file: ",filePath,e.getClass().getSimpleName(),
+                    e.getMessage());
             return false;
         }
     }
 
     @Override
     public Optional<String> getLastError() {
-        if(lastError.isEmpty()) {
+        if (lastError.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(lastError);
@@ -91,19 +93,22 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
     /**
      * Helper method for logging errors with class context and log level.
      *
-     * @param args Arguments to log.
+     * @param args
+     *            Arguments to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractFileIO.class, args);
+        ICommon.LOG(AbstractFileIO.class,args);
     }
 
     /**
      * Overloaded helper method for logging errors with specified log level.
      *
-     * @param level The log level (e.g., ERROR, WARN, INFO).
-     * @param args  The log messages.
+     * @param level
+     *            The log level (e.g., ERROR, WARN, INFO).
+     * @param args
+     *            The log messages.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractFileIO.class, level, args);
+        ICommon.LOG(AbstractFileIO.class,level,args);
     }
 }

@@ -10,7 +10,8 @@ import com.rumpus.common.Log.application.JavaLogger;
 import java.util.UUID;
 
 /**
- * TODO: maybe make this an interface and have AbstractCommonObject implement it?
+ * TODO: maybe make this an interface and have AbstractCommonObject implement
+ * it?
  * <p>
  * Then make all public fields public. Think about it - chuck
  */
@@ -19,16 +20,30 @@ public interface ICommon {
     public static final Class<ICommon> DEFAULT_LOGGER_CLASS = ICommon.class;
 
     /**
-     * TODO: I don't like giving access to this, while people can change the class. I think I should make this private and have a getter for it. - chuck
+     * TODO: I don't like giving access to this, while people can change the class.
+     * I think I should make this private and have a getter for it. - chuck
      */
     public static ICommonLogger LOG_COMMON = JavaLogger.createLogger(DEFAULT_LOGGER_CLASS);
 
     public final static String NO_ID = String.valueOf(-1);
 
     /**
-     * Be careful with this. It's used in a lot of places. It's a placeholder for an empty UUID.
+     * Be careful with this. It's used in a lot of places. It's a placeholder for an
+     * empty UUID.
      */
-    public final static UUID EMPTY_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000"); // TODO: This is a placeholder. I believe a user already has this UUID.
+    public final static UUID EMPTY_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000"); // TODO:
+                                                                                                   // This
+                                                                                                   // is
+                                                                                                   // a
+                                                                                                   // placeholder.
+                                                                                                   // I
+                                                                                                   // believe
+                                                                                                   // a
+                                                                                                   // user
+                                                                                                   // already
+                                                                                                   // has
+                                                                                                   // this
+                                                                                                   // UUID.
     public final static String EMPTY_FIELD = "EMPTY_FIELD";
     public final static String NO_NAME = String.valueOf("NO_NAME");
     public final static String NO_PASS = String.valueOf("NO_PASS");
@@ -82,7 +97,7 @@ public interface ICommon {
     public static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE";
     public static final String ROLE_MANAGER = "ROLE_MANAGER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
-    
+
     // Shorthand Roles
     public static final String USER = "USER";
     public static final String EMPLOYEE = "EMPLOYEE";
@@ -100,8 +115,10 @@ public interface ICommon {
     public static final String PYTHON_PATH = "python.path";
     public static final String JYTHON_PATH = "jython.path";
 
-    // Class UID     look here: https://stackoverflow.com/questions/10378855/java-io-invalidclassexception-local-class-incompatible
-    // TODO: Some of these should be moved into rumpus directory, as they're not common. think about this though. I want each value to be unique.
+    // Class UID look here:
+    // https://stackoverflow.com/questions/10378855/java-io-invalidclassexception-local-class-incompatible
+    // TODO: Some of these should be moved into rumpus directory, as they're not
+    // common. think about this though. I want each value to be unique.
     public final static Long RUMPUS_USER_META_DATA_UID = Long.valueOf(11);
     public final static Long USER_META_DATA_UID = Long.valueOf(12);
     public final static Long META_DATA_UID = Long.valueOf(13);
@@ -112,12 +129,14 @@ public interface ICommon {
 
     /**
      * Top level AbstractCommonObject LOG method. Uses info level.
-     * 
-     * @param clazz the class to log the message for
-     * @param args The message to log
+     *
+     * @param clazz
+     *            the class to log the message for
+     * @param args
+     *            The message to log
      */
     public static void LOG(Class<?> clazz, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz,args).toString();
         LOG_COMMON.setClass(clazz);
         LOG_COMMON.infoLevel(log);
         LOG_COMMON.setClass(DEFAULT_LOGGER_CLASS);
@@ -125,13 +144,16 @@ public interface ICommon {
 
     /**
      * Top level AbstractCommonObject LOG method. Uses the specified level.
-     * 
-     * @param clazz the class to log the message for
-     * @param level the level to log the message at
-     * @param args The message to log
+     *
+     * @param clazz
+     *            the class to log the message for
+     * @param level
+     *            the level to log the message at
+     * @param args
+     *            The message to log
      */
     public static void LOG(Class<?> clazz, LogLevel level, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz,args).toString();
         LOG_COMMON.setClass(clazz);
         LOG_COMMON.infoLevel(log);
         LOG_COMMON.setClass(DEFAULT_LOGGER_CLASS);

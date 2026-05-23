@@ -16,125 +16,105 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     public enum HtmlTagType {
         EMPTY(""),
 
-        A("a"),
-        ABBR("abbr"),
-        ACRONYM("acronym"),
-        ADDRESS("address"),
-        APPLET("applet"),
-        AREA("area"),
-        ARTICLE("article"),
-        ASIDE("aside"),
-        AUDIO("audio"),
-        B("b"),
-        BASE("base"),
-        BASEFONT("basefont"),
-        BDI("bdi"),
-        BDO("bdo"),
-        BIG("big"),
-        BLOCKQUOTE("blockquote"),
-        BODY("body"),
-        BR("br"),
-        BUTTON("button"),
-        CANVAS("canvas"),
-        CAPTION("caption"),
-        CENTER("center"),
-        CITE("cite"),
-        CODE("code"),
-        COL("col"),
-        COLGROUP("colgroup"),
-        COMMAND("command"),
-        DATALIST("datalist"),
-        DD("dd"),
-        DEL("del"),
-        DETAILS("details"),
-        DFN("dfn"),
-        DIR("dir"),
-        DIV("div"),
-        DL("dl"),
-        DT("dt"),
-        EM("em"),
-        EMBED("embed"),
-        FIELDSET("fieldset"),
-        FIGCAPTION("figcaption"),
-        FIGURE("figure"),
-        FONT("font"),
-        FOOTER("footer"),
-        FORM("form"),
-        FRAME("frame"),
-        FRAMESET("frameset"),
-        H1("h1"),
-        H2("h2"),
-        H3("h3"),
-        H4("h4"),
-        H5("h5"),
-        H6("h6"),
-        HEAD("head"),
-        HEADER("header"),
-        HGROUP("hgroup"),
-        HR("hr"),
-        HTML("html"),
-        I("i"),
-        IFRAME("iframe"),
-        IMG("img"),
-        INPUT("input"),
-        INS("ins"),
-        ISINDEX("isindex"),
-        KBD("kbd"),
-        KEYGEN("keygen"),
-        LABEL("label"),
-        LEGEND("legend"),
-        LI("li"),
-        LINK("link"),
-        MAP("map"),
-        MARK("mark"),
-        MENU("menu"),
-        META("meta"),
-        METER("meter"),
-        NAV("nav"),
-        NOFRAMES("noframes"),
-        NOSCRIPT("noscript"),
-        OBJECT("object"),
-        OL("ol"),
-        OPTGROUP("optgroup"),
-        OPTION("option"),
-        OUTPUT("output"),
-        P("p"),
-        PARAM("param"),
-        PRE("pre"),
-        PROGRESS("progress"),
-        Q("q"),
-        RP("rp"),
-        RT("rt"),
-        RUBY("ruby"),
-        S("s"),
-        SAMP("samp"),
-        SCRIPT("script"),
-        SECTION("section"),
-        SELECT("select"),
-        SMALL("small"),
-        SOURCE("source"),
-        SPAN("span"),
-        STRIKE("strike"),
-        STRONG("strong"),
-        STYLE("style"),
-        SUB("sub"),
-        SUMMARY("summary"),
-        SUP("sup"),
-        TABLE("table"),
-        TBODY("tbody"),
-        TD("td"),
-        TEXTAREA("textarea"),
-        TFOOT("tfoot"),
-        TH("th"),
-        THEAD("thead"),
-        TIME("time"),
-        TITLE("title"),
-        TR("tr"),
-        TRACK("track"),
-        TT("tt"),
-        U("u"),
-        UL("ul"),
-        VAR("var");
+        A("a"), ABBR("abbr"), ACRONYM("acronym"), ADDRESS("address"), APPLET("applet"), AREA(
+                "area"), ARTICLE("article"), ASIDE("aside"), AUDIO("audio"), B("b"), BASE(
+                        "base"), BASEFONT("basefont"), BDI("bdi"), BDO("bdo"), BIG(
+                                "big"), BLOCKQUOTE("blockquote"), BODY("body"), BR("br"), BUTTON(
+                                        "button"), CANVAS("canvas"), CAPTION("caption"), CENTER(
+                                                "center"), CITE("cite"), CODE("code"), COL(
+                                                        "col"), COLGROUP("colgroup"), COMMAND(
+                                                                "command"), DATALIST(
+                                                                        "datalist"), DD("dd"), DEL(
+                                                                                "del"), DETAILS(
+                                                                                        "details"), DFN(
+                                                                                                "dfn"), DIR(
+                                                                                                        "dir"), DIV(
+                                                                                                                "div"), DL(
+                                                                                                                        "dl"), DT(
+                                                                                                                                "dt"), EM(
+                                                                                                                                        "em"), EMBED(
+                                                                                                                                                "embed"), FIELDSET(
+                                                                                                                                                        "fieldset"), FIGCAPTION(
+                                                                                                                                                                "figcaption"), FIGURE(
+                                                                                                                                                                        "figure"), FONT(
+                                                                                                                                                                                "font"), FOOTER(
+                                                                                                                                                                                        "footer"), FORM(
+                                                                                                                                                                                                "form"), FRAME(
+                                                                                                                                                                                                        "frame"), FRAMESET(
+                                                                                                                                                                                                                "frameset"), H1(
+                                                                                                                                                                                                                        "h1"), H2(
+                                                                                                                                                                                                                                "h2"), H3(
+                                                                                                                                                                                                                                        "h3"), H4(
+                                                                                                                                                                                                                                                "h4"), H5(
+                                                                                                                                                                                                                                                        "h5"), H6(
+                                                                                                                                                                                                                                                                "h6"), HEAD(
+                                                                                                                                                                                                                                                                        "head"), HEADER(
+                                                                                                                                                                                                                                                                                "header"), HGROUP(
+                                                                                                                                                                                                                                                                                        "hgroup"), HR(
+                                                                                                                                                                                                                                                                                                "hr"), HTML(
+                                                                                                                                                                                                                                                                                                        "html"), I(
+                                                                                                                                                                                                                                                                                                                "i"), IFRAME(
+                                                                                                                                                                                                                                                                                                                        "iframe"), IMG(
+                                                                                                                                                                                                                                                                                                                                "img"), INPUT(
+                                                                                                                                                                                                                                                                                                                                        "input"), INS(
+                                                                                                                                                                                                                                                                                                                                                "ins"), ISINDEX(
+                                                                                                                                                                                                                                                                                                                                                        "isindex"), KBD(
+                                                                                                                                                                                                                                                                                                                                                                "kbd"), KEYGEN(
+                                                                                                                                                                                                                                                                                                                                                                        "keygen"), LABEL(
+                                                                                                                                                                                                                                                                                                                                                                                "label"), LEGEND(
+                                                                                                                                                                                                                                                                                                                                                                                        "legend"), LI(
+                                                                                                                                                                                                                                                                                                                                                                                                "li"), LINK(
+                                                                                                                                                                                                                                                                                                                                                                                                        "link"), MAP(
+                                                                                                                                                                                                                                                                                                                                                                                                                "map"), MARK(
+                                                                                                                                                                                                                                                                                                                                                                                                                        "mark"), MENU(
+                                                                                                                                                                                                                                                                                                                                                                                                                                "menu"), META(
+                                                                                                                                                                                                                                                                                                                                                                                                                                        "meta"), METER(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                "meter"), NAV(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        "nav"), NOFRAMES(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                "noframes"), NOSCRIPT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "noscript"), OBJECT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "object"), OL(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "ol"), OPTGROUP(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "optgroup"), OPTION(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "option"), OUTPUT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "output"), P(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "p"), PARAM(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "param"), PRE(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "pre"), PROGRESS(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "progress"), Q(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "q"), RP(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "rp"), RT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "rt"), RUBY(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "ruby"), S(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "s"), SAMP(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "samp"), SCRIPT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "script"), SECTION(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "section"), SELECT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "select"), SMALL(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "small"), SOURCE(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "source"), SPAN(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "span"), STRIKE(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "strike"), STRONG(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "strong"), STYLE(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "style"), SUB(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "sub"), SUMMARY(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "summary"), SUP(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "sup"), TABLE(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "table"), TBODY(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "tbody"), TD(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "td"), TEXTAREA(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "textarea"), TFOOT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "tfoot"), TH(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "th"), THEAD(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "thead"), TIME(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "time"), TITLE(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "title"), TR(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "tr"), TRACK(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "track"), TT(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "tt"), U(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "u"), UL(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "ul"), VAR(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "var");
 
         private String htmlTagType;
 
@@ -148,10 +128,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     }
 
     public enum CommonHtmlAttribute {
-        CLASS("class"),
-        ID("id"),
-        STYLE("style"),
-        TITLE("title");
+        CLASS("class"), ID("id"), STYLE("style"), TITLE("title");
 
         private String commonHtmlAttribute;
 
@@ -183,7 +160,8 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     /**
      * The {@link HtmlTagAttributes} of the html object.
      * <p>
-     * These are attributes of the top level html tag. This is not for child html objects.
+     * These are attributes of the top level html tag. This is not for child html
+     * objects.
      */
     protected HtmlTagAttributes htmlAttributes;
     /**
@@ -195,18 +173,21 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      */
     private String link; // Can be empty. Populate if the html object is a link.
 
-    // TODO: add an abstract class for the type of html object (e.g. Bulma, Bootstrap, Component, etc.)
+    // TODO: add an abstract class for the type of html object (e.g. Bulma,
+    // Bootstrap, Component, etc.)
     // maybe make this a breadcrumb trail of the object's parents?
     // this will help when knowing how to render the object in the front end
 
     // TODO: I want to delete this ctor
-    // public AbstractHtmlObject(String name, AbstractHtmlObject abstractHtmlObject) {
-    //     super(name);
-    //     this.children = abstractHtmlObject.getChildren();
-    //     this.htmlTagType = abstractHtmlObject.getHtmlTagType();
-    //     this.htmlAttributes = abstractHtmlObject.getHtmlAttributes() != null ? abstractHtmlObject.getHtmlAttributes() : HtmlTagAttributes.create();
-    //     this.body = abstractHtmlObject.getBody();
-    //     this.link = String.valueOf("");
+    // public AbstractHtmlObject(String name, AbstractHtmlObject abstractHtmlObject)
+    // {
+    // super(name);
+    // this.children = abstractHtmlObject.getChildren();
+    // this.htmlTagType = abstractHtmlObject.getHtmlTagType();
+    // this.htmlAttributes = abstractHtmlObject.getHtmlAttributes() != null ?
+    // abstractHtmlObject.getHtmlAttributes() : HtmlTagAttributes.create();
+    // this.body = abstractHtmlObject.getBody();
+    // this.link = String.valueOf("");
     // }
     public AbstractHtmlObject(HtmlTagType htmlTagType, String body) {
         this.children = new java.util.ArrayList<>();
@@ -221,85 +202,104 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     }
 
     ///////////////////////
-    // Helper Methods    //
+    // Helper Methods //
     ///////////////////////
 
-    // TODO: delete getAndSetAttributesForHtmlObject here. This should not be used. Maybe keep getEmptyHtmlObjectWithAttributes
+    // TODO: delete getAndSetAttributesForHtmlObject here. This should not be used.
+    // Maybe keep getEmptyHtmlObjectWithAttributes
 
     /**
      * Get and set the attributes for the given html object.
      * <p>
-     * Example: <code>getAndSetAttributesForHtmlObject(hTypeHtmlObject, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
-     * 
-     * @param hTypeHtmlObject the html object to set the attributes for
-     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
-     * @param delimiter the delimiter to use to separate the attributes
+     * Example:
+     * <code>getAndSetAttributesForHtmlObject(hTypeHtmlObject, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     *
+     * @param hTypeHtmlObject
+     *            the html object to set the attributes for
+     * @param attributes
+     *            the attributes to set, this is a string of attributes separated by
+     *            the given delimiter
+     * @param delimiter
+     *            the delimiter to use to separate the attributes
      * @return the html object with the attributes set
      */
-    public static AbstractHtmlObject getAndSetAttributesForHtmlObject(AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
+    public static AbstractHtmlObject getAndSetAttributesForHtmlObject(
+            AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "Getting and setting attributes for given html object :: Attributes: ",
-            attributes,
-            "Delimiter: ",
-            delimiter).toString();
-            LOG_THIS(log);
-        if(attributes == null || attributes.isEmpty()) {
+                "Getting and setting attributes for given html object :: Attributes: ",
+                attributes,
+                "Delimiter: ",
+                delimiter).toString();
+        LOG_THIS(log);
+        if (attributes == null || attributes.isEmpty()) {
             LOG_THIS("attributes is null or empty, returning empty html object");
             return hTypeHtmlObject;
         }
         String[] attributesArray = attributes.split(delimiter);
-        for(String attribute : attributesArray) {
+        for (String attribute : attributesArray) {
             String[] attributePropAndValue = attribute.split("=");
-            if(attributePropAndValue.length == 2) {
-                hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
+            if (attributePropAndValue.length == 2) {
+                hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(),
+                        attributePropAndValue[1].strip());
             } else {
-                LOG_THIS(LogLevel.ERROR, "Invalid attribute: ", attribute);
+                LOG_THIS(LogLevel.ERROR,"Invalid attribute: ",attribute);
             }
         }
         return hTypeHtmlObject;
     }
 
-
     // TODO: Looking to move to Attribute
     /**
      * Get an empty html object with the given attributes.
      * <p>
-     * Example: <code>getEmptyHtmlObjectWithAttributes("class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
-     * 
-     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
-     * @param delimiter the delimiter to use to separate the attributes
+     * Example:
+     * <code>getEmptyHtmlObjectWithAttributes("class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     *
+     * @param attributes
+     *            the attributes to set, this is a string of attributes separated by
+     *            the given delimiter
+     * @param delimiter
+     *            the delimiter to use to separate the attributes
      * @return the empty html object with the attributes set
      */
-    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributes(String attributes, String delimiter) {
+    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributes(String attributes,
+            String delimiter) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "Creating empty html object and adding attributes :: Attributes: ",
-            attributes,
-            "Delimiter: ",
-            delimiter).toString();
+                "Creating empty html object and adding attributes :: Attributes: ",
+                attributes,
+                "Delimiter: ",
+                delimiter).toString();
         LOG_THIS(log);
-        return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(), attributes, delimiter);
+        return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(),
+                attributes,delimiter);
     }
 
     /**
      * Get an empty html object with the given attributes and html tag type.
      * <p>
-     * Example: <code>getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType.DIV, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
-     * 
-     * @param htmlTagType the html tag type of the html object
-     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
-     * @param delimiter the delimiter to use to separate the attributes
+     * Example:
+     * <code>getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType.DIV, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     *
+     * @param htmlTagType
+     *            the html tag type of the html object
+     * @param attributes
+     *            the attributes to set, this is a string of attributes separated by
+     *            the given delimiter
+     * @param delimiter
+     *            the delimiter to use to separate the attributes
      * @return the empty html object with the attributes and html tag type set
      */
-    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType htmlTagType, String attributes, String delimiter) {
+    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributesAndHtmlTagType(
+            HtmlTagType htmlTagType, String attributes, String delimiter) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "Creating empty html object and adding attributes :: Tag Type: ",
-            htmlTagType.getHtmlTagType(),
-            "Attributes: ",
-            attributes,
-            "Delimiter: ",
-            delimiter).toString();
+                "Creating empty html object and adding attributes :: Tag Type: ",
+                htmlTagType.getHtmlTagType(),
+                "Attributes: ",
+                attributes,
+                "Delimiter: ",
+                delimiter).toString();
         LOG_THIS(log);
-        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes, delimiter);
+        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes,delimiter);
         hTypeHtmlObject.setHtmlTagType(htmlTagType);
         return hTypeHtmlObject;
     }
@@ -307,9 +307,11 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     /**
      * Clean the given attribute value string.
      * <p>
-     * Example: <code>cleanAttributeValueString(" class1  class2 class3")</code> will return "class1 class2 class3".
+     * Example: <code>cleanAttributeValueString(" class1  class2 class3")</code>
+     * will return "class1 class2 class3".
      * <p>
      * TODO: maybe this can be in {@link StringUtil} seems like a string problem.
+     *
      * @param attributesString
      * @return
      */
@@ -317,10 +319,10 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         StringBuilder sb = new StringBuilder();
         String[] attributesArray = attributesString.split(" ");
         boolean firstValueChosen = false;
-        for(int attrtibutesArrayIndex = 0; attrtibutesArrayIndex < attributesArray.length; attrtibutesArrayIndex++) {
-            if(attributesArray[attrtibutesArrayIndex].strip().isEmpty()) {
+        for (int attrtibutesArrayIndex = 0; attrtibutesArrayIndex < attributesArray.length; attrtibutesArrayIndex++) {
+            if (attributesArray[attrtibutesArrayIndex].strip().isEmpty()) {
                 continue;
-            } else if(!firstValueChosen) {
+            } else if (!firstValueChosen) {
                 sb.append(attributesArray[attrtibutesArrayIndex].strip());
                 firstValueChosen = true;
             } else {
@@ -334,14 +336,17 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     /**
      * Get the html attribute by the given property name.
      * <p>
-     * Example: <code>getHtmlAttributeByPropertyName("class")</code> will return the html attribute with the property name "class".
-     * 
-     * @param propertyName the property name of the attribute to get
-     * @return the html attribute with the given property name or null if the attribute does not exist
+     * Example: <code>getHtmlAttributeByPropertyName("class")</code> will return the
+     * html attribute with the property name "class".
+     *
+     * @param propertyName
+     *            the property name of the attribute to get
+     * @return the html attribute with the given property name or null if the
+     *         attribute does not exist
      */
     public Attribute getHtmlAttributeByPropertyName(String propertyName) {
-        for(Attribute attribute : this.htmlAttributes) {
-            if(attribute.getPropertyName().equals(propertyName)) {
+        for (Attribute attribute : this.htmlAttributes) {
+            if (attribute.getPropertyName().equals(propertyName)) {
                 return attribute;
             }
         }
@@ -399,19 +404,23 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      * <p>
      * This will not overwrite an existing attribute with the same property name.
      * <p>
-     * If you want to update an existing attribute, use {@link #addToAttribute(String, String...)}.
+     * If you want to update an existing attribute, use
+     * {@link #addToAttribute(String, String...)}.
      * <p>
      * TODO: should I make a replaceHtmlTagAttribute?
-     * 
-     * @param attribute the attribute to add
-     * @return true if the attribute was added, false otherwise {@link java.util.Set#add(Object)}
+     *
+     * @param attribute
+     *            the attribute to add
+     * @return true if the attribute was added, false otherwise
+     *         {@link java.util.Set#add(Object)}
      */
     public boolean addHtmlTagAttribute(Attribute attribute) {
-        if(this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute)) {
+        if (this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute)) {
             return false;
         }
-        if(this.htmlAttributes.containsAttributeProperty(attribute.getPropertyName())) {
-            LOG("addHtmlTagAttribute::This html objects attributes already contains the given attribute property: ", attribute.getPropertyName());
+        if (this.htmlAttributes.containsAttributeProperty(attribute.getPropertyName())) {
+            LOG("addHtmlTagAttribute::This html objects attributes already contains the given attribute property: ",
+                    attribute.getPropertyName());
             return false;
         }
         return this.htmlAttributes.add(attribute);
@@ -422,98 +431,125 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      * <p>
      * This will not overwrite an existing attribute with the same property name.
      * <p>
-     * If you want to update an existing attribute, use {@link #addToAttribute(String, String...)}.
-     * 
-     * @param attributeKey the key of the attribute to add
-     * @param attributeValues the values of the attribute to add
-     * @return true if the attribute was added, false otherwise {@link java.util.Set#add(Object)}
+     * If you want to update an existing attribute, use
+     * {@link #addToAttribute(String, String...)}.
+     *
+     * @param attributeKey
+     *            the key of the attribute to add
+     * @param attributeValues
+     *            the values of the attribute to add
+     * @return true if the attribute was added, false otherwise
+     *         {@link java.util.Set#add(Object)}
      */
     public boolean addHtmlTagAttribute(String attributeKey, String... attributeValues) {
-        return this.addHtmlTagAttribute(Attribute.create(attributeKey, attributeValues));
+        return this.addHtmlTagAttribute(Attribute.create(attributeKey,attributeValues));
     }
 
     /**
      * Remove an attribute from the html tag.
-     * 
-     * @param attribute the attribute to remove
-     * @return true if the attribute was removed, false otherwise {@link java.util.Set#remove(Object)}
+     *
+     * @param attribute
+     *            the attribute to remove
+     * @return true if the attribute was removed, false otherwise
+     *         {@link java.util.Set#remove(Object)}
      */
     public boolean removeHtmlTagAttribute(Attribute attribute) {
-        return this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute) ? false : this.htmlAttributes.remove(attribute);
+        return this.isGivenAttributeNullOrIsThisHtmlAttributesNull(attribute)
+                ? false
+                : this.htmlAttributes.remove(attribute);
     }
 
     /**
      * Remove a value from the specified attribute.
-     * 
-     * @param attribute the attribute to remove the value from
-     * @param value the value to remove
+     *
+     * @param attribute
+     *            the attribute to remove the value from
+     * @param value
+     *            the value to remove
      * @return true if the value was removed, false otherwise
      */
     public boolean removeHtmlTagAttribute(Attribute attribute, String value) {
-        if(this.htmlAttributes.contains(attribute)) {
+        if (this.htmlAttributes.contains(attribute)) {
             Attribute newAttribute = Attribute.createCopy(attribute);
             newAttribute.removeValue(value);
-            if(this.htmlAttributes.remove(attribute) && this.htmlAttributes.add(newAttribute)) {
+            if (this.htmlAttributes.remove(attribute) && this.htmlAttributes.add(newAttribute)) {
                 return true;
             }
         }
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "Could not remove value: ",
-            value,
-            " from attribute: ",
-            attribute.toString()).toString();
+                "Could not remove value: ",
+                value,
+                " from attribute: ",
+                attribute.toString()).toString();
         LOG_THIS(log);
         return false;
     }
 
     /**
      * Remove values from the specified attribute.
-     * 
-     * @param attribute the attribute to remove the values from
-     * @param values the values to remove
+     *
+     * @param attribute
+     *            the attribute to remove the values from
+     * @param values
+     *            the values to remove
      */
     public void removeHtmlTagAttributes(Attribute attribute, String... values) {
-        for(String value : values) {
-            this.removeHtmlTagAttribute(attribute, value);
+        for (String value : values) {
+            this.removeHtmlTagAttribute(attribute,value);
         }
     }
 
     /**
-     * Update the value of an attribute in the htmlAttributes by appending the given value to the current value.
+     * Update the value of an attribute in the htmlAttributes by appending the given
+     * value to the current value.
      * <p>
-     * Example: if the current value, for 'class', is "class1" and the given attributeValuesToAdd is "class2", the new value will be "class1 class2".
-     * 
-     * @param attributeKey the key of the attribute to update
-     * @param attributeValuesToAdd the values to append to the current value
-     * @return the updated attribute or null if the attribute key is null, is empty, or does not exist
+     * Example: if the current value, for 'class', is "class1" and the given
+     * attributeValuesToAdd is "class2", the new value will be "class1 class2".
+     *
+     * @param attributeKey
+     *            the key of the attribute to update
+     * @param attributeValuesToAdd
+     *            the values to append to the current value
+     * @return the updated attribute or null if the attribute key is null, is empty,
+     *         or does not exist
      */
     public Attribute addToAttribute(String attributeKey, String... attributeValuesToAdd) {
 
-        // check if the attribute key is null or empty or if the attribute does not exist
-        if(attributeKey == null || attributeKey.isEmpty() || this.htmlAttributes.get(attributeKey) == null) {
+        // check if the attribute key is null or empty or if the attribute does not
+        // exist
+        if (attributeKey == null || attributeKey.isEmpty()
+                || this.htmlAttributes.get(attributeKey) == null) {
             final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-                "The given attribute key is null, is empty, or does not exist. Returning null.").toString();
+                    "The given attribute key is null, is empty, or does not exist. Returning null.")
+                    .toString();
             LOG_THIS(log);
             return null;
         }
 
-        Attribute attribute = this.htmlAttributes.get(attributeKey); // find the attribute in manager
+        Attribute attribute = this.htmlAttributes.get(attributeKey); // find the attribute in
+                                                                     // manager
         attribute.addValues(attributeValuesToAdd); // add the values to the attribute
-        this.htmlAttributes.update(attributeKey, attribute); // update the attribute in the manager
+        this.htmlAttributes.update(attributeKey,attribute); // update the attribute in the manager
         return attribute;
     }
 
     /**
-     * Update the value of an attribute in the htmlAttributes by appending the given value to the current value.
+     * Update the value of an attribute in the htmlAttributes by appending the given
+     * value to the current value.
      * <p>
-     * Example: if the current value, for 'class', is "class1" and the given attributeValuesToAdd is "class2", the new value will be "class1 class2".
-     * 
-     * @param attribute the attribute to update. This uses the given attribute's key to find the attribute in the htmlAttributes.
-     * @param attributeValuesToAdd the values to append to the current value
-     * @return the updated attribute or null if the attribute key is null, is empty, or does not exist
+     * Example: if the current value, for 'class', is "class1" and the given
+     * attributeValuesToAdd is "class2", the new value will be "class1 class2".
+     *
+     * @param attribute
+     *            the attribute to update. This uses the given attribute's key to
+     *            find the attribute in the htmlAttributes.
+     * @param attributeValuesToAdd
+     *            the values to append to the current value
+     * @return the updated attribute or null if the attribute key is null, is empty,
+     *         or does not exist
      */
     public Attribute addToAttribute(Attribute attribute, String... attributeValuesToAdd) {
-        return this.addToAttribute(attribute.getUniqueId(), attributeValuesToAdd);
+        return this.addToAttribute(attribute.getUniqueId(),attributeValuesToAdd);
     }
 
     public String getBody() {
@@ -566,15 +602,17 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      */
     @Override
     public String toString() {
-        // use string builder to build the json string for member variables: body, htmlTagType, htmlAttributes, children
+        // use string builder to build the json string for member variables: body,
+        // htmlTagType, htmlAttributes, children
         StringBuilder sb = new StringBuilder();
         sb.append("\n{");
         sb.append("\"body\":").append("\"").append(this.body).append("\"").append(",");
         sb.append("\"order\":").append("\"").append(this.order).append("\"").append(",");
-        if(!this.link.isEmpty()) {
+        if (!this.link.isEmpty()) {
             sb.append("\"link\":").append("\"").append(this.link).append("\"").append(",");
         }
-        sb.append("\"htmlTagType\":").append("\"").append(this.htmlTagType).append("\"").append(",");
+        sb.append("\"htmlTagType\":").append("\"").append(this.htmlTagType).append("\"")
+                .append(",");
         sb.append("\"htmlAttributes\":").append(this.htmlAttributes).append(",");
         sb.append("\"children\":");
         // iterate through children and append them to string builder
@@ -602,28 +640,29 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     }
 
     private boolean isGivenAttributeNullOrIsThisHtmlAttributesNull(Attribute attribute) {
-        if(attribute == null) {
+        if (attribute == null) {
             final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-                "The given attribute is null.").toString();
+                    "The given attribute is null.").toString();
             LOG_THIS(log);
             return true;
         }
-        if(this.htmlAttributes == null) {
+        if (this.htmlAttributes == null) {
             final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-                "This htmlAttributes is null. Not adding attribute: ",
-                attribute.toString()).toString();
+                    "This htmlAttributes is null. Not adding attribute: ",
+                    attribute.toString()).toString();
             LOG_THIS(log);
-            // LogBuilder.logBuilderFromStringArgsNoSpaces("Debug this AbstractHtmlObject: ", this.toString()).info();
+            // LogBuilder.logBuilderFromStringArgsNoSpaces("Debug this AbstractHtmlObject:
+            // ", this.toString()).info();
             return true;
         }
         return false;
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractCommonObject.class, args);
+        ICommon.LOG(AbstractCommonObject.class,args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractCommonObject.class, level, args);
+        ICommon.LOG(AbstractCommonObject.class,level,args);
     }
 }

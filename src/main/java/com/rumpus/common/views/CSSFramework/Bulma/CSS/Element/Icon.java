@@ -13,13 +13,14 @@ public class Icon extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Icon createWithBody(String body) {
         return new Icon(body);
     }
+
     public static Icon createWithNoBody() {
         return new Icon("");
     }

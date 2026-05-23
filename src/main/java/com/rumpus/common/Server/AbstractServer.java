@@ -12,7 +12,7 @@ import com.rumpus.common.util.ServerUtil;
 
 /**
  * AbstractServer
- * 
+ *
  */
 abstract public class AbstractServer extends AbstractCommonObject implements IManageable, Runnable {
 
@@ -22,11 +22,13 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
     protected String hostIp;
     protected String port;
 
-    protected AbstractServer(String serverName, String directory, String hostIp, String port, boolean isRunning) {
-        this.init(serverName, directory, hostIp, port, isRunning);
+    protected AbstractServer(String serverName, String directory, String hostIp, String port,
+            boolean isRunning) {
+        this.init(serverName,directory,hostIp,port,isRunning);
     }
 
-    private void init(String serverName, String directory, String hostIp, String port, boolean isRunning) {
+    private void init(String serverName, String directory, String hostIp, String port,
+            boolean isRunning) {
         this.serverName = serverName;
         this.directory = directory;
         this.hostIp = hostIp;
@@ -42,79 +44,92 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
     public void run() {
         String log = LogBuilder.logBuilderFromStringArgs("AbstractServer::run()").toString();
         LOG(log);
-        if(!this.isRunning) {
-            log = LogBuilder.logBuilderFromStringArgs("Starting server: ", this.serverName).toString();
+        if (!this.isRunning) {
+            log = LogBuilder.logBuilderFromStringArgs("Starting server: ",this.serverName)
+                    .toString();
             LOG(log);
-            if(DOES_NOT_EXIST == FileUtil.doesPathExist(this.directory)) {
-                LOG(LogLevel.ERROR, "Server directory does not exist: ", this.directory);
+            if (DOES_NOT_EXIST == FileUtil.doesPathExist(this.directory)) {
+                LOG(LogLevel.ERROR,"Server directory does not exist: ",this.directory);
             }
-            if(ServerUtil.isPortAvailable(port)) {
+            if (ServerUtil.isPortAvailable(port)) {
                 log = LogBuilder.logBuilderFromStringArgs(
-                    AbstractServer.class,
-                    "Port is available: ",
-                    this.port,
-                    "\nRunning server.").toString();
+                        AbstractServer.class,
+                        "Port is available: ",
+                        this.port,
+                        "\nRunning server.").toString();
                 LOG(log);
                 this.isRunning = this.runner();
             } else {
                 log = LogBuilder.logBuilderFromStringArgs(
-                    "Port is not available: ",
-                    this.port,
-                    "\nSetting isRunning to true because the port is unavailable, meaning this server must be running.").toString();
+                        "Port is not available: ",
+                        this.port,
+                        "\nSetting isRunning to true because the port is unavailable, meaning this server must be running.")
+                        .toString();
                 LOG(log);
                 this.isRunning = true;
             }
-            if(this.isRunning) {
-                log = LogBuilder.logBuilderFromStringArgs("Started server:\n", this.toString()).toString();
+            if (this.isRunning) {
+                log = LogBuilder.logBuilderFromStringArgs("Started server:\n",this.toString())
+                        .toString();
                 LOG(log);
             }
-            while(this.isRunning) {
+            while (this.isRunning) {
                 try {
-                    log = LogBuilder.logBuilderFromStringArgs(this.serverName, " is running. Sleeping for 2 seconds.").toString();
+                    log = LogBuilder.logBuilderFromStringArgs(this.serverName,
+                            " is running. Sleeping for 2 seconds.").toString();
                     LOG(log);
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
-                    log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace()).toString();
-                    LOG(LogLevel.ERROR, log);
+                    log = LogBuilder
+                            .logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+                            .toString();
+                    LOG(LogLevel.ERROR,log);
                 }
             }
             this.onStop();
         } else {
-            log = LogBuilder.logBuilderFromStringArgs(this.serverName, " is already running. No need to start again.").toString();
+            log = LogBuilder.logBuilderFromStringArgs(this.serverName,
+                    " is already running. No need to start again.").toString();
             LOG(log);
         }
     }
 
     /**
      * Run the server
+     *
      * @return true if the server ran successfully
      */
     abstract protected boolean runner();
+
     /**
      * Stop the server
-     * 
+     *
      * @return true if the server stopped successfully
      */
     abstract protected boolean onStop();
+
     /**
      * Stop the server
-     * 
+     *
      * @return true if the server stopped successfully
      */
     public boolean stop() {
         String log = LogBuilder.logBuilderFromStringArgs(
-            "AbstractServer::stop()\n",
-            "Attempting to stop server:\n", this.toString()).toString();
+                "AbstractServer::stop()\n",
+                "Attempting to stop server:\n",this.toString()).toString();
         LOG(log);
 
-        if(this.isRunning) {
+        if (this.isRunning) {
             this.isRunning = false;
-            log = LogBuilder.logBuilderFromStringArgs("Success stopping server with name: ", this.serverName).toString();
+            log = LogBuilder
+                    .logBuilderFromStringArgs("Success stopping server with name: ",this.serverName)
+                    .toString();
             LOG(log);
             return true;
         }
 
-        log = LogBuilder.logBuilderFromStringArgs(this.serverName, " is already stopped. No need to stop again.").toString();
+        log = LogBuilder.logBuilderFromStringArgs(this.serverName,
+                " is already stopped. No need to stop again.").toString();
         LOG(log);
 
         return false;
@@ -149,7 +164,7 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
     }
 
     public void setPort(String port) {
-        this.port= port;
+        this.port = port;
     }
 
     public boolean getIsRunning() {
@@ -168,27 +183,27 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb
-            .append("Server name: ")
-            .append(this.serverName)
-            .append("\n")
-            .append("Server directory: ")
-            .append(this.directory)
-            .append("\n")
-            .append("Server host IP: ")
-            .append(this.hostIp)
-            .append("\n")
-            .append("Server port: ")
-            .append(this.port)
-            .append("\n")
-            .append("Server is running: ")
-            .append(this.isRunning ? "true" : "false")
-            .append("\n");
+                .append("Server name: ")
+                .append(this.serverName)
+                .append("\n")
+                .append("Server directory: ")
+                .append(this.directory)
+                .append("\n")
+                .append("Server host IP: ")
+                .append(this.hostIp)
+                .append("\n")
+                .append("Server port: ")
+                .append(this.port)
+                .append("\n")
+                .append("Server is running: ")
+                .append(this.isRunning ? "true" : "false")
+                .append("\n");
         return sb.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof AbstractServer) {
+        if (obj instanceof AbstractServer) {
             AbstractServer server = (AbstractServer) obj;
             return this.serverName.equals(server.getServerName());
         }

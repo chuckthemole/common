@@ -11,7 +11,7 @@ abstract public class AbstractScraper extends AbstractWeb implements Runnable {
     public AbstractScraper(String browserVersion, String uri, List<String> params) {
         super(browserVersion, uri, params);
     }
-    
+
     /**
      * Scrape the page runner
      */
@@ -20,7 +20,7 @@ abstract public class AbstractScraper extends AbstractWeb implements Runnable {
     public String getPage() {
         return this.page;
     }
-    
+
     public String getBody() {
         return this.body;
     }

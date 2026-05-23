@@ -3,7 +3,9 @@ package com.rumpus.common.Serializer;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Manager.AbstractCommonManager;
 
-public class SerializerRegistry extends AbstractCommonManager<Class<?>, ICommonSerializer<?>> implements ISerializerRegistry {
+public class SerializerRegistry extends AbstractCommonManager<Class<?>, ICommonSerializer<?>>
+        implements
+            ISerializerRegistry {
 
     private SerializerRegistry() {
         super(false);
@@ -14,13 +16,15 @@ public class SerializerRegistry extends AbstractCommonManager<Class<?>, ICommonS
     }
 
     @Override
-    public <OBJECT extends AbstractCommonObject> void registerSerializer(Class<OBJECT> clazz, ICommonSerializer<OBJECT> serializer) {
-        this.put(clazz, serializer);
+    public <OBJECT extends AbstractCommonObject> void registerSerializer(Class<OBJECT> clazz,
+            ICommonSerializer<OBJECT> serializer) {
+        this.put(clazz,serializer);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <OBJECT extends AbstractCommonObject> ICommonSerializer<OBJECT> getSerializer(Class<OBJECT> clazz) {
+    public <OBJECT extends AbstractCommonObject> ICommonSerializer<OBJECT> getSerializer(
+            Class<OBJECT> clazz) {
         return (ICommonSerializer<OBJECT>) this.get(clazz);
     }
 
@@ -41,5 +45,5 @@ public class SerializerRegistry extends AbstractCommonManager<Class<?>, ICommonS
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
-    
+
 }

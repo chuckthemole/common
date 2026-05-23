@@ -11,7 +11,8 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 /**
  * Aside html object. A menu for navigating a website.
  * <p>
- * This extends {@link AbstractComponent} mainly using its setChildrenForComponent method.
+ * This extends {@link AbstractComponent} mainly using its
+ * setChildrenForComponent method.
  */
 public abstract class AbstractAside extends AbstractComponent {
 
@@ -23,27 +24,27 @@ public abstract class AbstractAside extends AbstractComponent {
     public static final String GROUP_DELIMITER = "group-delimiter";
 
     public abstract class AbstractAsideComponentPart extends AbstractComponentPart {
-    
+
         public AbstractAsideComponentPart(ComponentPartType asideComponentType, String body) {
             super(asideComponentType, body);
         }
-    
+
         public static AbstractComponentPart createAsideTitle(String body) {
             return new Title(body);
         }
-    
+
         public static AbstractComponentPart createAsideListItem(String body) {
             return new ListItem(body);
         }
-    
+
         public static AbstractComponentPart createAsideList(String body) {
             return new List(body);
         }
-    
+
         public static AbstractComponentPart createAsideLink(String body, String link) {
             return new Link(body, link);
         }
-    
+
         public static AbstractComponentPart createAsideEmbeddedList() {
             return new EmbeddedList();
         }
@@ -55,13 +56,12 @@ public abstract class AbstractAside extends AbstractComponent {
 
     public AbstractAside(String componentName, String asideGroups) {
         super(
-            componentName,
-            AbstractComponent.ComponentType.ASIDE,
-            asideGroups,
-            HtmlTagType.ASIDE,
-            "",
-            ""
-        );
+                componentName,
+                AbstractComponent.ComponentType.ASIDE,
+                asideGroups,
+                HtmlTagType.ASIDE,
+                "",
+                "");
     }
 
     /**
@@ -84,8 +84,11 @@ public abstract class AbstractAside extends AbstractComponent {
 
     /**
      * Factory static method for creating a sub aside. Used locally only right now.
-     * @param name name of the sub aside
-     * @param asideGroups groups of the sub aside
+     *
+     * @param name
+     *            name of the sub aside
+     * @param asideGroups
+     *            groups of the sub aside
      * @return the sub aside
      */
     private static AbstractAside createSubAside(String componentName, String asideGroups) {
@@ -101,63 +104,84 @@ public abstract class AbstractAside extends AbstractComponent {
                 return ComponentAttributeManager.create();
             }
         };
-        aside.setHtmlTagType(HtmlTagType.DIV); // setting type to div rn. this may need to be changed later TODO
+        aside.setHtmlTagType(HtmlTagType.DIV); // setting type to div rn. this may need to be
+                                               // changed later TODO
         return aside;
     }
 
     /**
      * Sets the children of the aside from the groups.
      * <p>
-     * This should be implemented in the Abstract{Framework}Aside, for example, {@link com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside}.
+     * This should be implemented in the Abstract{Framework}Aside, for example,
+     * {@link com.rumpus.common.views.CSSFramework.Bulma.CommonComponents.BulmaAside}.
      * <p>
      * This is called in the constructor after the groups are set.
-     * 
-     * TODO: if I'm using other frameworks besides bulma, think about HtmlTagTypes used below. They may be different.
-     * 
-     * @param groups key: group title, value: list of items.
+     *
+     * TODO: if I'm using other frameworks besides bulma, think about HtmlTagTypes
+     * used below. They may be different.
+     *
+     * @param groups
+     *            key: group title, value: list of items.
      */
     @Override
     public void setChildrenForComponent() {
 
         this.createGroupsFromStrings(super.componentAsString).forEach((titleKey, listOfItems) -> {
-            if(titleKey != null && !titleKey.equals("")) { // check if titleKey is null or empty, this should never happen, you should have a title for each group
+            if (titleKey != null && !titleKey.equals("")) { // check if titleKey is null or empty,
+                                                            // this should never happen, you should
+                                                            // have a title for each group
                 // add title
-                AbstractHtmlObject titleHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
+                AbstractHtmlObject titleHtmlObject = AbstractHtmlObject
+                        .createEmptyAbstractHtmlObject();
                 titleHtmlObject.setHtmlTagType(AbstractHtmlObject.HtmlTagType.P);
-                titleHtmlObject.setHtmlAttributes(super.componentAttributeManager.get(TITLE_ATTRIBUTES));
+                titleHtmlObject
+                        .setHtmlAttributes(super.componentAttributeManager.get(TITLE_ATTRIBUTES));
                 titleHtmlObject.setBody(titleKey);
 
-                final String titleId = this.componentPartManager.registerComponentPart(super.getComponentName(), titleHtmlObject);
-                titleHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, titleId);
+                final String titleId = this.componentPartManager
+                        .registerComponentPart(super.getComponentName(),titleHtmlObject);
+                titleHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,titleId);
                 this.addChild(titleHtmlObject);
 
                 // add items
-                AbstractHtmlObject menuListHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
+                AbstractHtmlObject menuListHtmlObject = AbstractHtmlObject
+                        .createEmptyAbstractHtmlObject();
                 menuListHtmlObject.setHtmlTagType(AbstractHtmlObject.HtmlTagType.UL);
-                menuListHtmlObject.setHtmlAttributes(super.componentAttributeManager.get(ITEMS_ATTRIBUTES));
-                for(AbstractHtmlObject item : listOfItems) {
+                menuListHtmlObject
+                        .setHtmlAttributes(super.componentAttributeManager.get(ITEMS_ATTRIBUTES));
+                for (AbstractHtmlObject item : listOfItems) {
                     // check if item is null. if so, log error and continue
-                    if(item != null) {
-                        AbstractHtmlObject listItem = AbstractHtmlObject.createEmptyAbstractHtmlObject();
+                    if (item != null) {
+                        AbstractHtmlObject listItem = AbstractHtmlObject
+                                .createEmptyAbstractHtmlObject();
                         listItem.setHtmlTagType(AbstractHtmlObject.HtmlTagType.LI);
 
-                        final String itemId = this.componentPartManager.registerComponentPart(super.getComponentName(), item);
-                        item.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, itemId);
-                        listItem.addChild(item); // TODO: it looks like this is adding null values to children, why? investigate.
+                        final String itemId = this.componentPartManager
+                                .registerComponentPart(super.getComponentName(),item);
+                        item.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,itemId);
+                        listItem.addChild(item); // TODO: it looks like this is adding null values
+                                                 // to children, why? investigate.
 
-                        final String listItemComponentPartId = this.componentPartManager.registerComponentPart(super.getComponentName(), listItem);
-                        listItem.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, listItemComponentPartId);
+                        final String listItemComponentPartId = this.componentPartManager
+                                .registerComponentPart(super.getComponentName(),listItem);
+                        listItem.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,
+                                listItemComponentPartId);
                         menuListHtmlObject.addChild(listItem);
                     } else {
-                        LOG(LogLevel.ERROR, "Item is null or empty. Item: " + item);
+                        LOG(LogLevel.ERROR,"Item is null or empty. Item: " + item);
                     }
                 }
 
-                final String menuListComponentPartId = this.componentPartManager.registerComponentPart(super.getComponentName(), menuListHtmlObject);
-                menuListHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, menuListComponentPartId);
-                this.addChild(menuListHtmlObject); // TODO: these three lines seem like a lot of repitition. Can wwe add this to addChild maybe? keeping track of ids in AbstractHtmlObject?
+                final String menuListComponentPartId = this.componentPartManager
+                        .registerComponentPart(super.getComponentName(),menuListHtmlObject);
+                menuListHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,
+                        menuListComponentPartId);
+                this.addChild(menuListHtmlObject); // TODO: these three lines seem like a lot of
+                                                   // repitition. Can wwe add this to addChild
+                                                   // maybe? keeping track of ids in
+                                                   // AbstractHtmlObject?
             } else {
-                LOG(LogLevel.ERROR, "Title key is null or empty. Title key: " + titleKey);
+                LOG(LogLevel.ERROR,"Title key is null or empty. Title key: " + titleKey);
             }
         });
 
@@ -165,25 +189,32 @@ public abstract class AbstractAside extends AbstractComponent {
 
     /**
      * Helper method for creating groups (Map<String, List>) from a string.
-     * 
-     * @param asideGroups string of groups
+     *
+     * @param asideGroups
+     *            string of groups
      * @return map of groups (key: group title, value: list of items)
      */
     private TreeMap<String, List<AbstractHtmlObject>> createGroupsFromStrings(String asideGroups) {
         String[] asideGroupsArray = asideGroups.split(GROUP_DELIMITER);
-        // for each element in asideGroupsArray, trim ending and beginning white space, and trim GROUP_DELIMITER from ending and beginning.
-        for (int i = 0; i < asideGroupsArray.length; i++) { // strip white space on each item in the group and remove super.defaultDelimiter from beginning and/or end
-            asideGroupsArray[i] = StringUtil.trimStartOrEnd(asideGroupsArray[i].strip(), super.defaultDelimiter).strip();
+        // for each element in asideGroupsArray, trim ending and beginning white space,
+        // and trim GROUP_DELIMITER from ending and beginning.
+        for (int i = 0; i < asideGroupsArray.length; i++) { // strip white space on each item in the
+                                                            // group and remove
+                                                            // super.defaultDelimiter from beginning
+                                                            // and/or end
+            asideGroupsArray[i] = StringUtil
+                    .trimStartOrEnd(asideGroupsArray[i].strip(),super.defaultDelimiter).strip();
         }
         return createGroupsFromStringsHelper(asideGroupsArray);
     }
 
-    private TreeMap<String, List<AbstractHtmlObject>> createGroupsFromStringsHelper(String[] asideGroups) {
+    private TreeMap<String, List<AbstractHtmlObject>> createGroupsFromStringsHelper(
+            String[] asideGroups) {
 
         TreeMap<String, List<AbstractHtmlObject>> mapOfAsideGroups_title_listOfItems = new TreeMap<String, List<AbstractHtmlObject>>();
 
         // iterate through asideGroupsArray, creating groups as a list
-        for(int asideGroupsIndex = 0; asideGroupsIndex < asideGroups.length; asideGroupsIndex++) {
+        for (int asideGroupsIndex = 0; asideGroupsIndex < asideGroups.length; asideGroupsIndex++) {
 
             // create array of each element in asideGroupString
             String[] asideGroupArray = asideGroups[asideGroupsIndex].split(super.defaultDelimiter);
@@ -191,37 +222,53 @@ public abstract class AbstractAside extends AbstractComponent {
             // get the title from the first element in asideGroupList
             final String title = asideGroupArray[0].strip();
             if (title != null && !title.equals("")) {
-                // now that title is removed, the rest are items. iterate through the items and create a list of AbstractAsideComponentParts
+                // now that title is removed, the rest are items. iterate through the items and
+                // create a list of AbstractAsideComponentParts
                 List<AbstractHtmlObject> asideGroupHtmlObjectList = new ArrayList<AbstractHtmlObject>();
-                for(int asideGroupArrayIndex = 1; asideGroupArrayIndex < asideGroupArray.length; asideGroupArrayIndex++) { // starting from index 1, because index 0 is the title
+                for (int asideGroupArrayIndex = 1; asideGroupArrayIndex < asideGroupArray.length; asideGroupArrayIndex++) { // starting
+                                                                                                                            // from
+                                                                                                                            // index
+                                                                                                                            // 1,
+                                                                                                                            // because
+                                                                                                                            // index
+                                                                                                                            // 0
+                                                                                                                            // is
+                                                                                                                            // the
+                                                                                                                            // title
                     String groupItem = asideGroupArray[asideGroupArrayIndex].strip();
-                    AbstractHtmlObject asideComponent = null; // abstractHtmlObject to add to asideGroupHtmlObjectList
-                    if(groupItem.equals(START_ASIDE_CHILD_LIST)) {
+                    AbstractHtmlObject asideComponent = null; // abstractHtmlObject to add to
+                                                              // asideGroupHtmlObjectList
+                    if (groupItem.equals(START_ASIDE_CHILD_LIST)) {
                         asideComponent = AbstractAsideComponentPart.createAsideEmbeddedList();
 
                         // join asideGroupList from this index + 1 to the end of the list
-                        String[] subStringArray = new String[asideGroupArray.length - asideGroupArrayIndex - 1];
-                        for(int i = asideGroupArrayIndex + 1; i < asideGroupArray.length; i++) {
+                        String[] subStringArray = new String[asideGroupArray.length
+                                - asideGroupArrayIndex - 1];
+                        for (int i = asideGroupArrayIndex + 1; i < asideGroupArray.length; i++) {
                             subStringArray[i - asideGroupArrayIndex - 1] = asideGroupArray[i];
                         }
-                        String subList = String.join(super.defaultDelimiter, subStringArray);
-                        final AbstractHtmlObject subAside = AbstractAside.createSubAside(this.getComponentName(), subList);
+                        String subList = String.join(super.defaultDelimiter,subStringArray);
+                        final AbstractHtmlObject subAside = AbstractAside
+                                .createSubAside(this.getComponentName(),subList);
                         asideComponent.addChild(subAside);
                         // increment till we find END_ASIDE_CHILD_LIST
-                        while(!asideGroupArray[asideGroupArrayIndex].equals(END_ASIDE_CHILD_LIST)) {
+                        while (!asideGroupArray[asideGroupArrayIndex]
+                                .equals(END_ASIDE_CHILD_LIST)) {
                             asideGroupArrayIndex++;
                         }
-                    } else if(groupItem.equals(END_ASIDE_CHILD_LIST)) { // used to break out of loop in createSubAside
+                    } else if (groupItem.equals(END_ASIDE_CHILD_LIST)) { // used to break out of
+                                                                         // loop in createSubAside
                         break;
                     } else {
-                        asideComponent = AbstractAsideComponentPart.createAsideLink(groupItem, "https://www.coollinkbro.com");
+                        asideComponent = AbstractAsideComponentPart.createAsideLink(groupItem,
+                                "https://www.coollinkbro.com");
                     }
 
                     // add asideComponent to asideGroupHtmlObjectList
                     asideGroupHtmlObjectList.add(asideComponent);
                 }
 
-                mapOfAsideGroups_title_listOfItems.put(title, asideGroupHtmlObjectList);
+                mapOfAsideGroups_title_listOfItems.put(title,asideGroupHtmlObjectList);
             }
         }
 

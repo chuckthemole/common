@@ -6,9 +6,7 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 public abstract class AbstractBulmaColumns extends AbstractBulmaObject {
 
     public enum ColumnsType {
-        EMPTY(""),
-        COLUMNS("columns"),
-        COLUMN("column");
+        EMPTY(""), COLUMNS("columns"), COLUMN("column");
 
         private String columnsType;
 
@@ -23,35 +21,20 @@ public abstract class AbstractBulmaColumns extends AbstractBulmaObject {
 
     // https://bulma.io/documentation/columns/sizes/
     public enum Size {
-        EMPTY(""),
-        FULL("is-full"),
+        EMPTY(""), FULL("is-full"),
 
         // quarter and thirds
-        ONE_QUARTER("is-one-quarter"),
-        ONE_THIRD("is-one-third"),
-        HALF("is-half"),
-        TWO_THIRDS("is-two-thirds"),
-        THREE_QUARTERS("is-three-quarters"),
+        ONE_QUARTER("is-one-quarter"), ONE_THIRD("is-one-third"), HALF("is-half"), TWO_THIRDS(
+                "is-two-thirds"), THREE_QUARTERS("is-three-quarters"),
 
         // fifths
-        ONE_FIFTH("is-one-fifth"),
-        TWO_FIFTHS("is-two-fifths"),
-        THREE_FIFTHS("is-three-fifths"),
-        FOUR_FIFTHS("is-four-fifths"),
+        ONE_FIFTH("is-one-fifth"), TWO_FIFTHS("is-two-fifths"), THREE_FIFTHS(
+                "is-three-fifths"), FOUR_FIFTHS("is-four-fifths"),
 
         // 12 columns system
-        ONE("is-1"),
-        TWO("is-2"),
-        THREE("is-3"),
-        FOUR("is-4"),
-        FIVE("is-5"),
-        SIX("is-6"),
-        SEVEN("is-7"),
-        EIGHT("is-8"),
-        NINE("is-9"),
-        TEN("is-10"),
-        ELEVEN("is-11"),
-        TWELVE("is-12");
+        ONE("is-1"), TWO("is-2"), THREE("is-3"), FOUR("is-4"), FIVE("is-5"), SIX("is-6"), SEVEN(
+                "is-7"), EIGHT(
+                        "is-8"), NINE("is-9"), TEN("is-10"), ELEVEN("is-11"), TWELVE("is-12");
 
         private String size;
 

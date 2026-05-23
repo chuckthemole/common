@@ -25,7 +25,8 @@ abstract public class AbstractCommonAuthentication implements ICommonAuthenticat
         this.authenticated = false;
     }
 
-    public AbstractCommonAuthentication(String name, Set<CommonAuthority> authorities, String password, String username, Map<String, String> details, boolean authenticated) {
+    public AbstractCommonAuthentication(String name, Set<CommonAuthority> authorities,
+            String password, String username, Map<String, String> details, boolean authenticated) {
         this.name = name;
         this.authorities = authorities;
         this.password = password;
@@ -33,13 +34,14 @@ abstract public class AbstractCommonAuthentication implements ICommonAuthenticat
         this.details = details;
         this.authenticated = authenticated;
     }
+
     public AbstractCommonAuthentication(Authentication auth) {
         this.name = auth.getName();
         this.authorities.addAll(getAuthorities(auth));
         this.password = auth.getCredentials().toString();
         this.username = auth.getPrincipal().toString();
 
-        if(auth.getDetails().getClass().equals(Map.class)) {
+        if (auth.getDetails().getClass().equals(Map.class)) {
             this.details = (Map<String, String>) auth.getDetails();
         }
         this.authenticated = auth.isAuthenticated();

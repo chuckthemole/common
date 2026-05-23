@@ -25,14 +25,9 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Log.LogItem.LogItemCollectionManager;
 import com.rumpus.common.Server.Port.IPort;
-import com.rumpus.common.Service.JwtService;
-import com.rumpus.common.Integrations.NotionIntegrationLoader;
-import com.rumpus.common.Integrations.NotionIntegrationRegistry;
-import com.rumpus.common.Integrations.NotionResourceType;
 import com.rumpus.common.Cloud.Aws.AwsS3BucketProperties;
 
 import com.rumpus.common.Cloud.Aws.IAwsS3BucketProperties;
-import com.rumpus.common.Integrations.NotionIntegrationEntry;
 
 import jakarta.annotation.PostConstruct;
 
@@ -45,7 +40,7 @@ import jakarta.annotation.PostConstruct;
  * <p>
  * The properties file should contain the following properties:
  * <p>
- * 
+ *
  * <pre>
  * properties:
  *  port: 8080
@@ -55,13 +50,14 @@ import jakarta.annotation.PostConstruct;
  *      password: rumpus
  *      driver: org.coolsql.Driver
  * </pre>
- * 
+ *
  * TODO: think about making this into an annotation.
- * 
+ *
  * @author: Chuck Thomas
  */
 @ConfigurationProperties(prefix = "properties")
-public abstract class AbstractCommonConfig extends AbstractCommonObject { // TODO: Can this just implement ICommon?
+public abstract class AbstractCommonConfig extends AbstractCommonObject { // TODO: Can this just
+                                                                          // implement ICommon?
 
     protected static final String BEAN_PORT_MANAGER = "portManager";
     protected static final String BEAN_JDBC_USER_DETAILS_MANAGER = "jdbcUserDetailsManager";
@@ -161,9 +157,12 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
         // If we get here, we have the properties we need. Let's create the data source.
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
         driverManagerDataSource.setUrl(this.environment.getProperty(AbstractCommonConfig.URL));
-        driverManagerDataSource.setUsername(this.environment.getProperty(AbstractCommonConfig.USER));
-        driverManagerDataSource.setPassword(this.environment.getProperty(AbstractCommonConfig.PASSWORD));
-        driverManagerDataSource.setDriverClassName(this.environment.getProperty(AbstractCommonConfig.DRIVER));
+        driverManagerDataSource
+                .setUsername(this.environment.getProperty(AbstractCommonConfig.USER));
+        driverManagerDataSource
+                .setPassword(this.environment.getProperty(AbstractCommonConfig.PASSWORD));
+        driverManagerDataSource
+                .setDriverClassName(this.environment.getProperty(AbstractCommonConfig.DRIVER));
         return driverManagerDataSource;
     }
 
@@ -180,7 +179,7 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     abstract public String sqlDialect(); // TODO: Can we have this return an enum?
 
     @Bean
-    @DependsOn({ AbstractCommonConfig.BEAN_DATA_SOURCE, AbstractCommonConfig.BEAN_SQL_DIALECT })
+    @DependsOn({AbstractCommonConfig.BEAN_DATA_SOURCE, AbstractCommonConfig.BEAN_SQL_DIALECT})
     public DSLContext dslContext() {
         SQLDialect sqlDialect;
         try {
@@ -188,13 +187,14 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
         } catch (IllegalArgumentException e) {
             sqlDialect = SQLDialect.DEFAULT;
         }
-        return DSL.using(this.dataSource(), sqlDialect);
+        return DSL.using(this.dataSource(),sqlDialect);
     }
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConFactory = new JedisConnectionFactory();
-        RedisStandaloneConfiguration redisStandaloneConfiguration = jedisConFactory.getStandaloneConfiguration();
+        RedisStandaloneConfiguration redisStandaloneConfiguration = jedisConFactory
+                .getStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(
                 this.environment.getProperty(AbstractCommonConfig.REDIS_HOST));
         redisStandaloneConfiguration.setPort(Integer.parseInt(
@@ -228,7 +228,8 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     @Bean
     @Scope(SCOPE_SINGLETON)
     public IPort applicationPort() {
-        return com.rumpus.common.Server.Port.Port.create(this.environment.getProperty(AbstractCommonConfig.PORT));
+        return com.rumpus.common.Server.Port.Port
+                .create(this.environment.getProperty(AbstractCommonConfig.PORT));
     }
 
     // TODO: Should I create a cloud config class? and put this bean in there?
@@ -237,19 +238,25 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     public IAwsS3BucketProperties awsS3Bucket() {
         if (!this.environment.containsProperty(AbstractCommonConfig.S3_BUCKET_NAME_PROPERTY) ||
                 !this.environment.containsProperty(AbstractCommonConfig.S3_ACCESS_KEY_PROPERTY) ||
-                !this.environment.containsProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY) ||
+                !this.environment
+                        .containsProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY)
+                ||
                 !this.environment.containsProperty(AbstractCommonConfig.S3_REGION_PROPERTY)) {
             LOG("One or more of the S3 properties are missing. Returning null for AwsS3Bucket bean.");
             return AwsS3BucketProperties.createEmpty();
         }
-        final String bucketName = this.environment.getProperty(AbstractCommonConfig.S3_BUCKET_NAME_PROPERTY);
-        final String accessKey = this.environment.getProperty(AbstractCommonConfig.S3_ACCESS_KEY_PROPERTY);
-        final String secretAccessKey = this.environment.getProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY);
+        final String bucketName = this.environment
+                .getProperty(AbstractCommonConfig.S3_BUCKET_NAME_PROPERTY);
+        final String accessKey = this.environment
+                .getProperty(AbstractCommonConfig.S3_ACCESS_KEY_PROPERTY);
+        final String secretAccessKey = this.environment
+                .getProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY);
         final String region = this.environment.getProperty(AbstractCommonConfig.S3_REGION_PROPERTY);
 
-        IAwsS3BucketProperties awsS3Bucket = AwsS3BucketProperties.create(bucketName, accessKey, secretAccessKey,
+        IAwsS3BucketProperties awsS3Bucket = AwsS3BucketProperties.create(bucketName,accessKey,
+                secretAccessKey,
                 region);
-        LOG("Created AwsS3Bucket bean with name: ", awsS3Bucket.getBucketName());
+        LOG("Created AwsS3Bucket bean with name: ",awsS3Bucket.getBucketName());
         return awsS3Bucket;
     }
 

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.info.License;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,15 +26,15 @@ public abstract class AbstractOpenApiConfig {
     }
 
     /**
-     * Abstract method for consumer apps to define API groups.
-     * Should return a list of ApiGroup objects.
+     * Abstract method for consumer apps to define API groups. Should return a list
+     * of ApiGroup objects.
      */
     protected abstract List<ApiGroup> initApiGroups();
 
     /**
-     * Creates GroupedOpenApi beans for each API group provided
-     * by the consumer app via initApiGroups().
-     * If none are provided, a default group matching all paths is created.
+     * Creates GroupedOpenApi beans for each API group provided by the consumer app
+     * via initApiGroups(). If none are provided, a default group matching all paths
+     * is created.
      */
     @Bean
     public List<GroupedOpenApi> apiGroups() {

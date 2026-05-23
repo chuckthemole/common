@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rumpus.common.Model.AbstractModel;
-import com.rumpus.common.Serializer.ICommonSerializer;
 
 /**
  * Service interface
@@ -22,32 +21,36 @@ public interface IService<MODEL extends AbstractModel<MODEL, ?>> extends IManage
 
     /**
      * Get the MODEL with the given id
-     * 
-     * @param id MODEL id to look for
+     *
+     * @param id
+     *            MODEL id to look for
      * @return MODEL if found, null if not
      */
     public MODEL getById(String id);
 
     /**
      * Get the MODEL with the given column name and value
-     * 
-     * @param column Column name to look for
-     * @param value Column value to look for
+     *
+     * @param column
+     *            Column name to look for
+     * @param value
+     *            Column value to look for
      * @return MODEL if found, null if not
      */
     public List<MODEL> getByColumnValue(String column, String value);
 
     /**
      * Get all the MODELs from this service
-     * 
+     *
      * @return List of MODELs
      */
     public List<MODEL> getAll();
 
     /**
      * Add a MODEL using this service
-     * 
-     * @param rumpusModel MODEL to add
+     *
+     * @param rumpusModel
+     *            MODEL to add
      * @return MODEL if added, null if not
      */
     @Transactional(rollbackFor = Exception.class)
@@ -55,8 +58,9 @@ public interface IService<MODEL extends AbstractModel<MODEL, ?>> extends IManage
 
     /**
      * Remove a MODEL using this service
-     * 
-     * @param id MODEL id to remove
+     *
+     * @param id
+     *            MODEL id to remove
      * @return true if removed, false if not
      */
     @Transactional(rollbackFor = Exception.class)
@@ -64,9 +68,11 @@ public interface IService<MODEL extends AbstractModel<MODEL, ?>> extends IManage
 
     /**
      * Update a MODEL using this service
-     * 
-     * @param id MODEL id to update
-     * @param updatedModel MODEL to update with
+     *
+     * @param id
+     *            MODEL id to update
+     * @param updatedModel
+     *            MODEL to update with
      * @return MODEL if updated, null if not
      */
     @Transactional(rollbackFor = Exception.class)

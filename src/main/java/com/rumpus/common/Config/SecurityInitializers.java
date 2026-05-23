@@ -3,8 +3,7 @@ package com.rumpus.common.Config;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
- * Not using atm
- * TODO: look into implementing this class. Maybe abstract?
+ * Not using atm TODO: look into implementing this class. Maybe abstract?
  */
 public class SecurityInitializers extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -25,5 +24,5 @@ public class SecurityInitializers extends AbstractAnnotationConfigDispatcherServ
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getServletMappings'");
     }
-    
+
 }

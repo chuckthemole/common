@@ -21,7 +21,7 @@ abstract public class AbstractSuccessHandler implements AuthenticationSuccessHan
             HttpServletRequest request,
             HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
-                this.onSuccess(request, response, authentication);
+        this.onSuccess(request,response,authentication);
     }
 
 }

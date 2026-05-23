@@ -26,7 +26,8 @@ import com.rumpus.common.views.Html.AbstractHtmlObject.HtmlTagType;
  */
 public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
-    // changed to enum below. may delete these in the future. keeping for now so as not to break anything - chuck
+    // changed to enum below. may delete these in the future. keeping for now so as
+    // not to break anything - chuck
     public static final String CLASS_ATTRIBUTE_NAME = "class";
     public static final String ID_ATTRIBUTE_NAME = "id";
     public static final String STYLE_ATTRIBUTE_NAME = "style";
@@ -45,21 +46,15 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
     // TODO: add more maybe?
 
     public enum AttributeProperty {
-        CLASS(CLASS_ATTRIBUTE_NAME),
-        ID(ID_ATTRIBUTE_NAME),
-        STYLE(STYLE_ATTRIBUTE_NAME),
-        HREF(HREF_ATTRIBUTE_NAME),
-        SRC(SRC_ATTRIBUTE_NAME),
-        ALT(ALT_ATTRIBUTE_NAME),
-        TITLE(TITLE_ATTRIBUTE_NAME),
-        TYPE(TYPE_ATTRIBUTE_NAME),
-        NAME(NAME_ATTRIBUTE_NAME),
-        VALUE(VALUE_ATTRIBUTE_NAME),
-        PLACEHOLDER(PLACEHOLDER_ATTRIBUTE_NAME),
-        ROWS(ROWS_ATTRIBUTE_NAME),
-        COLS(COLS_ATTRIBUTE_NAME),
-        TARGET(TARGET_ATTRIBUTE_NAME),
-        FOR(FOR_ATTRIBUTE_NAME);
+        CLASS(CLASS_ATTRIBUTE_NAME), ID(ID_ATTRIBUTE_NAME), STYLE(STYLE_ATTRIBUTE_NAME), HREF(
+                HREF_ATTRIBUTE_NAME), SRC(SRC_ATTRIBUTE_NAME), ALT(ALT_ATTRIBUTE_NAME), TITLE(
+                        TITLE_ATTRIBUTE_NAME), TYPE(TYPE_ATTRIBUTE_NAME), NAME(
+                                NAME_ATTRIBUTE_NAME), VALUE(VALUE_ATTRIBUTE_NAME), PLACEHOLDER(
+                                        PLACEHOLDER_ATTRIBUTE_NAME), ROWS(
+                                                ROWS_ATTRIBUTE_NAME), COLS(
+                                                        COLS_ATTRIBUTE_NAME), TARGET(
+                                                                TARGET_ATTRIBUTE_NAME), FOR(
+                                                                        FOR_ATTRIBUTE_NAME);
 
         private String attributeProperty;
 
@@ -75,7 +70,8 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
     /**
      * The property propertyName of the attribute
      */
-    private String propertyName; // TODO: made an enum class for this. Do I want this member to be enum type or String type? - chuck
+    private String propertyName; // TODO: made an enum class for this. Do I want this member to be
+                                 // enum type or String type? - chuck
     /**
      * The value of the attribute as a Set of Strings
      * <p>
@@ -83,7 +79,9 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
      * <p>
      * Example: class="class1 class2 class3" would be a list of 3 strings
      */
-    private java.util.Set<String> value; // TODO: maybe if this is null do not add ="" to the toString method TODO: maybe change the name of this variable. Too vague and short.
+    private java.util.Set<String> value; // TODO: maybe if this is null do not add ="" to the
+                                         // toString method TODO: maybe change the name of this
+                                         // variable. Too vague and short.
 
     // Ctor use static factory methods instead
     private Attribute(String propertyName, java.util.Set<String> value) {
@@ -112,8 +110,10 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     /**
      * Create an empty attribute
-     * 
-     * @param useNullValues if true, use null values for the attribute propertyName and value, otherwise use empty strings
+     *
+     * @param useNullValues
+     *            if true, use null values for the attribute propertyName and value,
+     *            otherwise use empty strings
      * @return an empty attribute
      */
     public static Attribute createEmptyAttribute(boolean useNullValues) {
@@ -182,12 +182,13 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     /**
      * Add the given value to the attribute value set.
-     * 
-     * @param value the value to add
+     *
+     * @param value
+     *            the value to add
      * @return the attribute value as a string
      */
     public String addValue(String value) {
-        if(this.value.add(value)) {
+        if (this.value.add(value)) {
             LOG("Added value: " + value + " to attribute: " + this.propertyName);
         } else {
             LOG("Value: " + value + " already exists in attribute: " + this.propertyName);
@@ -196,8 +197,8 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
     }
 
     public String addValues(String... values) {
-        for(String value : values) {
-            if(this.value.add(value.strip())) {
+        for (String value : values) {
+            if (this.value.add(value.strip())) {
                 LOG("Added value: " + value + " to attribute: " + this.propertyName);
             } else {
                 LOG("Value: " + value + " already exists in attribute: " + this.propertyName);
@@ -208,13 +209,14 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     /**
      * Add the given values to the attribute value set.
-     * 
-     * @param values the values to add
+     *
+     * @param values
+     *            the values to add
      * @return the attribute value as a string
      */
     public String addValues(java.util.Set<String> values) {
-        for(String value : values) {
-            if(this.value.add(value.strip())) {
+        for (String value : values) {
+            if (this.value.add(value.strip())) {
                 LOG("Added value: " + value + " to attribute: " + this.propertyName);
             } else {
                 LOG("Value: " + value + " already exists in attribute: " + this.propertyName);
@@ -225,12 +227,13 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     /**
      * Remove the given value from the attribute value set.
-     * 
-     * @param value the value to remove
+     *
+     * @param value
+     *            the value to remove
      * @return the attribute value as a string
      */
     public String removeValue(String value) {
-        if(this.value.remove(value)) {
+        if (this.value.remove(value)) {
             LOG("Removed value: " + value + " from attribute: " + this.propertyName);
         } else {
             LOG("Value: " + value + " does not exist in attribute: " + this.propertyName);
@@ -240,13 +243,14 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     /**
      * Remove the given values from the attribute value set.
-     * 
-     * @param values the values to remove
+     *
+     * @param values
+     *            the values to remove
      * @return the attribute value as a string
      */
     public String removeValues(java.util.Set<String> values) {
-        for(String value : values) {
-            if(this.value.remove(value)) {
+        for (String value : values) {
+            if (this.value.remove(value)) {
                 LOG("Removed value: " + value + " from attribute: " + this.propertyName);
             } else {
                 LOG("Value: " + value + " does not exist in attribute: " + this.propertyName);
@@ -262,36 +266,43 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
     /**
      * Get the attributes from a String.
      * <p>
-     * Example: <code>getAttributesFromStringOfAttributes("class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     * Example:
+     * <code>getAttributesFromStringOfAttributes("class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
      * <p>
-     * Result: <code>class="class1 class2 class3" id="id1" style="style1 style2 style3"</code>
-     * 
+     * Result:
+     * <code>class="class1 class2 class3" id="id1" style="style1 style2 style3"</code>
+     *
      * @param attributes
      * @param delimiter
      * @return
      */
-    public static java.util.List<Attribute> getAttributesFromStringOfAttributes(String attributes, String delimiter) {
+    public static java.util.List<Attribute> getAttributesFromStringOfAttributes(String attributes,
+            String delimiter) {
         java.util.List<Attribute> attributeList = new java.util.LinkedList<>();
-        if(attributes == null || attributes.isEmpty()) {
+        if (attributes == null || attributes.isEmpty()) {
             LOG_THIS("attributes is null or empty, returning empty attribute list");
             return attributeList;
         }
         String[] attributesArray = attributes.split(delimiter);
-        for(String attribute : attributesArray) {
+        for (String attribute : attributesArray) {
             String[] attributePropAndValue = attribute.split("=");
-            if(attributePropAndValue.length == 2) { // make sure this is 2 TODO: maybe this could be 1? something like 'active' or 'disabled'?
+            if (attributePropAndValue.length == 2) { // make sure this is 2 TODO: maybe this could
+                                                     // be 1? something like 'active' or 'disabled'?
                 java.util.HashSet<String> valueSet = new java.util.HashSet<>();
                 String[] valuesArray = attributePropAndValue[1].split(" ");
-                for(String value : valuesArray) {
-                    if(valueSet.add(value.strip())) {
-                        LOG_THIS("Added value: " + value + " to attribute: " + attributePropAndValue[0]);
+                for (String value : valuesArray) {
+                    if (valueSet.add(value.strip())) {
+                        LOG_THIS("Added value: " + value + " to attribute: "
+                                + attributePropAndValue[0]);
                     } else {
-                        LOG_THIS("Value: " + value + " already exists in attribute: " + attributePropAndValue[0]);
+                        LOG_THIS("Value: " + value + " already exists in attribute: "
+                                + attributePropAndValue[0]);
                     }
                 }
                 attributeList.add(new Attribute(attributePropAndValue[0].strip(), valueSet));
             } else {
-                LOG_THIS(LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
+                LOG_THIS(LogLevel.ERROR,"Invalid attribute: " + attribute
+                        + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             }
         }
         return attributeList;
@@ -303,42 +314,48 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
      * Example: <code>getAttributeFromString("class=class1 class2 class3")</code>
      * <p>
      * Result: <code>class="class1 class2 class3"</code>
-     * 
-     * @param attribute the String to parse
+     *
+     * @param attribute
+     *            the String to parse
      * @return the {@link Attribute} object
      */
     public static Attribute getAttributeFromString(String attribute) {
-        if(attribute == null || attribute.isEmpty()) {
+        if (attribute == null || attribute.isEmpty()) {
             LOG_THIS("attribute is null or empty, returning empty attribute");
             return Attribute.createEmptyAttribute(false);
         }
         String[] attributePropAndValue = attribute.split("=");
-        if(attributePropAndValue.length == 2) { // make sure this is 2 TODO: maybe this could be 1? something like 'active' or 'disabled'?
+        if (attributePropAndValue.length == 2) { // make sure this is 2 TODO: maybe this could be 1?
+                                                 // something like 'active' or 'disabled'?
             java.util.HashSet<String> valueSet = new java.util.HashSet<>();
             String[] valuesArray = attributePropAndValue[1].split(" ");
-            for(String value : valuesArray) {
-                if(valueSet.add(value.strip())) {
-                    LOG_THIS("Added value: " + value + " to attribute: " + attributePropAndValue[0]);
+            for (String value : valuesArray) {
+                if (valueSet.add(value.strip())) {
+                    LOG_THIS(
+                            "Added value: " + value + " to attribute: " + attributePropAndValue[0]);
                 } else {
-                    LOG_THIS("Value: " + value + " already exists in attribute: " + attributePropAndValue[0]);
+                    LOG_THIS("Value: " + value + " already exists in attribute: "
+                            + attributePropAndValue[0]);
                 }
             }
             return new Attribute(attributePropAndValue[0].strip(), valueSet);
         } else {
-            LOG_THIS(LogLevel.ERROR, "Invalid attribute: " + attribute + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
+            LOG_THIS(LogLevel.ERROR,"Invalid attribute: " + attribute
+                    + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             return Attribute.createEmptyAttribute(false);
         }
     }
 
-    public static java.util.Set<String> getValuesFromStringOfValues(String values, String delimiter) {
+    public static java.util.Set<String> getValuesFromStringOfValues(String values,
+            String delimiter) {
         java.util.Set<String> valueSet = new java.util.HashSet<>();
-        if(values == null || values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             LOG_THIS("values is null or empty, returning empty value set");
             return valueSet;
         }
         String[] valuesArray = values.split(delimiter);
-        for(String value : valuesArray) {
-            if(valueSet.add(value.strip())) {
+        for (String value : valuesArray) {
+            if (valueSet.add(value.strip())) {
                 LOG_THIS("Added value: " + value + " to value set");
             } else {
                 LOG_THIS("Value: " + value + " already exists in value set");
@@ -347,35 +364,41 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
         return valueSet;
     }
 
-
     /**
      * Get and set the attributes for the given html object.
      * <p>
-     * Example: <code>getAndSetAttributesForHtmlObject(hTypeHtmlObject, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
-     * 
-     * @param hTypeHtmlObject the html object to set the attributes for
-     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
-     * @param delimiter the delimiter to use to separate the attributes
+     * Example:
+     * <code>getAndSetAttributesForHtmlObject(hTypeHtmlObject, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     *
+     * @param hTypeHtmlObject
+     *            the html object to set the attributes for
+     * @param attributes
+     *            the attributes to set, this is a string of attributes separated by
+     *            the given delimiter
+     * @param delimiter
+     *            the delimiter to use to separate the attributes
      * @return the html object with the attributes set
      */
-    public static AbstractHtmlObject getAndSetAttributesForHtmlObject(AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
+    public static AbstractHtmlObject getAndSetAttributesForHtmlObject(
+            AbstractHtmlObject hTypeHtmlObject, String attributes, String delimiter) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "Getting and setting attributes for given html object :: Attributes: ",
-            attributes,
-            "Delimiter: ",
-            delimiter).toString();
+                "Getting and setting attributes for given html object :: Attributes: ",
+                attributes,
+                "Delimiter: ",
+                delimiter).toString();
         LOG_THIS(log);
-        if(attributes == null || attributes.isEmpty()) {
+        if (attributes == null || attributes.isEmpty()) {
             LOG_THIS("attributes is null or empty, returning empty html object");
             return hTypeHtmlObject;
         }
         String[] attributesArray = attributes.split(delimiter);
-        for(String attribute : attributesArray) {
+        for (String attribute : attributesArray) {
             String[] attributePropAndValue = attribute.split("=");
-            if(attributePropAndValue.length == 2) {
-                hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(), attributePropAndValue[1].strip());
+            if (attributePropAndValue.length == 2) {
+                hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(),
+                        attributePropAndValue[1].strip());
             } else {
-                LOG_THIS(LogLevel.ERROR, "Invalid attribute: ", attribute);
+                LOG_THIS(LogLevel.ERROR,"Invalid attribute: ",attribute);
             }
         }
         return hTypeHtmlObject;
@@ -384,42 +407,54 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
     /**
      * Get an empty html object with the given attributes.
      * <p>
-     * Example: <code>getEmptyHtmlObjectWithAttributes("class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
-     * 
-     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
-     * @param delimiter the delimiter to use to separate the attributes
+     * Example:
+     * <code>getEmptyHtmlObjectWithAttributes("class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     *
+     * @param attributes
+     *            the attributes to set, this is a string of attributes separated by
+     *            the given delimiter
+     * @param delimiter
+     *            the delimiter to use to separate the attributes
      * @return the empty html object with the attributes set
      */
-    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributes(String attributes, String delimiter) {
+    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributes(String attributes,
+            String delimiter) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "Creating empty html object and adding attributes :: Attributes: ",
-            attributes,
-            "Delimiter: ",
-            delimiter).toString();
+                "Creating empty html object and adding attributes :: Attributes: ",
+                attributes,
+                "Delimiter: ",
+                delimiter).toString();
         LOG_THIS(log);
-        return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(), attributes, delimiter);
+        return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(),
+                attributes,delimiter);
     }
 
     /**
      * Get an empty html object with the given attributes and html tag type.
      * <p>
-     * Example: <code>getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType.DIV, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
-     * 
-     * @param htmlTagType the html tag type of the html object
-     * @param attributes the attributes to set, this is a string of attributes separated by the given delimiter
-     * @param delimiter the delimiter to use to separate the attributes
+     * Example:
+     * <code>getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType.DIV, "class=class1 class2 class3, id=id1, style=style1 style2 style3", ",")</code>
+     *
+     * @param htmlTagType
+     *            the html tag type of the html object
+     * @param attributes
+     *            the attributes to set, this is a string of attributes separated by
+     *            the given delimiter
+     * @param delimiter
+     *            the delimiter to use to separate the attributes
      * @return the empty html object with the attributes and html tag type set
      */
-    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributesAndHtmlTagType(HtmlTagType htmlTagType, String attributes, String delimiter) {
+    public static AbstractHtmlObject getEmptyHtmlObjectWithAttributesAndHtmlTagType(
+            HtmlTagType htmlTagType, String attributes, String delimiter) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "Creating empty html object and adding attributes :: Tag Type: ",
-            htmlTagType.getHtmlTagType(),
-            "Attributes: ",
-            attributes,
-            "Delimiter: ",
-            delimiter).toString();
+                "Creating empty html object and adding attributes :: Tag Type: ",
+                htmlTagType.getHtmlTagType(),
+                "Attributes: ",
+                attributes,
+                "Delimiter: ",
+                delimiter).toString();
         LOG_THIS(log);
-        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes, delimiter);
+        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes,delimiter);
         hTypeHtmlObject.setHtmlTagType(htmlTagType);
         return hTypeHtmlObject;
     }
@@ -427,9 +462,11 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
     /**
      * Clean the given attribute value string.
      * <p>
-     * Example: <code>cleanAttributeValueString(" class1  class2 class3")</code> will return "class1 class2 class3".
+     * Example: <code>cleanAttributeValueString(" class1  class2 class3")</code>
+     * will return "class1 class2 class3".
      * <p>
      * TODO: maybe this can be in {@link StringUtil} seems like a string problem.
+     *
      * @param attributesString
      * @return
      */
@@ -437,10 +474,10 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
         StringBuilder sb = new StringBuilder();
         String[] attributesArray = attributesString.split(" ");
         boolean firstValueChosen = false;
-        for(int attrtibutesArrayIndex = 0; attrtibutesArrayIndex < attributesArray.length; attrtibutesArrayIndex++) {
-            if(attributesArray[attrtibutesArrayIndex].strip().isEmpty()) {
+        for (int attrtibutesArrayIndex = 0; attrtibutesArrayIndex < attributesArray.length; attrtibutesArrayIndex++) {
+            if (attributesArray[attrtibutesArrayIndex].strip().isEmpty()) {
                 continue;
-            } else if(!firstValueChosen) {
+            } else if (!firstValueChosen) {
                 sb.append(attributesArray[attrtibutesArrayIndex].strip());
                 firstValueChosen = true;
             } else {
@@ -468,7 +505,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     public String getValueAsString() {
         StringBuilder sb = new StringBuilder();
-        for(String value : this.value) {
+        for (String value : this.value) {
             sb.append(value).append(" ");
         }
         return sb.toString().strip();
@@ -476,7 +513,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     public String getValueAsString(String delimiter) {
         StringBuilder sb = new StringBuilder();
-        for(String value : this.value) {
+        for (String value : this.value) {
             sb.append(value).append(delimiter);
         }
         return sb.toString().strip();
@@ -498,35 +535,38 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
 
     @Override
     public String toString() {
-        if(this.propertyName == null || this.value == null || this.propertyName.isEmpty() || this.value.isEmpty()) {
+        if (this.propertyName == null || this.value == null || this.propertyName.isEmpty()
+                || this.value.isEmpty()) {
             return StringUtil.prettyPrintJson("");
         }
         StringBuilder values = new StringBuilder();
-        for(String value : this.value) {
+        for (String value : this.value) {
             values.append(value).append(" ");
         }
         StringBuilder sb = new StringBuilder();
         sb.append(this.propertyName)
-            .append("=")
-            .append(values.toString().strip());
+                .append("=")
+                .append(values.toString().strip());
         return sb.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null || !(obj instanceof Attribute)) {
+        if (obj == null || !(obj instanceof Attribute)) {
             LOG("obj is null or not an instance of Attribute");
             return false;
         }
         Attribute attribute = (Attribute) obj;
-        return this.propertyName.equals(attribute.getPropertyName()) && this.value.equals(attribute.getValue());
+        return this.propertyName.equals(attribute.getPropertyName())
+                && this.value.equals(attribute.getValue());
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(Attribute.class, args);
+        com.rumpus.common.ICommon.LOG(Attribute.class,args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.ICommon.LOG(Attribute.class, level, args);
+    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level,
+            String... args) {
+        com.rumpus.common.ICommon.LOG(Attribute.class,level,args);
     }
 }

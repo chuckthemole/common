@@ -5,7 +5,8 @@ import java.sql.Driver;
 import org.springframework.jdbc.datasource.embedded.ConnectionProperties;
 
 /**
- * TODO: not using this class atm. Maybe look into how we can use with common config.
+ * TODO: not using this class atm. Maybe look into how we can use with common
+ * config.
  */
 abstract public class AbstractConnectionProperties implements ConnectionProperties {
 
@@ -14,11 +15,15 @@ abstract public class AbstractConnectionProperties implements ConnectionProperti
     private String username;
     private String password;
 
-    public AbstractConnectionProperties() {}
-    public AbstractConnectionProperties(String driverClass, String url, String username, String password) throws ClassNotFoundException {
+    public AbstractConnectionProperties() {
+    }
+
+    public AbstractConnectionProperties(String driverClass, String url, String username,
+            String password) throws ClassNotFoundException {
         this.driverClass = Class.forName(driverClass);
-        if(!Driver.class.isAssignableFrom(this.driverClass)) {
-            throw new IllegalArgumentException("ERROR: the driver class provided is not a subclass of Driver.");
+        if (!Driver.class.isAssignableFrom(this.driverClass)) {
+            throw new IllegalArgumentException(
+                    "ERROR: the driver class provided is not a subclass of Driver.");
         }
         this.url = url;
         this.username = username;

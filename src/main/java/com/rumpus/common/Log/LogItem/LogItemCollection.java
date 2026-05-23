@@ -6,7 +6,9 @@ import java.util.Set;
 import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.Model.AbstractModelsCollection;
 
-public class LogItemCollection extends AbstractModelsCollection<LogItem, Set<LogItem>> implements IManageable {
+public class LogItemCollection extends AbstractModelsCollection<LogItem, Set<LogItem>>
+        implements
+            IManageable {
     public LogItemCollection() {
         super(new HashSet<>());
     }

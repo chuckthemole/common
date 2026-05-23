@@ -7,8 +7,7 @@ public class Header extends AbstractView {
     private Style style;
 
     public enum Style {
-        DEFAULT("default"),
-        INVERSE("inverse");
+        DEFAULT("default"), INVERSE("inverse");
 
         private String style;
 
@@ -23,19 +22,22 @@ public class Header extends AbstractView {
 
     private NavbarItem navbarBrand;
     private List<NavbarItem> navbarItemsStart;
-    
+
     private List<NavbarItem> navbarItemsEnd;
 
-    private Header(NavbarItem navbarBrand, List<NavbarItem> navbarItemsStart, List<NavbarItem> navbarItemsEnd) {
+    private Header(NavbarItem navbarBrand, List<NavbarItem> navbarItemsStart,
+            List<NavbarItem> navbarItemsEnd) {
         this.style = Style.DEFAULT;
         this.navbarBrand = navbarBrand;
         this.navbarItemsStart = navbarItemsStart;
         this.navbarItemsEnd = navbarItemsEnd;
     }
 
-    // TODO: should I be able to tell which protocol the image link is coming from in my creator? Maybe make a util class to parse and return - chuck 4/25/2024
-    
-    public static Header create(NavbarItem navbarBrand, List<NavbarItem> navbarItemsStart, List<NavbarItem> navbarItemsEnd) {
+    // TODO: should I be able to tell which protocol the image link is coming from
+    // in my creator? Maybe make a util class to parse and return - chuck 4/25/2024
+
+    public static Header create(NavbarItem navbarBrand, List<NavbarItem> navbarItemsStart,
+            List<NavbarItem> navbarItemsEnd) {
         return new Header(navbarBrand, navbarItemsStart, navbarItemsEnd);
     }
 

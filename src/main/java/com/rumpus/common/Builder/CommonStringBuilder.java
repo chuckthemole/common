@@ -7,8 +7,9 @@ public class CommonStringBuilder extends AbstractBuilder {
     }
 
     /**
-     * 
-     * @param args strings to build
+     *
+     * @param args
+     *            strings to build
      * @return CommonStringBuilder object
      */
     public static CommonStringBuilder stringBuilder(String... args) {
@@ -16,14 +17,16 @@ public class CommonStringBuilder extends AbstractBuilder {
     }
 
     /**
-     * 
-     * @param args strings to build
+     *
+     * @param args
+     *            strings to build
      * @return a built string
      */
     public static String buildString(String... args) {
         return new CommonStringBuilder(args).toString();
     }
 
-    // TODO build public static method that takes an array of arrays. Each array is a line. Maybe call something like 'buildStringLineByLine'
-    
+    // TODO build public static method that takes an array of arrays. Each array is
+    // a line. Maybe call something like 'buildStringLineByLine'
+
 }

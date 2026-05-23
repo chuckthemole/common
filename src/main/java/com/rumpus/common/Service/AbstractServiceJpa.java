@@ -7,7 +7,10 @@ import com.rumpus.common.Dao.IDaoJpa;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IService<MODEL> {
+abstract public class AbstractServiceJpa<
+        MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
+        implements
+            IService<MODEL> {
 
     /**
      * The data access object for this service.
@@ -26,7 +29,7 @@ abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL, ?>> 
 
     @Override
     public List<MODEL> getByColumnValue(String column, String value) {
-        LOG(LogLevel.ERROR, "getByColumnValue(column, value) not implemented");
+        LOG(LogLevel.ERROR,"getByColumnValue(column, value) not implemented");
         return null;
     }
 

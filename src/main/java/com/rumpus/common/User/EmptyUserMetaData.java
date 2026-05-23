@@ -18,5 +18,5 @@ final public class EmptyUserMetaData extends AbstractCommonUserMetaData<EmptyUse
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getMetaAttributesMap'");
     }
-    
+
 }

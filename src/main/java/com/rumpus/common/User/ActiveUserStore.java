@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ActiveUserStore {
-    
+
     private Set<String> users;
 
     public ActiveUserStore() {

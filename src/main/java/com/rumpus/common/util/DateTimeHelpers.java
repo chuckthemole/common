@@ -6,13 +6,14 @@ import java.util.Date;
 
 import com.rumpus.common.ICommon;
 
-// TODO expand this helper 
+// TODO expand this helper
 public class DateTimeHelpers implements ICommon {
 
-    private static final com.rumpus.common.Log.ICommonLogger LOG = com.rumpus.common.Log.application.JavaLogger.createLogger(DateTimeHelpers.class);
+    private static final com.rumpus.common.Log.ICommonLogger LOG = com.rumpus.common.Log.application.JavaLogger
+            .createLogger(DateTimeHelpers.class);
 
     /**
-     * 
+     *
      * @return Date object if able to parse, else return null
      */
     public static Date dd_MM_yyyy(String date) {
@@ -21,7 +22,8 @@ public class DateTimeHelpers implements ICommon {
         try {
             dateObject = sdf.parse(date);
         } catch (ParseException exception) {
-            com.rumpus.common.Builder.LogBuilder.logBuilderFromStringArgsNoSpaces(DateTimeHelpers.class, exception.toString());
+            com.rumpus.common.Builder.LogBuilder
+                    .logBuilderFromStringArgsNoSpaces(DateTimeHelpers.class,exception.toString());
         }
         return dateObject;
     }

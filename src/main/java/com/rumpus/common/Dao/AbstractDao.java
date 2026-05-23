@@ -11,10 +11,11 @@ import com.rumpus.common.Model.ModelUniqueIdManager;
 import com.rumpus.common.AbstractCommonObject;
 
 /**
- * Abstract Data Access Object (Dao)
- * Implementations of {@link IDao} should extend this class
+ * Abstract Data Access Object (Dao) Implementations of {@link IDao} should
+ * extend this class
  */
-public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IDao<MODEL> {
+public abstract class AbstractDao<
+        MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IDao<MODEL> {
 
     // TODO: can we make all these fields private?
 
@@ -37,21 +38,22 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>> extends
     /**
      * The {@link DSLContext} for this Dao
      */
-    @Autowired protected DSLContext dslContext;
+    @Autowired
+    protected DSLContext dslContext;
 
     static {
         AbstractDao.idManager = ModelUniqueIdManager.getSingletonInstance();
     }
 
     public AbstractDao(
-        String table,
-        String metaTable,
-        RowMapper<MODEL> mapper) {
-            
-            this.table = table;
-            this.metaTable = metaTable;
-            this.mapper = mapper;
-            this.metaTable = metaTable;
+            String table,
+            String metaTable,
+            RowMapper<MODEL> mapper) {
+
+        this.table = table;
+        this.metaTable = metaTable;
+        this.mapper = mapper;
+        this.metaTable = metaTable;
     }
 
     @Override
@@ -80,7 +82,10 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>> extends
     }
 
     abstract public void insert(String sqlInsertStatement, Map<String, Object> modelMap);
+
     abstract public MODEL onInsert(MODEL model, final String sql);
+
     abstract public MODEL onGet(final String sql);
+
     abstract public MODEL onGet(final String sql, final String name);
 }

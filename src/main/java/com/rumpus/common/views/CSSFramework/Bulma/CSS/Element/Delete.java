@@ -13,13 +13,14 @@ public class Delete extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Delete createWithBody(String body) {
         return new Delete(body);
     }
+
     public static Delete createWithNoBody() {
         return new Delete("");
     }

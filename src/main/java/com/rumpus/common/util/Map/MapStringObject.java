@@ -3,14 +3,13 @@ package com.rumpus.common.util.Map;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Utility class for working with Map<String, Object> instances.
- * Provides type-safe getters, string formatting, and common operations.
+ * Utility class for working with Map<String, Object> instances. Provides
+ * type-safe getters, string formatting, and common operations.
  */
 public class MapStringObject {
 
@@ -36,13 +35,13 @@ public class MapStringObject {
 
     public static MapStringObject of(String key, Object value) {
         MapStringObject mso = new MapStringObject();
-        mso.put(key, value);
+        mso.put(key,value);
         return mso;
     }
 
     public static MapStringObject of(String k1, Object v1, String k2, Object v2) {
         MapStringObject mso = new MapStringObject();
-        mso.put(k1, v1).put(k2, v2);
+        mso.put(k1,v1).put(k2,v2);
         return mso;
     }
 
@@ -52,13 +51,13 @@ public class MapStringObject {
 
     // Basic operations
     public MapStringObject put(String key, Object value) {
-        map.put(key, value);
+        map.put(key,value);
         return this;
     }
 
     public MapStringObject putIfNotNull(String key, Object value) {
         if (value != null) {
-            map.put(key, value);
+            map.put(key,value);
         }
         return this;
     }
@@ -100,7 +99,7 @@ public class MapStringObject {
 
     // Type-safe getters with defaults
     public String getString(String key) {
-        return getString(key, null);
+        return getString(key,null);
     }
 
     public String getString(String key, String defaultValue) {
@@ -111,7 +110,7 @@ public class MapStringObject {
     }
 
     public Integer getInteger(String key) {
-        return getInteger(key, null);
+        return getInteger(key,null);
     }
 
     public Integer getInteger(String key, Integer defaultValue) {
@@ -132,7 +131,7 @@ public class MapStringObject {
     }
 
     public Long getLong(String key) {
-        return getLong(key, null);
+        return getLong(key,null);
     }
 
     public Long getLong(String key, Long defaultValue) {
@@ -153,7 +152,7 @@ public class MapStringObject {
     }
 
     public Double getDouble(String key) {
-        return getDouble(key, null);
+        return getDouble(key,null);
     }
 
     public Double getDouble(String key, Double defaultValue) {
@@ -174,7 +173,7 @@ public class MapStringObject {
     }
 
     public BigDecimal getBigDecimal(String key) {
-        return getBigDecimal(key, null);
+        return getBigDecimal(key,null);
     }
 
     public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
@@ -195,7 +194,7 @@ public class MapStringObject {
     }
 
     public Boolean getBoolean(String key) {
-        return getBoolean(key, null);
+        return getBoolean(key,null);
     }
 
     public Boolean getBoolean(String key, Boolean defaultValue) {
@@ -209,7 +208,8 @@ public class MapStringObject {
         String stringValue = value.toString().toLowerCase();
         if ("true".equals(stringValue) || "1".equals(stringValue) || "yes".equals(stringValue)) {
             return true;
-        } else if ("false".equals(stringValue) || "0".equals(stringValue) || "no".equals(stringValue)) {
+        } else if ("false".equals(stringValue) || "0".equals(stringValue)
+                || "no".equals(stringValue)) {
             return false;
         }
 
@@ -217,7 +217,7 @@ public class MapStringObject {
     }
 
     public LocalDate getLocalDate(String key) {
-        return getLocalDate(key, null);
+        return getLocalDate(key,null);
     }
 
     public LocalDate getLocalDate(String key, LocalDate defaultValue) {
@@ -236,7 +236,7 @@ public class MapStringObject {
     }
 
     public LocalDateTime getLocalDateTime(String key) {
-        return getLocalDateTime(key, null);
+        return getLocalDateTime(key,null);
     }
 
     public LocalDateTime getLocalDateTime(String key, LocalDateTime defaultValue) {
@@ -303,7 +303,7 @@ public class MapStringObject {
             Object value = map.get(key);
 
             sb.append(itemIndentStr).append(key).append(": ");
-            sb.append(formatValue(value, indent + 1));
+            sb.append(formatValue(value,indent + 1));
 
             if (i < sortedKeys.size() - 1) {
                 sb.append(",");
@@ -330,7 +330,7 @@ public class MapStringObject {
                 return "[]";
             }
             return "[" + collection.stream()
-                    .map(item -> formatValue(item, indent))
+                    .map(item -> formatValue(item,indent))
                     .collect(Collectors.joining(", ")) + "]";
         } else {
             return value.toString();
@@ -342,7 +342,7 @@ public class MapStringObject {
                 .sorted(Map.Entry.comparingByKey())
                 .map(entry -> entry.getKey() + "=" +
                         (entry.getValue() == null ? "null" : entry.getValue().toString()))
-                .collect(Collectors.joining(", ", "{", "}"));
+                .collect(Collectors.joining(", ","{","}"));
     }
 
     public String toKeyValueString() {
@@ -362,14 +362,14 @@ public class MapStringObject {
         Set<String> keySet = new HashSet<>(Arrays.asList(keys));
         Map<String, Object> filtered = map.entrySet().stream()
                 .filter(entry -> keySet.contains(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
         return new MapStringObject(filtered);
     }
 
     public MapStringObject filterByKeyPrefix(String prefix) {
         Map<String, Object> filtered = map.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(prefix))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
         return new MapStringObject(filtered);
     }
 
@@ -377,14 +377,14 @@ public class MapStringObject {
         Set<String> keySet = new HashSet<>(Arrays.asList(keys));
         Map<String, Object> filtered = map.entrySet().stream()
                 .filter(entry -> !keySet.contains(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
         return new MapStringObject(filtered);
     }
 
     public MapStringObject excludeNullValues() {
         Map<String, Object> filtered = map.entrySet().stream()
                 .filter(entry -> entry.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
         return new MapStringObject(filtered);
     }
 
@@ -399,11 +399,11 @@ public class MapStringObject {
             if (value instanceof Map) {
                 @SuppressWarnings("unchecked")
                 MapStringObject nested = new MapStringObject((Map<String, Object>) value);
-                deepCopied.put(entry.getKey(), nested.deepCopy().asMap());
+                deepCopied.put(entry.getKey(),nested.deepCopy().asMap());
             } else if (value instanceof List) {
-                deepCopied.put(entry.getKey(), new ArrayList<>((List<?>) value));
+                deepCopied.put(entry.getKey(),new ArrayList<>((List<?>) value));
             } else {
-                deepCopied.put(entry.getKey(), value);
+                deepCopied.put(entry.getKey(),value);
             }
         }
         return new MapStringObject(deepCopied);
@@ -466,7 +466,7 @@ public class MapStringObject {
      * Safe string getter from Map<String, Object>
      */
     public static String getString(Map<String, Object> map, String key) {
-        return getString(map, key, null);
+        return getString(map,key,null);
     }
 
     /**
@@ -475,14 +475,14 @@ public class MapStringObject {
     public static String getString(Map<String, Object> map, String key, String defaultValue) {
         if (map == null)
             return defaultValue;
-        return new MapStringObject(map).getString(key, defaultValue);
+        return new MapStringObject(map).getString(key,defaultValue);
     }
 
     /**
      * Safe integer getter from Map<String, Object>
      */
     public static Integer getInteger(Map<String, Object> map, String key) {
-        return getInteger(map, key, null);
+        return getInteger(map,key,null);
     }
 
     /**
@@ -491,14 +491,14 @@ public class MapStringObject {
     public static Integer getInteger(Map<String, Object> map, String key, Integer defaultValue) {
         if (map == null)
             return defaultValue;
-        return new MapStringObject(map).getInteger(key, defaultValue);
+        return new MapStringObject(map).getInteger(key,defaultValue);
     }
 
     /**
      * Safe boolean getter from Map<String, Object>
      */
     public static Boolean getBoolean(Map<String, Object> map, String key) {
-        return getBoolean(map, key, null);
+        return getBoolean(map,key,null);
     }
 
     /**
@@ -507,7 +507,7 @@ public class MapStringObject {
     public static Boolean getBoolean(Map<String, Object> map, String key, Boolean defaultValue) {
         if (map == null)
             return defaultValue;
-        return new MapStringObject(map).getBoolean(key, defaultValue);
+        return new MapStringObject(map).getBoolean(key,defaultValue);
     }
 
     /**
@@ -572,7 +572,7 @@ public class MapStringObject {
 
         return map.entrySet().stream()
                 .filter(entry -> entry.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
     }
 
     /**
@@ -585,7 +585,7 @@ public class MapStringObject {
         Set<String> keySet = new HashSet<>(Arrays.asList(keys));
         return map.entrySet().stream()
                 .filter(entry -> keySet.contains(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
     }
 
     /**
@@ -600,7 +600,7 @@ public class MapStringObject {
         Set<String> keySet = new HashSet<>(Arrays.asList(keys));
         return map.entrySet().stream()
                 .filter(entry -> !keySet.contains(entry.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
     }
 
     /**
@@ -620,8 +620,8 @@ public class MapStringObject {
     }
 
     /**
-     * Creates a map from alternating key-value arguments
-     * Example: createMap("name", "John", "age", 30)
+     * Creates a map from alternating key-value arguments Example: createMap("name",
+     * "John", "age", 30)
      */
     public static Map<String, Object> createMap(Object... keyValuePairs) {
         if (keyValuePairs == null || keyValuePairs.length == 0) {
@@ -636,18 +636,18 @@ public class MapStringObject {
         for (int i = 0; i < keyValuePairs.length; i += 2) {
             String key = keyValuePairs[i].toString();
             Object value = keyValuePairs[i + 1];
-            map.put(key, value);
+            map.put(key,value);
         }
 
         return map;
     }
 
     /**
-     * Flattens a nested map structure using dot notation
-     * Example: {"user": {"name": "John"}} becomes {"user.name": "John"}
+     * Flattens a nested map structure using dot notation Example: {"user": {"name":
+     * "John"}} becomes {"user.name": "John"}
      */
     public static Map<String, Object> flatten(Map<String, Object> map) {
-        return flatten(map, "");
+        return flatten(map,"");
     }
 
     /**
@@ -665,9 +665,9 @@ public class MapStringObject {
             if (value instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> nestedMap = (Map<String, Object>) value;
-                result.putAll(flatten(nestedMap, key));
+                result.putAll(flatten(nestedMap,key));
             } else {
-                result.put(key, value);
+                result.put(key,value);
             }
         }
 
@@ -714,7 +714,7 @@ public class MapStringObject {
         if (obj == null || getClass() != obj.getClass())
             return false;
         MapStringObject that = (MapStringObject) obj;
-        return Objects.equals(map, that.map);
+        return Objects.equals(map,that.map);
     }
 
     @Override

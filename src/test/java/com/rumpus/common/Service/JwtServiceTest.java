@@ -44,8 +44,8 @@ class JwtServiceTest {
     @BeforeEach
     void setUp() {
         // Set up test properties using reflection
-        ReflectionTestUtils.setField(jwtService, "jwtSecret", TEST_JWT_SECRET);
-        ReflectionTestUtils.setField(jwtService, "jwtExpiration", TEST_JWT_EXPIRATION);
+        ReflectionTestUtils.setField(jwtService,"jwtSecret",TEST_JWT_SECRET);
+        ReflectionTestUtils.setField(jwtService,"jwtExpiration",TEST_JWT_EXPIRATION);
     }
 
     @Test
@@ -77,9 +77,9 @@ class JwtServiceTest {
     void testGenerateTokenWithOAuth2Provider() {
         // Given
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("email", TEST_EMAIL);
-        userInfo.put("name", TEST_NAME);
-        userInfo.put("picture", TEST_PICTURE);
+        userInfo.put("email",TEST_EMAIL);
+        userInfo.put("name",TEST_NAME);
+        userInfo.put("picture",TEST_PICTURE);
 
         when(mockOAuth2Provider.extractEmail(userInfo)).thenReturn(TEST_EMAIL);
         when(mockOAuth2Provider.extractName(userInfo)).thenReturn(TEST_NAME);
@@ -87,7 +87,7 @@ class JwtServiceTest {
         when(mockOAuth2Provider.getProviderId()).thenReturn(TEST_PROVIDER);
 
         // When
-        String token = jwtService.generateToken(mockOAuth2Provider, userInfo);
+        String token = jwtService.generateToken(mockOAuth2Provider,userInfo);
 
         // Then
         assertNotNull(token);
@@ -96,11 +96,11 @@ class JwtServiceTest {
 
         // Verify token contents
         Claims claims = jwtService.extractClaims(token);
-        assertEquals(TEST_EMAIL, claims.getSubject());
-        assertEquals(TEST_NAME, claims.get("name"));
-        assertEquals(TEST_EMAIL, claims.get("email"));
-        assertEquals(TEST_PICTURE, claims.get("picture"));
-        assertEquals(TEST_PROVIDER, claims.get("provider"));
+        assertEquals(TEST_EMAIL,claims.getSubject());
+        assertEquals(TEST_NAME,claims.get("name"));
+        assertEquals(TEST_EMAIL,claims.get("email"));
+        assertEquals(TEST_PICTURE,claims.get("picture"));
+        assertEquals(TEST_PROVIDER,claims.get("provider"));
         assertNotNull(claims.getIssuedAt());
         assertNotNull(claims.getExpiration());
     }
@@ -108,7 +108,7 @@ class JwtServiceTest {
     @Test
     void testGenerateTokenWithStringParameters() {
         // When
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
 
         // Then
         assertNotNull(token);
@@ -117,11 +117,11 @@ class JwtServiceTest {
 
         // Verify token contents
         Claims claims = jwtService.extractClaims(token);
-        assertEquals(TEST_EMAIL, claims.getSubject());
-        assertEquals(TEST_NAME, claims.get("name"));
-        assertEquals(TEST_EMAIL, claims.get("email"));
-        assertEquals(TEST_PICTURE, claims.get("picture"));
-        assertEquals(TEST_PROVIDER, claims.get("provider"));
+        assertEquals(TEST_EMAIL,claims.getSubject());
+        assertEquals(TEST_NAME,claims.get("name"));
+        assertEquals(TEST_EMAIL,claims.get("email"));
+        assertEquals(TEST_PICTURE,claims.get("picture"));
+        assertEquals(TEST_PROVIDER,claims.get("provider"));
         assertNotNull(claims.getIssuedAt());
         assertNotNull(claims.getExpiration());
     }
@@ -129,18 +129,18 @@ class JwtServiceTest {
     @Test
     void testExtractClaims() {
         // Given
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
 
         // When
         Claims claims = jwtService.extractClaims(token);
 
         // Then
         assertNotNull(claims);
-        assertEquals(TEST_EMAIL, claims.getSubject());
-        assertEquals(TEST_NAME, claims.get("name"));
-        assertEquals(TEST_EMAIL, claims.get("email"));
-        assertEquals(TEST_PICTURE, claims.get("picture"));
-        assertEquals(TEST_PROVIDER, claims.get("provider"));
+        assertEquals(TEST_EMAIL,claims.getSubject());
+        assertEquals(TEST_NAME,claims.get("name"));
+        assertEquals(TEST_EMAIL,claims.get("email"));
+        assertEquals(TEST_PICTURE,claims.get("picture"));
+        assertEquals(TEST_PROVIDER,claims.get("provider"));
     }
 
     @Test
@@ -149,7 +149,7 @@ class JwtServiceTest {
         String invalidToken = "invalid.jwt.token";
 
         // When & Then
-        assertThrows(JwtException.class, () -> {
+        assertThrows(JwtException.class,() -> {
             jwtService.extractClaims(invalidToken);
         });
     }
@@ -157,7 +157,8 @@ class JwtServiceTest {
     @Test
     void testIsTokenValid() {
         // Given
-        String validToken = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String validToken = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,
+                TEST_PROVIDER);
 
         // When & Then
         assertTrue(jwtService.isTokenValid(validToken));
@@ -187,55 +188,55 @@ class JwtServiceTest {
     @Test
     void testExtractEmail() {
         // Given
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
 
         // When
         String extractedEmail = jwtService.extractEmail(token);
 
         // Then
-        assertEquals(TEST_EMAIL, extractedEmail);
+        assertEquals(TEST_EMAIL,extractedEmail);
     }
 
     @Test
     void testExtractName() {
         // Given
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
 
         // When
         String extractedName = jwtService.extractName(token);
 
         // Then
-        assertEquals(TEST_NAME, extractedName);
+        assertEquals(TEST_NAME,extractedName);
     }
 
     @Test
     void testExtractProvider() {
         // Given
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
 
         // When
         String extractedProvider = jwtService.extractProvider(token);
 
         // Then
-        assertEquals(TEST_PROVIDER, extractedProvider);
+        assertEquals(TEST_PROVIDER,extractedProvider);
     }
 
     @Test
     void testExtractPicture() {
         // Given
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
 
         // When
         String extractedPicture = jwtService.extractPicture(token);
 
         // Then
-        assertEquals(TEST_PICTURE, extractedPicture);
+        assertEquals(TEST_PICTURE,extractedPicture);
     }
 
     @Test
     void testTokenExpirationIsSet() {
         // Given
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
 
         // When
         Claims claims = jwtService.extractClaims(token);
@@ -257,7 +258,7 @@ class JwtServiceTest {
     void testTokenIssuedAtIsSet() {
         // Given
         long beforeGeneration = System.currentTimeMillis();
-        String token = jwtService.generateToken(TEST_EMAIL, TEST_NAME, TEST_PICTURE, TEST_PROVIDER);
+        String token = jwtService.generateToken(TEST_EMAIL,TEST_NAME,TEST_PICTURE,TEST_PROVIDER);
         long afterGeneration = System.currentTimeMillis();
 
         // When
@@ -280,10 +281,10 @@ class JwtServiceTest {
         String invalidToken = "invalid.jwt.token";
 
         // When & Then
-        assertThrows(JwtException.class, () -> jwtService.extractEmail(invalidToken));
-        assertThrows(JwtException.class, () -> jwtService.extractName(invalidToken));
-        assertThrows(JwtException.class, () -> jwtService.extractProvider(invalidToken));
-        assertThrows(JwtException.class, () -> jwtService.extractPicture(invalidToken));
+        assertThrows(JwtException.class,() -> jwtService.extractEmail(invalidToken));
+        assertThrows(JwtException.class,() -> jwtService.extractName(invalidToken));
+        assertThrows(JwtException.class,() -> jwtService.extractProvider(invalidToken));
+        assertThrows(JwtException.class,() -> jwtService.extractPicture(invalidToken));
     }
 
     @Test

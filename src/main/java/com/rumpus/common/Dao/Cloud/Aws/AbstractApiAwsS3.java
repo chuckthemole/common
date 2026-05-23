@@ -11,8 +11,9 @@ import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 
 @EnableConfigurationProperties(AwsS3BucketProperties.class)
-abstract public class AbstractApiAwsS3 { // TODO: extends com.rumpus.common.Dao.AbstractApiDB<MODEL> {
-    
+abstract public class AbstractApiAwsS3 { // TODO: extends com.rumpus.common.Dao.AbstractApiDB<MODEL>
+                                         // {
+
     private S3Template s3Template;
     protected AwsS3BucketProperties bucketProperties;
 
@@ -25,9 +26,9 @@ abstract public class AbstractApiAwsS3 { // TODO: extends com.rumpus.common.Dao.
         final String fileName = file.getOriginalFilename();
         final String bucketName = this.bucketProperties.getBucketName();
         try {
-            this.s3Template.upload(bucketName, fileName, file.getInputStream());
+            this.s3Template.upload(bucketName,fileName,file.getInputStream());
         } catch (IOException e) {
-            LOG_THIS("Error uploading file to S3", e.getMessage());
+            LOG_THIS("Error uploading file to S3",e.getMessage());
 
         }
     }
@@ -35,14 +36,14 @@ abstract public class AbstractApiAwsS3 { // TODO: extends com.rumpus.common.Dao.
     public S3Resource get(String key) {
         LOG_THIS("TESTING get() s3resource...");
         final String bucketName = this.bucketProperties.getBucketName();
-        final S3Resource s3Resource = this.s3Template.download(bucketName, key);
+        final S3Resource s3Resource = this.s3Template.download(bucketName,key);
         LOG_THIS(s3Resource.toString());
         return s3Resource;
     }
 
     public void delete(String key) {
         final String bucketName = this.bucketProperties.getBucketName();
-        this.s3Template.deleteObject(bucketName, key);
+        this.s3Template.deleteObject(bucketName,key);
     }
 
     public AwsS3BucketProperties getProperties() {
@@ -54,10 +55,11 @@ abstract public class AbstractApiAwsS3 { // TODO: extends com.rumpus.common.Dao.
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractApiAwsS3.class, args);
+        com.rumpus.common.ICommon.LOG(AbstractApiAwsS3.class,args);
     }
 
-    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level, String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractApiAwsS3.class, level, args);
+    private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level,
+            String... args) {
+        com.rumpus.common.ICommon.LOG(AbstractApiAwsS3.class,level,args);
     }
 }

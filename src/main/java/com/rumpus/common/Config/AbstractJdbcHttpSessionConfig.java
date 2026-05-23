@@ -21,8 +21,11 @@ import com.rumpus.common.ICommon;
 // @org.springframework.context.annotation.PropertySource(value =
 // "classpath:properties.yml", factory =
 // com.rumpus.common.Config.Properties.yaml.YamlPropertySourceFactory.class)
-public abstract class AbstractJdbcHttpSessionConfig extends AbstractHttpSessionApplicationInitializer
-        implements ICommon {
+public abstract class AbstractJdbcHttpSessionConfig
+        extends
+            AbstractHttpSessionApplicationInitializer
+        implements
+            ICommon {
 
     private static final String TABLE_NAME = "session";
 
@@ -34,7 +37,7 @@ public abstract class AbstractJdbcHttpSessionConfig extends AbstractHttpSessionA
     }
 
     @Bean
-    @DependsOn({ "dataSource" })
+    @DependsOn({"dataSource"})
     public PlatformTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource);
     }

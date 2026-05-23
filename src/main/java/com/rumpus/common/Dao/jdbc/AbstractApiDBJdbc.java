@@ -23,7 +23,8 @@ import org.jooq.Query;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> extends AbstractDao<MODEL> {
+public abstract class AbstractApiDBJdbc<
+        MODEL extends AbstractModel<MODEL, ?>> extends AbstractDao<MODEL> {
 
     /**
      * The {@link CommonJdbc} for this Dao
@@ -31,7 +32,8 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
     private CommonJdbc jdbc;
 
     public AbstractApiDBJdbc(DataSource dataSource, String table, RowMapper<MODEL> mapper) {
-        super(table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to handle in future.
+        super(table, "", mapper); // TODO: Leaving metaTable empty for now. think about how to
+                                  // handle in future.
         this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
     }
 
@@ -41,9 +43,9 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         // build the query
         final Query query = super.dslContext
-            .deleteFrom(
-                DSL.table(this.getTable()))
-            .where(DSL.field(ICommon.USERNAME).eq(name));
+                .deleteFrom(
+                        DSL.table(this.getTable()))
+                .where(DSL.field(ICommon.USERNAME).eq(name));
 
         // for logging
         final ParamType paramType = ParamType.INLINED;
@@ -51,7 +53,8 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
         LOG_THIS(sql);
 
         // execute the query
-        // return query.execute() > 0; // This is using jooq. Keeping this here for reference. I'm using jdbc for now.
+        // return query.execute() > 0; // This is using jooq. Keeping this here for
+        // reference. I'm using jdbc for now.
         return this.jdbc.update(sql) > 0;
     }
 
@@ -61,24 +64,21 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         // build the query
         final Query query = super.dslContext
-            .select(DSL.asterisk()) // TODO: make a const for this
-            .from(
-                DSL.table(this.getTable())
-            )
-            .where(
-                DSL.field(constraints.keySet().iterator().next())
-                .eq(
-                    constraints.values().iterator().next()
-                )
-            );
-        
+                .select(DSL.asterisk()) // TODO: make a const for this
+                .from(
+                        DSL.table(this.getTable()))
+                .where(
+                        DSL.field(constraints.keySet().iterator().next())
+                                .eq(
+                                        constraints.values().iterator().next()));
+
         // for logging
         final ParamType paramType = ParamType.INLINED;
         final String sql = query.getSQL(paramType);
         LOG_THIS(sql);
 
         // execute the query, returning the result
-        return this.jdbc.query(sql, this.mapper);
+        return this.jdbc.query(sql,this.mapper);
     }
 
     @Override
@@ -87,22 +87,20 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         // build the query
         final Query query = super.dslContext
-            .select(DSL.asterisk()) // TODO: make a const for this
-            .from(
-                DSL.table(this.getTable())
-            )
-            .where(
-                DSL.field(column)
-                .eq(value)
-            );
-        
+                .select(DSL.asterisk()) // TODO: make a const for this
+                .from(
+                        DSL.table(this.getTable()))
+                .where(
+                        DSL.field(column)
+                                .eq(value));
+
         // for logging
         final ParamType paramType = ParamType.INLINED;
         final String sql = query.getSQL(paramType);
         LOG_THIS(sql);
 
         // execute the query, returning the result
-        return this.jdbc.query(sql, this.mapper);
+        return this.jdbc.query(sql,this.mapper);
     }
 
     @Override
@@ -111,15 +109,13 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         // build the query
         final Query query = super.dslContext
-            .select(DSL.asterisk()) // TODO: make a const for this
-            .from(
-                DSL.table(this.getTable())
-            )
-            .where(
-                DSL.field(ICommon.ID)
-                .eq(id)
-            );
-        
+                .select(DSL.asterisk()) // TODO: make a const for this
+                .from(
+                        DSL.table(this.getTable()))
+                .where(
+                        DSL.field(ICommon.ID)
+                                .eq(id));
+
         // for logging
         final ParamType paramType = ParamType.INLINED;
         final String sql = query.getSQL(paramType);
@@ -135,17 +131,16 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         // build the query
         final Query query = super.dslContext
-            .select(DSL.asterisk()) // TODO: make a const for this
-            .from(
-                DSL.table(this.getTable())
-            );
-        
+                .select(DSL.asterisk()) // TODO: make a const for this
+                .from(
+                        DSL.table(this.getTable()));
+
         // for logging
         final ParamType paramType = ParamType.INLINED;
         final String sql = query.getSQL(paramType);
         LOG_THIS(sql);
-        
-        return this.jdbc.query(sql, this.mapper);
+
+        return this.jdbc.query(sql,this.mapper);
     }
 
     @Override
@@ -153,59 +148,63 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
         LOG_THIS("insert()");
         LOG_THIS(sqlInsertStatement);
         PreparedStatementCallback<Integer> ps = new PreparedStatementCallback<Integer>() {
-            public Integer doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+            public Integer doInPreparedStatement(PreparedStatement ps)
+                    throws SQLException, DataAccessException {
                 return ps.executeUpdate();
             }
         };
-        this.jdbc.execute(sqlInsertStatement, modelMap, ps); // TODO: should I return the result of this?
+        this.jdbc.execute(sqlInsertStatement,modelMap,ps); // TODO: should I return the result of
+                                                           // this?
     }
 
     @Override
     public MODEL onInsert(MODEL model, final String sql) {
-        CommonKeyHolder keyHolder = new CommonKeyHolder(); // TODO read more about this and see what to do with it. Keeping as member variable in Model. - chuck
+        CommonKeyHolder keyHolder = new CommonKeyHolder(); // TODO read more about this and see what
+                                                           // to do with it. Keeping as member
+                                                           // variable in Model. - chuck
         this.jdbc.update((Connection conn) -> {
-            return conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        }, keyHolder);
+            return conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+        },keyHolder);
 
-        // TODO:i don't think we need to get the key here. 
+        // TODO:i don't think we need to get the key here.
         // if(keyHolder.getKey() != null) {
-        //     model.setKey(keyHolder);
+        // model.setKey(keyHolder);
         // } else {
-        //     model.setKey(null);
+        // model.setKey(null);
         // }
-        
+
         return model;
     }
 
     public MODEL onSimpleInsert(MODEL model, Map<String, Object> parameters) {
-        //TODO need to look more into keyholder to do this.
+        // TODO need to look more into keyholder to do this.
         // KeyHolder keyHolder;
         // keyHolder = this.simpleJdbc.insert.executeAndReturnKeyHolder(parameters);
         // if(keyHolder.getKey() != null) {
-        //     model.setKey(keyHolder);
+        // model.setKey(keyHolder);
         // } else {
-        //     model.setKey(null);
+        // model.setKey(null);
         // }
         // return model;
 
         LOG_THIS("onSimpleInsert()");
-        final int rowsAffected = this.jdbc.simpleInsert(this.getTable(), parameters);
-        LOG_THIS("Rows affected: ", String.valueOf(rowsAffected));
+        final int rowsAffected = this.jdbc.simpleInsert(this.getTable(),parameters);
+        LOG_THIS("Rows affected: ",String.valueOf(rowsAffected));
         return model;
     }
 
     public Map<String, ?> onSelectById(String id) {
         LOG_THIS("onSelectById()");
-        return this.jdbc.simpleExecuteCall(Map.of(GET_USER_BY_ID, id));
+        return this.jdbc.simpleExecuteCall(Map.of(GET_USER_BY_ID,id));
     }
 
     @Override
     public MODEL onGet(final String sql) {
         LOG_THIS("onGet()");
-        try{
-            return this.jdbc.queryForObject(sql, this.mapper);
-        } catch(DataAccessException e) {
-            LOG_THIS("onGet() DataAccessException: ", e.getMessage());
+        try {
+            return this.jdbc.queryForObject(sql,this.mapper);
+        } catch (DataAccessException e) {
+            LOG_THIS("onGet() DataAccessException: ",e.getMessage());
         }
         return null;
     }
@@ -213,12 +212,12 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
     @Override
     public MODEL onGet(final String sql, final String name) {
         LOG_THIS("onGet()");
-        return this.jdbc.queryForObject(sql, this.mapper, name);
+        return this.jdbc.queryForObject(sql,this.mapper,name);
     }
 
     protected int onUpdate(final String sql, final Object... objects) {
         LOG_THIS("onUpdate()");
-        return this.jdbc.update(sql, objects);
+        return this.jdbc.update(sql,objects);
     }
 
     @Override
@@ -228,10 +227,10 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractApiDBJdbc.class, args);
+        ICommon.LOG(AbstractApiDBJdbc.class,args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractApiDBJdbc.class, level, args);
+        ICommon.LOG(AbstractApiDBJdbc.class,level,args);
     }
 }

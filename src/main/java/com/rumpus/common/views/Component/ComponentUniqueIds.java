@@ -4,15 +4,21 @@ import java.io.Serializable;
 
 import com.rumpus.common.util.UniqueId.AbstractUniqueIdManager;
 
-public class ComponentUniqueIds extends AbstractUniqueIdManager implements Serializable { // TODO should this be Serializable?
+public class ComponentUniqueIds extends AbstractUniqueIdManager implements Serializable { // TODO
+                                                                                          // should
+                                                                                          // this be
+                                                                                          // Serializable?
 
-    private static ComponentUniqueIds singletonInstance = null; // TODO: was geting some bugs with getSingletonInstatnce(), look into
+    private static ComponentUniqueIds singletonInstance = null; // TODO: was geting some bugs with
+                                                                // getSingletonInstatnce(), look
+                                                                // into
 
-    private ComponentUniqueIds() {}
+    private ComponentUniqueIds() {
+    }
 
     /**
      * Factory static constructor
-     * 
+     *
      * @return instance of this class
      */
     public static synchronized ComponentUniqueIds getSingletonInstance() {

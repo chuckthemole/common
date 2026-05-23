@@ -9,7 +9,9 @@ import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractMetaDataSerializer;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
-public class TestUserModelMetaDataSerializer extends AbstractMetaDataSerializer<TestUserModelMetaData> {
+public class TestUserModelMetaDataSerializer
+        extends
+            AbstractMetaDataSerializer<TestUserModelMetaData> {
 
     public TestUserModelMetaDataSerializer() {
         super(SerializationType.JSON);
@@ -18,10 +20,10 @@ public class TestUserModelMetaDataSerializer extends AbstractMetaDataSerializer<
     @Override
     public void writeJson(JsonWriter out, TestUserModelMetaData object) throws IOException {
         final String log = LogBuilder.logBuilderFromStringArgs(
-            TestUserModelMetaData.class,
-            "TestUserModelMetaDataSerializer::createTypeAdapter()::write()").toString();
+                TestUserModelMetaData.class,
+                "TestUserModelMetaDataSerializer::createTypeAdapter()::write()").toString();
         LOG(log);
-        out.beginObject(); 
+        out.beginObject();
         out.name(AbstractCommonUserMetaData.USER_CREATION_DATE_TIME);
         out.value(object.getStandardFormattedCreationTime());
         out.name(AbstractCommonUserMetaData.USER_PHOTO_LINK);
@@ -34,8 +36,8 @@ public class TestUserModelMetaDataSerializer extends AbstractMetaDataSerializer<
     @Override
     public TestUserModelMetaData readJson(JsonReader in) throws IOException {
         final String log = LogBuilder.logBuilderFromStringArgs(
-            TestUserModelMetaData.class,
-            "TestUserModelMetaDataSerializer::createTypeAdapter()::read()").toString();
+                TestUserModelMetaData.class,
+                "TestUserModelMetaDataSerializer::createTypeAdapter()::read()").toString();
         LOG(log);
         TestUserModelMetaData userMetaData = TestUserModelMetaData.createEmpty();
         in.beginObject();
@@ -43,26 +45,26 @@ public class TestUserModelMetaDataSerializer extends AbstractMetaDataSerializer<
 
         while (in.hasNext()) {
             JsonToken token = in.peek();
-            
-            if(token.equals(JsonToken.NAME)) {
-                //get the current token 
-                fieldname = in.nextName(); 
+
+            if (token.equals(JsonToken.NAME)) {
+                // get the current token
+                fieldname = in.nextName();
             }
-            
-            if(AbstractCommonUserMetaData.USER_CREATION_DATE_TIME.equals(fieldname)) {
-                //move to next token
+
+            if (AbstractCommonUserMetaData.USER_CREATION_DATE_TIME.equals(fieldname)) {
+                // move to next token
                 token = in.peek();
                 userMetaData.setCreationTime(in.nextString());
             }
-            
-            if(AbstractCommonUserMetaData.USER_PHOTO_LINK.equals(fieldname)) {
-                //move to next token
+
+            if (AbstractCommonUserMetaData.USER_PHOTO_LINK.equals(fieldname)) {
+                // move to next token
                 token = in.peek();
                 userMetaData.setPhotoLink(in.nextString());
             }
 
-            if(AbstractCommonUserMetaData.USER_ABOUT_ME.equals(fieldname)) {
-                //move to next token
+            if (AbstractCommonUserMetaData.USER_ABOUT_ME.equals(fieldname)) {
+                // move to next token
                 token = in.peek();
                 userMetaData.setAboutMe(in.nextString());
             }

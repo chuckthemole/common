@@ -57,7 +57,7 @@ public class LogItemSerializer extends AbstractModelSerializer<LogItem> {
             }
         }
         in.endObject();
-        return LogItem.create(logName, time, username, userId, action);
+        return LogItem.create(logName,time,username,userId,action);
     }
 
     @Override

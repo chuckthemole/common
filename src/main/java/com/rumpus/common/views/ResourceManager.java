@@ -8,8 +8,8 @@ import com.rumpus.common.views.Resource.ResourceType;
 import com.rumpus.common.views.Resource.StorageType;
 
 /**
- * The ResourceManager class is a manager for resources.
- * Creation of Resources should only be done through this class.
+ * The ResourceManager class is a manager for resources. Creation of Resources
+ * should only be done through this class.
  */
 public class ResourceManager extends AbstractCommonManager<String, Resource> {
 
@@ -17,6 +17,7 @@ public class ResourceManager extends AbstractCommonManager<String, Resource> {
     private ResourceManager() {
         super(false);
     }
+
     private ResourceManager(Map<String, Resource> resourceMap) {
         super(resourceMap, false);
     }
@@ -25,6 +26,7 @@ public class ResourceManager extends AbstractCommonManager<String, Resource> {
     public static ResourceManager createEmptyManager() {
         return new ResourceManager();
     }
+
     public static ResourceManager createFromMap(Map<String, Resource> resourceMap) {
         return new ResourceManager(resourceMap);
     }
@@ -36,33 +38,40 @@ public class ResourceManager extends AbstractCommonManager<String, Resource> {
 
     @Override
     public Resource createEmptyManagee(String name) {
-        return this.addResource(name, ResourceType.EMPTY, StorageType.EMPTY, "");
+        return this.addResource(name,ResourceType.EMPTY,StorageType.EMPTY,"");
     }
 
     /**
      * Add a resource to the manager.
      *
-     * @param resourceName the name of the resource
-     * @param resourceType the type of the resource
-     * @param storageType the storage type of the resource
-     * @param resourcePath the path to the resource
-     * @return the previous value associated with key, or null if there was no mapping for key.
-     * 
+     * @param resourceName
+     *            the name of the resource
+     * @param resourceType
+     *            the type of the resource
+     * @param storageType
+     *            the storage type of the resource
+     * @param resourcePath
+     *            the path to the resource
+     * @return the previous value associated with key, or null if there was no
+     *         mapping for key.
+     *
      * @see java.util.Map.put()
      */
-    public Resource addResource(String resourceName, ResourceType resourceType, StorageType storageType, String resourcePath) {
+    public Resource addResource(String resourceName, ResourceType resourceType,
+            StorageType storageType, String resourcePath) {
         Resource resource = new Resource(resourceName, resourceType, storageType, resourcePath);
-        return this.put(resource.getName(), resource);
+        return this.put(resource.getName(),resource);
     }
 
     /**
      * Get all the resources in the manager.
-     * 
+     *
      * @return the list of resources
      */
     public List<Resource> getResources() {
         return List.of(this.values().toArray(new Resource[this.size()]));
     }
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub

@@ -10,10 +10,12 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
 abstract public class AbstractUserService<
-    USER extends AbstractCommonUser<USER, USER_META>,
-    USER_META extends AbstractCommonUserMetaData<USER_META>
->
-extends AbstractService<USER> implements IUserService<USER, USER_META> {
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
+        extends
+            AbstractService<USER>
+        implements
+            IUserService<USER, USER_META> {
 
     protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
 
@@ -41,10 +43,10 @@ extends AbstractService<USER> implements IUserService<USER, USER_META> {
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractUserService.class, args);
+        ICommon.LOG(AbstractUserService.class,args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractUserService.class, level, args);
+        ICommon.LOG(AbstractUserService.class,level,args);
     }
 }

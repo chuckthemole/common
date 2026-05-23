@@ -5,13 +5,8 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 public abstract class AbstractBulmaObject extends AbstractHtmlObject {
 
     public enum ObjectType {
-        EMPTY("EMPTY"),
-        COLUMNS("COLUMNS"),
-        COMPONENTS("COMPONENTS"),
-        ELEMENT("ELEMENT"),
-        FORM("FORM"),
-        HELPERS("HELPERS"),
-        LAYOUT("LAYOUT");
+        EMPTY("EMPTY"), COLUMNS("COLUMNS"), COMPONENTS("COMPONENTS"), ELEMENT("ELEMENT"), FORM(
+                "FORM"), HELPERS("HELPERS"), LAYOUT("LAYOUT");
 
         private String objectType;
 
@@ -26,7 +21,8 @@ public abstract class AbstractBulmaObject extends AbstractHtmlObject {
 
     private ObjectType objectType;
 
-    public AbstractBulmaObject(ObjectType objectType, AbstractHtmlObject.HtmlTagType htmlTagType, String body) {
+    public AbstractBulmaObject(ObjectType objectType, AbstractHtmlObject.HtmlTagType htmlTagType,
+            String body) {
         super(htmlTagType, body);
         this.objectType = objectType;
     }

@@ -6,11 +6,10 @@ import java.util.Map;
 /**
  * Enum representing supported Notion resource types.
  * <p>
- * Each resource type corresponds to a kind of object in the Notion API.
- * This enum provides safe mapping between a string value and the strongly-typed
- * enum,
- * making it easier to parse configuration files, JSON payloads, or database
- * fields.
+ * Each resource type corresponds to a kind of object in the Notion API. This
+ * enum provides safe mapping between a string value and the strongly-typed
+ * enum, making it easier to parse configuration files, JSON payloads, or
+ * database fields.
  */
 public enum NotionResourceType {
 
@@ -35,7 +34,7 @@ public enum NotionResourceType {
 
     static {
         for (NotionResourceType type : NotionResourceType.values()) {
-            LOOKUP.put(type.value, type);
+            LOOKUP.put(type.value,type);
         }
     }
 
@@ -44,8 +43,8 @@ public enum NotionResourceType {
     }
 
     /**
-     * Returns the lowercase string value associated with this resource type.
-     * Useful for serialization or config mapping.
+     * Returns the lowercase string value associated with this resource type. Useful
+     * for serialization or config mapping.
      *
      * @return string value of the resource type
      */
@@ -56,9 +55,11 @@ public enum NotionResourceType {
     /**
      * Resolves a {@link NotionResourceType} from its string value.
      *
-     * @param value the string value (case-insensitive)
+     * @param value
+     *            the string value (case-insensitive)
      * @return the corresponding enum constant
-     * @throws IllegalArgumentException if the value does not match any type
+     * @throws IllegalArgumentException
+     *             if the value does not match any type
      */
     public static NotionResourceType fromValue(String value) {
         if (value == null || value.isBlank()) {

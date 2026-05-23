@@ -19,11 +19,18 @@ public abstract class AbstractCommonController<
         /////////////////////////
         // Define generics here//
         /////////////////////////
-        SERVICES extends AbstractServiceManager<?>, // TODO: Can we change wildcard to SERVICE? Also, don't seem to be
+        SERVICES extends AbstractServiceManager<?>, // TODO: Can we change wildcard to SERVICE?
+                                                    // Also, don't seem to be
                                                     // using this much.
-        USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
 
-        extends AbstractCommonObject implements ICommonController {
+        extends
+            AbstractCommonObject
+        implements
+            ICommonController {
 
     @Autowired
     protected Environment environment;

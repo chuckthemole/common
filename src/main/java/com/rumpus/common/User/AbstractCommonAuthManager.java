@@ -9,23 +9,26 @@ import org.springframework.security.core.GrantedAuthority;
 import com.rumpus.common.Dao.IUserDao;
 import com.rumpus.common.Service.AbstractUserService;
 
-abstract public class AbstractCommonAuthManager
-<
-    USER extends AbstractCommonUser<USER, USER_META>,
-    USER_META extends AbstractCommonUserMetaData<USER_META>
-> extends AbstractUserService<USER, USER_META> implements AuthenticationManager {
+abstract public class AbstractCommonAuthManager<
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
+        extends
+            AbstractUserService<USER, USER_META>
+        implements
+            AuthenticationManager {
 
     public AbstractCommonAuthManager(IUserDao<USER, USER_META> dao) {
         super(dao);
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+            throws AuthenticationException {
         LOG("AbstractCommonAuthManager::authenticate");
         final String name = authentication.getName();
         final String password = authentication.getCredentials().toString();
-        
-        if (userIsAuthenticated(name, password)) {
+
+        if (userIsAuthenticated(name,password)) {
             LOG("User is authenticated, returning token.");
             // use the credentials
             // and authenticate against the third-party system
@@ -40,5 +43,6 @@ abstract public class AbstractCommonAuthManager
     }
 
     abstract public boolean userIsAuthenticated(String name, String password);
+
     abstract public java.util.Set<GrantedAuthority> getAuthorities(String name);
 }

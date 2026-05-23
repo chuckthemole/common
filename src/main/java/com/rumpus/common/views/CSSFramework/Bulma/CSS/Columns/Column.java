@@ -12,6 +12,6 @@ public class Column extends AbstractBulmaColumns {
     }
 
     private void init() {
-        this.addHtmlTagAttribute("class", "column");
+        this.addHtmlTagAttribute("class","column");
     }
 }

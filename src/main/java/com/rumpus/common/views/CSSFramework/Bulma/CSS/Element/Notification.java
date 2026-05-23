@@ -13,13 +13,14 @@ public class Notification extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Notification createWithBody(String body) {
         return new Notification(body);
     }
+
     public static Notification createWithNoBody() {
         return new Notification("");
     }

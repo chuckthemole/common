@@ -9,12 +9,12 @@ import com.rumpus.common.AbstractCommonObject;
 // not using now. Using ModelsCollection instead - chuck
 public class CommonComparator extends AbstractCommonObject {
 
-    protected Comparator<?> comparator; 
+    protected Comparator<?> comparator;
 
     public CommonComparator(Comparator<?> comparator) {
         this.comparator = comparator;
     }
-    
+
     public CommonComparator(Function<?, Integer> comparator) {
         this.comparator = Comparator.comparing(comparator);
     }

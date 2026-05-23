@@ -7,9 +7,11 @@ import com.rumpus.common.Manager.AbstractCommonManager;
 /**
  * Manager for ICommonLogger objects.
  * <p>
- * Not using this class right now. Was maybe going to put it in AbstractCommonObject, but decided against it.
+ * Not using this class right now. Was maybe going to put it in
+ * AbstractCommonObject, but decided against it.
  * <p>
- * Instead I am going to override LOG in each class that needs it. And filled out LogBuilder with some more methods.
+ * Instead I am going to override LOG in each class that needs it. And filled
+ * out LogBuilder with some more methods.
  */
 public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLogger> {
 
@@ -19,7 +21,7 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
 
     /**
      * Static factory method for creating a new instance of this class.
-     * 
+     *
      * @return a new instance of this class
      */
     public static CommonLoggerManager create() {
@@ -31,13 +33,13 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
      */
     @Override
     public ICommonLogger put(String key, ICommonLogger value) {
-        if(!this.containsKey(key)) {
-            return super.put(key, value);
+        if (!this.containsKey(key)) {
+            return super.put(key,value);
         }
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
-            "This logger manager already contains the key: '",
-            key,
-            "'. Skipping put() and returning value.").toString();
+                "This logger manager already contains the key: '",
+                key,
+                "'. Skipping put() and returning value.").toString();
         LOG(log);
         return this.get(key);
     }
@@ -47,8 +49,8 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
      */
     @Override
     public void putAll(java.util.Map<? extends String, ? extends ICommonLogger> m) {
-        for(java.util.Map.Entry<? extends String, ? extends ICommonLogger> entry : m.entrySet()) {
-            this.put(entry.getKey(), entry.getValue());
+        for (java.util.Map.Entry<? extends String, ? extends ICommonLogger> entry : m.entrySet()) {
+            this.put(entry.getKey(),entry.getValue());
         }
     }
 
@@ -60,7 +62,7 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
     @Override
     public ICommonLogger createEmptyManagee(String name) {
         ICommonLogger logger = JavaLogger.createEmptyLogger();
-        this.put(name, logger);
+        this.put(name,logger);
         return logger;
     }
 
@@ -69,5 +71,5 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
-    
+
 }

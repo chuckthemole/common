@@ -43,7 +43,7 @@ class CommonConfigTest {
             return "DEFAULT";
         }
 
-        @Override 
+        @Override
         public String toString() {
             return "TODO: implement";
         }

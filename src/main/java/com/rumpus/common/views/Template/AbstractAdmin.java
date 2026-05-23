@@ -12,13 +12,14 @@ public abstract class AbstractAdmin extends AbstractTemplate {
     // protected AbstractHtmlObject analytics;
     // protected List<AbstractHtmlObject> widgets;
 
-    public AbstractAdmin() {}
+    public AbstractAdmin() {
+    }
 
     @Override
     public void addComponentsToMap() {
-        this.put(AbstractTemplate.TEMPLATE_ASIDE, this.aside);
-        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB, this.breadcrumb);
-        this.put(AbstractTemplate.TEMPLATE_WELCOME, this.welcome);
+        this.put(AbstractTemplate.TEMPLATE_ASIDE,this.aside);
+        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB,this.breadcrumb);
+        this.put(AbstractTemplate.TEMPLATE_WELCOME,this.welcome);
     }
 
     @Override
@@ -29,18 +30,20 @@ public abstract class AbstractAdmin extends AbstractTemplate {
     }
 
     /**
-     * This method is used to set the aside of the template.
-     * Use its setter to set the aside.
+     * This method is used to set the aside of the template. Use its setter to set
+     * the aside.
      */
     abstract public AbstractAside initAside();
+
     /**
-     * This method is used to set the breadcrumb of the template.
-     * Use its setter to set the breadcrumb.
+     * This method is used to set the breadcrumb of the template. Use its setter to
+     * set the breadcrumb.
      */
     abstract public AbstractBreadcrumb initBreadcrumb();
+
     /**
-     * This method is used to set the welcome of the template.
-     * Use its setter to set the welcome.
+     * This method is used to set the welcome of the template. Use its setter to set
+     * the welcome.
      */
     abstract public AbstractWelcome initWelcome();
 

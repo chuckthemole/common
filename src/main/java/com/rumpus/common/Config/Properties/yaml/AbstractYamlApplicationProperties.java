@@ -14,7 +14,7 @@ abstract public class AbstractYamlApplicationProperties {
     private List<String> aliases;
 
     public AbstractYamlApplicationProperties() {
-        
+
     }
 
     public String getName() {

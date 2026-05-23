@@ -12,5 +12,5 @@ public abstract class AbstractHTMLTagCreator {
     protected Config config;
     protected TagCreator tagCreator;
     // protected static TagCreator tagCreator;
-    
+
 }

@@ -6,19 +6,10 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 public abstract class AbstractBulmaElement extends AbstractBulmaObject {
 
     public enum ElementType {
-        EMPTY("EMPTY"),
-        BLOCK("BLOCK"),
-        BOX("BOX"),
-        BUTTON("BUTTON"),
-        CONTENT("CONTENT"),
-        DELETE("DELETE"),
-        ICON("ICON"),
-        IMAGE("IMAGE"),
-        NOTIFICATION("NOTIFICATION"),
-        PROGRESS_BARS("PROGRESS_BARS"),
-        TABLE("TABLE"),
-        TAG("TAG"),
-        TITLE("TITLE");
+        EMPTY("EMPTY"), BLOCK("BLOCK"), BOX("BOX"), BUTTON("BUTTON"), CONTENT("CONTENT"), DELETE(
+                "DELETE"), ICON("ICON"), IMAGE("IMAGE"), NOTIFICATION(
+                        "NOTIFICATION"), PROGRESS_BARS(
+                                "PROGRESS_BARS"), TABLE("TABLE"), TAG("TAG"), TITLE("TITLE");
 
         private String elementType;
 

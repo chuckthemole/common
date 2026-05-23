@@ -5,10 +5,13 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
 /**
- * TODO: don't think I'm using this. maybe delete it.
- * maybe get to this when i have multiple services, like using chuck repo when implemented?
+ * TODO: don't think I'm using this. maybe delete it. maybe get to this when i
+ * have multiple services, like using chuck repo when implemented?
  */
-public class UserServiceManager<META extends AbstractCommonUserMetaData<META>, USER extends AbstractCommonUser<USER, META>> extends AbstractCommonManager<String, IUserService<USER, META>> {
+public class UserServiceManager<META extends AbstractCommonUserMetaData<META>,
+        USER extends AbstractCommonUser<USER, META>>
+        extends
+            AbstractCommonManager<String, IUserService<USER, META>> {
 
     private static UserServiceManager<?, ?> instance = null;
 
@@ -17,7 +20,8 @@ public class UserServiceManager<META extends AbstractCommonUserMetaData<META>, U
     }
 
     @SuppressWarnings("unchecked")
-    public static synchronized <META extends AbstractCommonUserMetaData<META>, USER extends AbstractCommonUser<USER, META>> UserServiceManager<META, USER> getInstance() {
+    public static synchronized <META extends AbstractCommonUserMetaData<META>,
+            USER extends AbstractCommonUser<USER, META>> UserServiceManager<META, USER> getInstance() {
         if (UserServiceManager.instance == null) {
             UserServiceManager.instance = new UserServiceManager<>();
         }
@@ -42,5 +46,4 @@ public class UserServiceManager<META extends AbstractCommonUserMetaData<META>, U
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
-    
 }

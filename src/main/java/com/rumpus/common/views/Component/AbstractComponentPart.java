@@ -5,18 +5,16 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 /**
  * This class represents a part of a {@link AbstractComponent}.
  * <p>
- * Example: A {@link AbstractComponentPart} has a {@link AbstractComponentPart.AsideTitle}, {@link AbstractComponentPart.ListItem}, and {@link AbstractComponentPart.AsideList}.
+ * Example: A {@link AbstractComponentPart} has a
+ * {@link AbstractComponentPart.AsideTitle},
+ * {@link AbstractComponentPart.ListItem}, and
+ * {@link AbstractComponentPart.AsideList}.
  */
 public class AbstractComponentPart extends AbstractHtmlObject {
 
     public enum ComponentPartType {
-        EMPTY("empty"),
-        TITLE("title"),
-        LIST_ITEM("list-item"),
-        LIST("list"),
-        LINK("link"),
-        LINKS("links"),
-        EMBEDDED_LIST("embedded-list");
+        EMPTY("empty"), TITLE("title"), LIST_ITEM("list-item"), LIST("list"), LINK("link"), LINKS(
+                "links"), EMBEDDED_LIST("embedded-list");
 
         private String type;
 
@@ -82,7 +80,9 @@ public class AbstractComponentPart extends AbstractHtmlObject {
     private ComponentPartType componentPartType;
 
     public AbstractComponentPart(ComponentPartType componentPartType, String body) {
-        super(AbstractHtmlObject.HtmlTagType.DIV, body); // use div as default but will be changed in setHtmlTagTypeBasedOnAsidecomponentType()
+        super(AbstractHtmlObject.HtmlTagType.DIV, body); // use div as default but will be changed
+                                                         // in
+                                                         // setHtmlTagTypeBasedOnAsidecomponentType()
         this.componentPartType = componentPartType;
         this.setHtmlTagTypeBasedOnAsidecomponentType(); // TODO: this may be redundant
     }
@@ -101,52 +101,53 @@ public class AbstractComponentPart extends AbstractHtmlObject {
 
     private void setHtmlTagTypeBasedOnAsidecomponentType() {
         switch (this.componentPartType) {
-            case EMPTY:
+            case EMPTY :
                 this.setHtmlTagType(HtmlTagType.EMPTY);
                 break;
-            case TITLE:
+            case TITLE :
                 this.setHtmlTagType(HtmlTagType.P);
                 break;
-            case LIST_ITEM:
+            case LIST_ITEM :
                 this.setHtmlTagType(HtmlTagType.LI);
                 break;
-            case LIST:
+            case LIST :
                 this.setHtmlTagType(HtmlTagType.UL);
                 break;
-            case LINK:
+            case LINK :
                 this.setHtmlTagType(HtmlTagType.A);
                 break;
-            case LINKS:
+            case LINKS :
                 this.setHtmlTagType(HtmlTagType.DIV);
                 break;
-            case EMBEDDED_LIST:
+            case EMBEDDED_LIST :
                 this.setHtmlTagType(HtmlTagType.UL);
                 break;
-            default:
+            default :
                 this.setHtmlTagType(HtmlTagType.EMPTY);
                 break;
         }
     }
 
-    private AbstractHtmlObject.HtmlTagType getHtmlTagTypeBasedOnAsidecomponentType(ComponentPartType componentPartType) {
+    private AbstractHtmlObject.HtmlTagType getHtmlTagTypeBasedOnAsidecomponentType(
+            ComponentPartType componentPartType) {
         switch (componentPartType) {
-            case EMPTY:
+            case EMPTY :
                 return HtmlTagType.EMPTY;
-            case TITLE:
+            case TITLE :
                 return HtmlTagType.P;
-            case LIST_ITEM:
+            case LIST_ITEM :
                 return HtmlTagType.LI;
-            case LIST:
+            case LIST :
                 return HtmlTagType.UL;
-            case LINK:
+            case LINK :
                 return HtmlTagType.A;
-            case LINKS:
+            case LINKS :
                 return HtmlTagType.DIV;
-            case EMBEDDED_LIST:
+            case EMBEDDED_LIST :
                 return HtmlTagType.UL;
-            default:
+            default :
                 return HtmlTagType.EMPTY;
         }
     }
-    
+
 }

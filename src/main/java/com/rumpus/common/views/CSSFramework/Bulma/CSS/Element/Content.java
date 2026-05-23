@@ -13,13 +13,14 @@ public class Content extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Content createWithBody(String body) {
         return new Content(body);
     }
+
     public static Content createWithNoBody() {
         return new Content("");
     }

@@ -23,5 +23,5 @@ abstract public class AbstractCommonSerializerConfig extends AbstractCommonConfi
 
     @Bean(name = AbstractCommonSerializerConfig.CHILD_SERIALIZER_REGISTRY)
     abstract public ISerializerRegistry childSerializerRegistry();
-    
+
 }

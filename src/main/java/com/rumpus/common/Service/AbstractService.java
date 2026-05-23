@@ -6,7 +6,10 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject implements IService<MODEL> {
+abstract public class AbstractService<
+        MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
+        implements
+            IService<MODEL> {
 
     /**
      * The data access object for this service.
@@ -25,7 +28,7 @@ abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ?>> ext
 
     @Override
     public List<MODEL> getByColumnValue(String column, String value) {
-        return this.dao.getByColumnValue(column, value);
+        return this.dao.getByColumnValue(column,value);
     }
 
     @Override
@@ -49,6 +52,6 @@ abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ?>> ext
     @Override
     public MODEL update(String id, MODEL updatedModel) {
         LOG("update()");
-        return this.dao.update(id, updatedModel);
+        return this.dao.update(id,updatedModel);
     }
 }

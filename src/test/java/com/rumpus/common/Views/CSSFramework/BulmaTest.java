@@ -1,7 +1,5 @@
 package com.rumpus.common.Views.CSSFramework;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 import com.rumpus.common.AbstractCommonTest;
@@ -34,10 +32,11 @@ public class BulmaTest extends AbstractCommonTest {
     // setters getters
     @Test
     void testBulmaTile() {
-        TestUserModel user = TestUserModel.create("USERNAME", "PASSWORD", "email@email.com");
+        TestUserModel user = TestUserModel.create("USERNAME","PASSWORD","email@email.com");
         AbstractTile parentTile = BulmaTile.createParentTile("TestUserNameParentTile");
-        AbstractTile childTile = BulmaTile.createChildTile("TestUsernameChildTile", "User", user.getUsername());
+        AbstractTile childTile = BulmaTile.createChildTile("TestUsernameChildTile","User",
+                user.getUsername());
         parentTile.addChild(childTile);
-        LOG("PARENT TILE: \n", parentTile.toString(), "\nCHILD TILE: \n", childTile.toString());
+        LOG("PARENT TILE: \n",parentTile.toString(),"\nCHILD TILE: \n",childTile.toString());
     }
 }

@@ -25,14 +25,16 @@ public class CommonSessionRepo implements ReactiveSessionRepository<CommonSessio
     @Override
     public Mono<Void> save(CommonSession session) {
         return Mono.create((mono) -> {
-            if(session != null && this.sessions.containsKey(session.getId())) { // is not null and is current session
+            if (session != null && this.sessions.containsKey(session.getId())) { // is not null and
+                                                                                 // is current
+                                                                                 // session
                 // TODO save this session to db
-            } else if(session != null && !this.sessions.containsKey(session.getId())) {
-                // may want this else if. 
-                
+            } else if (session != null && !this.sessions.containsKey(session.getId())) {
+                // may want this else if.
+
             }
-            if(session != null) {
-                this.sessions.put(session.getId().toString(), session);
+            if (session != null) {
+                this.sessions.put(session.getId().toString(),session);
             }
         });
     }
@@ -48,5 +50,5 @@ public class CommonSessionRepo implements ReactiveSessionRepository<CommonSessio
             return save(this.sessions.remove(id));
         });
     }
-    
+
 }

@@ -9,13 +9,16 @@ import com.rumpus.common.Model.User.TestUserModel;
 import com.rumpus.common.util.Pair;
 
 /**
- * A row mapper, {@link AbstractJdbcRowMapper}, for JDBC testing {@link TestUserModel}.
- * 
- * @param <MODEL> the model to map to
+ * A row mapper, {@link AbstractJdbcRowMapper}, for JDBC testing
+ * {@link TestUserModel}.
+ *
+ * @param <MODEL>
+ *            the model to map to
  */
 public class ObjectUserRowMapper extends AbstractJdbcRowMapper<TestUserModel> {
-    
-    public ObjectUserRowMapper() {}
+
+    public ObjectUserRowMapper() {
+    }
 
     @Override
     protected Function<Pair<ResultSet, Integer>, TestUserModel> initMapperFunction() {

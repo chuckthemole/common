@@ -11,9 +11,10 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 import com.rumpus.common.views.Html.Attribute;
 
 /**
- * Tests {@link AbstractBulmaElement} and in turn {@link AbstractHtmlObject} since the previous inherrits from the latter
- * 
- *  TODO: add tests for the other methods
+ * Tests {@link AbstractBulmaElement} and in turn {@link AbstractHtmlObject}
+ * since the previous inherrits from the latter
+ *
+ * TODO: add tests for the other methods
  */
 public class BulmaElementTest extends AbstractCommonTest {
 
@@ -45,21 +46,22 @@ public class BulmaElementTest extends AbstractCommonTest {
     void testBlock() {
         String body = "this is a cool body";
         this.abstractHtmlObject = Block.createWithBody(body);
-        assertEquals(body, this.abstractHtmlObject.getBody());
-        assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
-        assertEquals("block", this.abstractHtmlObject.getHtmlAttributeByPropertyName("class").getValueAsString());
+        assertEquals(body,this.abstractHtmlObject.getBody());
+        assertEquals(AbstractHtmlObject.HtmlTagType.DIV,this.abstractHtmlObject.getHtmlTagType());
+        assertEquals("block",
+                this.abstractHtmlObject.getHtmlAttributeByPropertyName("class").getValueAsString());
     }
 
     @Test
     @Order(2)
     void testBlockWithNoBody() {
         this.abstractHtmlObject = Block.createWithNoBody();
-        assertEquals("", this.abstractHtmlObject.getBody());
-        assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
+        assertEquals("",this.abstractHtmlObject.getBody());
+        assertEquals(AbstractHtmlObject.HtmlTagType.DIV,this.abstractHtmlObject.getHtmlTagType());
         assertEquals(
-            Attribute.create("class", "block"),
-            this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute())
-        );
+                Attribute.create("class","block"),
+                this.abstractHtmlObject.getHtmlAttributeByPropertyName(
+                        AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
     }
 
     @Test
@@ -67,11 +69,11 @@ public class BulmaElementTest extends AbstractCommonTest {
     void testBlockWithBodyAndAttributes() {
         String body = "this is a cool body";
         this.abstractHtmlObject = Block.createWithBody(body);
-        assertEquals(body, this.abstractHtmlObject.getBody());
-        assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
+        assertEquals(body,this.abstractHtmlObject.getBody());
+        assertEquals(AbstractHtmlObject.HtmlTagType.DIV,this.abstractHtmlObject.getHtmlTagType());
         assertEquals(
-            Attribute.create("class", "block"),
-            this.abstractHtmlObject.getHtmlAttributeByPropertyName(AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute())
-        );
+                Attribute.create("class","block"),
+                this.abstractHtmlObject.getHtmlAttributeByPropertyName(
+                        AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
     }
 }

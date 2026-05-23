@@ -7,16 +7,19 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Forum.ForumPost;
 
 /**
- * Graph of nodes in sequential order. Each node in the sequence can have children nodes.
- * 
+ * Graph of nodes in sequential order. Each node in the sequence can have
+ * children nodes.
+ *
  * This is being used for {@link ForumPost}s. So think of a structure like that.
  */
-abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE extends AbstractNode<OBJECT, NODE>> extends AbstractCommonObject {
+abstract public class AbstractGraph<OBJECT extends AbstractCommonObject,
+        NODE extends AbstractNode<OBJECT, NODE>> extends AbstractCommonObject {
 
     private NODE head;
     private NODE current;
     private NODE tail;
-    private int level; // TODO: need to think about this more. What if head is set and level is unknown?
+    private int level; // TODO: need to think about this more. What if head is set and level is
+                       // unknown?
 
     public AbstractGraph() {
         this.init(null);
@@ -30,11 +33,13 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
         this.head = node;
         this.current = node;
         this.tail = node;
-        this.level = node != null ? 0 : -1; // set to 0 if node exists, else set to -1 as there are no nodes
+        this.level = node != null ? 0 : -1; // set to 0 if node exists, else set to -1 as there are
+                                            // no nodes
     }
 
     public void addToSequence(NODE node) {
-        if(this.head == null) { // lost head or hasn't been initialized, so set this node being added to head.
+        if (this.head == null) { // lost head or hasn't been initialized, so set this node being
+                                 // added to head.
             this.init(node);
         } else {
             node.setPrevious(this.tail);
@@ -48,37 +53,38 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
     }
 
     public void addChildrenToCurrentNode(List<NODE> nodes) {
-        for(NODE node : nodes) {
+        for (NODE node : nodes) {
             this.addChildToCurrentNode(node);
         }
     }
 
     /**
      * Set current node to next. If null stay on current and return null.
-     * 
+     *
      * @return this instance in order to chain
      */
     public AbstractGraph<OBJECT, NODE> next() {
-        if(this.current != null) {
+        if (this.current != null) {
             this.current = this.current.getNext();
         }
         return this;
     }
 
     /**
-     * Set current not to previous. If previous is null stay on current and return null.
-     * 
+     * Set current not to previous. If previous is null stay on current and return
+     * null.
+     *
      * @return this instance in order to chain
      */
     public AbstractGraph<OBJECT, NODE> previous() {
-        if(this.current != null) {
+        if (this.current != null) {
             this.current = this.current.getPrevious();
         }
         return this;
     }
 
     /**
-     * 
+     *
      * @return true if this current node has children
      */
     public boolean hasChildren() {
@@ -87,11 +93,11 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
 
     /**
      * Set current node to head child node. If null stay on current and return null.
-     * 
+     *
      * @return this instance in order to chain
      */
     public AbstractGraph<OBJECT, NODE> child() {
-        if(this.current != null) {
+        if (this.current != null) {
             this.current = this.current.getHeadChild();
             this.level++;
         }
@@ -99,15 +105,15 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
     }
 
     /**
-     * Return a list of sequential OBJECTs. This does not include children.
-     * Note this returns OBJECTS and not NODES
-     * 
+     * Return a list of sequential OBJECTs. This does not include children. Note
+     * this returns OBJECTS and not NODES
+     *
      * @return list of OBJECTS
      */
     public List<OBJECT> toListOfTopLevel() {
         List<OBJECT> nodeList = new LinkedList<>();
         NODE current = this.head;
-        while(current != null) {
+        while (current != null) {
             nodeList.add(current.getData());
             current = current.next;
         }
@@ -116,13 +122,13 @@ abstract public class AbstractGraph<OBJECT extends AbstractCommonObject, NODE ex
 
     /**
      * Note: returns size of sequential nodes, does not count child nodes
-     * 
+     *
      * @return size of sequential nodes
      */
     public int size() {
         NODE current = this.head;
         int count = 0;
-        while(current != null) {
+        while (current != null) {
             current = current.getNext();
             count++;
         }

@@ -4,9 +4,7 @@ abstract public class AbstractImage {
 
     // public enum of type of image, cloud, local, link, etc.
     public enum ImageType {
-        CLOUD,
-        LOCAL,
-        LINK
+        CLOUD, LOCAL, LINK
     }
 
     private String name;

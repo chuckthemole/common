@@ -9,14 +9,29 @@ import net.sourceforge.tess4j.TesseractException;
 public class OcrTesseract extends AbstractCommonObject {
 
     public static final String PATH_TO_DATA = "src/main/resources/tessdata";
-    public static final String DEFAULT_LANGUAGE = Language.LanguageCode.ENGLISH.getLanguage(); // TODO: this seems like a lot to do just to set the language
+    public static final String DEFAULT_LANGUAGE = Language.LanguageCode.ENGLISH.getLanguage(); // TODO:
+                                                                                               // this
+                                                                                               // seems
+                                                                                               // like
+                                                                                               // a
+                                                                                               // lot
+                                                                                               // to
+                                                                                               // do
+                                                                                               // just
+                                                                                               // to
+                                                                                               // set
+                                                                                               // the
+                                                                                               // language
 
-    private OcrTesseract() {}
+    private OcrTesseract() {
+    }
 
     /**
-     * Perform OCR on an image file. TODO: overload this method to accept a language code and other params
-     * 
-     * @param pathToFile the path to the image file
+     * Perform OCR on an image file. TODO: overload this method to accept a language
+     * code and other params
+     *
+     * @param pathToFile
+     *            the path to the image file
      * @return the text extracted from the image
      */
     public static String doOCR(String pathToFile) {

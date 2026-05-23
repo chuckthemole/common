@@ -6,14 +6,15 @@ import com.rumpus.common.Serializer.AbstractCommonSerializer;
 
 /**
  * AbstractCommonUserSerializer
- * 
+ *
  * TODO: implement this class
  */
 public class AbstractCommonUserSerializer<
-    USER extends AbstractCommonUser<USER, USER_META>,
-    USER_META extends AbstractCommonUserMetaData<USER_META>
-> extends AbstractCommonSerializer<USER> {
-    
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
+        extends
+            AbstractCommonSerializer<USER> {
+
     public AbstractCommonUserSerializer(SerializationType serializationType) {
         super(serializationType);
     }
@@ -35,6 +36,5 @@ public class AbstractCommonUserSerializer<
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
-    
-    
+
 }

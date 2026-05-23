@@ -12,31 +12,33 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    protected static final Logger LOG = Logger.getLogger(AbstractAuthenticationEntryPoint.class.getName());
+    protected static final Logger LOG = Logger
+            .getLogger(AbstractAuthenticationEntryPoint.class.getName());
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException {
+            AuthenticationException authException) throws IOException {
         // Delegates to handle specific exception types
         if (authException != null) {
-            handleAuthException(request, response, authException);
+            handleAuthException(request,response,authException);
         } else {
-            handleGenericException(request, response);
+            handleGenericException(request,response);
         }
     }
 
     /**
      * Handle specific authentication exceptions (e.g., unauthorized access).
      */
-    protected abstract void handleAuthException(HttpServletRequest request, HttpServletResponse response,
-                                                AuthenticationException authException) throws IOException;
+    protected abstract void handleAuthException(HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException authException) throws IOException;
 
     /**
      * Handle generic authentication issues.
      */
-    protected void handleGenericException(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void handleGenericException(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         LOG.warning("Unauthorized access attempt detected: " + request.getRequestURI());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Access is denied.");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized: Access is denied.");
     }
 }
-

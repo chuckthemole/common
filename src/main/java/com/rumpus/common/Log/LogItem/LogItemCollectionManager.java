@@ -19,44 +19,46 @@ public class LogItemCollectionManager extends AbstractCommonManager<String, LogI
 
     public static LogItemCollectionManager createWithMainAndAdmin() {
         LogItemCollectionManager manager = LogItemCollectionManager.create();
-        manager.addLogCollection(MAIN_LOG, new LogItemCollection());
-        manager.addLogCollection(ADMIN_LOG, new LogItemCollection());
+        manager.addLogCollection(MAIN_LOG,new LogItemCollection());
+        manager.addLogCollection(ADMIN_LOG,new LogItemCollection());
         return manager;
     }
 
     public LogItemCollection addLogCollection(String name, LogItemCollection collection) {
-        return this.put(name, collection);
+        return this.put(name,collection);
     }
-    
+
     public LogItemCollection removeLogCollection(String name) {
         return this.remove(name);
     }
 
     /**
-     * Log a {@link LogItem} to the appropriate {@link LogItemCollection} hashing using LogItem's logName
-     * 
-     * @param logItem item to log
+     * Log a {@link LogItem} to the appropriate {@link LogItemCollection} hashing
+     * using LogItem's logName
+     *
+     * @param logItem
+     *            item to log
      */
     public void log(LogItem logItem) {
-        if(logItem != null) {
+        if (logItem != null) {
             LogItemCollection logCollection = this.get(logItem.getLogName());
-            if(logCollection != null) {
+            if (logCollection != null) {
                 final String log = LogBuilder.logBuilderFromStringArgs(
-                    "Adding LogItem into LogCollection '",
-                    logItem.getLogName(),
-                    "'").toString();
+                        "Adding LogItem into LogCollection '",
+                        logItem.getLogName(),
+                        "'").toString();
                 LOG(log);
                 logCollection.add(logItem);
             } else {
                 final String log = LogBuilder.logBuilderFromStringArgs(
-                    "No LogCollection exists with name '",
-                    logItem.getLogName(),
-                    "'").toString();
-                LOG(LogLevel.ERROR, log);
+                        "No LogCollection exists with name '",
+                        logItem.getLogName(),
+                        "'").toString();
+                LOG(LogLevel.ERROR,log);
             }
         } else {
             final String log = LogBuilder.logBuilderFromStringArgs("LogItem is null").toString();
-            LOG(LogLevel.ERROR, log);
+            LOG(LogLevel.ERROR,log);
         }
     }
 

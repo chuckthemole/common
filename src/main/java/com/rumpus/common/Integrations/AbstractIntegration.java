@@ -15,9 +15,9 @@ import com.rumpus.common.AbstractCommonObject;
 /**
  * Abstract base class for making HTTP requests to external integrations.
  * Provides common methods for GET, POST, PUT, and DELETE.
- * 
- * Subclasses can extend this to handle authentication, logging,
- * retries, or response parsing in a consistent way.
+ *
+ * Subclasses can extend this to handle authentication, logging, retries, or
+ * response parsing in a consistent way.
  */
 public abstract class AbstractIntegration extends AbstractCommonObject {
 
@@ -28,27 +28,34 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
     /**
      * Perform an HTTP GET request.
      *
-     * @param url     The target URL
-     * @param headers Optional request headers
+     * @param url
+     *            The target URL
+     * @param headers
+     *            Optional request headers
      * @return Response body as a String
-     * @throws IOException if the request fails
+     * @throws IOException
+     *             if the request fails
      */
     protected String get(String url, Map<String, String> headers) throws IOException {
-        HttpURLConnection conn = createConnection(url, "GET", headers);
+        HttpURLConnection conn = createConnection(url,"GET",headers);
         return readResponse(conn);
     }
 
     /**
      * Perform an HTTP POST request.
      *
-     * @param url     The target URL
-     * @param headers Optional request headers
-     * @param body    Request body (JSON, XML, etc.)
+     * @param url
+     *            The target URL
+     * @param headers
+     *            Optional request headers
+     * @param body
+     *            Request body (JSON, XML, etc.)
      * @return Response body as a String
-     * @throws IOException if the request fails
+     * @throws IOException
+     *             if the request fails
      */
     protected String post(String url, Map<String, String> headers, String body) throws IOException {
-        HttpURLConnection conn = createConnection(url, "POST", headers);
+        HttpURLConnection conn = createConnection(url,"POST",headers);
         conn.setDoOutput(true);
 
         if (body != null && !body.isEmpty()) {
@@ -64,7 +71,7 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
      * Perform an HTTP PUT request.
      */
     protected String put(String url, Map<String, String> headers, String body) throws IOException {
-        HttpURLConnection conn = createConnection(url, "PUT", headers);
+        HttpURLConnection conn = createConnection(url,"PUT",headers);
         conn.setDoOutput(true);
 
         if (body != null && !body.isEmpty()) {
@@ -80,20 +87,21 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
      * Perform an HTTP DELETE request.
      */
     protected String delete(String url, Map<String, String> headers) throws IOException {
-        HttpURLConnection conn = createConnection(url, "DELETE", headers);
+        HttpURLConnection conn = createConnection(url,"DELETE",headers);
         return readResponse(conn);
     }
 
     /**
      * Creates and configures an HttpURLConnection.
      */
-    private HttpURLConnection createConnection(String url, String method, Map<String, String> headers)
+    private HttpURLConnection createConnection(String url, String method,
+            Map<String, String> headers)
             throws IOException {
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod(method);
         conn.setConnectTimeout(CONNECT_TIMEOUT);
         conn.setReadTimeout(READ_TIMEOUT);
-        setHeaders(conn, headers);
+        setHeaders(conn,headers);
         return conn;
     }
 
@@ -110,7 +118,8 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
      * Reads the response body from the connection.
      *
      * @return Response body as a String
-     * @throws IOException if reading fails
+     * @throws IOException
+     *             if reading fails
      */
     private String readResponse(HttpURLConnection conn) throws IOException {
         int status = conn.getResponseCode();
@@ -122,7 +131,8 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
             return ""; // Some servers return no body for certain statuses
         }
 
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(is, StandardCharsets.UTF_8))) {
             StringBuilder response = new StringBuilder();
             String line;
             while ((line = in.readLine()) != null) {
@@ -133,8 +143,8 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
     }
 
     /**
-     * Hook method for subclasses to log requests and responses if needed.
-     * (No-op by default)
+     * Hook method for subclasses to log requests and responses if needed. (No-op by
+     * default)
      */
     protected void logRequest(String method, String url, Map<String, String> headers, String body) {
         // Subclasses may override

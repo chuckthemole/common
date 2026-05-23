@@ -21,59 +21,65 @@ final public class JsonIO extends AbstractFileIO {
     private static final Gson gson = new Gson();
 
     // Private constructor and factory method
-    private JsonIO() {}
+    private JsonIO() {
+    }
 
     public static JsonIO create() {
         return new JsonIO();
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(String filePath, Type type) {
+    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(
+            String filePath, Type type) {
         final String jsonContent = FileIOUtil.readFileAsString(filePath);
 
         if (jsonContent.isEmpty()) {
-            LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
+            LOG_THIS(LogLevel.ERROR,"File content is empty or could not be read: " + filePath);
             return Optional.empty();
         }
 
         try {
-            MODEL model = gson.fromJson(jsonContent, type);
+            MODEL model = gson.fromJson(jsonContent,type);
             return Optional.ofNullable(model);
         } catch (JsonParseException e) {
-            LOG_THIS(LogLevel.ERROR, "Error parsing JSON from file: " + filePath, e.getClass().getSimpleName(), e.getMessage());
+            LOG_THIS(LogLevel.ERROR,"Error parsing JSON from file: " + filePath,
+                    e.getClass().getSimpleName(),e.getMessage());
         }
 
         return Optional.empty();
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(String filePath, Type type) {
+    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(
+            String filePath, Type type) {
         final String jsonContent = FileIOUtil.readFileAsString(filePath);
 
         if (jsonContent.isEmpty()) {
-            LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
+            LOG_THIS(LogLevel.ERROR,"File content is empty or could not be read: " + filePath);
             return Optional.empty();
         }
 
         try {
 
-            MODEL[] models = gson.fromJson(jsonContent, type);
+            MODEL[] models = gson.fromJson(jsonContent,type);
             return Optional.ofNullable(models);
         } catch (JsonParseException e) {
-            LOG_THIS(LogLevel.ERROR, "Error parsing JSON from file: " + filePath, e.getClass().getSimpleName(), e.getMessage());
+            LOG_THIS(LogLevel.ERROR,"Error parsing JSON from file: " + filePath,
+                    e.getClass().getSimpleName(),e.getMessage());
         }
 
         return Optional.empty();
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath, MODEL[] models) {
+    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath,
+            MODEL[] models) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeModelsToFile'");
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(JsonIO.class, level, args);
+        ICommon.LOG(JsonIO.class,level,args);
     }
 
     @Override

@@ -73,7 +73,7 @@ public class NavbarItem extends AbstractView {
             String image,
             Map<String, Object> componentProps) {
 
-        this.init(title, href, active, dropdown, itemType, reactComponent, image, componentProps);
+        this.init(title,href,active,dropdown,itemType,reactComponent,image,componentProps);
     }
 
     /**
@@ -105,7 +105,8 @@ public class NavbarItem extends AbstractView {
      * Validate the image path/URL, logging warnings if the path does not exist or
      * is invalid.
      *
-     * @param image candidate image path or URL
+     * @param image
+     *            candidate image path or URL
      */
     private void validateImage(String image) {
         if (image == null) {
@@ -113,14 +114,14 @@ public class NavbarItem extends AbstractView {
         }
 
         if (com.rumpus.common.util.FileUtil.doesPathExist(image) != SUCCESS) {
-            LOG_THIS("Image path does not exist: ", image);
-            if (!com.rumpus.common.util.Uri.isValidURL(image, true)) {
-                LOG_THIS("Invalid URL: ", image);
+            LOG_THIS("Image path does not exist: ",image);
+            if (!com.rumpus.common.util.Uri.isValidURL(image,true)) {
+                LOG_THIS("Invalid URL: ",image);
             } else {
-                LOG_THIS("Valid http/https URL: ", image);
+                LOG_THIS("Valid http/https URL: ",image);
             }
         } else {
-            LOG_THIS("Image path exists: ", image);
+            LOG_THIS("Image path exists: ",image);
         }
     }
 
@@ -138,10 +139,14 @@ public class NavbarItem extends AbstractView {
     /**
      * Creates a React component item.
      *
-     * @param title          Display title
-     * @param reactComponent Name of the React component
-     * @param active         Whether this item is active
-     * @param componentProps Optional props to pass to the React component
+     * @param title
+     *            Display title
+     * @param reactComponent
+     *            Name of the React component
+     * @param active
+     *            Whether this item is active
+     * @param componentProps
+     *            Optional props to pass to the React component
      */
     public static NavbarItem createAsReactComponent(
             String title,
@@ -156,31 +161,34 @@ public class NavbarItem extends AbstractView {
     /**
      * Creates a dropdown menu item.
      */
-    public static NavbarItem createAsDropdown(String title, String href, boolean active, List<NavbarItem> dropdown) {
+    public static NavbarItem createAsDropdown(String title, String href, boolean active,
+            List<NavbarItem> dropdown) {
         return new NavbarItem(title, href, active, dropdown, ItemType.DROPDOWN, null, null, null);
     }
 
     /**
      * Creates a brand item using a local image path.
      */
-    public static NavbarItem createNavbarBrandWithLocalImage(String title, String href, boolean active, String image) {
+    public static NavbarItem createNavbarBrandWithLocalImage(String title, String href,
+            boolean active, String image) {
         String resolvedImage = (image != null && !image.isEmpty())
                 ? image
                 : AbstractViews.DEFAULT_NAVBAR_BRAND;
 
-        LOG_THIS("Setting local brand image: ", resolvedImage);
+        LOG_THIS("Setting local brand image: ",resolvedImage);
         return new NavbarItem(title, href, active, null, ItemType.BRAND, null, resolvedImage, null);
     }
 
     /**
      * Creates a brand item using a remote image URL.
      */
-    public static NavbarItem createNavbarBrandWithRemoteImage(String title, String href, boolean active, String image) {
+    public static NavbarItem createNavbarBrandWithRemoteImage(String title, String href,
+            boolean active, String image) {
         String resolvedImage = (image != null && !image.isEmpty())
                 ? image
                 : AbstractViews.DEFAULT_NAVBAR_BRAND;
 
-        LOG_THIS("Setting remote brand image: ", resolvedImage);
+        LOG_THIS("Setting remote brand image: ",resolvedImage);
         return new NavbarItem(title, href, active, null, ItemType.BRAND, null, resolvedImage, null);
     }
 
@@ -189,19 +197,21 @@ public class NavbarItem extends AbstractView {
      */
     public static NavbarItem createNavbarBrandWithAwsS3CloudImage(
             String title, String href, boolean active, String image) {
-        return new NavbarItem(title, href, active, null, ItemType.AWS_S3_CLOUD_IMAGE, null, image, null);
+        return new NavbarItem(title, href, active, null, ItemType.AWS_S3_CLOUD_IMAGE, null, image,
+                null);
     }
 
     /**
      * Creates a divider item for dropdown menus.
      */
     public static NavbarItem createDropdownDivider(String title, boolean active) {
-        return new NavbarItem(title, null, active, null, ItemType.DROPDOWN_DIVIDER, null, null, null);
+        return new NavbarItem(title, null, active, null, ItemType.DROPDOWN_DIVIDER, null, null,
+                null);
     }
 
     /**
-     * Creates a section title inside a dropdown menu.
-     * Rendered as a non-clickable bold label.
+     * Creates a section title inside a dropdown menu. Rendered as a non-clickable
+     * bold label.
      */
     public static NavbarItem createDropdownSectionTitle(String title, boolean active) {
         return new NavbarItem(
@@ -304,15 +314,11 @@ public class NavbarItem extends AbstractView {
      * Enumerates the supported navigation item types.
      */
     public enum ItemType {
-        BRAND("brand"),
-        AWS_S3_CLOUD_IMAGE("aws-s3-cloud-image"),
-        LINK("link"),
-        ICON("icon"),
-        DROPDOWN("dropdown"),
-        DROPDOWN_DIVIDER("dropdown_divider"),
-        DROPDOWN_SECTION_TITLE("dropdown_section_title"),
-        BUTTON("button"),
-        REACT_COMPONENT("react-component");
+        BRAND("brand"), AWS_S3_CLOUD_IMAGE("aws-s3-cloud-image"), LINK("link"), ICON(
+                "icon"), DROPDOWN("dropdown"), DROPDOWN_DIVIDER(
+                        "dropdown_divider"), DROPDOWN_SECTION_TITLE(
+                                "dropdown_section_title"), BUTTON(
+                                        "button"), REACT_COMPONENT("react-component");
 
         private final String type;
 
@@ -333,7 +339,7 @@ public class NavbarItem extends AbstractView {
     public String toString() {
         return String.format(
                 "NavbarItem{title='%s', href='%s', active=%s, dropdown=%s, itemType=%s, reactComponent=%s, componentProps=%s}",
-                title, href, active, dropdown, itemType, reactComponent, componentProps);
+                title,href,active,dropdown,itemType,reactComponent,componentProps);
     }
 
     @Override
@@ -345,7 +351,8 @@ public class NavbarItem extends AbstractView {
         NavbarItem other = (NavbarItem) o;
 
         return active == other.active
-                && ((href == null && other.href == null) || (href != null && href.equals(other.href)))
+                && ((href == null && other.href == null)
+                        || (href != null && href.equals(other.href)))
                 && ((dropdown == null && other.dropdown == null)
                         || (dropdown != null && dropdown.equals(other.dropdown)))
                 && itemType == other.itemType;
@@ -356,6 +363,6 @@ public class NavbarItem extends AbstractView {
     // ------------------------------------------------------------------------
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(NavbarItem.class, args);
+        ICommon.LOG(NavbarItem.class,args);
     }
 }

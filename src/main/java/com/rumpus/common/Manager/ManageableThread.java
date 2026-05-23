@@ -2,7 +2,8 @@ package com.rumpus.common.Manager;
 
 import com.rumpus.common.AbstractCommonObject;
 
-abstract public class ManageableThread<MANAGEE extends AbstractCommonObject> extends Thread implements IManageable {
+abstract public class ManageableThread<
+        MANAGEE extends AbstractCommonObject> extends Thread implements IManageable {
 
     private MANAGEE managee;
 
@@ -21,7 +22,7 @@ abstract public class ManageableThread<MANAGEE extends AbstractCommonObject> ext
 
     /**
      * Stop the thread.
-     * 
+     *
      * @return true if the thread was stopped, false otherwise.
      */
     abstract public boolean stopThread();

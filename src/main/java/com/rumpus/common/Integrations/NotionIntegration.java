@@ -9,12 +9,12 @@ import com.rumpus.common.Log.ICommonLogger.LogLevel;
 
 /**
  * Integration client for interacting with the Notion API.
- * 
- * Wraps around {@link AbstractIntegration} to provide convenience methods
- * for querying databases and creating/updating/deleting pages in Notion.
- * 
+ *
+ * Wraps around {@link AbstractIntegration} to provide convenience methods for
+ * querying databases and creating/updating/deleting pages in Notion.
+ *
  * Usage:
- * 
+ *
  * <pre>
  * NotionIntegration notion = new NotionIntegration("your-secret-token");
  * String response = notion.queryDatabase("db-id");
@@ -51,8 +51,9 @@ public class NotionIntegration extends AbstractIntegration {
 
     /**
      * Create a new NotionIntegration client.
-     * 
-     * @param token The Notion API integration token (secret).
+     *
+     * @param token
+     *            The Notion API integration token (secret).
      */
     public NotionIntegration(String token) {
         this.token = token;
@@ -68,41 +69,44 @@ public class NotionIntegration extends AbstractIntegration {
      * Calls the Notion API endpoint: GET /v1/users
      *
      * @return JSON response body as String
-     * @throws Exception if request fails
+     * @throws Exception
+     *             if request fails
      */
     public String listUsers() throws Exception {
         String url = BASE_URL + "/users";
-        return get(url, defaultHeaders());
+        return get(url,defaultHeaders());
     }
 
     /**
      * Queries a Notion database.
      *
-     * @param databaseId The ID of the database to query
+     * @param databaseId
+     *            The ID of the database to query
      * @return JSON response body as String
-     * @throws Exception if request fails
+     * @throws Exception
+     *             if request fails
      */
     public String queryDatabase(String databaseId) throws Exception {
         String url = BASE_URL + ENDPOINT_DATABASES + "/" + databaseId + "/query";
-        return post(url, defaultHeaders(), "{}"); // Notion requires POST even for queries
+        return post(url,defaultHeaders(),"{}"); // Notion requires POST even for queries
     }
 
     /**
      * Creates a new page in a Notion database.
      *
-     * Automatically injects the `parent.database_id` into the payload
-     * so the frontend does not need to provide it.
+     * Automatically injects the `parent.database_id` into the payload so the
+     * frontend does not need to provide it.
      */
     public String createPage(String databaseId, String jsonBody) throws Exception {
         String url = BASE_URL + ENDPOINT_PAGES;
 
         // Ensure the request body includes the parent field
-        final String wrappedBody = wrapWithDatabaseParent(databaseId, jsonBody);
+        final String wrappedBody = wrapWithDatabaseParent(databaseId,jsonBody);
 
         // Pretty-print the wrapped body for debugging
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Object json = mapper.readValue(wrappedBody, Object.class);
+            Object json = mapper.readValue(wrappedBody,Object.class);
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
             String prettyJson = writer.writeValueAsString(json);
 
@@ -117,20 +121,16 @@ public class NotionIntegration extends AbstractIntegration {
                     "createPage() -> Failed to pretty-print JSON, raw body:\n" + wrappedBody);
         }
 
-        return post(url, defaultHeaders(), wrappedBody);
+        return post(url,defaultHeaders(),wrappedBody);
     }
 
     /**
-     * Wraps a frontend-provided JSON payload (just properties)
-     * with the required Notion `parent` object for database creation.
+     * Wraps a frontend-provided JSON payload (just properties) with the required
+     * Notion `parent` object for database creation.
      *
-     * Example:
-     * frontend sends: { "properties": { "Title": {...} } }
-     * backend transforms into:
-     * {
-     * "parent": { "database_id": "xxxxx" },
-     * "properties": { "Title": {...} }
-     * }
+     * Example: frontend sends: { "properties": { "Title": {...} } } backend
+     * transforms into: { "parent": { "database_id": "xxxxx" }, "properties": {
+     * "Title": {...} } }
      */
     private String wrapWithDatabaseParent(String databaseId, String jsonBody) {
         try {
@@ -138,52 +138,58 @@ public class NotionIntegration extends AbstractIntegration {
 
             com.google.gson.JsonObject finalObject = new com.google.gson.JsonObject();
             com.google.gson.JsonObject parent = new com.google.gson.JsonObject();
-            parent.addProperty("database_id", databaseId);
+            parent.addProperty("database_id",databaseId);
 
-            finalObject.add("parent", parent);
+            finalObject.add("parent",parent);
 
             if (body.isJsonObject()) {
                 com.google.gson.JsonObject bodyObj = body.getAsJsonObject();
                 // merge the rest of the body (like properties)
                 for (var entry : bodyObj.entrySet()) {
-                    finalObject.add(entry.getKey(), entry.getValue());
+                    finalObject.add(entry.getKey(),entry.getValue());
                 }
             }
 
             return finalObject.toString();
 
         } catch (Exception e) {
-            LOG("wrapWithDatabaseParent() -> ERROR wrapping payload:", e.getMessage());
+            LOG("wrapWithDatabaseParent() -> ERROR wrapping payload:",e.getMessage());
             // Fallback: minimal valid JSON if parsing fails
-            return String.format("{\"parent\":{\"database_id\":\"%s\"},\"properties\":{}}", databaseId);
+            return String.format("{\"parent\":{\"database_id\":\"%s\"},\"properties\":{}}",
+                    databaseId);
         }
     }
 
     /**
      * Updates an existing Notion page.
      *
-     * @param pageId   The ID of the page to update
-     * @param jsonBody JSON body containing updated properties
+     * @param pageId
+     *            The ID of the page to update
+     * @param jsonBody
+     *            JSON body containing updated properties
      * @return JSON response body
-     * @throws Exception if request fails
+     * @throws Exception
+     *             if request fails
      */
     public String updatePage(String pageId, String jsonBody) throws Exception {
         String url = BASE_URL + ENDPOINT_PAGES + "/" + pageId;
-        return patch(url, defaultHeaders(), jsonBody);
+        return patch(url,defaultHeaders(),jsonBody);
     }
 
     /**
      * Archives (soft deletes) a Notion page.
      *
-     * @param pageId The ID of the page to archive
+     * @param pageId
+     *            The ID of the page to archive
      * @return JSON response body
-     * @throws Exception if request fails
+     * @throws Exception
+     *             if request fails
      */
     public String deletePage(String pageId) throws Exception {
         String url = BASE_URL + ENDPOINT_PAGES + "/" + pageId;
         // Notion doesn't have "DELETE" — instead you set "archived: true" in PATCH
         String body = "{\"archived\": true}";
-        return patch(url, defaultHeaders(), body);
+        return patch(url,defaultHeaders(),body);
     }
 
     // ==============================
@@ -197,9 +203,9 @@ public class NotionIntegration extends AbstractIntegration {
      */
     private Map<String, String> defaultHeaders() {
         Map<String, String> headers = new HashMap<>();
-        headers.put(HEADER_AUTH, "Bearer " + token);
-        headers.put(HEADER_VERSION, API_VERSION);
-        headers.put(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
+        headers.put(HEADER_AUTH,"Bearer " + token);
+        headers.put(HEADER_VERSION,API_VERSION);
+        headers.put(HEADER_CONTENT_TYPE,CONTENT_TYPE_JSON);
         return headers;
     }
 
@@ -212,7 +218,7 @@ public class NotionIntegration extends AbstractIntegration {
         // PATCH
         // So if AbstractIntegration doesn’t support PATCH, add it there (like we did
         // with PUT).
-        return put(url, headers, body); // safe fallback to PUT, though PATCH is preferable
+        return put(url,headers,body); // safe fallback to PUT, though PATCH is preferable
     }
 
     @Override

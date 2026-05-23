@@ -6,7 +6,7 @@ public interface ICommonAuthentication extends Authentication {
 
     /**
      * Get the authentication
-     * 
+     *
      * @return the {@link Authentication}
      */
     public Authentication getAuthentication();

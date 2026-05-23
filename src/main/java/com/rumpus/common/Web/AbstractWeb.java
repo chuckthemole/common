@@ -23,23 +23,23 @@ abstract public class AbstractWeb extends AbstractCommonObject {
     }
 
     public AbstractWeb(String browserVersion, String uri, List<String> params) {
-        this.init(browserVersion, uri, params);
+        this.init(browserVersion,uri,params);
     }
 
     private void init(String browserVersion, String uri, List<String> params) {
         this.uri = uri;
-        this.params = params == null ? new ArrayList<>(): params;
-        if(BrowserVersion.CHROME.toString().equals(browserVersion)) {
+        this.params = params == null ? new ArrayList<>() : params;
+        if (BrowserVersion.CHROME.toString().equals(browserVersion)) {
             this.browserVersion = BrowserVersion.CHROME;
-        } else if(BrowserVersion.EDGE.toString().equals(browserVersion)) {
+        } else if (BrowserVersion.EDGE.toString().equals(browserVersion)) {
             this.browserVersion = BrowserVersion.EDGE;
-        } else if(BrowserVersion.FIREFOX.toString().equals(browserVersion)) {
+        } else if (BrowserVersion.FIREFOX.toString().equals(browserVersion)) {
             this.browserVersion = BrowserVersion.FIREFOX;
-        } else if(BrowserVersion.FIREFOX_ESR.toString().equals(browserVersion)) {
+        } else if (BrowserVersion.FIREFOX_ESR.toString().equals(browserVersion)) {
             this.browserVersion = BrowserVersion.FIREFOX_ESR;
-        } else if(BrowserVersion.INTERNET_EXPLORER.toString().equals(browserVersion)) {
+        } else if (BrowserVersion.INTERNET_EXPLORER.toString().equals(browserVersion)) {
             this.browserVersion = BrowserVersion.INTERNET_EXPLORER;
-        } else if(BrowserVersion.BEST_SUPPORTED.toString().equals(browserVersion)) {
+        } else if (BrowserVersion.BEST_SUPPORTED.toString().equals(browserVersion)) {
             this.browserVersion = BrowserVersion.BEST_SUPPORTED;
         } else {
             this.browserVersion = BrowserVersion.getDefault();
@@ -51,11 +51,11 @@ abstract public class AbstractWeb extends AbstractCommonObject {
 
     /**
      * Get this html page object using a base url with paramaters and this client
-     * 
+     *
      * @return the retrieved page if found or null if exception
      */
     public HtmlPage getHtmlPage() {
-        return this.getHtmlPageWithParams(this.buildUri(this.uri, this.params));
+        return this.getHtmlPageWithParams(this.buildUri(this.uri,this.params));
     }
 
     private void setDefaultOptions() {
@@ -68,7 +68,7 @@ abstract public class AbstractWeb extends AbstractCommonObject {
     private String buildUri(String base, List<String> params) {
         StringBuilder sb = new StringBuilder();
         sb.append(base).append("?");
-        for(String param : params) {
+        for (String param : params) {
             sb.append(param);
             sb.append("&");
         }
@@ -80,7 +80,8 @@ abstract public class AbstractWeb extends AbstractCommonObject {
         try {
             page = this.client.getPage(uriWithParams);
         } catch (Exception e) {
-            LogBuilder.logBuilderFromStringArgs(this.getClass().getName(), "getHtmlPage", e.getMessage());
+            LogBuilder.logBuilderFromStringArgs(this.getClass().getName(),"getHtmlPage",
+                    e.getMessage());
         }
         this.client.close();
         return page;

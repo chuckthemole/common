@@ -12,46 +12,55 @@ import com.rumpus.common.Manager.IManageable;
 
 /**
  * Interface for a common serializer
- * 
- * @param <OBJECT> the object type to serialize
+ *
+ * @param <OBJECT>
+ *            the object type to serialize
  */
-public interface ICommonSerializer<OBJECT extends AbstractCommonObject> extends Serializer<OBJECT>, Deserializer<OBJECT>, IManageable {
+public interface ICommonSerializer<OBJECT extends AbstractCommonObject>
+        extends
+            Serializer<OBJECT>,
+            Deserializer<OBJECT>,
+            IManageable {
 
     // create enum for serialization type, ie JSON, XML, etc.
     public enum SerializationType {
-        JSON,
-        XML,
-        CSV,
-        InputStream,
+        JSON, XML, CSV, InputStream,
     }
 
     /**
      * Get the serialization type for this object
-     * 
+     *
      * @return this serialization type
      */
-    @JsonIgnore public SerializationType getSerializationType();
+    @JsonIgnore
+    public SerializationType getSerializationType();
 
     /**
      * Set the serialization type for this object
-     * 
-     * @param serializationType the serialization type to set
+     *
+     * @param serializationType
+     *            the serialization type to set
      */
-    @JsonIgnore public void setSerializationType(SerializationType serializationType);
+    @JsonIgnore
+    public void setSerializationType(SerializationType serializationType);
 
     /**
      * Serialize the object to String
-     * 
-     * @param object the object to serialize
-     * @param charset the charset to use for serialization, using {@link StandardCharsets#UTF_8} if null
+     *
+     * @param object
+     *            the object to serialize
+     * @param charset
+     *            the charset to use for serialization, using
+     *            {@link StandardCharsets#UTF_8} if null
      * @return the serialized object as a string
      */
     public String serializeToString(OBJECT object, Charset charset);
 
     /**
      * Deserialize the object from String
-     * 
-     * @param stringObject the string object to deserialize
+     *
+     * @param stringObject
+     *            the string object to deserialize
      */
     public OBJECT deserializeFromString(String stringObject, Charset charset);
 }

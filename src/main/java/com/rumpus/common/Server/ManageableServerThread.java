@@ -11,11 +11,11 @@ public class ManageableServerThread extends ManageableThread<AbstractServer> {
     @Override
     public synchronized boolean stopThread() {
         AbstractServer server = this.getManagee();
-        if(server != null) {
+        if (server != null) {
             server.stop();
             return true;
         }
         return false;
     }
-    
+
 }

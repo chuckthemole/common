@@ -23,36 +23,37 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void abstractInfo(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+                .toString();
         this.info(log);
     }
 
-
     @Override
     public void abstractDebug(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+                .toString();
         this.debug(log);
     }
 
-
     @Override
     public void abstractWarn(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+                .toString();
         this.warn(log);
     }
 
-
     @Override
     public void abstractError(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+                .toString();
         this.error(log);
     }
 
-
     @Override
     public void abstractError(Throwable throwable, String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message).toString();
-        this.error(log, throwable);
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+                .toString();
+        this.error(log,throwable);
     }
 
     @Override
@@ -100,22 +101,22 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void trace(String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).trace(format, arg);
+        LoggerFactory.getLogger(this.clazz).trace(format,arg);
     }
 
     @Override
     public void trace(String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).trace(format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).trace(format,arg1,arg2);
     }
 
     @Override
     public void trace(String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).trace(format, arguments);
+        LoggerFactory.getLogger(this.clazz).trace(format,arguments);
     }
 
     @Override
     public void trace(String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).trace(msg, t);
+        LoggerFactory.getLogger(this.clazz).trace(msg,t);
     }
 
     @Override
@@ -125,27 +126,27 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void trace(Marker marker, String msg) {
-        LoggerFactory.getLogger(this.clazz).trace(marker, msg);
+        LoggerFactory.getLogger(this.clazz).trace(marker,msg);
     }
 
     @Override
     public void trace(Marker marker, String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).trace(marker, format, arg);
+        LoggerFactory.getLogger(this.clazz).trace(marker,format,arg);
     }
 
     @Override
     public void trace(Marker marker, String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).trace(marker, format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).trace(marker,format,arg1,arg2);
     }
 
     @Override
     public void trace(Marker marker, String format, Object... argArray) {
-        LoggerFactory.getLogger(this.clazz).trace(marker, format, argArray);
+        LoggerFactory.getLogger(this.clazz).trace(marker,format,argArray);
     }
 
     @Override
     public void trace(Marker marker, String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).trace(marker, msg, t);
+        LoggerFactory.getLogger(this.clazz).trace(marker,msg,t);
     }
 
     @Override
@@ -160,22 +161,22 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void debug(String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).debug(format, arg);
+        LoggerFactory.getLogger(this.clazz).debug(format,arg);
     }
 
     @Override
     public void debug(String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).debug(format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).debug(format,arg1,arg2);
     }
 
     @Override
     public void debug(String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).debug(format, arguments);
+        LoggerFactory.getLogger(this.clazz).debug(format,arguments);
     }
 
     @Override
     public void debug(String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).debug(msg, t);
+        LoggerFactory.getLogger(this.clazz).debug(msg,t);
     }
 
     @Override
@@ -185,27 +186,27 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void debug(Marker marker, String msg) {
-        LoggerFactory.getLogger(this.clazz).debug(marker, msg);
+        LoggerFactory.getLogger(this.clazz).debug(marker,msg);
     }
 
     @Override
     public void debug(Marker marker, String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).debug(marker, format, arg);
+        LoggerFactory.getLogger(this.clazz).debug(marker,format,arg);
     }
 
     @Override
     public void debug(Marker marker, String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).debug(marker, format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).debug(marker,format,arg1,arg2);
     }
 
     @Override
     public void debug(Marker marker, String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).debug(marker, format, arguments);
+        LoggerFactory.getLogger(this.clazz).debug(marker,format,arguments);
     }
 
     @Override
     public void debug(Marker marker, String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).debug(marker, msg, t);
+        LoggerFactory.getLogger(this.clazz).debug(marker,msg,t);
     }
 
     @Override
@@ -220,22 +221,22 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void info(String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).info(format, arg);
+        LoggerFactory.getLogger(this.clazz).info(format,arg);
     }
 
     @Override
     public void info(String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).info(format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).info(format,arg1,arg2);
     }
 
     @Override
     public void info(String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).info(format, arguments);
+        LoggerFactory.getLogger(this.clazz).info(format,arguments);
     }
 
     @Override
     public void info(String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).info(msg, t);
+        LoggerFactory.getLogger(this.clazz).info(msg,t);
     }
 
     @Override
@@ -245,27 +246,27 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void info(Marker marker, String msg) {
-        LoggerFactory.getLogger(this.clazz).info(marker, msg);
+        LoggerFactory.getLogger(this.clazz).info(marker,msg);
     }
 
     @Override
     public void info(Marker marker, String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).info(marker, format, arg);
+        LoggerFactory.getLogger(this.clazz).info(marker,format,arg);
     }
 
     @Override
     public void info(Marker marker, String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).info(marker, format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).info(marker,format,arg1,arg2);
     }
 
     @Override
     public void info(Marker marker, String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).info(marker, format, arguments);
+        LoggerFactory.getLogger(this.clazz).info(marker,format,arguments);
     }
 
     @Override
     public void info(Marker marker, String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).info(marker, msg, t);
+        LoggerFactory.getLogger(this.clazz).info(marker,msg,t);
     }
 
     @Override
@@ -280,22 +281,22 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void warn(String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).warn(format, arg);
+        LoggerFactory.getLogger(this.clazz).warn(format,arg);
     }
 
     @Override
     public void warn(String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).warn(format, arguments);
+        LoggerFactory.getLogger(this.clazz).warn(format,arguments);
     }
 
     @Override
     public void warn(String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).warn(format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).warn(format,arg1,arg2);
     }
 
     @Override
     public void warn(String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).warn(msg, t);
+        LoggerFactory.getLogger(this.clazz).warn(msg,t);
     }
 
     @Override
@@ -305,27 +306,27 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void warn(Marker marker, String msg) {
-        LoggerFactory.getLogger(this.clazz).warn(marker, msg);
+        LoggerFactory.getLogger(this.clazz).warn(marker,msg);
     }
 
     @Override
     public void warn(Marker marker, String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).warn(marker, format, arg);
+        LoggerFactory.getLogger(this.clazz).warn(marker,format,arg);
     }
 
     @Override
     public void warn(Marker marker, String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).warn(marker, format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).warn(marker,format,arg1,arg2);
     }
 
     @Override
     public void warn(Marker marker, String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).warn(marker, format, arguments);
+        LoggerFactory.getLogger(this.clazz).warn(marker,format,arguments);
     }
 
     @Override
     public void warn(Marker marker, String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).warn(marker, msg, t);
+        LoggerFactory.getLogger(this.clazz).warn(marker,msg,t);
     }
 
     @Override
@@ -340,22 +341,22 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void error(String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).error(format, arg);
+        LoggerFactory.getLogger(this.clazz).error(format,arg);
     }
 
     @Override
     public void error(String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).error(format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).error(format,arg1,arg2);
     }
 
     @Override
     public void error(String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).error(format, arguments);
+        LoggerFactory.getLogger(this.clazz).error(format,arguments);
     }
 
     @Override
     public void error(String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).error(msg, t);
+        LoggerFactory.getLogger(this.clazz).error(msg,t);
     }
 
     @Override
@@ -365,27 +366,27 @@ final public class SLF4JLogger extends AbstractCommonLogger implements Logger {
 
     @Override
     public void error(Marker marker, String msg) {
-        LoggerFactory.getLogger(this.clazz).error(marker, msg);
+        LoggerFactory.getLogger(this.clazz).error(marker,msg);
     }
 
     @Override
     public void error(Marker marker, String format, Object arg) {
-        LoggerFactory.getLogger(this.clazz).error(marker, format, arg);
+        LoggerFactory.getLogger(this.clazz).error(marker,format,arg);
     }
 
     @Override
     public void error(Marker marker, String format, Object arg1, Object arg2) {
-        LoggerFactory.getLogger(this.clazz).error(marker, format, arg1, arg2);
+        LoggerFactory.getLogger(this.clazz).error(marker,format,arg1,arg2);
     }
 
     @Override
     public void error(Marker marker, String format, Object... arguments) {
-        LoggerFactory.getLogger(this.clazz).error(marker, format, arguments);
+        LoggerFactory.getLogger(this.clazz).error(marker,format,arguments);
     }
 
     @Override
     public void error(Marker marker, String msg, Throwable t) {
-        LoggerFactory.getLogger(this.clazz).error(marker, msg, t);
+        LoggerFactory.getLogger(this.clazz).error(marker,msg,t);
     }
 
     @Override

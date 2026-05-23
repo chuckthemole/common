@@ -5,154 +5,189 @@ import com.rumpus.common.Manager.IManageable;
 import com.rumpus.common.util.StringUtil;
 
 /**
- * This class is used to manage the attributes of an {@link AbstractHtmlObject} object.
+ * This class is used to manage the attributes of an {@link AbstractHtmlObject}
+ * object.
  * <p>
  * It is a set of {@link Attribute} objects.
  */
-public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute> implements IManageable {
-    
-        private HtmlTagAttributes() {}
-    
-        ////////////////////////////
-        /// Static factory methods /
-        ////////////////////////////
+public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute>
+        implements
+            IManageable {
 
-        /**
-         * Creates an empty {@link HtmlTagAttributes} object.
-         * @return an empty {@link HtmlTagAttributes} object
-         */
-        public static HtmlTagAttributes create() {
-            return new HtmlTagAttributes();
+    private HtmlTagAttributes() {
+    }
+
+    ////////////////////////////
+    /// Static factory methods /
+    ////////////////////////////
+
+    /**
+     * Creates an empty {@link HtmlTagAttributes} object.
+     *
+     * @return an empty {@link HtmlTagAttributes} object
+     */
+    public static HtmlTagAttributes create() {
+        return new HtmlTagAttributes();
+    }
+
+    /**
+     * Creates an {@link HtmlTagAttributes} object from a {@link java.util.Map} of
+     * {@link String} keys and {@link String} values.
+     * <p>
+     * The {@link String} keys are the names of the {@link Attribute} objects.
+     * <p>
+     * The {@link String} values are the values of the {@link Attribute} objects,
+     * delimited by the valueDelimiter.
+     *
+     * @param attributes
+     *            the {@link java.util.Map} of {@link String} keys and
+     *            {@link String} values
+     * @param valueDelimiter
+     *            the delimiter used to separate the values of the {@link Attribute}
+     *            objects
+     * @return an {@link HtmlTagAttributes} object
+     */
+    public static HtmlTagAttributes createFromMap(java.util.Map<String, String> attributes,
+            String valueDelimiter) {
+        HtmlTagAttributes htmlTagAttributes = new HtmlTagAttributes();
+        for (java.util.Map.Entry<String, String> entry : attributes.entrySet()) {
+            htmlTagAttributes.add(
+                    Attribute.create(entry.getKey().strip(),Attribute
+                            .getValuesFromStringOfValues(entry.getValue(),valueDelimiter)));
         }
+        return htmlTagAttributes;
+    }
 
-        /**
-         * Creates an {@link HtmlTagAttributes} object from a {@link java.util.Map} of {@link String} keys and {@link String} values.
-         * <p>
-         * The {@link String} keys are the names of the {@link Attribute} objects.
-         * <p>
-         * The {@link String} values are the values of the {@link Attribute} objects, delimited by the valueDelimiter.
-         * 
-         * @param attributes the {@link java.util.Map} of {@link String} keys and {@link String} values
-         * @param valueDelimiter the delimiter used to separate the values of the {@link Attribute} objects
-         * @return an {@link HtmlTagAttributes} object
-         */
-        public static HtmlTagAttributes createFromMap(java.util.Map<String, String> attributes, String valueDelimiter) {
-            HtmlTagAttributes htmlTagAttributes = new HtmlTagAttributes();
-            for (java.util.Map.Entry<String, String> entry : attributes.entrySet()) {
+    public static HtmlTagAttributes createFromString(String attributesString,
+            String attributeDelimiter, String propValueDelimiter, String valueDelimiter) {
+        HtmlTagAttributes htmlTagAttributes = new HtmlTagAttributes();
+        String[] attributes = attributesString.split(attributeDelimiter);
+        for (String attribute : attributes) {
+            String[] propValue = attribute.split(propValueDelimiter);
+            if (propValue.length == 2) { // TODO: could this be 1?
                 htmlTagAttributes.add(
-                    Attribute.create(entry.getKey().strip(), Attribute.getValuesFromStringOfValues(entry.getValue(), valueDelimiter))
-                );
+                        Attribute.create(propValue[0].strip(),Attribute
+                                .getValuesFromStringOfValues(propValue[1],valueDelimiter)));
             }
-            return htmlTagAttributes;
         }
+        return htmlTagAttributes;
+    }
 
-        public static HtmlTagAttributes createFromString(String attributesString, String attributeDelimiter, String propValueDelimiter, String valueDelimiter) {
-            HtmlTagAttributes htmlTagAttributes = new HtmlTagAttributes();
-            String[] attributes = attributesString.split(attributeDelimiter);
-            for (String attribute : attributes) {
-                String[] propValue = attribute.split(propValueDelimiter);
-                if (propValue.length == 2) { // TODO: could this be 1?
-                    htmlTagAttributes.add(
-                        Attribute.create(propValue[0].strip(), Attribute.getValuesFromStringOfValues(propValue[1], valueDelimiter))
-                    );
-                }
+    /**
+     * Creates an {@link HtmlTagAttributes} object from a {@link java.util.Map} of
+     * {@link String} keys and {@link String} values.
+     *
+     * @return an {@link HtmlTagAttributes} object
+     */
+    public static HtmlTagAttributes createEmpty() {
+        return new HtmlTagAttributes();
+    }
+
+    /////////////////////////
+    /// End factory methods /
+    /////////////////////////
+
+    /**
+     * Check if this {@link HtmlTagAttributes} object contains an {@link Attribute}
+     * object with the given {@link Attribute.AttributeProperty}.
+     *
+     * @param attributeProperty
+     *            the {@link Attribute.AttributeProperty} to check for
+     * @return true if this {@link HtmlTagAttributes} object contains an
+     *         {@link Attribute} object with the given
+     *         {@link Attribute.AttributeProperty}, false otherwise
+     */
+    public boolean containsAttributeProperty(Attribute.AttributeProperty attributeProperty) {
+        for (Attribute attribute : this) {
+            if (attribute.getPropertyName().equals(attributeProperty.getAttributeProperty())) {
+                return true;
             }
-            return htmlTagAttributes;
         }
+        return false;
+    }
 
-        /**
-         * Creates an {@link HtmlTagAttributes} object from a {@link java.util.Map} of {@link String} keys and {@link String} values.
-         * 
-         * @return an {@link HtmlTagAttributes} object
-         */
-        public static HtmlTagAttributes createEmpty() {
-            return new HtmlTagAttributes();
-        }
-
-        /////////////////////////
-        /// End factory methods /
-        /////////////////////////
-
-        /**
-         * Check if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given {@link Attribute.AttributeProperty}.
-         * 
-         * @param attributeProperty the {@link Attribute.AttributeProperty} to check for
-         * @return true if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given {@link Attribute.AttributeProperty}, false otherwise
-         */
-        public boolean containsAttributeProperty(Attribute.AttributeProperty attributeProperty) {
-            for (Attribute attribute : this) {
-                if (attribute.getPropertyName().equals(attributeProperty.getAttributeProperty())) {
-                    return true;
-                }
+    /**
+     * Check if this {@link HtmlTagAttributes} object contains an {@link Attribute}
+     * object with the given property (String form).
+     *
+     * @param attributeProperty
+     *            the property to check for
+     * @return true if this {@link HtmlTagAttributes} object contains an
+     *         {@link Attribute} object with the given property, false otherwise
+     */
+    public boolean containsAttributeProperty(String attributeProperty) {
+        for (Attribute attribute : this) {
+            if (attribute.getPropertyName().toLowerCase().equals(attributeProperty.toLowerCase())) {
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
-        /**
-         * Check if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given property (String form).
-         * 
-         * @param attributeProperty the property to check for
-         * @return true if this {@link HtmlTagAttributes} object contains an {@link Attribute} object with the given property, false otherwise
-         */
-        public boolean containsAttributeProperty(String attributeProperty) {
-            for (Attribute attribute : this) {
-                if (attribute.getPropertyName().toLowerCase().equals(attributeProperty.toLowerCase())) {
-                    return true;
-                }
+    /**
+     * Creates a {@link java.util.Map} from the {@link Attribute} objects in this
+     * {@link HtmlTagAttributes} object.
+     *
+     * @param valueDelimiter
+     *            the delimiter used to separate the values of the {@link Attribute}
+     *            objects
+     * @return a {@link java.util.Map} of {@link String} keys and {@link String}
+     *         values
+     */
+    public java.util.Map<String, String> getAttributesAsMap(String valueDelimiter) {
+        java.util.Map<String, String> attributes = new java.util.HashMap<String, String>();
+        for (Attribute attribute : this) {
+            if (attribute != null) {
+                attributes.put(attribute.getPropertyName(),
+                        attribute.getValueAsString(valueDelimiter));
             }
-            return false;
         }
+        return attributes;
+    }
 
-        /**
-         * Creates a {@link java.util.Map} from the {@link Attribute} objects in this {@link HtmlTagAttributes} object.
-         * 
-         * @param valueDelimiter the delimiter used to separate the values of the {@link Attribute} objects
-         * @return a {@link java.util.Map} of {@link String} keys and {@link String} values
-         */
-        public java.util.Map<String, String> getAttributesAsMap(String valueDelimiter) {
-            java.util.Map<String, String> attributes = new java.util.HashMap<String, String>();
-            for(Attribute attribute : this) {
-                if (attribute != null) {
-                    attributes.put(attribute.getPropertyName(), attribute.getValueAsString(valueDelimiter));
-                }
-            }
-            return attributes;
+    /**
+     * Get this {@link HtmlTagAttributes} object as a {@link String} of
+     * {@link Attribute} objects.
+     *
+     * @param attributeDelimiter
+     *            the delimiter used to separate the {@link Attribute} objects
+     * @param propValueDelimiter
+     *            the delimiter used to separate the property name and the value of
+     *            the {@link Attribute} objects
+     * @param valueDelimiter
+     *            the delimiter used to separate the values of the {@link Attribute}
+     *            objects
+     * @return a {@link String} of {@link Attribute} objects
+     */
+    public String getAttributesAsString(String attributeDelimiter, String propValueDelimiter,
+            String valueDelimiter) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Attribute attribute : this) {
+            stringBuilder.append(attribute.getPropertyName());
+            stringBuilder.append(propValueDelimiter);
+            stringBuilder.append(attribute.getValueAsString(valueDelimiter));
+            stringBuilder.append(attributeDelimiter);
         }
+        return StringUtil.trimEnd(stringBuilder.toString(),attributeDelimiter);
+    }
 
-        /**
-         * Get this {@link HtmlTagAttributes} object as a {@link String} of {@link Attribute} objects.
-         * 
-         * @param attributeDelimiter the delimiter used to separate the {@link Attribute} objects
-         * @param propValueDelimiter the delimiter used to separate the property name and the value of the {@link Attribute} objects
-         * @param valueDelimiter the delimiter used to separate the values of the {@link Attribute} objects
-         * @return a {@link String} of {@link Attribute} objects
-         */
-        public String getAttributesAsString(String attributeDelimiter, String propValueDelimiter, String valueDelimiter) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Attribute attribute : this) {
-                stringBuilder.append(attribute.getPropertyName());
-                stringBuilder.append(propValueDelimiter);
-                stringBuilder.append(attribute.getValueAsString(valueDelimiter));
-                stringBuilder.append(attributeDelimiter);
-            }
-            return StringUtil.trimEnd(stringBuilder.toString(), attributeDelimiter);
-        }
-
-        /**
-         * Get this {@link HtmlTagAttributes} object as a {@link String} of {@link Attribute} objects.
-         * <p>
-         * Same as {@link #getAttributesAsString(String, String, String)} but with default delimiters.
-         * <p>
-         * The default delimiters are:
-         * <ul>
-         * <li>attributeDelimiter: ","</li>
-         * <li>propValueDelimiter: "="</li>
-         * <li>valueDelimiter: " "</li>
-         * </ul>
-         * 
-         * @return a {@link String} of {@link Attribute} objects
-         */
-        public String getAttributesAsString() {
-            return this.getAttributesAsString(",", "=", " ");
-        }
+    /**
+     * Get this {@link HtmlTagAttributes} object as a {@link String} of
+     * {@link Attribute} objects.
+     * <p>
+     * Same as {@link #getAttributesAsString(String, String, String)} but with
+     * default delimiters.
+     * <p>
+     * The default delimiters are:
+     * <ul>
+     * <li>attributeDelimiter: ","</li>
+     * <li>propValueDelimiter: "="</li>
+     * <li>valueDelimiter: " "</li>
+     * </ul>
+     *
+     * @return a {@link String} of {@link Attribute} objects
+     */
+    public String getAttributesAsString() {
+        return this.getAttributesAsString(",","="," ");
+    }
 }

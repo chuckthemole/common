@@ -7,16 +7,17 @@ import com.rumpus.common.ICommon;
 public interface ICache<KEY, VALUE> extends ICommon {
     /**
      * Put a key-value pair into the cache.
-     * 
+     *
      * @param key
      * @param value
-     * @return true if the key-value pair was successfully put into the cache, false otherwise
+     * @return true if the key-value pair was successfully put into the cache, false
+     *         otherwise
      */
     public boolean put(KEY key, VALUE value);
 
     /**
      * Get the value associated with the key from the cache.
-     * 
+     *
      * @param key
      * @return the value associated with the key, if it exists in the cache
      */

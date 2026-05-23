@@ -18,14 +18,15 @@ public class CommonWebSession implements WebSession {
     private final CommonSession session;
 
     enum State {
-		NEW, STARTED
-	}
-    
+        NEW, STARTED
+    }
+
     public CommonWebSession(Session session) {
         this.attributes = new HashMap<>();
         this.state = new AtomicReference<>();
         this.session = new CommonSession(session);
     }
+
     public CommonWebSession(CommonSession session) {
         this.attributes = new HashMap<>();
         this.state = new AtomicReference<>();
@@ -40,9 +41,9 @@ public class CommonWebSession implements WebSession {
     @Override
     public Mono<Void> changeSessionId() {
         return Mono.defer(() -> {
-			this.session.changeSessionId();
-			return save();
-		});
+            this.session.changeSessionId();
+            return save();
+        });
     }
 
     @Override
@@ -52,33 +53,36 @@ public class CommonWebSession implements WebSession {
 
     @Override
     public Map<String, Object> getAttributes() {
-        if(this.attributes != null && !this.attributes.isEmpty()) { // has been initialized, so return. else initialize the map.
+        if (this.attributes != null && !this.attributes.isEmpty()) { // has been initialized, so
+                                                                     // return. else initialize the
+                                                                     // map.
             return this.attributes;
         }
         this.attributes = new HashMap<>();
-        for(String name : this.session.getAttributeNames()) {
-            this.attributes.put(name, this.session.getAttribute(name));
+        for (String name : this.session.getAttributeNames()) {
+            this.attributes.put(name,this.session.getAttribute(name));
         }
         return this.attributes;
     }
 
     @Override
     public void start() {
-        this.state.compareAndSet(State.NEW, State.STARTED);
+        this.state.compareAndSet(State.NEW,State.STARTED);
     }
 
     @Override
     public boolean isStarted() {
         State value = this.state.get();
-		return (State.STARTED.equals(value) || (State.NEW.equals(value) && !this.session.getAttributeNames().isEmpty()));
+        return (State.STARTED.equals(value)
+                || (State.NEW.equals(value) && !this.session.getAttributeNames().isEmpty()));
     }
 
     @Override
     public Mono<Void> invalidate() {
         return Mono.defer(() -> {
-			this.session.setNoId();
-			return save();
-		});
+            this.session.setNoId();
+            return save();
+        });
     }
 
     @Override

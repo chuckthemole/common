@@ -1,7 +1,5 @@
 package com.rumpus.common.Session;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
@@ -13,12 +11,7 @@ import java.util.Set;
 
 import org.springframework.session.Session;
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import com.rumpus.common.AbstractCommonObject;
-import com.rumpus.common.Model.AbstractModel;
-import com.rumpus.common.Model.IModelIdManager;
 import com.rumpus.common.util.Random;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,7 +34,9 @@ public class CommonSession extends AbstractCommonObject implements Session {
     private Duration maxInactiveInterval;
     private boolean isExpired;
 
-    private Map<String, String> attributes; // TODO: added this member since deleting it in Model. idk how this affects this class. look into it - chuck 6/13/2023
+    private Map<String, String> attributes; // TODO: added this member since deleting it in Model.
+                                            // idk how this affects this class. look into it - chuck
+                                            // 6/13/2023
 
     static {
         CommonSession.sessionIds = new HashSet<>();
@@ -49,7 +44,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
 
     public CommonSession(boolean initialize) {
         this.creationTime = Instant.now();
-        if(initialize) {
+        if (initialize) {
             this.id = getUniqueId();
             CommonSession.sessionIds.add(this.getId().toString());
             this.lastAccessedTime = Instant.now();
@@ -58,6 +53,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
             this.isExpired = false;
         }
     }
+
     public CommonSession(Session session) {
         this.id = session.getId();
         CommonSession.sessionIds.add(this.getId().toString());
@@ -65,12 +61,13 @@ public class CommonSession extends AbstractCommonObject implements Session {
         this.lastAccessedTime = session.getLastAccessedTime();
         Set<String> names = session.getAttributeNames();
         this.attributes = new HashMap<>();
-        for(String name : names) {
-            this.attributes.put(name, session.getAttribute(name));
+        for (String name : names) {
+            this.attributes.put(name,session.getAttribute(name));
         }
         this.maxInactiveInterval = session.getMaxInactiveInterval();
         this.isExpired = session.isExpired();
     }
+
     public CommonSession(HttpSession session) {
         this.id = session.getId();
         CommonSession.sessionIds.add(this.getId().toString());
@@ -79,10 +76,10 @@ public class CommonSession extends AbstractCommonObject implements Session {
         Instant tempCreationTime = Instant.MAX;
         try {
             tempCreationTime = Instant.parse(Long.toString(session.getCreationTime()));
-        } catch(DateTimeParseException exception) {
+        } catch (DateTimeParseException exception) {
             LOG("Unable to parse creation time for HttpSession.");
         }
-        if(tempCreationTime == Instant.MAX) {
+        if (tempCreationTime == Instant.MAX) {
             tempCreationTime = Instant.now();
         }
         this.creationTime = tempCreationTime;
@@ -91,37 +88,41 @@ public class CommonSession extends AbstractCommonObject implements Session {
         this.lastAccessedTime = Instant.MAX;
         try {
             this.lastAccessedTime = Instant.parse(Long.toString(session.getLastAccessedTime()));
-        } catch(DateTimeParseException exception) {
+        } catch (DateTimeParseException exception) {
             LOG("Unable to parse last accessed time for HttpSession.");
         }
-        if(this.lastAccessedTime == Instant.MAX) {
+        if (this.lastAccessedTime == Instant.MAX) {
             this.lastAccessedTime = Instant.now();
         }
 
         Set<String> names = new HashSet<>();
         Iterator<String> itr = session.getAttributeNames().asIterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             names.add(itr.next());
         }
 
         this.attributes = new HashMap<>();
-        for(String name : names) {
-            this.attributes.put(name, session.getAttribute(name).toString());
+        for (String name : names) {
+            this.attributes.put(name,session.getAttribute(name).toString());
         }
 
         // try to parse max inactive interval, if not, set to default
         this.maxInactiveInterval = Duration.ZERO;
         try {
-            this.maxInactiveInterval = Duration.parse(Integer.toString(session.getMaxInactiveInterval()));
-        } catch(DateTimeParseException exception) {
+            this.maxInactiveInterval = Duration
+                    .parse(Integer.toString(session.getMaxInactiveInterval()));
+        } catch (DateTimeParseException exception) {
             LOG("Unable to parse max inactive interval for HttpSession.");
         }
-        if(Duration.ZERO.equals(this.maxInactiveInterval)) {
+        if (Duration.ZERO.equals(this.maxInactiveInterval)) {
             this.maxInactiveInterval = Duration.ofMinutes(DEFAULT_MAX_INACTIVE_INTERVAL);
         }
 
-        this.isExpired = Boolean.parseBoolean(session.getAttribute("expired") != null ? session.getAttribute("expired").toString() : "false");
+        this.isExpired = Boolean.parseBoolean(session.getAttribute("expired") != null
+                ? session.getAttribute("expired").toString()
+                : "false");
     }
+
     public CommonSession(
             String id,
             Map<String, String> attributes,
@@ -129,7 +130,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
             Instant lastAccessedTime,
             Duration maxInactiveInterval,
             boolean isExpired) {
-        
+
         this.id = id;
         CommonSession.sessionIds.add(id);
         this.attributes = attributes;
@@ -138,44 +139,51 @@ public class CommonSession extends AbstractCommonObject implements Session {
         this.maxInactiveInterval = maxInactiveInterval;
         this.isExpired = isExpired;
     }
+
     private CommonSession(Instant creationTime) {
-        
+
         this.creationTime = creationTime;
     }
+
     public static CommonSession create() {
         return new CommonSession(true);
     }
-    public static CommonSession create(String id, Map<String, String> attributes, Instant creationTime, Instant lastAccessedTime, Duration maxInactiveInterval, boolean isExpired) {
+
+    public static CommonSession create(String id, Map<String, String> attributes,
+            Instant creationTime, Instant lastAccessedTime, Duration maxInactiveInterval,
+            boolean isExpired) {
         CommonSession session = new CommonSession(creationTime);
         session.setId(id);
-        for(Map.Entry<String, String> attribute : attributes.entrySet()) {
-            session.setAttribute(attribute.getKey(), attribute.getValue());
+        for (Map.Entry<String, String> attribute : attributes.entrySet()) {
+            session.setAttribute(attribute.getKey(),attribute.getValue());
         }
         session.setLastAccessedTime(lastAccessedTime);
         session.setMaxInactiveInterval(maxInactiveInterval);
         session.setExpired(isExpired);
         return session;
     }
+
     public static CommonSession createFromMap(Map<String, String> entries) {
         CommonSession session;
-        if(entries.containsKey("creation_time")) {
+        if (entries.containsKey("creation_time")) {
             session = new CommonSession(Instant.parse(entries.get("creation_time")));
         } else {
             session = new CommonSession(Instant.now());
         }
-        for(Map.Entry<String, String> entry : entries.entrySet()) {
-            if(entry.getKey().equals("id")) {
+        for (Map.Entry<String, String> entry : entries.entrySet()) {
+            if (entry.getKey().equals("id")) {
                 session.setId(entry.getValue());
-            } else if(entry.getKey().equals("last_accesed_time")) {
+            } else if (entry.getKey().equals("last_accesed_time")) {
                 session.setLastAccessedTime(Instant.parse(entry.getValue()));
-            } else if(entry.getKey().equals("max_inactive_interval")) {
+            } else if (entry.getKey().equals("max_inactive_interval")) {
                 session.setMaxInactiveInterval(Duration.parse(entry.getValue()));
-            } else if(entry.getKey().equals("expired")) {
+            } else if (entry.getKey().equals("expired")) {
                 session.setExpired(Boolean.valueOf(entry.getValue()));
             }
         }
         return session;
     }
+
     public static CommonSession createFromHttpSession(HttpSession session) {
         return new CommonSession(session);
     }
@@ -211,7 +219,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
 
     @Override
     public void setAttribute(String attributeName, Object attributeValue) {
-        this.attributes.put(attributeName, String.class.cast(attributeValue));
+        this.attributes.put(attributeName,String.class.cast(attributeValue));
     }
 
     @Override
@@ -252,12 +260,12 @@ public class CommonSession extends AbstractCommonObject implements Session {
     private void setExpired(boolean isExpired) {
         this.isExpired = isExpired;
     }
-    
+
     private String getUniqueId() {
         String tempId;
-        while(true) {
+        while (true) {
             tempId = Random.alphaNumericUpper(ID_LENGTH);
-            if(!sessionIds.contains(tempId)) {
+            if (!sessionIds.contains(tempId)) {
                 break;
             }
         }
@@ -267,11 +275,12 @@ public class CommonSession extends AbstractCommonObject implements Session {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     @Override
     public String getId() {
         return this.id;
     }
+
     @Override
     public String toString() {
         // TODO Auto-generated method stub

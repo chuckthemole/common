@@ -19,6 +19,7 @@ public class SessionEvent extends AbstractCommonObject {
         this.createdEvent = null;
         this.destroyedEvent = null;
     }
+
     public static SessionEvent create() {
         return new SessionEvent();
     }
@@ -27,8 +28,9 @@ public class SessionEvent extends AbstractCommonObject {
         this.createdEvent = new Created(source, session);
         this.isCreated = true;
     }
+
     public void destroy(Object source, Session session) {
-        if(isCreated) {
+        if (isCreated) {
             this.destroyedEvent = new Destroyed(source, session);
             this.isDestroyed = true;
         } else {
@@ -42,11 +44,11 @@ public class SessionEvent extends AbstractCommonObject {
             super(source, session);
         }
         // public static Created create(Object source, Session session) {
-        //     return new Created(source, session);
+        // return new Created(source, session);
         // }
     }
 
-    public class Destroyed extends SessionDestroyedEvent{
+    public class Destroyed extends SessionDestroyedEvent {
 
         public Destroyed(Object source, Session session) {
             super(source, session);

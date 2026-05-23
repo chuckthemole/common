@@ -17,9 +17,8 @@ public class BulmaWelcome extends AbstractWelcome {
 
     private BulmaWelcome(String componentName, String welcomeComponents) {
         super(
-            componentName,
-            welcomeComponents
-        );
+                componentName,
+                welcomeComponents);
     }
 
     public static BulmaWelcome create(String componentName, String welcomeComponents) {
@@ -32,25 +31,26 @@ public class BulmaWelcome extends AbstractWelcome {
 
         HtmlTagAttributes sectionHtmlTagAttributes = HtmlTagAttributes.create();
         sectionHtmlTagAttributes.add(Attribute.getAttributeFromString(SECTION_HTML_ATTRIBUTES));
-        manager.put(AbstractWelcome.SECTION_ATTRIBUTE, sectionHtmlTagAttributes);
+        manager.put(AbstractWelcome.SECTION_ATTRIBUTE,sectionHtmlTagAttributes);
 
         HtmlTagAttributes divHtmlTagAttributes = HtmlTagAttributes.create();
         divHtmlTagAttributes.add(Attribute.getAttributeFromString(FIRST_LEVEL_DIV_HTML_ATTRIBUTES));
-        manager.put(AbstractWelcome.DIV_ATTRIBUTE, divHtmlTagAttributes);
+        manager.put(AbstractWelcome.DIV_ATTRIBUTE,divHtmlTagAttributes);
 
         HtmlTagAttributes containerHtmlTagAttributes = HtmlTagAttributes.create();
-        containerHtmlTagAttributes.add(Attribute.getAttributeFromString(SECOND_LEVEL_DIV_HTML_ATTRIBUTES));
-        manager.put(AbstractWelcome.CONTAINER_ATTRIBUTE, containerHtmlTagAttributes);
+        containerHtmlTagAttributes
+                .add(Attribute.getAttributeFromString(SECOND_LEVEL_DIV_HTML_ATTRIBUTES));
+        manager.put(AbstractWelcome.CONTAINER_ATTRIBUTE,containerHtmlTagAttributes);
 
         HtmlTagAttributes h1HtmlTagAttributes = HtmlTagAttributes.create();
         h1HtmlTagAttributes.add(Attribute.getAttributeFromString(TITLE_HTML_ATTRIBUTES));
-        manager.put(AbstractWelcome.H1_ATTRIBUTE, h1HtmlTagAttributes);
+        manager.put(AbstractWelcome.H1_ATTRIBUTE,h1HtmlTagAttributes);
 
         HtmlTagAttributes subHeaderTagAttributes = HtmlTagAttributes.create();
         subHeaderTagAttributes.add(Attribute.getAttributeFromString(SUBTITLE_HTML_ATTRIBUTES));
-        manager.put(AbstractWelcome.SUB_HEADER_ATTRIBUTE, subHeaderTagAttributes);
+        manager.put(AbstractWelcome.SUB_HEADER_ATTRIBUTE,subHeaderTagAttributes);
 
-        manager.put(AbstractWelcome.SUB_SUB_HEADER_ATTRIBUTE, subHeaderTagAttributes);
+        manager.put(AbstractWelcome.SUB_SUB_HEADER_ATTRIBUTE,subHeaderTagAttributes);
 
         return manager;
     }

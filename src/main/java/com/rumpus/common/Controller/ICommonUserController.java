@@ -27,7 +27,8 @@ public interface ICommonUserController<
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
-        extends ICommonController {
+        extends
+            ICommonController {
 
     ///////////
     // Paths //
@@ -47,87 +48,108 @@ public interface ICommonUserController<
 
     /**
      * Get all users
-     * 
-     * @param sort the
-     * {@link com.rumpus.common.User.AbstractCommonUserCollection.Sort} (as a
-     * String) to sort by
-     * @param session the {@link HttpSession} to use
+     *
+     * @param sort
+     *            the
+     *            {@link com.rumpus.common.User.AbstractCommonUserCollection.Sort}
+     *            (as a String) to sort by
+     * @param session
+     *            the {@link HttpSession} to use
      * @return a list of all users as a {@link ResponseEntity}
      */
-    @Deprecated @GetMapping(value = ICommonUserController.PATH_GET_USERS_BY_SORT)
+    @Deprecated
+    @GetMapping(value = ICommonUserController.PATH_GET_USERS_BY_SORT)
     public ResponseEntity<List<USER>> getAllUsersByPath(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_SORT) String sort,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_SORT)
+            String sort,
             HttpSession session);
 
     @GetMapping(value = ICommonUserController.PATH_GET_USERS)
     public ResponseEntity<List<USER>> getAllUsers(
-            @RequestParam(value = "sort", defaultValue = "asc", required = false) String sort,
+            @RequestParam(value = "sort", defaultValue = "asc", required = false)
+            String sort,
             HttpSession session);
 
     /**
      * Submit a new user to be created
-     * 
-     * @param newUser the {@link USER} to create
-     * @param request the {@link HttpServletRequest} to use
+     *
+     * @param newUser
+     *            the {@link USER} to create
+     * @param request
+     *            the {@link HttpServletRequest} to use
      * @return the {@link CommonSession} as a {@link ResponseEntity}
      */
     @PostMapping(value = ICommonUserController.PATH_USER)
 
-    public ResponseEntity<CommonSession> userSubmit(@RequestBody USER newUser,
+    public ResponseEntity<CommonSession> userSubmit(@RequestBody
+    USER newUser,
             HttpServletRequest request);
 
     /**
      * Delete a user
-     * 
-     * @param user the {@link USER} to delete
-     * @param request the {@link HttpServletRequest} to use
+     *
+     * @param user
+     *            the {@link USER} to delete
+     * @param request
+     *            the {@link HttpServletRequest} to use
      * @return the {@link CommonSession} as a {@link ResponseEntity}
      */
     @PostMapping(value = ICommonUserController.PATH_DELETE_USER)
-    public ResponseEntity<CommonSession> deleteUser(@RequestBody String user,
+    public ResponseEntity<CommonSession> deleteUser(@RequestBody
+    String user,
             HttpServletRequest request);
 
     /**
      * Update a user
-     * 
-     * @param user the {@link USER} to update
-     * @param request the {@link HttpServletRequest} to use
+     *
+     * @param user
+     *            the {@link USER} to update
+     * @param request
+     *            the {@link HttpServletRequest} to use
      * @return the {@link CommonSession} as a {@link ResponseEntity}
      */
     @PostMapping(value = ICommonUserController.PATH_UPDATE_USER)
-    public ResponseEntity<CommonSession> updateUser(@RequestBody USER user,
+    public ResponseEntity<CommonSession> updateUser(@RequestBody
+    USER user,
             HttpServletRequest request);
 
     /**
      * Get a user by username
-     * 
+     *
      * @TODO this should be secured so user info is not visible
-     * @param username the username of the {@link USER} to get
-     * @param request the {@link HttpServletRequest} to use
+     * @param username
+     *            the username of the {@link USER} to get
+     * @param request
+     *            the {@link HttpServletRequest} to use
      * @return the {@link USER} as a {@link ResponseEntity}
      */
     @GetMapping(value = ICommonUserController.PATH_VALUE_GET_BY_USER_NAME)
     public ResponseEntity<USER> getUserByUsername(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME)
+            String username,
             HttpServletRequest request);
 
     /**
      * Get a user by id
-     * 
+     *
      * @TODO this should be secured so user info is not visible
-     * @param id the id of the {@link USER} to get
-     * @param request the {@link HttpServletRequest} to use
+     * @param id
+     *            the id of the {@link USER} to get
+     * @param request
+     *            the {@link HttpServletRequest} to use
      * @return the {@link USER} as a {@link ResponseEntity}
      */
     @GetMapping(value = ICommonUserController.PATH_VALUE_GET_BY_USER_ID)
     public ResponseEntity<USER> getUserById(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID)
+            String id,
             HttpServletRequest request);
 
     /**
      * Get the current user
-     * 
-     * @param authentication the {@link Authentication} to use
+     *
+     * @param authentication
+     *            the {@link Authentication} to use
      * @return the {@link USER} as a {@link ResponseEntity}
      */
     @GetMapping(value = ICommonUserController.PATH_GET_CURRENT_USER)
@@ -135,7 +157,7 @@ public interface ICommonUserController<
 
     /**
      * Get the current username
-     * 
+     *
      * @return the username as a {@link String}
      */
     @GetMapping(value = ICommonUserController.PATH_GET_CURRENT_USER_NAME)

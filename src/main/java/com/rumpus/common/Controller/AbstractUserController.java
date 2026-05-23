@@ -35,17 +35,22 @@ abstract public class AbstractUserController<
         // Define generics here//
         /////////////////////////
         SERVICES extends AbstractServiceManager<?>, // TODO: can we have the wildcard be SERVICE?
-        USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
-        extends AbstractCommonController<
-                /////////////////////////
-                // Define generics here//
-                /////////////////////////
-                SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
-        implements ICommonUserController<
-                /////////////////////////
-                // Define generics here//
-                /////////////////////////
-                USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+        extends
+            AbstractCommonController<
+                    /////////////////////////
+                    // Define generics here//
+                    /////////////////////////
+                    SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+        implements
+            ICommonUserController<
+                    /////////////////////////
+                    // Define generics here//
+                    /////////////////////////
+                    USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     private static final AbstractCommonUserCollection.Sort DEFAULT_SORT = AbstractCommonUserCollection.Sort.USERNAME;
     @Autowired
@@ -56,14 +61,16 @@ abstract public class AbstractUserController<
     }
 
     @Override
-    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort") String sort, HttpSession session) {
+    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort")
+    String sort, HttpSession session) {
         LOG("AbstractUserController::getAllUsersByPath()");
-        return getAllUsers(sort, session);
+        return getAllUsers(sort,session);
     }
 
     @Override
     public ResponseEntity<List<USER>> getAllUsers(
-            @RequestParam(value = "sort", defaultValue = "", required = false) String sort,
+            @RequestParam(value = "sort", defaultValue = "", required = false)
+            String sort,
             HttpSession session) {
 
         LOG("AbstractUserController::getAllUsers()");
@@ -96,30 +103,30 @@ abstract public class AbstractUserController<
 
         switch (normalizedSort) {
 
-            case "email":
+            case "email" :
 
                 users = AbstractCommonUserCollection
                         .getSortedByEmailListFromCollection(allUsers);
 
                 break;
 
-            case "id":
+            case "id" :
 
                 users = AbstractCommonUserCollection
                         .getSortedByIdListFromCollection(allUsers);
 
                 break;
 
-            case "username":
+            case "username" :
 
-            case "":
+            case "" :
 
                 users = AbstractCommonUserCollection
                         .getSortedByUsernameListFromCollection(allUsers);
 
                 break;
 
-            default:
+            default :
 
                 LOG(
                         LogBuilder
@@ -140,7 +147,8 @@ abstract public class AbstractUserController<
     }
 
     @Override
-    public ResponseEntity<CommonSession> userSubmit(@RequestBody USER newUser, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> userSubmit(@RequestBody
+    USER newUser, HttpServletRequest request) {
         LOG("AbstractUserController::userSubmit()");
 
         // generate UUID for user
@@ -152,7 +160,7 @@ abstract public class AbstractUserController<
         if (user != null) {
             LOG("User already exists.");
             HttpSession session = request.getSession();
-            session.setAttribute("status", "user already exists");
+            session.setAttribute("status","user already exists");
             return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
 
         }
@@ -160,19 +168,20 @@ abstract public class AbstractUserController<
         // User does not exist, create user
         HttpSession session = request.getSession();
         LOG("Creating user: " + newUser.toString());
-        newUser.setMetaData(EmptyUserMetaData.createEmptyUserMetaData()); // new MetaData adds creation time
+        newUser.setMetaData(EmptyUserMetaData.createEmptyUserMetaData()); // new MetaData adds
+                                                                          // creation time
         user = this.userService.add(newUser);
 
         // catch error creating user
         if (user == null) {
             LOG("ERROR: User is null.");
-            session.setAttribute("status", "error creating user");
+            session.setAttribute("status","error creating user");
             return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
         }
 
         // log in user
-        AbstractUserController.currentUserLogin(user, request);
-        session.setAttribute("loggedIn", true);
+        AbstractUserController.currentUserLogin(user,request);
+        session.setAttribute("loggedIn",true);
 
         // Gson gson = new GsonBuilder()
         // .setPrettyPrinting()
@@ -184,7 +193,7 @@ abstract public class AbstractUserController<
         // .create();
         // session.setAttribute("user", gson.toJson(user));
 
-        session.setAttribute("user", this.serializerService.serializeToString(user, null));
+        session.setAttribute("user",this.serializerService.serializeToString(user,null));
 
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 SecurityContextHolder.getContext());
@@ -199,70 +208,88 @@ abstract public class AbstractUserController<
         // messages.add(user.toString());
         // request.getSession().setAttribute("MY_SESSION_MESSAGES", messages);
 
-        ResponseEntity<CommonSession> re = new ResponseEntity<>(new CommonSession(session), HttpStatus.CREATED);
+        ResponseEntity<CommonSession> re = new ResponseEntity<>(new CommonSession(session),
+                HttpStatus.CREATED);
         return re;
     }
 
     @Override
-    public ResponseEntity<CommonSession> deleteUser(@RequestBody String user, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> deleteUser(@RequestBody
+    String user, HttpServletRequest request) {
         LOG("USERRestController POST: /api/delete_user");
         HttpSession session = request.getSession();
-        if (this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1, user.length() - 1) : user)) { // if
-                                                                                                                // user
-                                                                                                                // was
-                                                                                                                // removed,
-                                                                                                                // return
-                                                                                                                // session
-                                                                                                                // with
-                                                                                                                // status
-                                                                                                                // delete
-            session.setAttribute("status", "user deleted");
-            return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED);
+        if (this.userService
+                .remove(StringUtil.isQuoted(user) ? user.substring(1,user.length() - 1) : user)) { // if
+                                                                                                   // user
+                                                                                                   // was
+                                                                                                   // removed,
+                                                                                                   // return
+                                                                                                   // session
+                                                                                                   // with
+                                                                                                   // status
+                                                                                                   // delete
+            session.setAttribute("status","user deleted");
+            return new ResponseEntity<CommonSession>(new CommonSession(session),
+                    HttpStatus.CREATED);
         }
-        session.setAttribute("status", "error deleting user");
-        return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED); // else return session
-                                                                                                  // with status error
+        session.setAttribute("status","error deleting user");
+        return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED); // else
+                                                                                                  // return
+                                                                                                  // session
+                                                                                                  // with
+                                                                                                  // status
+                                                                                                  // error
     }
 
     @Override
-    public ResponseEntity<CommonSession> updateUser(@RequestBody USER user, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> updateUser(@RequestBody
+    USER user, HttpServletRequest request) {
         LOG("USERRestController POST: /api/update_user");
         HttpSession session = request.getSession();
         // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1,
         // user.length() - 1) : user);
-        LogBuilder log = LogBuilder.logBuilderFromStringArgs("Update this user: ", user.toString());
+        LogBuilder log = LogBuilder.logBuilderFromStringArgs("Update this user: ",user.toString());
         LOG(log.toString());
-        if (this.userService.update(user.getId().toString(), user) != null) { // if user was updated successfully,
-                                                                              // return session with status updateed
-            session.setAttribute("status", "user updated");
-            return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED);
+        if (this.userService.update(user.getId().toString(),user) != null) { // if user was updated
+                                                                             // successfully,
+                                                                             // return session with
+                                                                             // status updateed
+            session.setAttribute("status","user updated");
+            return new ResponseEntity<CommonSession>(new CommonSession(session),
+                    HttpStatus.CREATED);
 
         }
-        session.setAttribute("status", "error updating user");
+        session.setAttribute("status","error updating user");
         return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED);
     }
 
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserByUsername(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME)
+            String username,
             HttpServletRequest request) {
-        return new ResponseEntity<USER>(this.userService.getByUsername(username), HttpStatus.ACCEPTED);
+        return new ResponseEntity<USER>(this.userService.getByUsername(username),
+                HttpStatus.ACCEPTED);
     }
 
     // TODO this should be secured so user info is not visible
     @Override
-    public ResponseEntity<USER> getUserById(@PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
+    public ResponseEntity<USER> getUserById(
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID)
+            String id,
             HttpServletRequest request) {
         LOG("USERRestController::getUserById()");
         USER user = this.userService.getById(id);
         if (user != null) {
-            LogBuilder log = LogBuilder.logBuilderFromStringArgs("Retrieved user: ", user.toString());
+            LogBuilder log = LogBuilder.logBuilderFromStringArgs("Retrieved user: ",
+                    user.toString());
             LOG(log.toString());
             return new ResponseEntity<USER>(user, HttpStatus.ACCEPTED);
         }
-        LogBuilder log = LogBuilder.logBuilderFromStringArgs("User with id '", id, "' was not found.");
-        LOG(LogLevel.ERROR, log.toString());
+        LogBuilder log = LogBuilder.logBuilderFromStringArgs("User with id '",id,
+                "' was not found.");
+        LOG(LogLevel.ERROR,log.toString());
         return null;
     }
 
@@ -302,15 +329,16 @@ abstract public class AbstractUserController<
      * login the user.
      * <p>
      * TODO: look into this more
-     * 
+     *
      * @param <USER>
      * @param <USER_META>
      * @param user
      * @param request
      */
-    protected static <USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>> void currentUserLogin(
-            USER user, HttpServletRequest request) {
-        LOG(AbstractUserController.class, "RumpusController::currentUserLogin()");
+    protected static <USER extends AbstractCommonUser<USER, USER_META>,
+            USER_META extends AbstractCommonUserMetaData<USER_META>> void currentUserLogin(
+                    USER user, HttpServletRequest request) {
+        LOG(AbstractUserController.class,"RumpusController::currentUserLogin()");
         String password = user.getUserPassword();
         String username = user.getUsername();
         try {
@@ -321,12 +349,13 @@ abstract public class AbstractUserController<
                     .append("  User Password: ")
                     .append(password)
                     .append("\n");
-            LOG(AbstractUserController.class, sbLogInfo.toString());
-            request.login(username, password);
+            LOG(AbstractUserController.class,sbLogInfo.toString());
+            request.login(username,password);
         } catch (ServletException exception) {
             StringBuilder sbLogInfo = new StringBuilder();
-            sbLogInfo.append("\nError with log in request:\n").append("  ").append(exception.toString()).append("\n");
-            LOG(AbstractUserController.class, sbLogInfo.toString());
+            sbLogInfo.append("\nError with log in request:\n").append("  ")
+                    .append(exception.toString()).append("\n");
+            LOG(AbstractUserController.class,sbLogInfo.toString());
         }
     }
 

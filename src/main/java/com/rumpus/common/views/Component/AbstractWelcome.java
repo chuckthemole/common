@@ -5,14 +5,18 @@ import com.rumpus.common.views.Html.AbstractHtmlObject;
 import com.rumpus.common.views.Html.Attribute;
 
 /**
- * AbstractWelcome is an {@link AbstractComponent} that represents the welcome of a page.
+ * AbstractWelcome is an {@link AbstractComponent} that represents the welcome
+ * of a page.
  * <p>
- * Provide a string delimited by the delimiter containing the welcome components.
+ * Provide a string delimited by the delimiter containing the welcome
+ * components.
  * <p>
- * Example: "Hello, Someone! >< this is a sub header >< this is a sub sub header"
+ * Example: "Hello, Someone! >< this is a sub header >< this is a sub sub
+ * header"
  * <p>
  * <p>
- * Implementation should provide a list of the tag attributes to be used for the welcome. Should be six at most. Reference member variables for order.
+ * Implementation should provide a list of the tag attributes to be used for the
+ * welcome. Should be six at most. Reference member variables for order.
  * <p>
  * They should be given in the following order:
  * <p>
@@ -28,7 +32,8 @@ import com.rumpus.common.views.Html.Attribute;
  * <p>
  * 6. subSubHeaderTagAttributes
  * <p>
- * Example: "class=hero is-info welcome is-small, class=hero-body, class=container, class=title, class=subtitle, class=subtitle"
+ * Example: "class=hero is-info welcome is-small, class=hero-body,
+ * class=container, class=title, class=subtitle, class=subtitle"
  */
 public abstract class AbstractWelcome extends AbstractComponent {
 
@@ -43,11 +48,20 @@ public abstract class AbstractWelcome extends AbstractComponent {
     public static final String SUBTITLE = "ABSTRACT_WELCOME_SUBTITLE";
     public static final String SUBSUBTITLE = "ABSTRACT_WELCOME_SUBSUBTITLE";
 
-    public static final String WELCOME_DEFAULT_DELIMITER = "--"; // this is the default delimiter for the welcome components, Example: "h1><Hello, Someone! --- h2><this is a sub header --- h3><this is a sub sub header"
-    public static final String WELCOME_COMPONENT_DELIMITER = "><"; // this is the delimiter for the welcome components, Example: "h1><Hello, Someone! --- h2><this is a sub header --- h3><this is a sub sub header"
+    public static final String WELCOME_DEFAULT_DELIMITER = "--"; // this is the default delimiter
+                                                                 // for the welcome components,
+                                                                 // Example: "h1><Hello, Someone!
+                                                                 // --- h2><this is a sub header ---
+                                                                 // h3><this is a sub sub header"
+    public static final String WELCOME_COMPONENT_DELIMITER = "><"; // this is the delimiter for the
+                                                                   // welcome components, Example:
+                                                                   // "h1><Hello, Someone! ---
+                                                                   // h2><this is a sub header ---
+                                                                   // h3><this is a sub sub header"
 
     public abstract class AbstractWelcomeComponentPart extends AbstractComponentPart {
-        public AbstractWelcomeComponentPart(AbstractComponentPart.ComponentPartType partType, String body) {
+        public AbstractWelcomeComponentPart(AbstractComponentPart.ComponentPartType partType,
+                String body) {
             super(partType, body);
         }
 
@@ -94,22 +108,21 @@ public abstract class AbstractWelcome extends AbstractComponent {
 
     /**
      * Constructor
-     * 
+     *
      * @param name
      * @param componentName
      * @param welcomeComponents
      */
     public AbstractWelcome(
-        String componentName,
-        String welcomeComponents) {
-            super(
+            String componentName,
+            String welcomeComponents) {
+        super(
                 componentName,
                 AbstractComponent.ComponentType.WELCOME,
                 welcomeComponents,
                 AbstractHtmlObject.HtmlTagType.DIV, // maybe section?
                 "",
-                WELCOME_DEFAULT_DELIMITER
-            );
+                WELCOME_DEFAULT_DELIMITER);
     }
 
     /**
@@ -133,52 +146,65 @@ public abstract class AbstractWelcome extends AbstractComponent {
     @Override
     public void setChildrenForComponent() {
 
-        com.rumpus.common.views.Html.AbstractHtmlObject containerDiv = com.rumpus.common.views.Html.AbstractHtmlObject.createEmptyAbstractHtmlObject();
+        com.rumpus.common.views.Html.AbstractHtmlObject containerDiv = com.rumpus.common.views.Html.AbstractHtmlObject
+                .createEmptyAbstractHtmlObject();
         containerDiv.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
 
-        // parse welcomeComponents for h1, h2, h3, h4, h5, h6, etc and add them to the container div
+        // parse welcomeComponents for h1, h2, h3, h4, h5, h6, etc and add them to the
+        // container div
         String[] welcomeComponentsArray = super.componentAsString.split(super.defaultDelimiter);
-        for(int welcomeComponentsArrayIndex = 0; welcomeComponentsArrayIndex < welcomeComponentsArray.length; welcomeComponentsArrayIndex++) {
-            String[] welcomeComponentHTypeAndBody = welcomeComponentsArray[welcomeComponentsArrayIndex].split(AbstractWelcome.WELCOME_COMPONENT_DELIMITER);
-            if(welcomeComponentHTypeAndBody.length == 2) {
+        for (int welcomeComponentsArrayIndex = 0; welcomeComponentsArrayIndex < welcomeComponentsArray.length; welcomeComponentsArrayIndex++) {
+            String[] welcomeComponentHTypeAndBody = welcomeComponentsArray[welcomeComponentsArrayIndex]
+                    .split(AbstractWelcome.WELCOME_COMPONENT_DELIMITER);
+            if (welcomeComponentHTypeAndBody.length == 2) {
                 final String hType = welcomeComponentHTypeAndBody[0].strip().toLowerCase();
                 final String body = welcomeComponentHTypeAndBody[1].strip();
                 AbstractHtmlObject htmlObject = null;
-                if(hType.equals("h1")) {
+                if (hType.equals("h1")) {
                     htmlObject = AbstractWelcomeComponentPart.createH1(body);
                     htmlObject.setHtmlAttributes(this.componentAttributeManager.get(H1_ATTRIBUTE));
-                } else if(hType.equals("h2")) {
+                } else if (hType.equals("h2")) {
                     htmlObject = AbstractWelcomeComponentPart.createH2(body);
-                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(SUB_HEADER_ATTRIBUTE));
-                } else if(hType.equals("h3")) {
+                    htmlObject.setHtmlAttributes(
+                            super.componentAttributeManager.get(SUB_HEADER_ATTRIBUTE));
+                } else if (hType.equals("h3")) {
                     htmlObject = AbstractWelcomeComponentPart.createH3(body);
-                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
-                } else if(hType.equals("h4")) {
+                    htmlObject.setHtmlAttributes(
+                            super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
+                } else if (hType.equals("h4")) {
                     htmlObject = AbstractWelcomeComponentPart.createH4(body);
-                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
-                } else if(hType.equals("h5")) {
+                    htmlObject.setHtmlAttributes(
+                            super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
+                } else if (hType.equals("h5")) {
                     htmlObject = AbstractWelcomeComponentPart.createH5(body);
-                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
-                } else if(hType.equals("h6")) {
+                    htmlObject.setHtmlAttributes(
+                            super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
+                } else if (hType.equals("h6")) {
                     htmlObject = AbstractWelcomeComponentPart.createH6(body);
-                    htmlObject.setHtmlAttributes(super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
+                    htmlObject.setHtmlAttributes(
+                            super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
                 } else {
-                    LOG(LogLevel.ERROR, "Invalid welcome component h type: ", hType);
+                    LOG(LogLevel.ERROR,"Invalid welcome component h type: ",hType);
                     continue;
                 }
-                if(htmlObject != null) {
-                    final String componentPartId = this.componentPartManager.registerComponentPart(super.getComponentName(), htmlObject);
-                    htmlObject.addHtmlTagAttribute(Attribute.create(AbstractComponent.COMPONENT_PART_ID, componentPartId));
+                if (htmlObject != null) {
+                    final String componentPartId = this.componentPartManager
+                            .registerComponentPart(super.getComponentName(),htmlObject);
+                    htmlObject.addHtmlTagAttribute(
+                            Attribute.create(AbstractComponent.COMPONENT_PART_ID,componentPartId));
                     containerDiv.addChild(htmlObject);
                 }
             } else {
-                LOG("Invalid welcome component: " + welcomeComponentsArray[welcomeComponentsArrayIndex]);
+                LOG("Invalid welcome component: "
+                        + welcomeComponentsArray[welcomeComponentsArrayIndex]);
                 continue;
             }
         }
 
-        // create first level div to add to this component, add container div to first level div, and add first level div to this component
-        AbstractHtmlObject firstLevelDiv = com.rumpus.common.views.Html.AbstractHtmlObject.createEmptyAbstractHtmlObject();
+        // create first level div to add to this component, add container div to first
+        // level div, and add first level div to this component
+        AbstractHtmlObject firstLevelDiv = com.rumpus.common.views.Html.AbstractHtmlObject
+                .createEmptyAbstractHtmlObject();
         firstLevelDiv.setHtmlTagType(AbstractHtmlObject.HtmlTagType.DIV);
         firstLevelDiv.setHtmlAttributes(super.componentAttributeManager.get(DIV_ATTRIBUTE));
         containerDiv.setHtmlAttributes(super.componentAttributeManager.get(CONTAINER_ATTRIBUTE));

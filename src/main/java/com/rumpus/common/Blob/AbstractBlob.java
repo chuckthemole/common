@@ -11,11 +11,12 @@ import java.io.OutputStream;
 import java.sql.SQLFeatureNotSupportedException;
 
 /**
- * Abstract helper class for handling BLOB serialization and deserialization in database contexts.
- * Provides methods for working with Java objects and SQL Blob types.
+ * Abstract helper class for handling BLOB serialization and deserialization in
+ * database contexts. Provides methods for working with Java objects and SQL
+ * Blob types.
  * <p>
- * This class is designed to facilitate the conversion of Java objects to Blob types (serialization)
- * and the reverse operation (deserialization).
+ * This class is designed to facilitate the conversion of Java objects to Blob
+ * types (serialization) and the reverse operation (deserialization).
  */
 public abstract class AbstractBlob extends AbstractCommonObject implements IBlob {
 
@@ -24,29 +25,34 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
     /**
      * Constructs an AbstractBlob with a given name.
      *
-     * @param name The name of the blob.
+     * @param name
+     *            The name of the blob.
      */
     public AbstractBlob() {
-        
+
         this.blob = null;
     }
 
     /**
      * Constructs an AbstractBlob with a given name and Blob.
      *
-     * @param name The name of the blob.
-     * @param blob The SQL Blob object.
+     * @param name
+     *            The name of the blob.
+     * @param blob
+     *            The SQL Blob object.
      */
     public AbstractBlob(Blob blob) {
-        
+
         this.blob = blob;
     }
 
     /**
      * Constructs an AbstractBlob with a given name and Blob.
      *
-     * @param name The name of the blob.
-     * @param blob The SQL Blob object.
+     * @param name
+     *            The name of the blob.
+     * @param blob
+     *            The SQL Blob object.
      */
     public AbstractBlob(Blob blob, ICommonLogger logger) {
         super(logger);
@@ -57,14 +63,15 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
      * Initialze the Blob object for this AbstractBlob.
      * <p>
      * This is needed if the Blob object is not set during construction.
-     * 
-     * @param blob The Blob object to set.
+     *
+     * @param blob
+     *            The Blob object to set.
      */
     abstract public void initBlob();
 
     /**
      * Check if the Blob object is initialized.
-     * 
+     *
      * @return true if the Blob object is initialized, false otherwise.
      */
     public boolean isInitialized() {
@@ -73,7 +80,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
 
     @Override
     public long length() throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
         return this.blob.length();
@@ -81,15 +88,15 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
 
     @Override
     public byte[] getBytes(long pos, int length) throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
-        return this.blob.getBytes(pos, length);
+        return this.blob.getBytes(pos,length);
     }
 
     @Override
     public InputStream getBinaryStream() throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
         return this.blob.getBinaryStream();
@@ -97,34 +104,36 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
 
     @Override
     public long position(byte[] pattern, long start) throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
         try {
             // Attempt to use the driver's implementation
-            return this.blob.position(pattern, start);
+            return this.blob.position(pattern,start);
         } catch (SQLFeatureNotSupportedException e) {
-            LOG(LogLevel.ERROR, "Driver does not support position() for byte array. Using custom implementation.");
+            LOG(LogLevel.ERROR,
+                    "Driver does not support position() for byte array. Using custom implementation.");
 
             // Fallback to custom implementation
-            return positionFallback(pattern, start);
+            return positionFallback(pattern,start);
         }
     }
 
     @Override
     public long position(Blob pattern, long start) throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
         try {
             // Attempt to use the driver's implementation
-            return this.blob.position(pattern, start);
+            return this.blob.position(pattern,start);
         } catch (SQLFeatureNotSupportedException e) {
             // Log the exception if needed
-            LOG(LogLevel.ERROR, "Driver does not support position() for Blob. Using custom implementation.");
+            LOG(LogLevel.ERROR,
+                    "Driver does not support position() for Blob. Using custom implementation.");
 
             // Fallback to custom implementation
-            return position(pattern.getBytes(1, (int) pattern.length()), start);
+            return position(pattern.getBytes(1,(int) pattern.length()),start);
         }
     }
 
@@ -135,10 +144,10 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
         }
 
         // Retrieve the BLOB data as a byte array
-        byte[] blobData = getBytes(1, (int) length());
+        byte[] blobData = getBytes(1,(int) length());
 
         // Start searching for the pattern from the specified position
-        int position = indexOf(blobData, pattern, (int) start - 1);
+        int position = indexOf(blobData,pattern,(int) start - 1);
         return (position >= 0) ? position + 1 : -1; // Convert to 1-based index
     }
 
@@ -161,23 +170,23 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
 
     @Override
     public int setBytes(long pos, byte[] bytes) throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
-        return this.blob.setBytes(pos, bytes);
+        return this.blob.setBytes(pos,bytes);
     }
 
     @Override
     public int setBytes(long pos, byte[] bytes, int offset, int len) throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
-        return this.blob.setBytes(pos, bytes, offset, len);
+        return this.blob.setBytes(pos,bytes,offset,len);
     }
 
     @Override
     public OutputStream setBinaryStream(long pos) throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
         return this.blob.setBinaryStream(pos);
@@ -185,7 +194,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
 
     @Override
     public void truncate(long len) throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
         this.blob.truncate(len);
@@ -193,7 +202,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
 
     @Override
     public void free() throws SQLException {
-        if(this.blob == null) {
+        if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
         this.blob.free();

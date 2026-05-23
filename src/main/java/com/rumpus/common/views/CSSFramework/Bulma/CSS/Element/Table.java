@@ -13,13 +13,14 @@ public class Table extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-            AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
-            this.getClass().getSimpleName());
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),
+                this.getClass().getSimpleName());
     }
 
     public static Table createWithBody(String body) {
         return new Table(body);
     }
+
     public static Table createWithNoBody() {
         return new Table("");
     }

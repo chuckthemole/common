@@ -11,17 +11,18 @@ import com.rumpus.common.views.Html.Attribute;
 import com.rumpus.common.views.Html.HtmlTagAttributes;
 
 public class HtmlObjectTest extends AbstractCommonTest {
-    
+
     public HtmlObjectTest() {
         super(HtmlObjectTest.class);
     }
 
-    // TODO: I STOPPED HERE. We need to test AbstractHtmlObject. Specifically, addHtmlTagAttribute and other attribute helpers. I'm getting wrong results.
+    // TODO: I STOPPED HERE. We need to test AbstractHtmlObject. Specifically,
+    // addHtmlTagAttribute and other attribute helpers. I'm getting wrong results.
 
-    static final Attribute CLASS_BLOCK_ATTRIBUTE1 = Attribute.create("class", "block");
-    static final Attribute CLASS_BLOCK_ATTRIBUTE2 = Attribute.create("class", "block2");
-    static final Attribute ADMIN_ATTRIBUTE1 = Attribute.create("admin", "true");
-    static final Attribute ADMIN_ATTRIBUTE2 = Attribute.create("admin", "false");
+    static final Attribute CLASS_BLOCK_ATTRIBUTE1 = Attribute.create("class","block");
+    static final Attribute CLASS_BLOCK_ATTRIBUTE2 = Attribute.create("class","block2");
+    static final Attribute ADMIN_ATTRIBUTE1 = Attribute.create("admin","true");
+    static final Attribute ADMIN_ATTRIBUTE2 = Attribute.create("admin","false");
     HtmlTagAttributes actualHtmlTagAttributes;
     AbstractHtmlObject actualAbstractHtmlObject;
 
@@ -44,7 +45,7 @@ public class HtmlObjectTest extends AbstractCommonTest {
         this.actualHtmlTagAttributes.add(CLASS_BLOCK_ATTRIBUTE1);
         this.actualHtmlTagAttributes.add(ADMIN_ATTRIBUTE1);
         this.actualAbstractHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
-        LOG("Attributes after setUp:\n", this.actualHtmlTagAttributes.toString());
+        LOG("Attributes after setUp:\n",this.actualHtmlTagAttributes.toString());
     }
 
     @Override
@@ -59,32 +60,39 @@ public class HtmlObjectTest extends AbstractCommonTest {
     void testSetHtmlAttributes() {
         // Set the html attributes and make sure they are set with get method
         this.actualAbstractHtmlObject.setHtmlAttributes(this.actualHtmlTagAttributes);
-        assertEquals(this.actualHtmlTagAttributes, this.actualAbstractHtmlObject.getHtmlAttributes());
+        assertEquals(this.actualHtmlTagAttributes,
+                this.actualAbstractHtmlObject.getHtmlAttributes());
 
         // itterate through the html attributes and make sure they are all there
-        for(Attribute attribute : this.actualAbstractHtmlObject.getHtmlAttributes()) {
+        for (Attribute attribute : this.actualAbstractHtmlObject.getHtmlAttributes()) {
             LOG(attribute.toString());
-            assertEquals(this.actualHtmlTagAttributes.get(attribute.getUniqueId()), attribute);
+            assertEquals(this.actualHtmlTagAttributes.get(attribute.getUniqueId()),attribute);
         }
     }
 
     @Test
     @Order(2)
     void testAddHtmlTagAttribute() {
-        
-        // this should not be added to the HtmlTagAttributes, since it is a 'class' attribute, which already exists
-        this.actualAbstractHtmlObject.setHtmlAttributes(this.actualHtmlTagAttributes);
-        final Attribute UNPROPER_PROPERTY_ATTRIBUTE = Attribute.create("class", "this should not be added");
-        this.actualAbstractHtmlObject.addHtmlTagAttribute(UNPROPER_PROPERTY_ATTRIBUTE);
-        assertEquals(this.actualHtmlTagAttributes, this.actualAbstractHtmlObject.getHtmlAttributes());
 
-        // this should be added to the HtmlTagAttributes, since it is a 'proper-property' attribute, which does not exist
-        final Attribute PROPER_PROPERTY_ATTRIBUTE = Attribute.create("proper-property", "this should be added");
+        // this should not be added to the HtmlTagAttributes, since it is a 'class'
+        // attribute, which already exists
+        this.actualAbstractHtmlObject.setHtmlAttributes(this.actualHtmlTagAttributes);
+        final Attribute UNPROPER_PROPERTY_ATTRIBUTE = Attribute.create("class",
+                "this should not be added");
+        this.actualAbstractHtmlObject.addHtmlTagAttribute(UNPROPER_PROPERTY_ATTRIBUTE);
+        assertEquals(this.actualHtmlTagAttributes,
+                this.actualAbstractHtmlObject.getHtmlAttributes());
+
+        // this should be added to the HtmlTagAttributes, since it is a
+        // 'proper-property' attribute, which does not exist
+        final Attribute PROPER_PROPERTY_ATTRIBUTE = Attribute.create("proper-property",
+                "this should be added");
         this.actualAbstractHtmlObject.addHtmlTagAttribute(PROPER_PROPERTY_ATTRIBUTE);
         LOG(this.actualAbstractHtmlObject.getHtmlAttributes().toString());
         LOG(this.actualHtmlTagAttributes.toString());
         // this.actualHtmlTagAttributes.add(PROPER_PROPERTY_ATTRIBUTE);
-        assertEquals(this.actualHtmlTagAttributes, this.actualAbstractHtmlObject.getHtmlAttributes());
+        assertEquals(this.actualHtmlTagAttributes,
+                this.actualAbstractHtmlObject.getHtmlAttributes());
 
         // this.actualAbstractHtmlObject.addHtmlTagAttribute(ADMIN, null);
 
@@ -93,12 +101,12 @@ public class HtmlObjectTest extends AbstractCommonTest {
     @Test
     @Order(3)
     void testRemoveHtmlTagAttribute() {
-        LOG("Attributes 3:\n", this.actualHtmlTagAttributes.toString());
+        LOG("Attributes 3:\n",this.actualHtmlTagAttributes.toString());
     }
 
     @Test
     @Order(4)
     void testAddToAttribute() {
-        LOG("Attributes 3:\n", this.actualHtmlTagAttributes.toString());
+        LOG("Attributes 3:\n",this.actualHtmlTagAttributes.toString());
     }
 }

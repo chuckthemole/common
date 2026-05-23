@@ -30,12 +30,16 @@ final public class FileProcessor {
 
     /**
      * Process a file and return an array of models.
-     * 
-     * @param filePath The path of the file to process.
-     * @param type The type of model to parse the file content into.
-     * @return An Optional containing the parsed models, or an empty Optional if parsing fails.
+     *
+     * @param filePath
+     *            The path of the file to process.
+     * @param type
+     *            The type of model to parse the file content into.
+     * @return An Optional containing the parsed models, or an empty Optional if
+     *         parsing fails.
      */
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> processFile(String filePath, Type type) {
-        return fileReader.readModelsFromFile(filePath, type);
+    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> processFile(String filePath,
+            Type type) {
+        return fileReader.readModelsFromFile(filePath,type);
     }
 }
