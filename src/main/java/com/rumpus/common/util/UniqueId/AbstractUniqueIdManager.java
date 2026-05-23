@@ -32,11 +32,11 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<Stri
         // LOG("createUniqueIdSetWithDefaultLength() called: " + setName);
         setName = setName.strip();
         if (!AbstractUniqueIdManager.uniqueIds.containsKey(setName.strip())) {
-            LOG("Creating set of ids with name: \"",setName.strip(),"\"");
+            LOG("Creating set of ids with name: \"", setName.strip(), "\"");
             AbstractUniqueIdManager.uniqueIds.put(setName,
                     IdSet.createEmptyIdSetWithDefaultLength());
         } else {
-            LOG("Set of ids with name '",setName,
+            LOG("Set of ids with name '", setName,
                     "' already exists. To overwrite you must delete the existing set.");
         }
     }
@@ -51,10 +51,10 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<Stri
     public void createUniqueIdSetWithSetLength(String setName, int length) {
         setName = setName.strip();
         if (!AbstractUniqueIdManager.uniqueIds.containsKey(setName)) {
-            LOG("Creating set of ids with name: '",setName,"'");
-            AbstractUniqueIdManager.uniqueIds.put(setName,IdSet.createWithLength(length));
+            LOG("Creating set of ids with name: '", setName, "'");
+            AbstractUniqueIdManager.uniqueIds.put(setName, IdSet.createWithLength(length));
         } else {
-            LOG("Set of ids with name '",setName,
+            LOG("Set of ids with name '", setName,
                     "' already exists. To overwrite you must delete the existing set.");
         }
     }
@@ -68,19 +68,19 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<Stri
     public String generateAndReceiveIdForGivenSet(String name) {
         name = name.strip();
         LOG("AbstractUniqueIdManager::generateAndReceiveIdForGivenSet()");
-        LOG("Looking for unique id set with name: '",name,"'");
+        LOG("Looking for unique id set with name: '", name, "'");
         if (AbstractUniqueIdManager.uniqueIds.containsKey(name)) {
             LOG("Found set!");
             final String createdId = AbstractUniqueIdManager.uniqueIds.get(name).add();
-            LOG("Generated id: '",createdId,"'");
+            LOG("Generated id: '", createdId, "'");
             return createdId;
         } else {
             StringBuilder listOfIds = new StringBuilder();
             for (String setId : AbstractUniqueIdManager.uniqueIds.keySet()) {
                 listOfIds.append("  ").append(setId).append("\n");
             }
-            LOG("Set of ids with name '",name,"' does not exist.\nNames of available sets:\n",
-                    listOfIds.toString(),"\n");
+            LOG("Set of ids with name '", name, "' does not exist.\nNames of available sets:\n",
+                    listOfIds.toString(), "\n");
             return null;
         }
     }
@@ -98,7 +98,7 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<Stri
         if (AbstractUniqueIdManager.uniqueIds.containsKey(name)) {
             return AbstractUniqueIdManager.uniqueIds.get(name).remove(id);
         } else {
-            LOG("Set of ids with name '",name,"' does not exist.");
+            LOG("Set of ids with name '", name, "' does not exist.");
             return false;
         }
     }
@@ -111,6 +111,6 @@ public abstract class AbstractUniqueIdManager extends AbstractCommonManager<Stri
     @Override
     public IdSet createEmptyManagee(String name) {
         name = name.strip();
-        return this.put(name,IdSet.createEmptyIdSet());
+        return this.put(name, IdSet.createEmptyIdSet());
     }
 }

@@ -73,7 +73,7 @@ public class NavbarItem extends AbstractView {
             String image,
             Map<String, Object> componentProps) {
 
-        this.init(title,href,active,dropdown,itemType,reactComponent,image,componentProps);
+        this.init(title, href, active, dropdown, itemType, reactComponent, image, componentProps);
     }
 
     /**
@@ -114,14 +114,14 @@ public class NavbarItem extends AbstractView {
         }
 
         if (com.rumpus.common.util.FileUtil.doesPathExist(image) != SUCCESS) {
-            LOG_THIS("Image path does not exist: ",image);
-            if (!com.rumpus.common.util.Uri.isValidURL(image,true)) {
-                LOG_THIS("Invalid URL: ",image);
+            LOG_THIS("Image path does not exist: ", image);
+            if (!com.rumpus.common.util.Uri.isValidURL(image, true)) {
+                LOG_THIS("Invalid URL: ", image);
             } else {
-                LOG_THIS("Valid http/https URL: ",image);
+                LOG_THIS("Valid http/https URL: ", image);
             }
         } else {
-            LOG_THIS("Image path exists: ",image);
+            LOG_THIS("Image path exists: ", image);
         }
     }
 
@@ -175,7 +175,7 @@ public class NavbarItem extends AbstractView {
                 ? image
                 : AbstractViews.DEFAULT_NAVBAR_BRAND;
 
-        LOG_THIS("Setting local brand image: ",resolvedImage);
+        LOG_THIS("Setting local brand image: ", resolvedImage);
         return new NavbarItem(title, href, active, null, ItemType.BRAND, null, resolvedImage, null);
     }
 
@@ -188,7 +188,7 @@ public class NavbarItem extends AbstractView {
                 ? image
                 : AbstractViews.DEFAULT_NAVBAR_BRAND;
 
-        LOG_THIS("Setting remote brand image: ",resolvedImage);
+        LOG_THIS("Setting remote brand image: ", resolvedImage);
         return new NavbarItem(title, href, active, null, ItemType.BRAND, null, resolvedImage, null);
     }
 
@@ -339,7 +339,7 @@ public class NavbarItem extends AbstractView {
     public String toString() {
         return String.format(
                 "NavbarItem{title='%s', href='%s', active=%s, dropdown=%s, itemType=%s, reactComponent=%s, componentProps=%s}",
-                title,href,active,dropdown,itemType,reactComponent,componentProps);
+                title, href, active, dropdown, itemType, reactComponent, componentProps);
     }
 
     @Override
@@ -363,6 +363,6 @@ public class NavbarItem extends AbstractView {
     // ------------------------------------------------------------------------
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(NavbarItem.class,args);
+        ICommon.LOG(NavbarItem.class, args);
     }
 }

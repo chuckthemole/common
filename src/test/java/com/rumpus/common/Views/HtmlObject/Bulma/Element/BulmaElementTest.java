@@ -46,8 +46,8 @@ public class BulmaElementTest extends AbstractCommonTest {
     void testBlock() {
         String body = "this is a cool body";
         this.abstractHtmlObject = Block.createWithBody(body);
-        assertEquals(body,this.abstractHtmlObject.getBody());
-        assertEquals(AbstractHtmlObject.HtmlTagType.DIV,this.abstractHtmlObject.getHtmlTagType());
+        assertEquals(body, this.abstractHtmlObject.getBody());
+        assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
         assertEquals("block",
                 this.abstractHtmlObject.getHtmlAttributeByPropertyName("class").getValueAsString());
     }
@@ -56,10 +56,10 @@ public class BulmaElementTest extends AbstractCommonTest {
     @Order(2)
     void testBlockWithNoBody() {
         this.abstractHtmlObject = Block.createWithNoBody();
-        assertEquals("",this.abstractHtmlObject.getBody());
-        assertEquals(AbstractHtmlObject.HtmlTagType.DIV,this.abstractHtmlObject.getHtmlTagType());
+        assertEquals("", this.abstractHtmlObject.getBody());
+        assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
         assertEquals(
-                Attribute.create("class","block"),
+                Attribute.create("class", "block"),
                 this.abstractHtmlObject.getHtmlAttributeByPropertyName(
                         AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
     }
@@ -69,10 +69,10 @@ public class BulmaElementTest extends AbstractCommonTest {
     void testBlockWithBodyAndAttributes() {
         String body = "this is a cool body";
         this.abstractHtmlObject = Block.createWithBody(body);
-        assertEquals(body,this.abstractHtmlObject.getBody());
-        assertEquals(AbstractHtmlObject.HtmlTagType.DIV,this.abstractHtmlObject.getHtmlTagType());
+        assertEquals(body, this.abstractHtmlObject.getBody());
+        assertEquals(AbstractHtmlObject.HtmlTagType.DIV, this.abstractHtmlObject.getHtmlTagType());
         assertEquals(
-                Attribute.create("class","block"),
+                Attribute.create("class", "block"),
                 this.abstractHtmlObject.getHtmlAttributeByPropertyName(
                         AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute()));
     }

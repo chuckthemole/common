@@ -55,18 +55,18 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
 
         // Guard against null debugOutput
         if (debugOutput == null) {
-            LOG(NotionIntegrationLoader.class,LogLevel.ERROR,
+            LOG(NotionIntegrationLoader.class, LogLevel.ERROR,
                     "NotionIntegrationLoader::load() -> debugOutput is null. Caller must pass a valid StringBuilder instance.");
             return;
         }
 
         // Validate required parameters
-        Objects.requireNonNull(environment,"Environment must not be null");
-        Objects.requireNonNull(registry,"Registry must not be null");
-        Objects.requireNonNull(propertyKey,"Property key must not be null");
-        Objects.requireNonNull(resourceType,"Resource type must not be null");
+        Objects.requireNonNull(environment, "Environment must not be null");
+        Objects.requireNonNull(registry, "Registry must not be null");
+        Objects.requireNonNull(propertyKey, "Property key must not be null");
+        Objects.requireNonNull(resourceType, "Resource type must not be null");
 
-        List<String> entries = readNotionEntries(environment,propertyKey,debugOutput);
+        List<String> entries = readNotionEntries(environment, propertyKey, debugOutput);
         if (entries.isEmpty()) {
             String msg = String.format(
                     "No Notion integration entries found for key '%s'. Skipping load.%n",
@@ -76,19 +76,19 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
             return;
         }
 
-        String joinedEntries = String.join(",",entries);
+        String joinedEntries = String.join(",", entries);
         String msg = String.format("Loading Notion integration entries for key '%s': %s%n",
-                propertyKey,joinedEntries);
+                propertyKey, joinedEntries);
         debugOutput.append(msg);
         LOG_THIS(msg);
 
         // Register each entry
         entries.forEach(
-                entry -> registerEntry(entry,resourceType,registry,propertyKey,debugOutput));
+                entry -> registerEntry(entry, resourceType, registry, propertyKey, debugOutput));
 
         String completeMsg = String.format(
                 "Completed loading Notion integrations for '%s'. Registry now contains %d entries.%n",
-                propertyKey,registry.size());
+                propertyKey, registry.size());
         debugOutput.append(completeMsg);
         LOG_THIS(completeMsg);
     }
@@ -106,7 +106,7 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
         // Attempt 1: read as single comma-separated String
         String singleString = environment.getProperty(propertyKey);
         if (singleString != null && !singleString.isBlank()) {
-            String msg = String.format("Read property '%s' as single string: %s%n",propertyKey,
+            String msg = String.format("Read property '%s' as single string: %s%n", propertyKey,
                     singleString);
             debugOutput.append(msg);
             LOG_THIS(msg);
@@ -116,11 +116,11 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
         // Attempt 2: read as YAML list using Binder
         try {
             List<String> list = Binder.get(environment)
-                    .bind(propertyKey,Bindable.listOf(String.class))
+                    .bind(propertyKey, Bindable.listOf(String.class))
                     .orElse(Collections.emptyList());
 
             if (!list.isEmpty()) {
-                String msg = String.format("Read property '%s' as YAML list: %s%n",propertyKey,
+                String msg = String.format("Read property '%s' as YAML list: %s%n", propertyKey,
                         list);
                 debugOutput.append(msg);
                 LOG_THIS(msg);
@@ -128,7 +128,7 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
 
             return list;
         } catch (Exception e) {
-            String errMsg = String.format("Failed to read property '%s' as list: %s%n",propertyKey,
+            String errMsg = String.format("Failed to read property '%s' as list: %s%n", propertyKey,
                     e.getMessage());
             debugOutput.append(errMsg);
             LOG_THIS(errMsg);
@@ -143,7 +143,7 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
             NotionIntegrationRegistry registry,
             String propertyKey, StringBuilder debugOutput) {
         try {
-            String[] parts = entry.split("=",2);
+            String[] parts = entry.split("=", 2);
             if (parts.length != 2) {
                 throw new IllegalArgumentException("Invalid entry format: " + entry);
             }
@@ -159,14 +159,14 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
                     value);
             registry.register(notionEntry);
 
-            String msg = String.format("Registered Notion integration entry: %s%n",notionEntry);
+            String msg = String.format("Registered Notion integration entry: %s%n", notionEntry);
             debugOutput.append(msg);
             LOG_THIS(msg);
 
         } catch (Exception e) {
             String errMsg = String.format(
                     "Failed to parse/register Notion integration entry '%s' for property '%s': %s%n",
-                    entry,propertyKey,e.getMessage());
+                    entry, propertyKey, e.getMessage());
             debugOutput.append(errMsg);
             LOG_THIS(errMsg);
         }
@@ -186,6 +186,6 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
      * Local helper for consistent debug-level logging.
      */
     private static void LOG_THIS(String message) {
-        LOG(NotionIntegrationLoader.class,LogLevel.DEBUG,message);
+        LOG(NotionIntegrationLoader.class, LogLevel.DEBUG, message);
     }
 }

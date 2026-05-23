@@ -184,14 +184,14 @@ public abstract class AbstractWelcome extends AbstractComponent {
                     htmlObject.setHtmlAttributes(
                             super.componentAttributeManager.get(SUB_SUB_HEADER_ATTRIBUTE));
                 } else {
-                    LOG(LogLevel.ERROR,"Invalid welcome component h type: ",hType);
+                    LOG(LogLevel.ERROR, "Invalid welcome component h type: ", hType);
                     continue;
                 }
                 if (htmlObject != null) {
                     final String componentPartId = this.componentPartManager
-                            .registerComponentPart(super.getComponentName(),htmlObject);
+                            .registerComponentPart(super.getComponentName(), htmlObject);
                     htmlObject.addHtmlTagAttribute(
-                            Attribute.create(AbstractComponent.COMPONENT_PART_ID,componentPartId));
+                            Attribute.create(AbstractComponent.COMPONENT_PART_ID, componentPartId));
                     containerDiv.addChild(htmlObject);
                 }
             } else {

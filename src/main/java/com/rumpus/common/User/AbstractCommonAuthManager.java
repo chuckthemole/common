@@ -28,7 +28,7 @@ abstract public class AbstractCommonAuthManager<
         final String name = authentication.getName();
         final String password = authentication.getCredentials().toString();
 
-        if (userIsAuthenticated(name,password)) {
+        if (userIsAuthenticated(name, password)) {
             LOG("User is authenticated, returning token.");
             // use the credentials
             // and authenticate against the third-party system

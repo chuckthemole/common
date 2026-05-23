@@ -98,9 +98,9 @@ public abstract class AbstractCommonUserMetaData<
     public String toString() {
         return StringBuilderHelper.buildString(
                 "{\n",
-                "  ",USER_CREATION_DATE_TIME,": ",this.getStandardFormattedCreationTime(),",\n",
-                "  ",USER_PHOTO_LINK,": ",this.getPhotoLink(),",\n",
-                "  ",USER_ABOUT_ME,": ",this.getAboutMe(),"\n",
+                "  ", USER_CREATION_DATE_TIME, ": ", this.getStandardFormattedCreationTime(), ",\n",
+                "  ", USER_PHOTO_LINK, ": ", this.getPhotoLink(), ",\n",
+                "  ", USER_ABOUT_ME, ": ", this.getAboutMe(), "\n",
                 "}");
     }
 }

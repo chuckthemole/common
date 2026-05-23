@@ -147,6 +147,6 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ?>> extends ICommon {
      *            the length of the ids in this set
      */
     public static void registerIdSet(final String name, final int length) {
-        AbstractDao.idManager.createUniqueIdSetWithSetLength(name,length);
+        AbstractDao.idManager.createUniqueIdSetWithSetLength(name, length);
     }
 }

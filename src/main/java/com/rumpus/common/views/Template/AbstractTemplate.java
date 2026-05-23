@@ -101,7 +101,7 @@ public abstract class AbstractTemplate extends AbstractCommonManager<String, Abs
     @Override
     public AbstractComponent createEmptyManagee(String name) {
         AbstractComponent component = AbstractComponent.createEmptyComponent();
-        return this.put(name,component);
+        return this.put(name, component);
     }
 
     @Override

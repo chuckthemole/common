@@ -19,7 +19,7 @@ public class ForumThreadManagerTest {
     public static void setUpClass() {
         ForumThreadManagerTest.manager1 = ForumThreadManager.create();
         ForumThreadManagerTest.manager2 = ForumThreadManager.createWithForumThreads("ThreadOne",
-                "Thread2","Thread3");
+                "Thread2", "Thread3");
     }
 
     @AfterAll
@@ -36,11 +36,11 @@ public class ForumThreadManagerTest {
 
     @Test
     void testCreationManager1() {
-        assertEquals(manager1Size,ForumThreadManagerTest.manager1.forumMap.size());
+        assertEquals(manager1Size, ForumThreadManagerTest.manager1.forumMap.size());
     }
 
     @Test
     void testCreationManager2() {
-        assertEquals(manager2Size,ForumThreadManagerTest.manager2.forumMap.size());
+        assertEquals(manager2Size, ForumThreadManagerTest.manager2.forumMap.size());
     }
 }

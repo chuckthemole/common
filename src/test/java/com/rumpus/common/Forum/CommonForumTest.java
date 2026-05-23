@@ -66,17 +66,17 @@ public class CommonForumTest extends AbstractCommonTest {
     protected static final String body4 = "this is a cooler body 444444";
 
     protected final static List<ForumPostNode> expectedChildren = List.of(
-            ForumPostNode.createNodeFromBody("1","1body"),
-            ForumPostNode.createNodeFromBody("2","2body"),
-            ForumPostNode.createNodeFromBody("3","3body"),
-            ForumPostNode.createNodeFromBody("4","4body"),
-            ForumPostNode.createNodeFromBody("5","5body"));
+            ForumPostNode.createNodeFromBody("1", "1body"),
+            ForumPostNode.createNodeFromBody("2", "2body"),
+            ForumPostNode.createNodeFromBody("3", "3body"),
+            ForumPostNode.createNodeFromBody("4", "4body"),
+            ForumPostNode.createNodeFromBody("5", "5body"));
 
     protected static void initForumPosts() {
-        CommonForumTest.post1 = ForumPost.create(userId1,body1);
-        CommonForumTest.post2 = ForumPost.create(userId2,body2);
-        CommonForumTest.post3 = ForumPost.create(userId3,body3);
-        CommonForumTest.post4 = ForumPost.create(userId4,body4);
+        CommonForumTest.post1 = ForumPost.create(userId1, body1);
+        CommonForumTest.post2 = ForumPost.create(userId2, body2);
+        CommonForumTest.post3 = ForumPost.create(userId3, body3);
+        CommonForumTest.post4 = ForumPost.create(userId4, body4);
     }
 
     protected static void initThreads() {

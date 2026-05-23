@@ -21,7 +21,7 @@ abstract public class AbstractFailureHandler implements AuthenticationFailureHan
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
-        this.onFailure(request,response,exception);
+        this.onFailure(request, response, exception);
     }
 
 }

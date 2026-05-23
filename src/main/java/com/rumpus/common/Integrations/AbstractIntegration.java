@@ -37,7 +37,7 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
      *             if the request fails
      */
     protected String get(String url, Map<String, String> headers) throws IOException {
-        HttpURLConnection conn = createConnection(url,"GET",headers);
+        HttpURLConnection conn = createConnection(url, "GET", headers);
         return readResponse(conn);
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
      *             if the request fails
      */
     protected String post(String url, Map<String, String> headers, String body) throws IOException {
-        HttpURLConnection conn = createConnection(url,"POST",headers);
+        HttpURLConnection conn = createConnection(url, "POST", headers);
         conn.setDoOutput(true);
 
         if (body != null && !body.isEmpty()) {
@@ -71,7 +71,7 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
      * Perform an HTTP PUT request.
      */
     protected String put(String url, Map<String, String> headers, String body) throws IOException {
-        HttpURLConnection conn = createConnection(url,"PUT",headers);
+        HttpURLConnection conn = createConnection(url, "PUT", headers);
         conn.setDoOutput(true);
 
         if (body != null && !body.isEmpty()) {
@@ -87,7 +87,7 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
      * Perform an HTTP DELETE request.
      */
     protected String delete(String url, Map<String, String> headers) throws IOException {
-        HttpURLConnection conn = createConnection(url,"DELETE",headers);
+        HttpURLConnection conn = createConnection(url, "DELETE", headers);
         return readResponse(conn);
     }
 
@@ -101,7 +101,7 @@ public abstract class AbstractIntegration extends AbstractCommonObject {
         conn.setRequestMethod(method);
         conn.setConnectTimeout(CONNECT_TIMEOUT);
         conn.setReadTimeout(READ_TIMEOUT);
-        setHeaders(conn,headers);
+        setHeaders(conn, headers);
         return conn;
     }
 

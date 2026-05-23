@@ -36,7 +36,8 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
         } catch (IOException e) {
             // Set the last error message when an exception occurs
             lastError = "Error reading file at " + filePath + ": " + e.getMessage();
-            LOG_THIS("Error reading file: ",filePath,e.getClass().getSimpleName(),e.getMessage());
+            LOG_THIS("Error reading file: ", filePath, e.getClass().getSimpleName(),
+                    e.getMessage());
             return Optional.empty();
         }
     }
@@ -50,7 +51,7 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
             lastError = "";
 
             // Retrieve basic file attributes
-            BasicFileAttributes attributes = Files.readAttributes(path,BasicFileAttributes.class);
+            BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
 
             // Create a FileMetadata object
             FileMetadata metadata = FileMetadata.createFromAttributes(attributes);
@@ -76,7 +77,7 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
         } catch (SecurityException e) {
             // Set the last error message when an exception occurs
             lastError = "Error validating file at " + filePath + ": " + e.getMessage();
-            LOG_THIS("Error validating file: ",filePath,e.getClass().getSimpleName(),
+            LOG_THIS("Error validating file: ", filePath, e.getClass().getSimpleName(),
                     e.getMessage());
             return false;
         }
@@ -97,7 +98,7 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
      *            Arguments to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractFileIO.class,args);
+        ICommon.LOG(AbstractFileIO.class, args);
     }
 
     /**
@@ -109,6 +110,6 @@ abstract public class AbstractFileIO extends AbstractCommonObject implements IFi
      *            The log messages.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractFileIO.class,level,args);
+        ICommon.LOG(AbstractFileIO.class, level, args);
     }
 }

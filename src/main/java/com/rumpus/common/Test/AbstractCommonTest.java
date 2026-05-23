@@ -78,8 +78,8 @@ abstract public class AbstractCommonTest implements ICommon {
      *            The message to log
      */
     protected void LOG(String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,args).toString();
-        LOG(LogLevel.INFO,this.clazz,log);
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, args).toString();
+        LOG(LogLevel.INFO, this.clazz, log);
     }
 
     /**
@@ -91,8 +91,8 @@ abstract public class AbstractCommonTest implements ICommon {
      *            The message to log
      */
     protected void LOG(LogLevel level, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,args).toString();
-        LOG(level,this.clazz,log);
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, args).toString();
+        LOG(level, this.clazz, log);
     }
 
     /**
@@ -106,9 +106,9 @@ abstract public class AbstractCommonTest implements ICommon {
      *            The message to log
      */
     protected void LOG(LogLevel level, Class<?> clazz, String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz,message).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, message).toString();
         ICommon.LOG_COMMON.setClass(clazz);
-        ICommon.LOG_COMMON.logAtLevel(level,log);
+        ICommon.LOG_COMMON.logAtLevel(level, log);
         ICommon.LOG_COMMON.setClass(ICommon.DEFAULT_LOGGER_CLASS);
     }
 }

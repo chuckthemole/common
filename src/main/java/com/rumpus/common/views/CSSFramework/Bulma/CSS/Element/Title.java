@@ -44,7 +44,7 @@ public class Title extends AbstractBulmaElement {
 
     private Title(String body, TitleSize titleSize, TitleType titleType) {
         super(DEFAULT_HTML_TAG_TYPE, body);
-        this.init(titleSize,titleType);
+        this.init(titleSize, titleType);
     }
 
     private void init(TitleSize titleSize, TitleType titleType) {

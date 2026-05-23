@@ -22,7 +22,7 @@ public class ServerManager extends AbstractCommonManager<String, ManageableServe
                 "Creating new ManageableServerThread in map:\n",
                 server.toString()).toString();
         LOG(log);
-        return this.put(name,new ManageableServerThread(server, server));
+        return this.put(name, new ManageableServerThread(server, server));
     }
 
     public ManageableServerThread removeServer(String name) {
@@ -41,9 +41,9 @@ public class ServerManager extends AbstractCommonManager<String, ManageableServe
                 serverThread.start();
             } catch (IllegalThreadStateException e) {
                 log = LogBuilder
-                        .logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+                        .logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace())
                         .toString();
-                LOG(LogLevel.ERROR,log);
+                LOG(LogLevel.ERROR, log);
             }
         }
         log = LogBuilder.logBuilderFromStringArgs(
@@ -92,12 +92,12 @@ public class ServerManager extends AbstractCommonManager<String, ManageableServe
                     LOG(log);
                     AbstractServer server = serverThread.getManagee();
                     server.setIsRunning(false);
-                    this.put(name,new ManageableServerThread(server, server));
+                    this.put(name, new ManageableServerThread(server, server));
                 } catch (InterruptedException e) {
                     log = LogBuilder
-                            .logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+                            .logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace())
                             .toString();
-                    LOG(LogLevel.ERROR,log);
+                    LOG(LogLevel.ERROR, log);
                 }
             }
             log = LogBuilder.logBuilderFromStringArgs(

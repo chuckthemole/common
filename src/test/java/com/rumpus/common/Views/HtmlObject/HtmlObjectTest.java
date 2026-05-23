@@ -19,10 +19,10 @@ public class HtmlObjectTest extends AbstractCommonTest {
     // TODO: I STOPPED HERE. We need to test AbstractHtmlObject. Specifically,
     // addHtmlTagAttribute and other attribute helpers. I'm getting wrong results.
 
-    static final Attribute CLASS_BLOCK_ATTRIBUTE1 = Attribute.create("class","block");
-    static final Attribute CLASS_BLOCK_ATTRIBUTE2 = Attribute.create("class","block2");
-    static final Attribute ADMIN_ATTRIBUTE1 = Attribute.create("admin","true");
-    static final Attribute ADMIN_ATTRIBUTE2 = Attribute.create("admin","false");
+    static final Attribute CLASS_BLOCK_ATTRIBUTE1 = Attribute.create("class", "block");
+    static final Attribute CLASS_BLOCK_ATTRIBUTE2 = Attribute.create("class", "block2");
+    static final Attribute ADMIN_ATTRIBUTE1 = Attribute.create("admin", "true");
+    static final Attribute ADMIN_ATTRIBUTE2 = Attribute.create("admin", "false");
     HtmlTagAttributes actualHtmlTagAttributes;
     AbstractHtmlObject actualAbstractHtmlObject;
 
@@ -45,7 +45,7 @@ public class HtmlObjectTest extends AbstractCommonTest {
         this.actualHtmlTagAttributes.add(CLASS_BLOCK_ATTRIBUTE1);
         this.actualHtmlTagAttributes.add(ADMIN_ATTRIBUTE1);
         this.actualAbstractHtmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
-        LOG("Attributes after setUp:\n",this.actualHtmlTagAttributes.toString());
+        LOG("Attributes after setUp:\n", this.actualHtmlTagAttributes.toString());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class HtmlObjectTest extends AbstractCommonTest {
         // itterate through the html attributes and make sure they are all there
         for (Attribute attribute : this.actualAbstractHtmlObject.getHtmlAttributes()) {
             LOG(attribute.toString());
-            assertEquals(this.actualHtmlTagAttributes.get(attribute.getUniqueId()),attribute);
+            assertEquals(this.actualHtmlTagAttributes.get(attribute.getUniqueId()), attribute);
         }
     }
 
@@ -101,12 +101,12 @@ public class HtmlObjectTest extends AbstractCommonTest {
     @Test
     @Order(3)
     void testRemoveHtmlTagAttribute() {
-        LOG("Attributes 3:\n",this.actualHtmlTagAttributes.toString());
+        LOG("Attributes 3:\n", this.actualHtmlTagAttributes.toString());
     }
 
     @Test
     @Order(4)
     void testAddToAttribute() {
-        LOG("Attributes 3:\n",this.actualHtmlTagAttributes.toString());
+        LOG("Attributes 3:\n", this.actualHtmlTagAttributes.toString());
     }
 }

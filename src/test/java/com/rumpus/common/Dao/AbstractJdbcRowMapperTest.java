@@ -65,11 +65,11 @@ public class AbstractJdbcRowMapperTest extends AbstractCommonTest {
         when(resultSet.getString(ICommon.USERNAME)).thenReturn(TEST_USERNAME);
 
         // Call the mapRow method
-        TestUserModel model = jdbcRowMapper.mapRow(resultSet,1);
+        TestUserModel model = jdbcRowMapper.mapRow(resultSet, 1);
 
         // Verify the result
         assertNotNull(model);
-        assertEquals(TEST_USERNAME,model.getUsername());
+        assertEquals(TEST_USERNAME, model.getUsername());
 
         // Verify interactions with the mocked ResultSet
         verify(resultSet).getString(ICommon.USERNAME);
@@ -81,7 +81,7 @@ public class AbstractJdbcRowMapperTest extends AbstractCommonTest {
         jdbcRowMapper.setMapFunc(null);
 
         // Call the mapRow method, should return null since map function is null
-        TestUserModel model = jdbcRowMapper.mapRow(resultSet,1);
+        TestUserModel model = jdbcRowMapper.mapRow(resultSet, 1);
         assertNull(model);
     }
 }

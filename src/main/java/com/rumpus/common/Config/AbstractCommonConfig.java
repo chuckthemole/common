@@ -187,7 +187,7 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
         } catch (IllegalArgumentException e) {
             sqlDialect = SQLDialect.DEFAULT;
         }
-        return DSL.using(this.dataSource(),sqlDialect);
+        return DSL.using(this.dataSource(), sqlDialect);
     }
 
     @Bean
@@ -253,10 +253,10 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
                 .getProperty(AbstractCommonConfig.S3_SECRET_ACCESS_KEY_PROPERTY);
         final String region = this.environment.getProperty(AbstractCommonConfig.S3_REGION_PROPERTY);
 
-        IAwsS3BucketProperties awsS3Bucket = AwsS3BucketProperties.create(bucketName,accessKey,
+        IAwsS3BucketProperties awsS3Bucket = AwsS3BucketProperties.create(bucketName, accessKey,
                 secretAccessKey,
                 region);
-        LOG("Created AwsS3Bucket bean with name: ",awsS3Bucket.getBucketName());
+        LOG("Created AwsS3Bucket bean with name: ", awsS3Bucket.getBucketName());
         return awsS3Bucket;
     }
 

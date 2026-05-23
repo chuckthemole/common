@@ -18,7 +18,7 @@ public class SerializerRegistry extends AbstractCommonManager<Class<?>, ICommonS
     @Override
     public <OBJECT extends AbstractCommonObject> void registerSerializer(Class<OBJECT> clazz,
             ICommonSerializer<OBJECT> serializer) {
-        this.put(clazz,serializer);
+        this.put(clazz, serializer);
     }
 
     @Override

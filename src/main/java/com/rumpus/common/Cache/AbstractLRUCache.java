@@ -27,7 +27,7 @@ abstract public class AbstractLRUCache<KEY,
 
     @Override
     public boolean put(KEY key, VALUE value) {
-        return this.linkedHashMap.put(key,value) != null;
+        return this.linkedHashMap.put(key, value) != null;
     }
 
     @Override
@@ -73,11 +73,11 @@ abstract public class AbstractLRUCache<KEY,
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractLRUCache.class,args);
+        com.rumpus.common.ICommon.LOG(AbstractLRUCache.class, args);
     }
 
     private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level,
             String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractLRUCache.class,level,args);
+        com.rumpus.common.ICommon.LOG(AbstractLRUCache.class, level, args);
     }
 }

@@ -20,9 +20,9 @@ public abstract class AbstractAuthenticationEntryPoint implements Authentication
             AuthenticationException authException) throws IOException {
         // Delegates to handle specific exception types
         if (authException != null) {
-            handleAuthException(request,response,authException);
+            handleAuthException(request, response, authException);
         } else {
-            handleGenericException(request,response);
+            handleGenericException(request, response);
         }
     }
 
@@ -39,6 +39,6 @@ public abstract class AbstractAuthenticationEntryPoint implements Authentication
     protected void handleGenericException(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         LOG.warning("Unauthorized access attempt detected: " + request.getRequestURI());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized: Access is denied.");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Access is denied.");
     }
 }

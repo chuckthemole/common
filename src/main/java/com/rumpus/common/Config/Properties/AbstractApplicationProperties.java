@@ -32,7 +32,7 @@ abstract public class AbstractApplicationProperties extends AbstractCommonObject
 
     @Override
     public String getProperty(String key, String defaultValue) {
-        return this.properties.getOrDefault(key,defaultValue);
+        return this.properties.getOrDefault(key, defaultValue);
     }
 
     @Override

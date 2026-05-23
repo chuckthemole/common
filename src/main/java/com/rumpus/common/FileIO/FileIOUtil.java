@@ -24,7 +24,8 @@ final public class FileIOUtil {
             return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException | OutOfMemoryError | SecurityException e) {
             // Log error with the appropriate level and exception message.
-            LOG_THIS("Error reading file: ",filePath,e.getClass().getSimpleName(),e.getMessage());
+            LOG_THIS("Error reading file: ", filePath, e.getClass().getSimpleName(),
+                    e.getMessage());
         }
         return "";
     }
@@ -36,7 +37,7 @@ final public class FileIOUtil {
      *            Arguments to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(FileIOUtil.class,args);
+        ICommon.LOG(FileIOUtil.class, args);
     }
 
     /**
@@ -48,6 +49,6 @@ final public class FileIOUtil {
      *            The log messages.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(FileIOUtil.class,level,args);
+        ICommon.LOG(FileIOUtil.class, level, args);
     }
 }

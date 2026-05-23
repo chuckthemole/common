@@ -39,11 +39,11 @@ abstract public class AbstractServerSocket extends AbstractCommonObject {
             if (CLIENT_GREETING.equals(greeting)) {
                 this.out.println(SERVER_GREETING);
             } else {
-                LOG(LogLevel.ERROR,"Client did not greet server properly");
+                LOG(LogLevel.ERROR, "Client did not greet server properly");
                 return false;
             }
         } catch (IOException e) {
-            LOG(LogLevel.ERROR,e.getMessage());
+            LOG(LogLevel.ERROR, e.getMessage());
             return false;
         }
         return true;
@@ -56,7 +56,7 @@ abstract public class AbstractServerSocket extends AbstractCommonObject {
             this.clientSocket.close();
             this.serverSocket.close();
         } catch (IOException e) {
-            LOG(LogLevel.ERROR,e.getMessage());
+            LOG(LogLevel.ERROR, e.getMessage());
             return false;
         }
         return true;

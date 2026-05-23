@@ -144,14 +144,14 @@ public class NotionIntegrationEntry {
             return false;
         NotionIntegrationEntry that = (NotionIntegrationEntry) o;
         return active == that.active &&
-                Objects.equals(name,that.name) &&
+                Objects.equals(name, that.name) &&
                 type == that.type &&
-                Objects.equals(notionId,that.notionId) &&
-                Objects.equals(description,that.description);
+                Objects.equals(notionId, that.notionId) &&
+                Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name,type,notionId,description,active);
+        return Objects.hash(name, type, notionId, description, active);
     }
 }

@@ -73,7 +73,7 @@ public abstract class AbstractCommonManager<KEY,
 
     @Override
     public MANAGEE put(KEY key, MANAGEE value) {
-        return this.manageeMap.put(key,value);
+        return this.manageeMap.put(key, value);
     }
 
     @Override

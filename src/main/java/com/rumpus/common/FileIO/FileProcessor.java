@@ -40,6 +40,6 @@ final public class FileProcessor {
      */
     public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> processFile(String filePath,
             Type type) {
-        return fileReader.readModelsFromFile(filePath,type);
+        return fileReader.readModelsFromFile(filePath, type);
     }
 }

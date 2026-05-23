@@ -34,7 +34,7 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
     @Override
     public ICommonLogger put(String key, ICommonLogger value) {
         if (!this.containsKey(key)) {
-            return super.put(key,value);
+            return super.put(key, value);
         }
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(
                 "This logger manager already contains the key: '",
@@ -50,7 +50,7 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
     @Override
     public void putAll(java.util.Map<? extends String, ? extends ICommonLogger> m) {
         for (java.util.Map.Entry<? extends String, ? extends ICommonLogger> entry : m.entrySet()) {
-            this.put(entry.getKey(),entry.getValue());
+            this.put(entry.getKey(), entry.getValue());
         }
     }
 
@@ -62,7 +62,7 @@ public class CommonLoggerManager extends AbstractCommonManager<String, ICommonLo
     @Override
     public ICommonLogger createEmptyManagee(String name) {
         ICommonLogger logger = JavaLogger.createEmptyLogger();
-        this.put(name,logger);
+        this.put(name, logger);
         return logger;
     }
 

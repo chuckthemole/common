@@ -71,7 +71,7 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
             String name = entry.getKey();
             NotionIntegrationEntry notionEntry = entry.getValue();
             final String id = notionEntry != null ? notionEntry.getNotionId() : "null";
-            LOG(" - Entry:",name,"Notion ID:",id,"Object:",notionEntry.toString());
+            LOG(" - Entry:", name, "Notion ID:", id, "Object:", notionEntry.toString());
         }
         LOG("debugNotionRegistry() -> Registry listing complete. Total entries:",
                 String.valueOf(entries.size()));
@@ -96,8 +96,8 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
         for (Map.Entry<String, NotionIntegration> entry : notionMap.entrySet()) {
             String key = entry.getKey();
             NotionIntegration notion = entry.getValue();
-            LOG(" - Integration key:",key,
-                    "Object:",notion != null ? notion.toString() : "null");
+            LOG(" - Integration key:", key,
+                    "Object:", notion != null ? notion.toString() : "null");
         }
         LOG("debugNotionMap() -> Integration listing complete. Total integrations:",
                 String.valueOf(notionMap.size()));
@@ -165,8 +165,8 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
             @RequestParam(required = false, name = "excludeNames")
             String excludeNames) {
 
-        LOG("getUsers() -> called with integrationKey:",integrationKey,
-                "include:",include,"exclude:",exclude,"excludeNames:",excludeNames);
+        LOG("getUsers() -> called with integrationKey:", integrationKey,
+                "include:", include, "exclude:", exclude, "excludeNames:", excludeNames);
 
         // Parse optional CSV parameters into lists
         List<String> includeFields = StringUtil.parseCsv(include);
@@ -174,11 +174,11 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
         List<String> excludedNames = StringUtil.parseCsv(excludeNames);
 
         // Delegate API handling to a common request wrapper
-        return handleRequest(integrationKey,notion -> {
-            LOG("getUsers() -> Fetching users for integrationKey:",integrationKey);
+        return handleRequest(integrationKey, notion -> {
+            LOG("getUsers() -> Fetching users for integrationKey:", integrationKey);
             String response = notion.listUsers();
-            LOG("getUsers() -> Successfully fetched users for integrationKey:",integrationKey);
-            LOG("getUsers() -> Got raw response length:",String.valueOf(response.length()));
+            LOG("getUsers() -> Successfully fetched users for integrationKey:", integrationKey);
+            LOG("getUsers() -> Got raw response length:", String.valueOf(response.length()));
 
             // If no filters are specified, return the unmodified JSON from Notion
             if (includeFields.isEmpty() && excludeFields.isEmpty() && excludedNames.isEmpty()) {
@@ -190,7 +190,7 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
                     response,
                     includeFields,
                     excludeFields,
-                    Map.of("name",excludedNames));
+                    Map.of("name", excludedNames));
         });
     }
 
@@ -207,14 +207,14 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
 
         LOG("AbstractNotionIntegrationController::getDatabase() -> called with integrationKey:",
                 integrationKey,
-                "name:",name);
+                "name:", name);
 
-        return handleRequest(integrationKey,notion -> {
-            LOG("getDatabase() -> Fetching databaseId from notionRegistry for name:",name);
+        return handleRequest(integrationKey, notion -> {
+            LOG("getDatabase() -> Fetching databaseId from notionRegistry for name:", name);
             String databaseId = getNotionIdSafely(name);
-            LOG("getDatabase() -> Querying database with ID:",databaseId);
+            LOG("getDatabase() -> Querying database with ID:", databaseId);
             String response = notion.queryDatabase(databaseId);
-            LOG("getDatabase() -> Query successful for database:",name);
+            LOG("getDatabase() -> Query successful for database:", name);
             return response;
         });
     }
@@ -230,16 +230,16 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
 
         LOG("AbstractNotionIntegrationController::createPage() -> called with integrationKey:",
                 integrationKey,
-                "database name:",name);
+                "database name:", name);
         LOG("createPage() -> Payload length:",
                 String.valueOf(jsonBody != null ? jsonBody.length() : 0));
 
-        return handleRequest(integrationKey,notion -> {
-            LOG("createPage() -> Fetching databaseId from notionRegistry for name:",name);
+        return handleRequest(integrationKey, notion -> {
+            LOG("createPage() -> Fetching databaseId from notionRegistry for name:", name);
             String databaseId = getNotionIdSafely(name);
-            LOG("createPage() -> Creating page in databaseId:",databaseId);
-            String response = notion.createPage(databaseId,jsonBody);
-            LOG("createPage() -> Page creation successful for database:",name);
+            LOG("createPage() -> Creating page in databaseId:", databaseId);
+            String response = notion.createPage(databaseId, jsonBody);
+            LOG("createPage() -> Page creation successful for database:", name);
             return response;
         });
     }
@@ -255,16 +255,16 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
 
         LOG("AbstractNotionIntegrationController::updatePage() -> called with integrationKey:",
                 integrationKey,
-                "page name:",name);
+                "page name:", name);
         LOG("updatePage() -> Payload length:",
                 String.valueOf(jsonBody != null ? jsonBody.length() : 0));
 
-        return handleRequest(integrationKey,notion -> {
-            LOG("updatePage() -> Fetching pageId from notionRegistry for name:",name);
+        return handleRequest(integrationKey, notion -> {
+            LOG("updatePage() -> Fetching pageId from notionRegistry for name:", name);
             String pageId = getNotionIdSafely(name);
-            LOG("updatePage() -> Updating pageId:",pageId);
-            String response = notion.updatePage(pageId,jsonBody);
-            LOG("updatePage() -> Update successful for page:",name);
+            LOG("updatePage() -> Updating pageId:", pageId);
+            String response = notion.updatePage(pageId, jsonBody);
+            LOG("updatePage() -> Update successful for page:", name);
             return response;
         });
     }
@@ -278,14 +278,14 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
 
         LOG("AbstractNotionIntegrationController::deletePage() -> called with integrationKey:",
                 integrationKey,
-                "page name:",name);
+                "page name:", name);
 
-        return handleRequest(integrationKey,notion -> {
-            LOG("deletePage() -> Fetching pageId from notionRegistry for name:",name);
+        return handleRequest(integrationKey, notion -> {
+            LOG("deletePage() -> Fetching pageId from notionRegistry for name:", name);
             String pageId = getNotionIdSafely(name);
-            LOG("deletePage() -> Archiving (deleting) pageId:",pageId);
+            LOG("deletePage() -> Archiving (deleting) pageId:", pageId);
             String response = notion.deletePage(pageId);
-            LOG("deletePage() -> Delete successful for page:",name);
+            LOG("deletePage() -> Delete successful for page:", name);
             return response;
         });
     }
@@ -302,45 +302,45 @@ public abstract class AbstractNotionIntegrationController extends AbstractCommon
 
         final NotionIntegrationEntry notionEntry = notionRegistry.get(name);
         if (notionEntry == null) {
-            LOG("getNotionIdSafely() -> ERROR: No registry entry found for name:",name);
+            LOG("getNotionIdSafely() -> ERROR: No registry entry found for name:", name);
             throw new IllegalArgumentException("No Notion registry entry for name: " + name);
         }
 
         String id = notionEntry.getNotionId();
-        LOG("getNotionIdSafely() -> Found Notion ID for name:",name,"id:",id);
+        LOG("getNotionIdSafely() -> Found Notion ID for name:", name, "id:", id);
         return id;
     }
 
     protected NotionIntegration getNotionIntegration(String key) {
-        LOG("getNotionIntegration() -> Fetching integration with key:",key);
+        LOG("getNotionIntegration() -> Fetching integration with key:", key);
         NotionIntegration notion = notionMap.get(key);
         if (notion == null) {
-            LOG("getNotionIntegration() -> WARNING: No NotionIntegration found for key:",key);
+            LOG("getNotionIntegration() -> WARNING: No NotionIntegration found for key:", key);
         } else {
-            LOG("getNotionIntegration() -> Found NotionIntegration for key:",key);
+            LOG("getNotionIntegration() -> Found NotionIntegration for key:", key);
         }
         return notion;
     }
 
     private ResponseEntity<String> handleRequest(String integrationKey, NotionOperation operation) {
-        LOG("handleRequest() -> Starting request for integrationKey:",integrationKey);
+        LOG("handleRequest() -> Starting request for integrationKey:", integrationKey);
 
         NotionIntegration notion = notionMap.get(integrationKey);
         if (notion == null) {
-            LOG("handleRequest() -> ERROR: No NotionIntegration found for key:",integrationKey);
+            LOG("handleRequest() -> ERROR: No NotionIntegration found for key:", integrationKey);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No Notion integration found for key: " + integrationKey);
         }
 
         try {
-            LOG("handleRequest() -> Executing operation for key:",integrationKey);
+            LOG("handleRequest() -> Executing operation for key:", integrationKey);
             String result = operation.execute(notion);
-            LOG("handleRequest() -> Operation successful for key:",integrationKey);
+            LOG("handleRequest() -> Operation successful for key:", integrationKey);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
-            LOG("handleRequest() -> ERROR during Notion API call for key:",integrationKey,
-                    "Exception type:",e.getClass().getSimpleName(),
-                    "Message:",e.getMessage());
+            LOG("handleRequest() -> ERROR during Notion API call for key:", integrationKey,
+                    "Exception type:", e.getClass().getSimpleName(),
+                    "Message:", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error calling Notion API: " + e.getMessage());
         }

@@ -51,7 +51,7 @@ public class ComponentTest extends AbstractCommonTest {
                 .createAsideEmbeddedList(); // TODO: this isn't testing anything rn..
         this.actualAbstractHtmlObject = AbstractAside.AbstractAsideComponentPart
                 .createAsideEmbeddedList();
-        assertEquals(expectedAbstractHtmlObject,actualAbstractHtmlObject);
+        assertEquals(expectedAbstractHtmlObject, actualAbstractHtmlObject);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class ComponentTest extends AbstractCommonTest {
         String asideGroups1 = "group1, group1-item1, group1-item2,group-delimiter,group2, group2-item1, group2-item2";
         // Map<String, List<AbstractHtmlObject>> expectedGroups = Map.of("group1",
         // "item1, item2", "group2", "item1, item2");
-        AbstractHtmlObject actualGroups1 = BulmaAside.create("Test3AsideActual1",asideGroups1);
+        AbstractHtmlObject actualGroups1 = BulmaAside.create("Test3AsideActual1", asideGroups1);
 
         LOG("- - testCreateGroupsFromStrings 2 - - ");
         StringBuilder stringBuilder = new StringBuilder();
@@ -79,7 +79,7 @@ public class ComponentTest extends AbstractCommonTest {
         stringBuilder.append(AbstractAside.GROUP_DELIMITER);
         stringBuilder.append("group2, group2-item1, group2-item2");
         String asideGroups2 = stringBuilder.toString();
-        AbstractHtmlObject actualGroups2 = BulmaAside.create("Test3AsideActual2",asideGroups2);
+        AbstractHtmlObject actualGroups2 = BulmaAside.create("Test3AsideActual2", asideGroups2);
     }
 
     @Test

@@ -160,7 +160,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      * @return a list of objects mapped from the SQL query results.
      */
     protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
-        return this.jdbcTemplate.query(sql,rowMapper,args);
+        return this.jdbcTemplate.query(sql, rowMapper, args);
     }
 
     /**
@@ -178,7 +178,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      * @return a single object mapped from the SQL query results.
      */
     protected <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) {
-        return this.jdbcTemplate.queryForObject(sql,rowMapper,args);
+        return this.jdbcTemplate.queryForObject(sql, rowMapper, args);
     }
 
     /**
@@ -191,7 +191,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      * @return the number of rows affected by the update.
      */
     protected int update(String sql, Object... args) {
-        return this.jdbcTemplate.update(sql,args);
+        return this.jdbcTemplate.update(sql, args);
     }
 
     /**
@@ -205,7 +205,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      * @return the number of rows affected by the update.
      */
     protected int update(PreparedStatementCreator preparedStatementCreator, KeyHolder keyHolder) {
-        return this.jdbcTemplate.update(preparedStatementCreator,keyHolder);
+        return this.jdbcTemplate.update(preparedStatementCreator, keyHolder);
     }
 
     /******************************************************************************
@@ -217,7 +217,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      *****************************************************************************/
 
     protected <T> T execute(String sql, Map<String, ?> paramMap, PreparedStatementCallback<T> psc) {
-        return this.namedParameterJdbcTemplate.execute(sql,paramMap,psc);
+        return this.namedParameterJdbcTemplate.execute(sql, paramMap, psc);
     }
 
     /******************************************************************************
@@ -238,7 +238,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      * @return the number of rows affected
      */
     protected int simpleInsert(final String table, Map<String, ?> parameters) {
-        return CommonSimpleJdbc.simpleInsert(table,parameters);
+        return CommonSimpleJdbc.simpleInsert(table, parameters);
     }
 
     /**

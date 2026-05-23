@@ -37,7 +37,7 @@ public class ComponentAttributeManager extends AbstractCommonManager<String, Htm
         ComponentAttributeManager attributeManager = new ComponentAttributeManager(false);
         for (java.util.Map.Entry<String, String> entry : attributesMap.entrySet()) {
             attributeManager.put(entry.getKey(),
-                    HtmlTagAttributes.createFromString(entry.getValue(),",","="," "));
+                    HtmlTagAttributes.createFromString(entry.getValue(), ",", "=", " "));
         }
         return attributeManager;
     }
@@ -47,7 +47,7 @@ public class ComponentAttributeManager extends AbstractCommonManager<String, Htm
         for (java.util.Map.Entry<String, HtmlTagAttributes> entry : this.entrySet()) {
             HtmlTagAttributes attribute = entry.getValue();
             if (attribute != null) {
-                attributes.put(entry.getKey(),attribute.getAttributesAsString());
+                attributes.put(entry.getKey(), attribute.getAttributesAsString());
             }
         }
         return attributes;
@@ -61,7 +61,7 @@ public class ComponentAttributeManager extends AbstractCommonManager<String, Htm
     @Override
     public HtmlTagAttributes createEmptyManagee(String name) {
         HtmlTagAttributes htmlTagAttributes = HtmlTagAttributes.createEmpty();
-        this.put(name,htmlTagAttributes);
+        this.put(name, htmlTagAttributes);
         return htmlTagAttributes;
     }
 

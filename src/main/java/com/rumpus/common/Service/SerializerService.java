@@ -41,7 +41,7 @@ final public class SerializerService extends AbstractCommonObject implements ISe
     @Override
     public <MODEL extends AbstractModel<MODEL, ?>> void setSerializer(Class<MODEL> clazz,
             ICommonSerializer<MODEL> serializer) {
-        this.serializerRegistry.<MODEL>registerSerializer(clazz,serializer);
+        this.serializerRegistry.<MODEL>registerSerializer(clazz, serializer);
     }
 
     @Override
@@ -52,7 +52,7 @@ final public class SerializerService extends AbstractCommonObject implements ISe
         final Optional<ICommonSerializer<MODEL>> serializer = this.getSerializer(clazz);
         if (serializer.isPresent()) {
             try {
-                serializer.get().serialize(model,stream);
+                serializer.get().serialize(model, stream);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -87,7 +87,7 @@ final public class SerializerService extends AbstractCommonObject implements ISe
         final Class<MODEL> clazz = (Class<MODEL>) model.getClass();
         final Optional<ICommonSerializer<MODEL>> serializer = this.getSerializer(clazz);
         if (serializer.isPresent()) {
-            return serializer.get().serializeToString(model,charset);
+            return serializer.get().serializeToString(model, charset);
         } else {
             throw new RuntimeException("No serializer found for class: " + clazz.getName());
         }

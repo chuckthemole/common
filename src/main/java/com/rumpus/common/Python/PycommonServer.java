@@ -93,8 +93,8 @@ public class PycommonServer extends AbstractServer {
                 FileUtil.getCurrentWorkingDirectory()).toString();
         LOG(log);
         if (FileUtil.doesPathExist(DJANGO_START_PATH) == DOES_NOT_EXIST) {
-            LOG("Working Directory = ",System.getProperty("user.dir"));
-            LOG(LogLevel.ERROR,"Django bash script does not exist: ",DJANGO_START_PATH);
+            LOG("Working Directory = ", System.getProperty("user.dir"));
+            LOG(LogLevel.ERROR, "Django bash script does not exist: ", DJANGO_START_PATH);
             return false;
         }
         ProcessBuilder processBuilder = new ProcessBuilder(DJANGO_START_PATH);
@@ -119,8 +119,8 @@ public class PycommonServer extends AbstractServer {
             // LOG("runWithBashScript process has stopped.");
             // }
         } catch (IOException e) {
-            LOG(LogLevel.ERROR,"Could not start process: " + processBuilder.toString());
-            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+            LOG(LogLevel.ERROR, "Could not start process: " + processBuilder.toString());
+            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace())
                     .toString();
             LOG(log);
             return false;
@@ -164,7 +164,7 @@ public class PycommonServer extends AbstractServer {
         LOG(log);
         if (FileUtil.doesPathExist(DJANGO_STOP_PATH) == DOES_NOT_EXIST) {
             LOG("Working Directory = " + System.getProperty("user.dir"));
-            LOG(LogLevel.ERROR,"Django bash script does not exist: " + DJANGO_STOP_PATH);
+            LOG(LogLevel.ERROR, "Django bash script does not exist: " + DJANGO_STOP_PATH);
             return false;
         }
         ProcessBuilder processBuilder = new ProcessBuilder(DJANGO_STOP_PATH);
@@ -195,17 +195,17 @@ public class PycommonServer extends AbstractServer {
                     process.getOutputStream().toString()).toString();
             LOG(log);
         } catch (IOException e) {
-            LOG(LogLevel.ERROR,"Could not start process: ",processBuilder.toString());
+            LOG(LogLevel.ERROR, "Could not start process: ", processBuilder.toString());
             log = LogBuilder.logBuilderFromStackTraceElementArray(
                     e.getMessage(),
                     e.getStackTrace()).toString();
             LOG(log);
             return false;
         } catch (InterruptedException e) {
-            LOG(LogLevel.ERROR,"Could not start process: ",processBuilder.toString());
-            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+            LOG(LogLevel.ERROR, "Could not start process: ", processBuilder.toString());
+            log = LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace())
                     .toString();
-            LOG(LogLevel.ERROR,log);
+            LOG(LogLevel.ERROR, log);
             return false;
         }
         return true;

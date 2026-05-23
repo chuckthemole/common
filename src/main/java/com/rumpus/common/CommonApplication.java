@@ -50,14 +50,14 @@ abstract public class CommonApplication implements WebMvcConfigurer {
         final org.springframework.core.env.MutablePropertySources sources = ((org.springframework.core.env.AbstractEnvironment) environment)
                 .getPropertySources();
 
-        java.util.stream.StreamSupport.stream(sources.spliterator(),false)
+        java.util.stream.StreamSupport.stream(sources.spliterator(), false)
                 .filter(propertySource -> propertySource instanceof org.springframework.core.env.EnumerablePropertySource)
                 .map(propertySource -> ((org.springframework.core.env.EnumerablePropertySource) propertySource)
                         .getPropertyNames())
                 .flatMap(java.util.Arrays::stream)
                 .distinct()
                 .filter(prop -> !(prop.contains("credentials") || prop.contains("password")))
-                .forEach(prop -> LOGGER.info("{}: {}",prop,environment.getProperty(prop)));
+                .forEach(prop -> LOGGER.info("{}: {}", prop, environment.getProperty(prop)));
     }
 
     // Added to serve static images from /WEB-INF/images
@@ -69,6 +69,6 @@ abstract public class CommonApplication implements WebMvcConfigurer {
                 .addResourceLocations("/WEB-INF/images/") // should I add static in resources here,
                                                           // too?
                 .setCacheControl(
-                        CacheControl.maxAge(2,java.util.concurrent.TimeUnit.HOURS).cachePublic());
+                        CacheControl.maxAge(2, java.util.concurrent.TimeUnit.HOURS).cachePublic());
     }
 }

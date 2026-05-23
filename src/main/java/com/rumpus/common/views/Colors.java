@@ -33,7 +33,7 @@ public class Colors {
 
     @JsonAnySetter
     public void setColor(String key, String value) {
-        this.colors.put(key,value);
+        this.colors.put(key, value);
     }
 
     public void setColors(Map<String, String> colors) {

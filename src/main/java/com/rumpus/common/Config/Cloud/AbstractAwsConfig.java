@@ -36,7 +36,7 @@ abstract public class AbstractAwsConfig {
                 .credentialsProvider(
                         StaticCredentialsProvider.create(
                                 AwsBasicCredentials.create(
-                                        this.s3AccessKey,this.s3SecretKey)))
+                                        this.s3AccessKey, this.s3SecretKey)))
                 .build();
     }
 

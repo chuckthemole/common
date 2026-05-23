@@ -78,7 +78,7 @@ public abstract class AbstractApiDBJdbc<
         LOG_THIS(sql);
 
         // execute the query, returning the result
-        return this.jdbc.query(sql,this.mapper);
+        return this.jdbc.query(sql, this.mapper);
     }
 
     @Override
@@ -100,7 +100,7 @@ public abstract class AbstractApiDBJdbc<
         LOG_THIS(sql);
 
         // execute the query, returning the result
-        return this.jdbc.query(sql,this.mapper);
+        return this.jdbc.query(sql, this.mapper);
     }
 
     @Override
@@ -140,7 +140,7 @@ public abstract class AbstractApiDBJdbc<
         final String sql = query.getSQL(paramType);
         LOG_THIS(sql);
 
-        return this.jdbc.query(sql,this.mapper);
+        return this.jdbc.query(sql, this.mapper);
     }
 
     @Override
@@ -153,8 +153,8 @@ public abstract class AbstractApiDBJdbc<
                 return ps.executeUpdate();
             }
         };
-        this.jdbc.execute(sqlInsertStatement,modelMap,ps); // TODO: should I return the result of
-                                                           // this?
+        this.jdbc.execute(sqlInsertStatement, modelMap, ps); // TODO: should I return the result of
+                                                             // this?
     }
 
     @Override
@@ -163,8 +163,8 @@ public abstract class AbstractApiDBJdbc<
                                                            // to do with it. Keeping as member
                                                            // variable in Model. - chuck
         this.jdbc.update((Connection conn) -> {
-            return conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-        },keyHolder);
+            return conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        }, keyHolder);
 
         // TODO:i don't think we need to get the key here.
         // if(keyHolder.getKey() != null) {
@@ -188,23 +188,23 @@ public abstract class AbstractApiDBJdbc<
         // return model;
 
         LOG_THIS("onSimpleInsert()");
-        final int rowsAffected = this.jdbc.simpleInsert(this.getTable(),parameters);
-        LOG_THIS("Rows affected: ",String.valueOf(rowsAffected));
+        final int rowsAffected = this.jdbc.simpleInsert(this.getTable(), parameters);
+        LOG_THIS("Rows affected: ", String.valueOf(rowsAffected));
         return model;
     }
 
     public Map<String, ?> onSelectById(String id) {
         LOG_THIS("onSelectById()");
-        return this.jdbc.simpleExecuteCall(Map.of(GET_USER_BY_ID,id));
+        return this.jdbc.simpleExecuteCall(Map.of(GET_USER_BY_ID, id));
     }
 
     @Override
     public MODEL onGet(final String sql) {
         LOG_THIS("onGet()");
         try {
-            return this.jdbc.queryForObject(sql,this.mapper);
+            return this.jdbc.queryForObject(sql, this.mapper);
         } catch (DataAccessException e) {
-            LOG_THIS("onGet() DataAccessException: ",e.getMessage());
+            LOG_THIS("onGet() DataAccessException: ", e.getMessage());
         }
         return null;
     }
@@ -212,12 +212,12 @@ public abstract class AbstractApiDBJdbc<
     @Override
     public MODEL onGet(final String sql, final String name) {
         LOG_THIS("onGet()");
-        return this.jdbc.queryForObject(sql,this.mapper,name);
+        return this.jdbc.queryForObject(sql, this.mapper, name);
     }
 
     protected int onUpdate(final String sql, final Object... objects) {
         LOG_THIS("onUpdate()");
-        return this.jdbc.update(sql,objects);
+        return this.jdbc.update(sql, objects);
     }
 
     @Override
@@ -227,10 +227,10 @@ public abstract class AbstractApiDBJdbc<
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractApiDBJdbc.class,args);
+        ICommon.LOG(AbstractApiDBJdbc.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractApiDBJdbc.class,level,args);
+        ICommon.LOG(AbstractApiDBJdbc.class, level, args);
     }
 }

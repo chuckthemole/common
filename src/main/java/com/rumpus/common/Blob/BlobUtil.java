@@ -48,14 +48,14 @@ final public class BlobUtil implements ICommon {
         LOG_THIS("Attempting to deserialize Blob into META object.");
 
         if (blob == null) {
-            LOG_THIS(LogLevel.ERROR,"Blob is null. Returning empty Optional.");
+            LOG_THIS(LogLevel.ERROR, "Blob is null. Returning empty Optional.");
             // return an Optional with an empty Blob object
             return Optional.empty();
         }
 
         try {
             if (blob.length() == 0) {
-                LOG_THIS(LogLevel.ERROR,"Blob length is 0. Returning empty Optional.");
+                LOG_THIS(LogLevel.ERROR, "Blob length is 0. Returning empty Optional.");
                 return Optional.empty();
             }
 
@@ -80,7 +80,7 @@ final public class BlobUtil implements ICommon {
     public static Optional<ObjectInputStream> getObjectInputStream(Blob blob) {
         try {
             if (blob == null || blob.length() == 0) {
-                LOG_THIS(LogLevel.ERROR,"Blob length is 0. Returning empty Optional.");
+                LOG_THIS(LogLevel.ERROR, "Blob length is 0. Returning empty Optional.");
                 return Optional.empty();
             }
 
@@ -126,7 +126,7 @@ final public class BlobUtil implements ICommon {
      *            The message to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(BlobUtil.class,args);
+        ICommon.LOG(BlobUtil.class, args);
     }
 
     /**
@@ -138,6 +138,6 @@ final public class BlobUtil implements ICommon {
      *            The message to log.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(BlobUtil.class,level,args);
+        ICommon.LOG(BlobUtil.class, level, args);
     }
 }

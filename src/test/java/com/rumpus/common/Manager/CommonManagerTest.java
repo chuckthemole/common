@@ -46,11 +46,11 @@ public class CommonManagerTest extends com.rumpus.common.AbstractCommonTest {
                 .createEmpty();
         AbstractCommonManagerIdKey<com.rumpus.common.views.Html.Attribute> manager2 = com.rumpus.common.views.Html.HtmlTagAttributes
                 .createEmpty();
-        manager1.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("class","block"));
-        manager1.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("admin","true"));
-        manager2.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("class","block"));
-        manager2.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("admin","true"));
-        assertEquals(manager1,manager2);
+        manager1.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("class", "block"));
+        manager1.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("admin", "true"));
+        manager2.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("class", "block"));
+        manager2.addThenReturnId(com.rumpus.common.views.Html.Attribute.create("admin", "true"));
+        assertEquals(manager1, manager2);
     }
 
     @Test
@@ -58,8 +58,8 @@ public class CommonManagerTest extends com.rumpus.common.AbstractCommonTest {
     void testTODO1() {
         com.rumpus.common.views.Html.HtmlTagAttributes htmlTagAttributes = com.rumpus.common.views.Html.HtmlTagAttributes
                 .createEmpty();
-        htmlTagAttributes.add(com.rumpus.common.views.Html.Attribute.create("class","block"));
-        htmlTagAttributes.add(com.rumpus.common.views.Html.Attribute.create("admin","true"));
+        htmlTagAttributes.add(com.rumpus.common.views.Html.Attribute.create("class", "block"));
+        htmlTagAttributes.add(com.rumpus.common.views.Html.Attribute.create("admin", "true"));
         assertTrue(htmlTagAttributes.containsAttributeProperty("class"));
         assertTrue(htmlTagAttributes.containsAttributeProperty(
                 com.rumpus.common.views.Html.Attribute.AttributeProperty.CLASS));

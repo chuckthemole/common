@@ -14,7 +14,7 @@ public abstract class AbstractSetItem extends com.rumpus.common.AbstractCommonOb
     @Override
     public void setUniqueId(String id) {
         if (id == null) {
-            LOG_THIS("Failed to set unique id: ",id);
+            LOG_THIS("Failed to set unique id: ", id);
             return;
         }
         this.uniqueId = id;
@@ -31,7 +31,7 @@ public abstract class AbstractSetItem extends com.rumpus.common.AbstractCommonOb
     }
 
     private void LOG_THIS(String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractSetItem.class,args)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(AbstractSetItem.class, args)
                 .toString();
         LOG(log);
     }

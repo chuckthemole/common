@@ -91,7 +91,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
         if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
-        return this.blob.getBytes(pos,length);
+        return this.blob.getBytes(pos, length);
     }
 
     @Override
@@ -109,13 +109,13 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
         }
         try {
             // Attempt to use the driver's implementation
-            return this.blob.position(pattern,start);
+            return this.blob.position(pattern, start);
         } catch (SQLFeatureNotSupportedException e) {
             LOG(LogLevel.ERROR,
                     "Driver does not support position() for byte array. Using custom implementation.");
 
             // Fallback to custom implementation
-            return positionFallback(pattern,start);
+            return positionFallback(pattern, start);
         }
     }
 
@@ -126,14 +126,14 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
         }
         try {
             // Attempt to use the driver's implementation
-            return this.blob.position(pattern,start);
+            return this.blob.position(pattern, start);
         } catch (SQLFeatureNotSupportedException e) {
             // Log the exception if needed
             LOG(LogLevel.ERROR,
                     "Driver does not support position() for Blob. Using custom implementation.");
 
             // Fallback to custom implementation
-            return position(pattern.getBytes(1,(int) pattern.length()),start);
+            return position(pattern.getBytes(1, (int) pattern.length()), start);
         }
     }
 
@@ -144,10 +144,10 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
         }
 
         // Retrieve the BLOB data as a byte array
-        byte[] blobData = getBytes(1,(int) length());
+        byte[] blobData = getBytes(1, (int) length());
 
         // Start searching for the pattern from the specified position
-        int position = indexOf(blobData,pattern,(int) start - 1);
+        int position = indexOf(blobData, pattern, (int) start - 1);
         return (position >= 0) ? position + 1 : -1; // Convert to 1-based index
     }
 
@@ -173,7 +173,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
         if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
-        return this.blob.setBytes(pos,bytes);
+        return this.blob.setBytes(pos, bytes);
     }
 
     @Override
@@ -181,7 +181,7 @@ public abstract class AbstractBlob extends AbstractCommonObject implements IBlob
         if (this.blob == null) {
             throw new ProcessingException("Blob object is null.");
         }
-        return this.blob.setBytes(pos,bytes,offset,len);
+        return this.blob.setBytes(pos, bytes, offset, len);
     }
 
     @Override

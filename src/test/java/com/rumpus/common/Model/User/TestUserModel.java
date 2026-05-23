@@ -31,7 +31,7 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
     }
 
     public static TestUserModel createFromMap(Map<String, Object> userMap) {
-        ICommon.LOG(TestUserModel.class,"TestUserModel::createFromMap()");
+        ICommon.LOG(TestUserModel.class, "TestUserModel::createFromMap()");
         TestUserModel user = new TestUserModel();
         user.setUsername(
                 userMap.containsKey(USERNAME) ? (String) userMap.get(USERNAME) : EMPTY_FIELD);
@@ -52,7 +52,7 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
             final String log = LogBuilder.logBuilderFromStringArgs(
                     TestUserModel.class,
                     "Failed building TestUserModelMetaData. Setting empty meta data.").toString();
-            LOG(TestUserModel.class,log);
+            LOG(TestUserModel.class, log);
             meta = TestUserModelMetaData.createEmpty();
         }
 
@@ -60,7 +60,7 @@ public class TestUserModel extends AbstractCommonUser<TestUserModel, TestUserMod
                 TestUserModel.class,
                 "Success building TestUserModelMetaData:\n",
                 meta.toString()).toString();
-        LOG(TestUserModel.class,log);
+        LOG(TestUserModel.class, log);
         user.setMetaData(meta);
         return user;
     }

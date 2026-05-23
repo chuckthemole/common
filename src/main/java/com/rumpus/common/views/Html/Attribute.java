@@ -301,7 +301,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
                 }
                 attributeList.add(new Attribute(attributePropAndValue[0].strip(), valueSet));
             } else {
-                LOG_THIS(LogLevel.ERROR,"Invalid attribute: " + attribute
+                LOG_THIS(LogLevel.ERROR, "Invalid attribute: " + attribute
                         + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             }
         }
@@ -340,7 +340,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
             }
             return new Attribute(attributePropAndValue[0].strip(), valueSet);
         } else {
-            LOG_THIS(LogLevel.ERROR,"Invalid attribute: " + attribute
+            LOG_THIS(LogLevel.ERROR, "Invalid attribute: " + attribute
                     + " (TODO: maybe this could be 1? something like 'active' or 'disabled'?)");
             return Attribute.createEmptyAttribute(false);
         }
@@ -398,7 +398,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
                 hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(),
                         attributePropAndValue[1].strip());
             } else {
-                LOG_THIS(LogLevel.ERROR,"Invalid attribute: ",attribute);
+                LOG_THIS(LogLevel.ERROR, "Invalid attribute: ", attribute);
             }
         }
         return hTypeHtmlObject;
@@ -426,7 +426,7 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
                 delimiter).toString();
         LOG_THIS(log);
         return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(),
-                attributes,delimiter);
+                attributes, delimiter);
     }
 
     /**
@@ -454,7 +454,8 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
                 "Delimiter: ",
                 delimiter).toString();
         LOG_THIS(log);
-        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes,delimiter);
+        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes,
+                delimiter);
         hTypeHtmlObject.setHtmlTagType(htmlTagType);
         return hTypeHtmlObject;
     }
@@ -562,11 +563,11 @@ public class Attribute extends com.rumpus.common.Manager.AbstractSetItem {
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(Attribute.class,args);
+        com.rumpus.common.ICommon.LOG(Attribute.class, args);
     }
 
     private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level,
             String... args) {
-        com.rumpus.common.ICommon.LOG(Attribute.class,level,args);
+        com.rumpus.common.ICommon.LOG(Attribute.class, level, args);
     }
 }

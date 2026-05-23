@@ -60,14 +60,14 @@ public class CommonWebSession implements WebSession {
         }
         this.attributes = new HashMap<>();
         for (String name : this.session.getAttributeNames()) {
-            this.attributes.put(name,this.session.getAttribute(name));
+            this.attributes.put(name, this.session.getAttribute(name));
         }
         return this.attributes;
     }
 
     @Override
     public void start() {
-        this.state.compareAndSet(State.NEW,State.STARTED);
+        this.state.compareAndSet(State.NEW, State.STARTED);
     }
 
     @Override

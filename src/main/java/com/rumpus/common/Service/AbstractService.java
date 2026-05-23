@@ -28,7 +28,7 @@ abstract public class AbstractService<
 
     @Override
     public List<MODEL> getByColumnValue(String column, String value) {
-        return this.dao.getByColumnValue(column,value);
+        return this.dao.getByColumnValue(column, value);
     }
 
     @Override
@@ -52,6 +52,6 @@ abstract public class AbstractService<
     @Override
     public MODEL update(String id, MODEL updatedModel) {
         LOG("update()");
-        return this.dao.update(id,updatedModel);
+        return this.dao.update(id, updatedModel);
     }
 }

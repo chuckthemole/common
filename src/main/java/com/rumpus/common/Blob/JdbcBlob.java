@@ -19,7 +19,7 @@ final public class JdbcBlob extends AbstractBlob {
     }
 
     private JdbcBlob(byte[] data) {
-        this(data, new MySQLExceptionInterceptor().init(new Properties(),new MySQLLogger()));
+        this(data, new MySQLExceptionInterceptor().init(new Properties(), new MySQLLogger()));
     }
 
     // Public factory methods
@@ -44,7 +44,7 @@ final public class JdbcBlob extends AbstractBlob {
     @Override
     public void initBlob() {
         this.blob = new Blob(new byte[0],
-                new MySQLExceptionInterceptor().init(new Properties(),new MySQLLogger()));
+                new MySQLExceptionInterceptor().init(new Properties(), new MySQLLogger()));
     }
 
     @Override

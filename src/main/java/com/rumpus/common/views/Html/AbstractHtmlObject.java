@@ -242,7 +242,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
                 hTypeHtmlObject.addToAttribute(attributePropAndValue[0].strip(),
                         attributePropAndValue[1].strip());
             } else {
-                LOG_THIS(LogLevel.ERROR,"Invalid attribute: ",attribute);
+                LOG_THIS(LogLevel.ERROR, "Invalid attribute: ", attribute);
             }
         }
         return hTypeHtmlObject;
@@ -271,7 +271,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
                 delimiter).toString();
         LOG_THIS(log);
         return getAndSetAttributesForHtmlObject(AbstractHtmlObject.createEmptyAbstractHtmlObject(),
-                attributes,delimiter);
+                attributes, delimiter);
     }
 
     /**
@@ -299,7 +299,8 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
                 "Delimiter: ",
                 delimiter).toString();
         LOG_THIS(log);
-        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes,delimiter);
+        AbstractHtmlObject hTypeHtmlObject = getEmptyHtmlObjectWithAttributes(attributes,
+                delimiter);
         hTypeHtmlObject.setHtmlTagType(htmlTagType);
         return hTypeHtmlObject;
     }
@@ -442,7 +443,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      *         {@link java.util.Set#add(Object)}
      */
     public boolean addHtmlTagAttribute(String attributeKey, String... attributeValues) {
-        return this.addHtmlTagAttribute(Attribute.create(attributeKey,attributeValues));
+        return this.addHtmlTagAttribute(Attribute.create(attributeKey, attributeValues));
     }
 
     /**
@@ -495,7 +496,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      */
     public void removeHtmlTagAttributes(Attribute attribute, String... values) {
         for (String value : values) {
-            this.removeHtmlTagAttribute(attribute,value);
+            this.removeHtmlTagAttribute(attribute, value);
         }
     }
 
@@ -529,7 +530,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
         Attribute attribute = this.htmlAttributes.get(attributeKey); // find the attribute in
                                                                      // manager
         attribute.addValues(attributeValuesToAdd); // add the values to the attribute
-        this.htmlAttributes.update(attributeKey,attribute); // update the attribute in the manager
+        this.htmlAttributes.update(attributeKey, attribute); // update the attribute in the manager
         return attribute;
     }
 
@@ -549,7 +550,7 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
      *         or does not exist
      */
     public Attribute addToAttribute(Attribute attribute, String... attributeValuesToAdd) {
-        return this.addToAttribute(attribute.getUniqueId(),attributeValuesToAdd);
+        return this.addToAttribute(attribute.getUniqueId(), attributeValuesToAdd);
     }
 
     public String getBody() {
@@ -659,10 +660,10 @@ public abstract class AbstractHtmlObject extends AbstractView implements IManage
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractCommonObject.class,args);
+        ICommon.LOG(AbstractCommonObject.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractCommonObject.class,level,args);
+        ICommon.LOG(AbstractCommonObject.class, level, args);
     }
 }

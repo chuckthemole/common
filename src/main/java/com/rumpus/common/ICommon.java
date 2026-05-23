@@ -136,7 +136,7 @@ public interface ICommon {
      *            The message to log
      */
     public static void LOG(Class<?> clazz, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz,args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
         LOG_COMMON.setClass(clazz);
         LOG_COMMON.infoLevel(log);
         LOG_COMMON.setClass(DEFAULT_LOGGER_CLASS);
@@ -153,7 +153,7 @@ public interface ICommon {
      *            The message to log
      */
     public static void LOG(Class<?> clazz, LogLevel level, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz,args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
         LOG_COMMON.setClass(clazz);
         LOG_COMMON.infoLevel(log);
         LOG_COMMON.setClass(DEFAULT_LOGGER_CLASS);

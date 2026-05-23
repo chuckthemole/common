@@ -1,15 +1,14 @@
-import com.rumpushub.buildlogic.plugins.CommonPlugin
-import com.rumpushub.buildlogic.plugins.CommonPublisherPlugin
 import com.rumpushub.buildlogic.plugins.AwsDependenciesPlugin
 import com.rumpushub.buildlogic.plugins.CommonDBDependenciesPlugin
+import com.rumpushub.buildlogic.plugins.CommonPlugin
+import com.rumpushub.buildlogic.plugins.CommonPublisherPlugin
 import com.rumpushub.buildlogic.plugins.CommonSessionDependencies
+import com.rumpushub.buildlogic.plugins.OpenApiDependenciesPlugin
+import com.rumpushub.buildlogic.plugins.RumpusDependenciesPlugin
 import com.rumpushub.buildlogic.plugins.RumpusTest
 import com.rumpushub.buildlogic.plugins.RumpusTestConventions
-import com.rumpushub.buildlogic.plugins.RumpusDependenciesPlugin
-import com.rumpushub.buildlogic.plugins.OpenApiDependenciesPlugin
-
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.gradle.jvm.tasks.Jar
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 // --------------------------------------------------------------------------
 // common/build.gradle.kts
@@ -23,107 +22,94 @@ import org.gradle.jvm.tasks.Jar
 // - Ensures consistent plugin versions and Gradle conventions.
 // --------------------------------------------------------------------------
 
-apply<CommonPlugin>()             // Applies project-specific conventions for 'common' module
-apply<CommonPublisherPlugin>()    // Configures publishing logic for the module
+apply<CommonPlugin>() // Applies project-specific conventions for 'common' module
+
+apply<CommonPublisherPlugin>() // Configures publishing logic for the module
 
 apply<AwsDependenciesPlugin>()
+
 configure<AwsDependenciesPlugin.AwsExtension> {
-    awsCoreDependency = rumpusLibs.springCloudAws
-    awsS3Dependency = rumpusLibs.springCloudAwsS3
+  awsCoreDependency = rumpusLibs.springCloudAws
+  awsS3Dependency = rumpusLibs.springCloudAwsS3
 }
 
 apply<CommonDBDependenciesPlugin>()
+
 configure<CommonDBDependenciesPlugin.DbExtension> {
-    springJdbc = rumpusLibs.springJdbc
-    springDataJpa = rumpusLibs.springDataJpa
-    mysqlConnector = rumpusLibs.mysql
-    redis = rumpusLibs.springDataRedis
-    jedis = rumpusLibs.jedis
-    jooq = rumpusLibs.jooq
+  springJdbc = rumpusLibs.springJdbc
+  springDataJpa = rumpusLibs.springDataJpa
+  mysqlConnector = rumpusLibs.mysql
+  redis = rumpusLibs.springDataRedis
+  jedis = rumpusLibs.jedis
+  jooq = rumpusLibs.jooq
 }
 
 apply<CommonSessionDependencies>()
+
 configure<CommonSessionDependencies.SessionExtension> {
-    core = rumpusLibs.springSessionCore
-    jdbc = rumpusLibs.springSessionJdbc
+  core = rumpusLibs.springSessionCore
+  jdbc = rumpusLibs.springSessionJdbc
 }
 
 apply<RumpusTest>()
+
 configure<RumpusTest.TestExtension> {
-    springBoot = rumpusLibs.springBootStarterTest
-    mockito = rumpusLibs.mockito
-    junitApi = rumpusLibs.junit
-    junitEngine = rumpusLibs.junitEngine
-    springSecurityTest = rumpusLibs.springSecurityTest
+  springBoot = rumpusLibs.springBootStarterTest
+  mockito = rumpusLibs.mockito
+  junitApi = rumpusLibs.junit
+  junitEngine = rumpusLibs.junitEngine
+  springSecurityTest = rumpusLibs.springSecurityTest
 }
 
 apply<RumpusTestConventions>()
+
 configure<RumpusTestConventions.TestConventionsExtension> {
-    junitVersion = rumpusLibs.junit4
-    showStandardStreams = true
+  junitVersion = rumpusLibs.junit4
+  showStandardStreams = true
 }
 
 apply<OpenApiDependenciesPlugin>()
-configure<OpenApiDependenciesPlugin.OpenApiExtension> {
-    springdocCore = rumpusLibs.openApiCore
-}
+
+configure<OpenApiDependenciesPlugin.OpenApiExtension> { springdocCore = rumpusLibs.openApiCore }
 
 apply<RumpusDependenciesPlugin>()
+
 configure<RumpusDependenciesPlugin.RumpusDepsExtension> {
-    core.addAll(listOf(
-        rumpusLibs.rumpusSpringBoot.get(),
-        rumpusLibs.springBootWeb.get()
-    ))
+  core.addAll(listOf(rumpusLibs.rumpusSpringBoot.get(), rumpusLibs.springBootWeb.get()))
 
-    web.addAll(listOf(
-        rumpusLibs.webFlux.get(),
-        rumpusLibs.webSocket.get()
-    ))
+  web.addAll(listOf(rumpusLibs.webFlux.get(), rumpusLibs.webSocket.get()))
 
-    db.addAll(listOf(
-        rumpusLibs.jpa.get(),
-        rumpusLibs.jdbc.get(),
-        rumpusLibs.mysql.get()
-    ))
+  db.addAll(listOf(rumpusLibs.jpa.get(), rumpusLibs.jdbc.get(), rumpusLibs.mysql.get()))
 
-    security.addAll(listOf(
-        rumpusLibs.springSecurity.get(),
-        rumpusLibs.oauth2Client.get(),
-        rumpusLibs.jjwtApi.get(),
-        rumpusLibs.jjwtImpl.get(),
-        rumpusLibs.jjwtJackson.get()
-    ))
+  security.addAll(
+      listOf(
+          rumpusLibs.springSecurity.get(),
+          rumpusLibs.oauth2Client.get(),
+          rumpusLibs.jjwtApi.get(),
+          rumpusLibs.jjwtImpl.get(),
+          rumpusLibs.jjwtJackson.get()))
 
-    cloud.addAll(listOf(
-        rumpusLibs.springCloudAws.get(),
-        rumpusLibs.springCloudAwsS3.get()
-    ))
+  cloud.addAll(listOf(rumpusLibs.springCloudAws.get(), rumpusLibs.springCloudAwsS3.get()))
 
-    devTools.addAll(listOf(
-        rumpusLibs.devTools.get()
-    ))
+  devTools.addAll(listOf(rumpusLibs.devTools.get()))
 
-    testing.addAll(listOf(
-        rumpusLibs.junit.get(),
-        rumpusLibs.mockito.get()
-    ))
+  testing.addAll(listOf(rumpusLibs.junit.get(), rumpusLibs.mockito.get()))
 
-    // Miscellaneous dependencies that don’t neatly fit in other buckets
-    additionalDeps.addAll(listOf(
-        rumpusLibs.springBootActuator.get(),
-        rumpusLibs.springBootAdminClient.get(),
-        rumpusLibs.springBootAdminServer.get(),
-        rumpusLibs.commonsValidator.get(),
-        rumpusLibs.bootstrap.get(),
-        rumpusLibs.htmlunit.get(),
-        rumpusLibs.unirest.get(),
-        rumpusLibs.jsr305.get(),
-        rumpusLibs.j2html.get(),
-        rumpusLibs.jython.get(),
-        rumpusLibs.tess4j.get(),
-        rumpusLibs.oauth2ResourceServer.get()
-    ))
-
+  // Miscellaneous dependencies that don’t neatly fit in other buckets
+  additionalDeps.addAll(
+      listOf(
+          rumpusLibs.springBootActuator.get(),
+          rumpusLibs.springBootAdminClient.get(),
+          rumpusLibs.springBootAdminServer.get(),
+          rumpusLibs.commonsValidator.get(),
+          rumpusLibs.bootstrap.get(),
+          rumpusLibs.htmlunit.get(),
+          rumpusLibs.unirest.get(),
+          rumpusLibs.jsr305.get(),
+          rumpusLibs.j2html.get(),
+          rumpusLibs.jython.get(),
+          rumpusLibs.tess4j.get(),
+          rumpusLibs.oauth2ResourceServer.get()))
 }
 
 // --------------------------------------------------------------------------
@@ -134,8 +120,8 @@ configure<RumpusDependenciesPlugin.RumpusDepsExtension> {
 // - Spring Boot: provides BootJar tasks, auto-configuration support
 // - Dependency Management: allows consistent dependency versions across modules
 plugins {
-    alias(rumpusLibs.plugins.springBoot)
-    alias(rumpusLibs.plugins.dependencyManagement)
+  alias(rumpusLibs.plugins.springBoot)
+  alias(rumpusLibs.plugins.dependencyManagement)
 }
 
 // --------------------------------------------------------------------------
@@ -144,6 +130,7 @@ plugins {
 // Group and version are sourced from the centralized version catalog,
 // enabling consistent artifact coordinates across all projects.
 group = rumpusLibs.versions.commonGroup.get()
+
 version = rumpusLibs.versions.common.get()
 
 // --------------------------------------------------------------------------
@@ -151,9 +138,7 @@ version = rumpusLibs.versions.common.get()
 // --------------------------------------------------------------------------
 // JUnit dependency is included for unit testing.
 // All versions are managed centrally in `libs.versions.toml`.
-dependencies {
-    add("implementation", rumpusLibs.junit)
-}
+dependencies { add("implementation", rumpusLibs.junit) }
 
 // --------------------------------------------------------------------------
 // Jar / BootJar Configuration
@@ -161,12 +146,10 @@ dependencies {
 // - Spring Boot BootJar is disabled because this module produces a plain JAR.
 // - Standard Jar task is enabled to produce artifacts suitable for publishing
 //   or consumption by other modules.
-tasks.named<BootJar>("bootJar") {
-    enabled = false
-}
+tasks.named<BootJar>("bootJar") { enabled = false }
 
 tasks.named<Jar>("jar") {
-    enabled = true
+  enabled = true
 }
 
 // --------------------------------------------------------------------------

@@ -46,7 +46,7 @@ public class AuthenticationHandler
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
-        LOG_THIS(LogLevel.ERROR,"WebSecurityConfig::onAuthenticationFailure\\n",
+        LOG_THIS(LogLevel.ERROR, "WebSecurityConfig::onAuthenticationFailure\\n",
                 exception.toString());
         LogBuilder.logBuilderFromStackTraceElementArray(exception.getMessage(),
                 exception.getStackTrace());
@@ -72,7 +72,7 @@ public class AuthenticationHandler
      *            The message to log.
      */
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AuthenticationHandler.class,args);
+        ICommon.LOG(AuthenticationHandler.class, args);
     }
 
     /**
@@ -84,6 +84,6 @@ public class AuthenticationHandler
      *            The message to log.
      */
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AuthenticationHandler.class,level,args);
+        ICommon.LOG(AuthenticationHandler.class, level, args);
     }
 }

@@ -23,8 +23,8 @@ public class BulmaBreadcrumb extends AbstractBreadcrumb {
 
         HtmlTagAttributes navHtmlTagAttributes = HtmlTagAttributes.create();
         navHtmlTagAttributes
-                .addAll(Attribute.getAttributesFromStringOfAttributes(NAV_HTML_ATTRIBUTES,","));
-        manager.put(AbstractBreadcrumb.NAV_ATTRIBUTES,navHtmlTagAttributes);
+                .addAll(Attribute.getAttributesFromStringOfAttributes(NAV_HTML_ATTRIBUTES, ","));
+        manager.put(AbstractBreadcrumb.NAV_ATTRIBUTES, navHtmlTagAttributes);
 
         return manager;
     }

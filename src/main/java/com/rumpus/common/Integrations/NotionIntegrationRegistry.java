@@ -32,7 +32,7 @@ public class NotionIntegrationRegistry {
             throw new IllegalArgumentException(
                     "Integration entry and its name must not be null or blank");
         }
-        integrations.put(entry.getName(),entry);
+        integrations.put(entry.getName(), entry);
     }
 
     /**

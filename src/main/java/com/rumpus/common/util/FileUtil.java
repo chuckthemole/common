@@ -27,7 +27,7 @@ public class FileUtil implements ICommon {
         File directory; // desired current working directory
         directory = new File(directoryPath).getAbsoluteFile();
         if (directory.exists() || directory.mkdirs()) {
-            result = (System.setProperty("user.dir",directory.getAbsolutePath()) != null);
+            result = (System.setProperty("user.dir", directory.getAbsolutePath()) != null);
         }
         return result;
     }

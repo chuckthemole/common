@@ -139,8 +139,8 @@ public abstract class AbstractAside extends AbstractComponent {
                 titleHtmlObject.setBody(titleKey);
 
                 final String titleId = this.componentPartManager
-                        .registerComponentPart(super.getComponentName(),titleHtmlObject);
-                titleHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,titleId);
+                        .registerComponentPart(super.getComponentName(), titleHtmlObject);
+                titleHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, titleId);
                 this.addChild(titleHtmlObject);
 
                 // add items
@@ -157,23 +157,23 @@ public abstract class AbstractAside extends AbstractComponent {
                         listItem.setHtmlTagType(AbstractHtmlObject.HtmlTagType.LI);
 
                         final String itemId = this.componentPartManager
-                                .registerComponentPart(super.getComponentName(),item);
-                        item.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,itemId);
+                                .registerComponentPart(super.getComponentName(), item);
+                        item.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID, itemId);
                         listItem.addChild(item); // TODO: it looks like this is adding null values
                                                  // to children, why? investigate.
 
                         final String listItemComponentPartId = this.componentPartManager
-                                .registerComponentPart(super.getComponentName(),listItem);
+                                .registerComponentPart(super.getComponentName(), listItem);
                         listItem.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,
                                 listItemComponentPartId);
                         menuListHtmlObject.addChild(listItem);
                     } else {
-                        LOG(LogLevel.ERROR,"Item is null or empty. Item: " + item);
+                        LOG(LogLevel.ERROR, "Item is null or empty. Item: " + item);
                     }
                 }
 
                 final String menuListComponentPartId = this.componentPartManager
-                        .registerComponentPart(super.getComponentName(),menuListHtmlObject);
+                        .registerComponentPart(super.getComponentName(), menuListHtmlObject);
                 menuListHtmlObject.addHtmlTagAttribute(AbstractComponent.COMPONENT_PART_ID,
                         menuListComponentPartId);
                 this.addChild(menuListHtmlObject); // TODO: these three lines seem like a lot of
@@ -181,7 +181,7 @@ public abstract class AbstractAside extends AbstractComponent {
                                                    // maybe? keeping track of ids in
                                                    // AbstractHtmlObject?
             } else {
-                LOG(LogLevel.ERROR,"Title key is null or empty. Title key: " + titleKey);
+                LOG(LogLevel.ERROR, "Title key is null or empty. Title key: " + titleKey);
             }
         });
 
@@ -203,7 +203,7 @@ public abstract class AbstractAside extends AbstractComponent {
                                                             // super.defaultDelimiter from beginning
                                                             // and/or end
             asideGroupsArray[i] = StringUtil
-                    .trimStartOrEnd(asideGroupsArray[i].strip(),super.defaultDelimiter).strip();
+                    .trimStartOrEnd(asideGroupsArray[i].strip(), super.defaultDelimiter).strip();
         }
         return createGroupsFromStringsHelper(asideGroupsArray);
     }
@@ -247,9 +247,9 @@ public abstract class AbstractAside extends AbstractComponent {
                         for (int i = asideGroupArrayIndex + 1; i < asideGroupArray.length; i++) {
                             subStringArray[i - asideGroupArrayIndex - 1] = asideGroupArray[i];
                         }
-                        String subList = String.join(super.defaultDelimiter,subStringArray);
+                        String subList = String.join(super.defaultDelimiter, subStringArray);
                         final AbstractHtmlObject subAside = AbstractAside
-                                .createSubAside(this.getComponentName(),subList);
+                                .createSubAside(this.getComponentName(), subList);
                         asideComponent.addChild(subAside);
                         // increment till we find END_ASIDE_CHILD_LIST
                         while (!asideGroupArray[asideGroupArrayIndex]
@@ -268,7 +268,7 @@ public abstract class AbstractAside extends AbstractComponent {
                     asideGroupHtmlObjectList.add(asideComponent);
                 }
 
-                mapOfAsideGroups_title_listOfItems.put(title,asideGroupHtmlObjectList);
+                mapOfAsideGroups_title_listOfItems.put(title, asideGroupHtmlObjectList);
             }
         }
 

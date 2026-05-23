@@ -54,9 +54,9 @@ public class JwtService {
 
         return Jwts.builder()
                 .subject(oAuth2User.getAttribute("email")) // setSubject() → subject()
-                .claim("name",oAuth2User.getAttribute("name"))
-                .claim("email",oAuth2User.getAttribute("email"))
-                .claim("picture",oAuth2User.getAttribute("picture"))
+                .claim("name", oAuth2User.getAttribute("name"))
+                .claim("email", oAuth2User.getAttribute("email"))
+                .claim("picture", oAuth2User.getAttribute("picture"))
                 .issuedAt(now) // setIssuedAt() → issuedAt()
                 .expiration(expiryDate) // setExpiration() → expiration()
                 .signWith(getSigningKey()) // Remove SignatureAlgorithm parameter
@@ -85,10 +85,10 @@ public class JwtService {
 
         return Jwts.builder()
                 .subject(email) // setSubject() → subject()
-                .claim("name",name)
-                .claim("email",email)
-                .claim("picture",picture)
-                .claim("provider",provider.getProviderId())
+                .claim("name", name)
+                .claim("email", email)
+                .claim("picture", picture)
+                .claim("provider", provider.getProviderId())
                 .issuedAt(now) // setIssuedAt() → issuedAt()
                 .expiration(expiryDate) // setExpiration() → expiration()
                 .signWith(getSigningKey()) // Remove SignatureAlgorithm parameter
@@ -116,10 +116,10 @@ public class JwtService {
 
         return Jwts.builder()
                 .subject(email) // setSubject() → subject()
-                .claim("name",name) // claim() stays the same
-                .claim("email",email)
-                .claim("picture",picture)
-                .claim("provider",provider)
+                .claim("name", name) // claim() stays the same
+                .claim("email", email)
+                .claim("picture", picture)
+                .claim("provider", provider)
                 .issuedAt(now) // setIssuedAt() → issuedAt()
                 .expiration(expiryDate) // setExpiration() → expiration()
                 .signWith(getSigningKey()) // Remove SignatureAlgorithm parameter
@@ -186,7 +186,7 @@ public class JwtService {
      *             if token is invalid
      */
     public String extractName(String token) {
-        return extractClaims(token).get("name",String.class);
+        return extractClaims(token).get("name", String.class);
     }
 
     /**
@@ -200,7 +200,7 @@ public class JwtService {
      *             if token is invalid
      */
     public String extractProvider(String token) {
-        return extractClaims(token).get("provider",String.class);
+        return extractClaims(token).get("provider", String.class);
     }
 
     /**
@@ -213,6 +213,6 @@ public class JwtService {
      *             if token is invalid
      */
     public String extractPicture(String token) {
-        return extractClaims(token).get("picture",String.class);
+        return extractClaims(token).get("picture", String.class);
     }
 }

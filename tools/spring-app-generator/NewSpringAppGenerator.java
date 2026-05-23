@@ -7,20 +7,17 @@ import java.util.Scanner;
 
 /**
  * Generator for creating Spring Boot application skeletons.
- * 
- * Usage:
- * 1. Non-interactive (recommended for CI/CD or scripted runs):
- * ./gradlew run -PmainClass=tools.generator.NewSpringAppGenerator
- * --args="AppName com.example.package"
- * 
- * 2. Interactive (prompts for app and package name):
- * ./gradlew run -PmainClass=tools.generator.NewSpringAppGenerator
- * 
- * Features:
- * - Creates a basic Spring Boot main class
- * - Creates a dedicated resources directory with application properties
- * - Can easily be extended to scaffold controllers, services, repositories, and
- * entities
+ *
+ * Usage: 1. Non-interactive (recommended for CI/CD or scripted runs): ./gradlew
+ * run -PmainClass=tools.generator.NewSpringAppGenerator --args="AppName
+ * com.example.package"
+ *
+ * 2. Interactive (prompts for app and package name): ./gradlew run
+ * -PmainClass=tools.generator.NewSpringAppGenerator
+ *
+ * Features: - Creates a basic Spring Boot main class - Creates a dedicated
+ * resources directory with application properties - Can easily be extended to
+ * scaffold controllers, services, repositories, and entities
  */
 public class NewSpringAppGenerator {
 
@@ -56,10 +53,13 @@ public class NewSpringAppGenerator {
 
     /**
      * Creates the folder structure and files for a new Spring Boot app.
-     * 
-     * @param appName     Name of the new application class
-     * @param packageName Package where the app class should reside
-     * @throws IOException If directories or files cannot be created
+     *
+     * @param appName
+     *            Name of the new application class
+     * @param packageName
+     *            Package where the app class should reside
+     * @throws IOException
+     *             If directories or files cannot be created
      */
     private static void createAppStructure(String appName, String packageName) throws IOException {
         // 1. Convert package name to folder structure
@@ -75,7 +75,8 @@ public class NewSpringAppGenerator {
         try (FileWriter writer = new FileWriter(appFile)) {
             writer.write("package " + packageName + ";\n\n");
             writer.write("import org.springframework.boot.SpringApplication;\n");
-            writer.write("import org.springframework.boot.autoconfigure.SpringBootApplication;\n\n");
+            writer.write(
+                    "import org.springframework.boot.autoconfigure.SpringBootApplication;\n\n");
             writer.write("@SpringBootApplication\n");
             writer.write("public class " + appName + " {\n");
             writer.write("    public static void main(String[] args) {\n");
@@ -90,7 +91,8 @@ public class NewSpringAppGenerator {
             throw new IOException("Failed to create resources directory");
         }
 
-        File propsFile = new File(resourcesDir, "application-" + appName.toLowerCase() + ".properties");
+        File propsFile = new File(resourcesDir,
+                "application-" + appName.toLowerCase() + ".properties");
         try (FileWriter writer = new FileWriter(propsFile)) {
             writer.write("# Properties for " + appName + "\n");
             writer.write("# e.g., server.port=8081\n");

@@ -17,9 +17,9 @@ public abstract class AbstractAdmin extends AbstractTemplate {
 
     @Override
     public void addComponentsToMap() {
-        this.put(AbstractTemplate.TEMPLATE_ASIDE,this.aside);
-        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB,this.breadcrumb);
-        this.put(AbstractTemplate.TEMPLATE_WELCOME,this.welcome);
+        this.put(AbstractTemplate.TEMPLATE_ASIDE, this.aside);
+        this.put(AbstractTemplate.TEMPLATE_BREADCRUMB, this.breadcrumb);
+        this.put(AbstractTemplate.TEMPLATE_WELCOME, this.welcome);
     }
 
     @Override

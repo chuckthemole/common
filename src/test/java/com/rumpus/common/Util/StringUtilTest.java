@@ -38,8 +38,8 @@ public class StringUtilTest extends AbstractCommonTest {
     @Order(1)
     void testTrimStartAndEnd() {
         String expected = " ";
-        String actual = StringUtil.trimStartAndEnd("hello hello","hello");
-        assertEquals(expected,actual);
+        String actual = StringUtil.trimStartAndEnd("hello hello", "hello");
+        assertEquals(expected, actual);
     }
 
     @Test

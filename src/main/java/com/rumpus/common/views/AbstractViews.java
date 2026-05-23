@@ -154,6 +154,6 @@ public abstract class AbstractViews extends AbstractCommonManager<String, Abstra
     @Override
     public AbstractTemplate createEmptyManagee(String name) {
         AbstractTemplate template = AbstractTemplate.createEmptyTemplate();
-        return this.put(name,template);
+        return this.put(name, template);
     }
 }

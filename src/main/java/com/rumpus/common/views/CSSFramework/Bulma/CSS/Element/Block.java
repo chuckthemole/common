@@ -22,7 +22,7 @@ public class Block extends AbstractBulmaElement {
 
     private void init() {
         this.addHtmlTagAttribute(
-                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(),CLASS_NAME);
+                AbstractHtmlObject.CommonHtmlAttribute.CLASS.getCommonHtmlAttribute(), CLASS_NAME);
     }
 
     public static Block createWithBody(String body) {

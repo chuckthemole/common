@@ -66,7 +66,7 @@ public abstract class AbstractViewController<
             in = resource.getInputStream();
             return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatusCode.valueOf(200));
         } catch (IOException e) {
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace());
+            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
             return new ResponseEntity<byte[]>(new byte[0], HttpStatusCode.valueOf(404));
         }
     }
@@ -190,7 +190,7 @@ public abstract class AbstractViewController<
         // check if the templateName is null or empty
         if (templateName == null || templateName.isEmpty()) {
             final String log = LogBuilder
-                    .logBuilderFromStringArgs("templateName"," is null or empty").toString();
+                    .logBuilderFromStringArgs("templateName", " is null or empty").toString();
             LOG(log);
             return new ResponseEntity<AbstractHtmlObject>(
                     AbstractHtmlObject.createEmptyAbstractHtmlObject(),
@@ -206,26 +206,27 @@ public abstract class AbstractViewController<
         // and debug in the logs
         if (retrievedTemplate == null) {
             String log = LogBuilder.logBuilderFromStringArgs(templateName,
-                    " not found in viewLoader: null","  Available templates: ").toString();
+                    " not found in viewLoader: null", "  Available templates: ").toString();
             LOG(log);
             log = LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).toString();
             LOG(log);
             httpCode = HttpStatusCode.valueOf(404);
         } else if (retrievedTemplate.isEmpty()) {
             String log = LogBuilder.logBuilderFromStringArgs(templateName,
-                    " not found in viewLoader: empty","  Available templates: ").toString();
+                    " not found in viewLoader: empty", "  Available templates: ").toString();
             LOG(log);
             log = LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).toString();
             LOG(log);
             httpCode = HttpStatusCode.valueOf(404);
         } else if (retrievedTemplate.getHead() == null) {
             final String log = LogBuilder
-                    .logBuilderFromStringArgs(templateName," not found in viewLoader: head is null")
+                    .logBuilderFromStringArgs(templateName,
+                            " not found in viewLoader: head is null")
                     .toString();
             LOG(log);
             httpCode = HttpStatusCode.valueOf(404);
         } else {
-            LOG(templateName," found in viewLoader");
+            LOG(templateName, " found in viewLoader");
         }
 
         AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ? extends AbstractCommonUserMetaData<?>> currentUserTemplate = viewLoader
@@ -253,7 +254,7 @@ public abstract class AbstractViewController<
         // check if the userId is null or empty
         if (userId == null || userId.isEmpty()) {
             final String log = LogBuilder.logBuilderFromStringArgs(AbstractViewController.class,
-                    "userId"," is null or empty").toString();
+                    "userId", " is null or empty").toString();
             LOG(log);
             return new ResponseEntity<AbstractHtmlObject>(
                     AbstractHtmlObject.createEmptyAbstractHtmlObject(),
@@ -262,7 +263,7 @@ public abstract class AbstractViewController<
         // check if the templateName/userId is null or empty
         if (templateName == null || templateName.isEmpty()) {
             final String log = LogBuilder.logBuilderFromStringArgs(AbstractViewController.class,
-                    "templateName"," is null or empty").toString();
+                    "templateName", " is null or empty").toString();
             LOG(log);
             return new ResponseEntity<AbstractHtmlObject>(
                     AbstractHtmlObject.createEmptyAbstractHtmlObject(),
@@ -285,7 +286,7 @@ public abstract class AbstractViewController<
         LOG("DEBUG currentUserTemplate");
         currentUserTemplate.reload();
         final String log = LogBuilder
-                .logBuilderFromStringArgs(AbstractHtmlObject.class,currentUserTemplate.toString())
+                .logBuilderFromStringArgs(AbstractHtmlObject.class, currentUserTemplate.toString())
                 .toString();
         LOG(log);
         return new ResponseEntity<AbstractHtmlObject>(currentUserTemplate.getHead(),
@@ -304,13 +305,13 @@ public abstract class AbstractViewController<
         // check if the templateName or componentName is null or empty
         if (templateName == null || templateName.isEmpty()) {
             final String log = LogBuilder
-                    .logBuilderFromStringArgs("templateName"," is null or empty").toString();
+                    .logBuilderFromStringArgs("templateName", " is null or empty").toString();
             LOG(log);
             return new ResponseEntity<AbstractComponent>(AbstractComponent.createEmptyComponent(),
                     HttpStatusCode.valueOf(404));
         } else if (componentName == null || componentName.isEmpty()) {
             final String log = LogBuilder
-                    .logBuilderFromStringArgs("componentName"," is null or empty").toString();
+                    .logBuilderFromStringArgs("componentName", " is null or empty").toString();
             LOG(log);
             return new ResponseEntity<AbstractComponent>(AbstractComponent.createEmptyComponent(),
                     HttpStatusCode.valueOf(404));
@@ -326,34 +327,35 @@ public abstract class AbstractViewController<
         // and debug in the logs
         if (retrievedTemplate == null) {
             String log = LogBuilder.logBuilderFromStringArgs(templateName,
-                    " not found in viewLoader: null","  Available templates: ").toString();
+                    " not found in viewLoader: null", "  Available templates: ").toString();
             LOG(log);
             log = LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).toString();
             httpCode = HttpStatusCode.valueOf(404);
         } else if (retrievedTemplate.isEmpty()) {
             String log = LogBuilder.logBuilderFromStringArgs(templateName,
-                    " not found in viewLoader: empty","  Available templates: ").toString();
+                    " not found in viewLoader: empty", "  Available templates: ").toString();
             LOG(log);
             log = LogBuilder.logBuilderFromSet(this.viewLoader.keySet()).toString();
             LOG(log);
             httpCode = HttpStatusCode.valueOf(404);
         } else if (retrievedTemplate.getHead() == null) {
             final String log = LogBuilder
-                    .logBuilderFromStringArgs(templateName," not found in viewLoader: head is null")
+                    .logBuilderFromStringArgs(templateName,
+                            " not found in viewLoader: head is null")
                     .toString();
             LOG(log);
             httpCode = HttpStatusCode.valueOf(404);
         } else {
             // Found template now check for component
-            LOG(templateName," found in viewLoader");
+            LOG(templateName, " found in viewLoader");
             retrievedComponent = retrievedTemplate.get(componentName);
             if (retrievedComponent == null) {
                 String log = LogBuilder.logBuilderFromStringArgs(componentName,
-                        " not found in template: null","  Available components: ").toString();
+                        " not found in template: null", "  Available components: ").toString();
                 log = LogBuilder.logBuilderFromSet(retrievedTemplate.keySet()).toString();
                 httpCode = HttpStatusCode.valueOf(404);
             } else {
-                LOG(componentName," found in template");
+                LOG(componentName, " found in template");
             }
         }
 
@@ -381,14 +383,14 @@ public abstract class AbstractViewController<
         // check if the templateName is null or empty
         if (templateName == null || templateName.isEmpty()) {
             final String log = LogBuilder
-                    .logBuilderFromStringArgs("templateName"," is null or empty").toString();
+                    .logBuilderFromStringArgs("templateName", " is null or empty").toString();
             LOG(log);
             return new ResponseEntity<AbstractHtmlObject>(
                     AbstractHtmlObject.createEmptyAbstractHtmlObject(),
                     HttpStatusCode.valueOf(404));
         }
         if (updatedTemplate == null) {
-            final String log = LogBuilder.logBuilderFromStringArgs("template"," is null")
+            final String log = LogBuilder.logBuilderFromStringArgs("template", " is null")
                     .toString();
             LOG(log);
             return new ResponseEntity<AbstractHtmlObject>(
@@ -396,7 +398,7 @@ public abstract class AbstractViewController<
                     HttpStatusCode.valueOf(404));
         }
 
-        AbstractTemplate previousTemplate = this.viewLoader.put(templateName,updatedTemplate);
+        AbstractTemplate previousTemplate = this.viewLoader.put(templateName, updatedTemplate);
         HttpStatusCode httpCode = previousTemplate != null
                 ? HttpStatusCode.valueOf(200)
                 : HttpStatusCode.valueOf(404);

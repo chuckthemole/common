@@ -28,7 +28,7 @@ public class QuillManager extends AbstractCommonManager<String, Quill> {
 
     @Override
     public Quill createEmptyManagee(String name) {
-        return this.put(name,Quill.createEmpty());
+        return this.put(name, Quill.createEmpty());
     }
 
     @Override

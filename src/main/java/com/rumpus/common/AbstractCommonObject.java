@@ -60,7 +60,7 @@ abstract public class AbstractCommonObject implements ICommon {
      *            The message to log
      */
     protected void LOG(String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.getClass(),args)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.getClass(), args)
                 .toString();
         this.LOGGER.infoLevel(log);
     }
@@ -74,20 +74,20 @@ abstract public class AbstractCommonObject implements ICommon {
      *            The message to log
      */
     protected void LOG(LogLevel level, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.getClass(),args)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.getClass(), args)
                 .toString();
-        this.LOGGER.logAtLevel(level,log);
+        this.LOGGER.logAtLevel(level, log);
     }
 
     protected static void LOG(Class<?> clazz, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz,args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
         ICommon.LOG_COMMON.setClass(clazz);
         ICommon.LOG_COMMON.infoLevel(log);
         ICommon.LOG_COMMON.setClass(ICommon.DEFAULT_LOGGER_CLASS);
     }
 
     protected static void LOG(Class<?> clazz, LogLevel level, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz,args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
         ICommon.LOG_COMMON.setClass(clazz);
         ICommon.LOG_COMMON.infoLevel(log);
         ICommon.LOG_COMMON.setClass(ICommon.DEFAULT_LOGGER_CLASS);

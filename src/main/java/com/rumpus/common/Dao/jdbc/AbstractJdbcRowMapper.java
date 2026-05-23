@@ -98,10 +98,10 @@ abstract public class AbstractJdbcRowMapper<
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractJdbcRowMapper.class,args);
+        ICommon.LOG(AbstractJdbcRowMapper.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractJdbcRowMapper.class,level,args);
+        ICommon.LOG(AbstractJdbcRowMapper.class, level, args);
     }
 }

@@ -38,13 +38,13 @@ abstract public class AbstractCommonLogger implements ICommonLogger {
 
     @Override
     public void logArgs(String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, args).toString();
         this.infoLevel(log);
     }
 
     @Override
     public void logAtLevel(LogLevel level, String... args) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,args).toString();
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, args).toString();
         switch (level) {
             case DEBUG :
                 this.debugLevel(log);
@@ -181,7 +181,7 @@ abstract public class AbstractCommonLogger implements ICommonLogger {
     @Override
     public void errorLevel(Throwable throwable, String... args) {
         if (this.isLoggingEnabledForLevel(LogLevel.ERROR)) {
-            this.abstractError(throwable,args);
+            this.abstractError(throwable, args);
         }
     }
 

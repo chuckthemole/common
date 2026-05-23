@@ -43,11 +43,12 @@ public class ComponentPartManager extends AbstractCommonManager<String, Abstract
 
     public String registerComponentPart(String componentName, AbstractHtmlObject componentPart) {
         final String id = componentUniqueIds.generateAndReceiveIdForGivenSet(componentName.strip());
-        componentPart.addHtmlTagAttribute(Attribute.create(AbstractComponent.COMPONENT_PART_ID,id));
+        componentPart
+                .addHtmlTagAttribute(Attribute.create(AbstractComponent.COMPONENT_PART_ID, id));
 
         // TODO: look at this. this is what I've been looking for, bug.
         // if(this.put(id, componentPart) != null) {
-        this.put(id,componentPart);
+        this.put(id, componentPart);
         return id;
         // }
         // LOG.errorLevel("Error registering component part with name: '" +
@@ -63,7 +64,7 @@ public class ComponentPartManager extends AbstractCommonManager<String, Abstract
     @Override
     public AbstractHtmlObject createEmptyManagee(String name) {
         AbstractHtmlObject htmlObject = AbstractHtmlObject.createEmptyAbstractHtmlObject();
-        return this.put(name.strip(),htmlObject);
+        return this.put(name.strip(), htmlObject);
     }
 
     @Override

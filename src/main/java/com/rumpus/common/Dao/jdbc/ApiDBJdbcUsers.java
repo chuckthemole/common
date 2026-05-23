@@ -60,7 +60,8 @@ public class ApiDBJdbcUsers<
     public boolean remove(String name) {
         LOG("ApiDBJdbcUsers::remove()");
         if (!super.remove(name)) {
-            LOG(LogLevel.ERROR,"ERROR: ApiDBJdbc.remove() could not remove with name = '",name,"'");
+            LOG(LogLevel.ERROR, "ERROR: ApiDBJdbc.remove() could not remove with name = '", name,
+                    "'");
             return false;
         }
         this.manager.deleteUser(name);
@@ -76,7 +77,7 @@ public class ApiDBJdbcUsers<
     @Override
     public USER getByUsername(String username) {
         LOG("getByUsername(username)");
-        final List<USER> users = this.getByColumnValue(ICommon.USERNAME,username);
+        final List<USER> users = this.getByColumnValue(ICommon.USERNAME, username);
         if (users.size() == 1) {
             USER user = users.get(0);
             final UserDetails userDetails = this.loadUserByUsername(username);
@@ -177,15 +178,15 @@ public class ApiDBJdbcUsers<
         // build sql for user meta table
         SQLBuilder sqlBuilder = new SQLBuilder();
         Map<String, String> columnValues = Map.of(
-                USERNAME,newUser.getUsername(),
-                EMAIL,newUser.getEmail(),
-                ID,!newUser.hasId() ? NO_ID : newUser.getId().toString() // TODO: should check that
-                                                                         // the id is unique if we
-                                                                         // getId() here
+                USERNAME, newUser.getUsername(),
+                EMAIL, newUser.getEmail(),
+                ID, !newUser.hasId() ? NO_ID : newUser.getId().toString() // TODO: should check that
+                                                                          // the id is unique if we
+                                                                          // getId() here
         );
-        sqlBuilder.insert(this.getTable(),columnValues);
+        sqlBuilder.insert(this.getTable(), columnValues);
         LOG(sqlBuilder.toString());
-        super.onInsert(newUser,sqlBuilder.toString());
+        super.onInsert(newUser, sqlBuilder.toString());
         // create user in user meta table
         // if(super.add(newUser) == null) {
         // // TODO: maybe catch here
@@ -199,30 +200,30 @@ public class ApiDBJdbcUsers<
         if (newUser == null) {
             final String log = LogBuilder
                     .logBuilderFromStringArgs("Given user is null, returning null.").toString();
-            LOG(LogLevel.ERROR,log);
+            LOG(LogLevel.ERROR, log);
             return null;
         }
 
         Map<String, Object> columnValues = Map.of(
-                USERNAME,newUser.getUsername() != null ? newUser.getUsername() : "",
-                EMAIL,newUser.getEmail() != null ? newUser.getEmail() : "",
+                USERNAME, newUser.getUsername() != null ? newUser.getUsername() : "",
+                EMAIL, newUser.getEmail() != null ? newUser.getEmail() : "",
                 // should check id is in correct format too
                 // ID, newUser.hasId() ? newUser.getId() :
                 // ApiDB.idManager.generateAndReceiveIdForGivenSet(newUser.name) // TODO: should
                 // check that the id is unique if we getId() here
-                ID,newUser.getId() != null ? newUser.getId() : ICommon.NO_ID,
-                USER_META_DATA,this.serializeUserMetaWithCommonBlob(newUser.getMetaData())
+                ID, newUser.getId() != null ? newUser.getId() : ICommon.NO_ID,
+                USER_META_DATA, this.serializeUserMetaWithCommonBlob(newUser.getMetaData())
         // USER_META_DATA, (java.sql.Blob)
         // this.serializeUserMetaWithClassSerializer((META) newUser.getMetaData())
         );
 
-        super.onSimpleInsert(newUser,columnValues);
+        super.onSimpleInsert(newUser, columnValues);
         return newUser;
     }
 
     private byte[] serializeUserMetaWithCommonBlob(META meta) {
         final String log = LogBuilder.logBuilderFromStringArgs(
-                "ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()",meta.toString()).toString();
+                "ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()", meta.toString()).toString();
         LOG(log);
         byte[] byteArray = BlobUtil.serialize(meta);
         // return JdbcBlob.createFromByteArray(byteArray);
@@ -275,13 +276,15 @@ public class ApiDBJdbcUsers<
 
         // update user table
         // username will be changed above if it is different
-        super.onUpdate(UPDATE_USER_TABLE,new Object[]{newUser.getEmail(), id}); // TODO this returns
-                                                                                // number of rows
-                                                                                // affected, check
-                                                                                // that it is one.
-                                                                                // maybe change this
-                                                                                // method to return
-                                                                                // int instead.
+        super.onUpdate(UPDATE_USER_TABLE, new Object[]{newUser.getEmail(), id}); // TODO this
+                                                                                 // returns
+                                                                                 // number of rows
+                                                                                 // affected, check
+                                                                                 // that it is one.
+                                                                                 // maybe change
+                                                                                 // this
+                                                                                 // method to return
+                                                                                 // int instead.
 
         return newUser;
     }

@@ -20,7 +20,7 @@ public class ForumThreadManager extends AbstractCommonManager<String, ForumThrea
         super(false);
         this.forumMap = new HashMap<>();
         for (String forumThreadId : forumThreadIds) {
-            this.forumMap.put(forumThreadId,ForumThread.create(null,forumThreadId));
+            this.forumMap.put(forumThreadId, ForumThread.create(null, forumThreadId));
         }
     }
 

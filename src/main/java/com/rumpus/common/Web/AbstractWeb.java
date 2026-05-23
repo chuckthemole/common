@@ -23,7 +23,7 @@ abstract public class AbstractWeb extends AbstractCommonObject {
     }
 
     public AbstractWeb(String browserVersion, String uri, List<String> params) {
-        this.init(browserVersion,uri,params);
+        this.init(browserVersion, uri, params);
     }
 
     private void init(String browserVersion, String uri, List<String> params) {
@@ -55,7 +55,7 @@ abstract public class AbstractWeb extends AbstractCommonObject {
      * @return the retrieved page if found or null if exception
      */
     public HtmlPage getHtmlPage() {
-        return this.getHtmlPageWithParams(this.buildUri(this.uri,this.params));
+        return this.getHtmlPageWithParams(this.buildUri(this.uri, this.params));
     }
 
     private void setDefaultOptions() {
@@ -80,7 +80,7 @@ abstract public class AbstractWeb extends AbstractCommonObject {
         try {
             page = this.client.getPage(uriWithParams);
         } catch (Exception e) {
-            LogBuilder.logBuilderFromStringArgs(this.getClass().getName(),"getHtmlPage",
+            LogBuilder.logBuilderFromStringArgs(this.getClass().getName(), "getHtmlPage",
                     e.getMessage());
         }
         this.client.close();

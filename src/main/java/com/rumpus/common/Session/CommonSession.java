@@ -62,7 +62,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
         Set<String> names = session.getAttributeNames();
         this.attributes = new HashMap<>();
         for (String name : names) {
-            this.attributes.put(name,session.getAttribute(name));
+            this.attributes.put(name, session.getAttribute(name));
         }
         this.maxInactiveInterval = session.getMaxInactiveInterval();
         this.isExpired = session.isExpired();
@@ -103,7 +103,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
 
         this.attributes = new HashMap<>();
         for (String name : names) {
-            this.attributes.put(name,session.getAttribute(name).toString());
+            this.attributes.put(name, session.getAttribute(name).toString());
         }
 
         // try to parse max inactive interval, if not, set to default
@@ -155,7 +155,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
         CommonSession session = new CommonSession(creationTime);
         session.setId(id);
         for (Map.Entry<String, String> attribute : attributes.entrySet()) {
-            session.setAttribute(attribute.getKey(),attribute.getValue());
+            session.setAttribute(attribute.getKey(), attribute.getValue());
         }
         session.setLastAccessedTime(lastAccessedTime);
         session.setMaxInactiveInterval(maxInactiveInterval);
@@ -219,7 +219,7 @@ public class CommonSession extends AbstractCommonObject implements Session {
 
     @Override
     public void setAttribute(String attributeName, Object attributeValue) {
-        this.attributes.put(attributeName,String.class.cast(attributeValue));
+        this.attributes.put(attributeName, String.class.cast(attributeValue));
     }
 
     @Override

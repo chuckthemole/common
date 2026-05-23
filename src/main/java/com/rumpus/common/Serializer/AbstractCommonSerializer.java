@@ -48,7 +48,7 @@ abstract public class AbstractCommonSerializer<
         return new TypeAdapter<OBJECT>() {
             @Override
             public void write(JsonWriter out, OBJECT object) throws IOException {
-                writeJson(out,object);
+                writeJson(out, object);
             }
 
             @Override
@@ -94,7 +94,7 @@ abstract public class AbstractCommonSerializer<
     public void serialize(OBJECT object, OutputStream outputStream) throws IOException {
         LOG("AbstractCommonSerializer::serialize()");
         if (this.serializationType == SerializationType.JSON) {
-            this.serializeJson(object,outputStream);
+            this.serializeJson(object, outputStream);
         } else {
             throw new UnsupportedOperationException("Unsupported serialization type");
         }
@@ -116,7 +116,7 @@ abstract public class AbstractCommonSerializer<
             JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(outputStream));
 
             try {
-                this.typeAdapter.write(jsonWriter,object);
+                this.typeAdapter.write(jsonWriter, object);
                 jsonWriter.close();
             } catch (IOException e) {
                 throw new ProcessingException("Error serializing object to string", e);
@@ -206,7 +206,7 @@ abstract public class AbstractCommonSerializer<
      */
     private void serializeJson(OBJECT object, OutputStream outputStream) throws IOException {
         JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(outputStream));
-        this.typeAdapter.write(jsonWriter,object);
+        this.typeAdapter.write(jsonWriter, object);
         jsonWriter.close();
     }
 

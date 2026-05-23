@@ -79,7 +79,7 @@ public abstract class AbstractCommonUser<
     // init fields with empty values. caller should init using setter methods.
     private void init() {
         this.userDetails = CommonUserDetails.createFromUsernamePasswordAuthority(EMPTY_FIELD,
-                EMPTY_FIELD,null,true);
+                EMPTY_FIELD, null, true);
         this.email = EMPTY_FIELD;
         this.setId(ICommon.EMPTY_UUID);
     }
@@ -133,11 +133,13 @@ public abstract class AbstractCommonUser<
     public void setPassword(String password) {
         this.userPassword = password;
         String encodedPassword = AbstractCommonUser.encoder.encode(password);
-        String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}",""); // TODO: think about
-                                                                               // how to do this.
-                                                                               // maybe just compare
-                                                                               // with the bcrypt in
-                                                                               // front.
+        String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}", ""); // TODO: think about
+                                                                                // how to do this.
+                                                                                // maybe just
+                                                                                // compare
+                                                                                // with the bcrypt
+                                                                                // in
+                                                                                // front.
         this.userDetails.setPassword(strippedPass);
     }
 
@@ -164,11 +166,11 @@ public abstract class AbstractCommonUser<
     @Override
     public String toString() {
         return CommonStringBuilder.buildString(
-                "\n Class: ",this.getClass().getSimpleName(),"\n",
-                " Id: ",this.getId().toString(),"\n",
-                " Username: ",this.getUsername(),"\n",
-                " Password: ",this.getPassword(),"\n",
-                " Email: ",this.email,"\n",
+                "\n Class: ", this.getClass().getSimpleName(), "\n",
+                " Id: ", this.getId().toString(), "\n",
+                " Username: ", this.getUsername(), "\n",
+                " Password: ", this.getPassword(), "\n",
+                " Email: ", this.email, "\n",
                 this.metaData.toString());
     }
 
@@ -186,7 +188,7 @@ public abstract class AbstractCommonUser<
         boolean flag = true;
         if (!this.usernameIsEqual(user)) {
             LogBuilder log = LogBuilder.logBuilderFromStringArgs(
-                    "\nUsernames are not equal","\nUser 1: ",
+                    "\nUsernames are not equal", "\nUser 1: ",
                     this.getUsername(),
                     "\nUser 2: ",
                     user.getUsername());
@@ -195,7 +197,7 @@ public abstract class AbstractCommonUser<
         }
         if (!this.getId().equals(user.getId())) {
             LogBuilder log = LogBuilder.logBuilderFromStringArgs(
-                    "\nIds are not equal","\nUser 1: ",
+                    "\nIds are not equal", "\nUser 1: ",
                     this.getId().toString(),
                     "\nUser 2: ",
                     user.getId().toString());

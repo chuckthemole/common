@@ -127,7 +127,7 @@ public class ForumPost extends AbstractModel<ForumPost, java.util.UUID> {
         @Override
         public Map<String, Object> getMetaAttributesMap() {
             return Map.of(
-                    AbstractMetaData.CREATION_TIME_KEY,this.getCreationTime());
+                    AbstractMetaData.CREATION_TIME_KEY, this.getCreationTime());
         }
 
         @Override

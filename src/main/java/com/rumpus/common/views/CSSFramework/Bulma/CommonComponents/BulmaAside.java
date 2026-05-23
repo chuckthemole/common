@@ -14,7 +14,7 @@ public class BulmaAside extends AbstractAside {
         // super(NAME, componentName, asideGroups, TITLE_HTML_ATTRIBUTES,
         // ITEMS_HTML_ATTRIBUTES);
         super(componentName, asideGroups);
-        this.addHtmlTagAttribute("class","menu is-hidden-mobile"); // TODO: look at this more
+        this.addHtmlTagAttribute("class", "menu is-hidden-mobile"); // TODO: look at this more
     }
 
     public static BulmaAside create(String componentName, String asideGroups) {
@@ -31,8 +31,8 @@ public class BulmaAside extends AbstractAside {
         HtmlTagAttributes itemsAttributes = HtmlTagAttributes.create();
         itemsAttributes.add(Attribute.getAttributeFromString(ITEMS_HTML_ATTRIBUTES));
 
-        manager.put(AbstractAside.TITLE_ATTRIBUTES,titlAttributes);
-        manager.put(AbstractAside.ITEMS_ATTRIBUTES,itemsAttributes);
+        manager.put(AbstractAside.TITLE_ATTRIBUTES, titlAttributes);
+        manager.put(AbstractAside.ITEMS_ATTRIBUTES, itemsAttributes);
 
         return manager;
     }

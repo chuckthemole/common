@@ -34,7 +34,7 @@ public enum NotionResourceType {
 
     static {
         for (NotionResourceType type : NotionResourceType.values()) {
-            LOOKUP.put(type.value,type);
+            LOOKUP.put(type.value, type);
         }
     }
 

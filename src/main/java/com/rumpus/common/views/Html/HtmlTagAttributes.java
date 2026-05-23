@@ -52,8 +52,8 @@ public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute>
         HtmlTagAttributes htmlTagAttributes = new HtmlTagAttributes();
         for (java.util.Map.Entry<String, String> entry : attributes.entrySet()) {
             htmlTagAttributes.add(
-                    Attribute.create(entry.getKey().strip(),Attribute
-                            .getValuesFromStringOfValues(entry.getValue(),valueDelimiter)));
+                    Attribute.create(entry.getKey().strip(), Attribute
+                            .getValuesFromStringOfValues(entry.getValue(), valueDelimiter)));
         }
         return htmlTagAttributes;
     }
@@ -66,8 +66,8 @@ public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute>
             String[] propValue = attribute.split(propValueDelimiter);
             if (propValue.length == 2) { // TODO: could this be 1?
                 htmlTagAttributes.add(
-                        Attribute.create(propValue[0].strip(),Attribute
-                                .getValuesFromStringOfValues(propValue[1],valueDelimiter)));
+                        Attribute.create(propValue[0].strip(), Attribute
+                                .getValuesFromStringOfValues(propValue[1], valueDelimiter)));
             }
         }
         return htmlTagAttributes;
@@ -168,7 +168,7 @@ public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute>
             stringBuilder.append(attribute.getValueAsString(valueDelimiter));
             stringBuilder.append(attributeDelimiter);
         }
-        return StringUtil.trimEnd(stringBuilder.toString(),attributeDelimiter);
+        return StringUtil.trimEnd(stringBuilder.toString(), attributeDelimiter);
     }
 
     /**
@@ -188,6 +188,6 @@ public class HtmlTagAttributes extends AbstractCommonManagerIdKey<Attribute>
      * @return a {@link String} of {@link Attribute} objects
      */
     public String getAttributesAsString() {
-        return this.getAttributesAsString(",","="," ");
+        return this.getAttributesAsString(",", "=", " ");
     }
 }

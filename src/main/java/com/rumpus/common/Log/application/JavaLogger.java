@@ -28,35 +28,35 @@ public class JavaLogger extends AbstractCommonLogger {
 
     @Override
     public void abstractInfo(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message)
                 .toString();
         logger.info(log);
     }
 
     @Override
     public void abstractDebug(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message)
                 .toString();
         logger.fine(log); // TODO: Look into this
     }
 
     @Override
     public void abstractWarn(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message)
                 .toString();
         logger.warning(log);
     }
 
     @Override
     public void abstractError(String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message)
                 .toString();
         logger.severe(log);
     }
 
     @Override
     public void abstractError(Throwable throwable, String... message) {
-        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz,message)
+        final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(this.clazz, message)
                 .toString();
         logger.severe(log);
         logger.severe(throwable.toString());

@@ -43,10 +43,10 @@ abstract public class AbstractUserService<
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractUserService.class,args);
+        ICommon.LOG(AbstractUserService.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractUserService.class,level,args);
+        ICommon.LOG(AbstractUserService.class, level, args);
     }
 }

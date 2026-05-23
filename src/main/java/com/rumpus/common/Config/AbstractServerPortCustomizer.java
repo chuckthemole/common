@@ -45,7 +45,7 @@ public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig
     @Override
     public void customize(ConfigurableWebServerFactory factory) {
         LOG("AbstractServerPortCustomizer::customize()");
-        LOG("Setting port to ",this.port.getPort(),".");
+        LOG("Setting port to ", this.port.getPort(), ".");
         if (this.port == null) {
             LOG("Port is null. Not customize setting port.");
             return;

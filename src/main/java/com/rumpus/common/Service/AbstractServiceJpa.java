@@ -29,7 +29,7 @@ abstract public class AbstractServiceJpa<
 
     @Override
     public List<MODEL> getByColumnValue(String column, String value) {
-        LOG(LogLevel.ERROR,"getByColumnValue(column, value) not implemented");
+        LOG(LogLevel.ERROR, "getByColumnValue(column, value) not implemented");
         return null;
     }
 

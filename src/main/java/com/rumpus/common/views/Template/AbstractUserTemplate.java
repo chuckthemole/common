@@ -28,9 +28,9 @@ abstract public class AbstractUserTemplate<
 
     @Override
     public void addComponentsToMap() {
-        this.put(USERNAME_TILE_KEY,initUsername());
-        this.put(EMAIL_TILE_KEY,initEmail());
-        this.put(AUTHORITIES_TILE_KEY,initAuthorities());
+        this.put(USERNAME_TILE_KEY, initUsername());
+        this.put(EMAIL_TILE_KEY, initEmail());
+        this.put(AUTHORITIES_TILE_KEY, initAuthorities());
     }
 
     @Override

@@ -39,13 +39,13 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
                 AbstractCommonController.COMMON_REST_API_PATH,
                 new HashMap<String, String>());
         this.requestMap.get(AbstractCommonController.COMMON_REST_API_PATH)
-                .put(CREATE_USER,CREATE_USER_PATH);
+                .put(CREATE_USER, CREATE_USER_PATH);
         this.requestMap.get(AbstractCommonController.COMMON_REST_API_PATH).put(CURRENT_USER_INFO,
                 CURRENT_USER_INFO_PATH);
     }
 
     public Map<String, String> getBasePath(String path) {
-        return this.requestMap.get(StringUtil.addCharToStartAndOrEnd(path,'/',null));
+        return this.requestMap.get(StringUtil.addCharToStartAndOrEnd(path, '/', null));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
             LOG("Base path already exists and overwrite is false. Not adding base path.");
             return;
         }
-        this.requestMap.put(StringUtil.trimStartAndEnd(basePath,'/'),paths);
+        this.requestMap.put(StringUtil.trimStartAndEnd(basePath, '/'), paths);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class CommonPaths extends AbstractCommonObject implements ICommonPaths {
             LOG("Base path does not exist. Not adding path.");
             return;
         }
-        this.requestMap.get(basePath).put(pathName,path);
+        this.requestMap.get(basePath).put(pathName, path);
     }
 
     @Override

@@ -33,8 +33,8 @@ public class ForumPostTest {
         Instant start = Instant.now();
 
         ForumPostTest.creationTime = String.valueOf(start.toEpochMilli());
-        ForumPostTest.post1 = ForumPost.create(userId1,body1);
-        ForumPostTest.post2 = ForumPost.create(userId2,body2);
+        ForumPostTest.post1 = ForumPost.create(userId1, body1);
+        ForumPostTest.post2 = ForumPost.create(userId2, body2);
 
         Instant end = Instant.now();
         ForumPostTest.differenceInTime = new BigDecimal(end.toEpochMilli() - start.toEpochMilli())
@@ -56,8 +56,8 @@ public class ForumPostTest {
     @Test
     @Order(1)
     void testGetBody() {
-        assertEquals(ForumPostTest.body1,ForumPostTest.post1.getBody());
-        assertEquals(ForumPostTest.body2,ForumPostTest.post2.getBody());
+        assertEquals(ForumPostTest.body1, ForumPostTest.post1.getBody());
+        assertEquals(ForumPostTest.body2, ForumPostTest.post2.getBody());
     }
 
     @Test
@@ -65,15 +65,15 @@ public class ForumPostTest {
     void testSetBody() {
         ForumPostTest.post1.setBody(ForumPostTest.body2);
         ForumPostTest.post2.setBody(ForumPostTest.body1);
-        assertEquals(ForumPostTest.body2,ForumPostTest.post1.getBody());
-        assertEquals(ForumPostTest.body1,ForumPostTest.post2.getBody());
+        assertEquals(ForumPostTest.body2, ForumPostTest.post1.getBody());
+        assertEquals(ForumPostTest.body1, ForumPostTest.post2.getBody());
     }
 
     @Test
     @Order(3)
     void testGetUserId() {
-        assertEquals(ForumPostTest.userId1,ForumPostTest.post1.getUserId());
-        assertEquals(ForumPostTest.userId2,ForumPostTest.post2.getUserId());
+        assertEquals(ForumPostTest.userId1, ForumPostTest.post1.getUserId());
+        assertEquals(ForumPostTest.userId2, ForumPostTest.post2.getUserId());
     }
 
     // TODO test set meta
@@ -110,7 +110,7 @@ public class ForumPostTest {
                 " differenceInTime: ",
                 String.valueOf(differenceInTime))
                 .getStringBuilder().toString();
-        assertTrue(message,difference.abs().compareTo(BigDecimal.valueOf(100)) == -1);
-        assertEquals(ForumPostTest.differenceInTime,difference,message);
+        assertTrue(message, difference.abs().compareTo(BigDecimal.valueOf(100)) == -1);
+        assertEquals(ForumPostTest.differenceInTime, difference, message);
     }
 }

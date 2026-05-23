@@ -23,7 +23,7 @@ public class DateTimeHelpers implements ICommon {
             dateObject = sdf.parse(date);
         } catch (ParseException exception) {
             com.rumpus.common.Builder.LogBuilder
-                    .logBuilderFromStringArgsNoSpaces(DateTimeHelpers.class,exception.toString());
+                    .logBuilderFromStringArgsNoSpaces(DateTimeHelpers.class, exception.toString());
         }
         return dateObject;
     }

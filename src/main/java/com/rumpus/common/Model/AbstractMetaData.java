@@ -88,7 +88,7 @@ public abstract class AbstractMetaData<
         try {
             creationTimeLong = Long.valueOf(this.creationTime);
         } catch (NumberFormatException e) {
-            LOG("Creation time is not a number: ",this.creationTime);
+            LOG("Creation time is not a number: ", this.creationTime);
             return "Invalid creation time";
         }
         return LocalDateTime.ofInstant(

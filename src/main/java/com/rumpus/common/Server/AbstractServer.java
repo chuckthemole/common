@@ -24,7 +24,7 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
 
     protected AbstractServer(String serverName, String directory, String hostIp, String port,
             boolean isRunning) {
-        this.init(serverName,directory,hostIp,port,isRunning);
+        this.init(serverName, directory, hostIp, port, isRunning);
     }
 
     private void init(String serverName, String directory, String hostIp, String port,
@@ -45,11 +45,11 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
         String log = LogBuilder.logBuilderFromStringArgs("AbstractServer::run()").toString();
         LOG(log);
         if (!this.isRunning) {
-            log = LogBuilder.logBuilderFromStringArgs("Starting server: ",this.serverName)
+            log = LogBuilder.logBuilderFromStringArgs("Starting server: ", this.serverName)
                     .toString();
             LOG(log);
             if (DOES_NOT_EXIST == FileUtil.doesPathExist(this.directory)) {
-                LOG(LogLevel.ERROR,"Server directory does not exist: ",this.directory);
+                LOG(LogLevel.ERROR, "Server directory does not exist: ", this.directory);
             }
             if (ServerUtil.isPortAvailable(port)) {
                 log = LogBuilder.logBuilderFromStringArgs(
@@ -69,7 +69,7 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
                 this.isRunning = true;
             }
             if (this.isRunning) {
-                log = LogBuilder.logBuilderFromStringArgs("Started server:\n",this.toString())
+                log = LogBuilder.logBuilderFromStringArgs("Started server:\n", this.toString())
                         .toString();
                 LOG(log);
             }
@@ -81,9 +81,9 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     log = LogBuilder
-                            .logBuilderFromStackTraceElementArray(e.getMessage(),e.getStackTrace())
+                            .logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace())
                             .toString();
-                    LOG(LogLevel.ERROR,log);
+                    LOG(LogLevel.ERROR, log);
                 }
             }
             this.onStop();
@@ -116,13 +116,14 @@ abstract public class AbstractServer extends AbstractCommonObject implements IMa
     public boolean stop() {
         String log = LogBuilder.logBuilderFromStringArgs(
                 "AbstractServer::stop()\n",
-                "Attempting to stop server:\n",this.toString()).toString();
+                "Attempting to stop server:\n", this.toString()).toString();
         LOG(log);
 
         if (this.isRunning) {
             this.isRunning = false;
             log = LogBuilder
-                    .logBuilderFromStringArgs("Success stopping server with name: ",this.serverName)
+                    .logBuilderFromStringArgs("Success stopping server with name: ",
+                            this.serverName)
                     .toString();
             LOG(log);
             return true;

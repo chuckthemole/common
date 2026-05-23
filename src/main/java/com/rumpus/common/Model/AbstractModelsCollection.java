@@ -96,7 +96,7 @@ public abstract class AbstractModelsCollection<
      */
     public List<MODEL> sortById() {
         List<MODEL> list = new ArrayList<>(this.collection);
-        Collections.sort(list,(model1, model2) -> {
+        Collections.sort(list, (model1, model2) -> {
             return model1.getId().toString().compareTo(model2.getId().toString()); // TODO: check if
                                                                                    // this works, I
                                                                                    // just added to
@@ -171,11 +171,11 @@ public abstract class AbstractModelsCollection<
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class,args);
+        com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class, args);
     }
 
     private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level,
             String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class,level,args);
+        com.rumpus.common.ICommon.LOG(AbstractModelsCollection.class, level, args);
     }
 }

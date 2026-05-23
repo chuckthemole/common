@@ -24,10 +24,10 @@ public class AwsS3BucketProperties extends AbstractCloudProperties
         super(
                 CloudType.AWS,
                 java.util.Map.of(
-                        BUCKET_NAME,bucketName,
-                        ACCESS_KEY,accessKey,
-                        SECRET_ACCESS_KEY,secretAccessKey,
-                        REGION,region));
+                        BUCKET_NAME, bucketName,
+                        ACCESS_KEY, accessKey,
+                        SECRET_ACCESS_KEY, secretAccessKey,
+                        REGION, region));
     }
 
     public static AwsS3BucketProperties createEmpty() {

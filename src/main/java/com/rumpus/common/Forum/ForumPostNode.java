@@ -13,7 +13,7 @@ public class ForumPostNode extends AbstractNode<ForumPost, ForumPostNode> {
     }
 
     public static ForumPostNode createNodeFromBody(String userId, String body) {
-        return new ForumPostNode(ForumPost.create(userId,body));
+        return new ForumPostNode(ForumPost.create(userId, body));
     }
 
     // this is in AbstractNode, I don't think I need here.

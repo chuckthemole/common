@@ -166,10 +166,10 @@ final public class FileMetadata {
         Path path = Path.of(filePath);
 
         try {
-            BasicFileAttributes attrs = Files.readAttributes(path,BasicFileAttributes.class);
+            BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
             return Optional.of(new FileMetadata(attrs));
         } catch (IOException e) {
-            LOG_THIS("Error reading file metadata: ",filePath,e.getClass().getSimpleName(),
+            LOG_THIS("Error reading file metadata: ", filePath, e.getClass().getSimpleName(),
                     e.getMessage());
             return Optional.empty();
         }
@@ -187,10 +187,10 @@ final public class FileMetadata {
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(FileMetadata.class,LogLevel.INFO,args);
+        ICommon.LOG(FileMetadata.class, LogLevel.INFO, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(FileMetadata.class,level,args);
+        ICommon.LOG(FileMetadata.class, level, args);
     }
 }

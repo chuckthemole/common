@@ -64,7 +64,7 @@ abstract public class AbstractUserController<
     public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort")
     String sort, HttpSession session) {
         LOG("AbstractUserController::getAllUsersByPath()");
-        return getAllUsers(sort,session);
+        return getAllUsers(sort, session);
     }
 
     @Override
@@ -160,7 +160,7 @@ abstract public class AbstractUserController<
         if (user != null) {
             LOG("User already exists.");
             HttpSession session = request.getSession();
-            session.setAttribute("status","user already exists");
+            session.setAttribute("status", "user already exists");
             return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
 
         }
@@ -175,13 +175,13 @@ abstract public class AbstractUserController<
         // catch error creating user
         if (user == null) {
             LOG("ERROR: User is null.");
-            session.setAttribute("status","error creating user");
+            session.setAttribute("status", "error creating user");
             return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
         }
 
         // log in user
-        AbstractUserController.currentUserLogin(user,request);
-        session.setAttribute("loggedIn",true);
+        AbstractUserController.currentUserLogin(user, request);
+        session.setAttribute("loggedIn", true);
 
         // Gson gson = new GsonBuilder()
         // .setPrettyPrinting()
@@ -193,7 +193,7 @@ abstract public class AbstractUserController<
         // .create();
         // session.setAttribute("user", gson.toJson(user));
 
-        session.setAttribute("user",this.serializerService.serializeToString(user,null));
+        session.setAttribute("user", this.serializerService.serializeToString(user, null));
 
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 SecurityContextHolder.getContext());
@@ -219,20 +219,20 @@ abstract public class AbstractUserController<
         LOG("USERRestController POST: /api/delete_user");
         HttpSession session = request.getSession();
         if (this.userService
-                .remove(StringUtil.isQuoted(user) ? user.substring(1,user.length() - 1) : user)) { // if
-                                                                                                   // user
-                                                                                                   // was
-                                                                                                   // removed,
-                                                                                                   // return
-                                                                                                   // session
-                                                                                                   // with
-                                                                                                   // status
-                                                                                                   // delete
-            session.setAttribute("status","user deleted");
+                .remove(StringUtil.isQuoted(user) ? user.substring(1, user.length() - 1) : user)) { // if
+                                                                                                    // user
+                                                                                                    // was
+                                                                                                    // removed,
+                                                                                                    // return
+                                                                                                    // session
+                                                                                                    // with
+                                                                                                    // status
+                                                                                                    // delete
+            session.setAttribute("status", "user deleted");
             return new ResponseEntity<CommonSession>(new CommonSession(session),
                     HttpStatus.CREATED);
         }
-        session.setAttribute("status","error deleting user");
+        session.setAttribute("status", "error deleting user");
         return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED); // else
                                                                                                   // return
                                                                                                   // session
@@ -248,18 +248,18 @@ abstract public class AbstractUserController<
         HttpSession session = request.getSession();
         // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1,
         // user.length() - 1) : user);
-        LogBuilder log = LogBuilder.logBuilderFromStringArgs("Update this user: ",user.toString());
+        LogBuilder log = LogBuilder.logBuilderFromStringArgs("Update this user: ", user.toString());
         LOG(log.toString());
-        if (this.userService.update(user.getId().toString(),user) != null) { // if user was updated
-                                                                             // successfully,
-                                                                             // return session with
-                                                                             // status updateed
-            session.setAttribute("status","user updated");
+        if (this.userService.update(user.getId().toString(), user) != null) { // if user was updated
+                                                                              // successfully,
+                                                                              // return session with
+                                                                              // status updateed
+            session.setAttribute("status", "user updated");
             return new ResponseEntity<CommonSession>(new CommonSession(session),
                     HttpStatus.CREATED);
 
         }
-        session.setAttribute("status","error updating user");
+        session.setAttribute("status", "error updating user");
         return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED);
     }
 
@@ -287,9 +287,9 @@ abstract public class AbstractUserController<
             LOG(log.toString());
             return new ResponseEntity<USER>(user, HttpStatus.ACCEPTED);
         }
-        LogBuilder log = LogBuilder.logBuilderFromStringArgs("User with id '",id,
+        LogBuilder log = LogBuilder.logBuilderFromStringArgs("User with id '", id,
                 "' was not found.");
-        LOG(LogLevel.ERROR,log.toString());
+        LOG(LogLevel.ERROR, log.toString());
         return null;
     }
 
@@ -338,7 +338,7 @@ abstract public class AbstractUserController<
     protected static <USER extends AbstractCommonUser<USER, USER_META>,
             USER_META extends AbstractCommonUserMetaData<USER_META>> void currentUserLogin(
                     USER user, HttpServletRequest request) {
-        LOG(AbstractUserController.class,"RumpusController::currentUserLogin()");
+        LOG(AbstractUserController.class, "RumpusController::currentUserLogin()");
         String password = user.getUserPassword();
         String username = user.getUsername();
         try {
@@ -349,13 +349,13 @@ abstract public class AbstractUserController<
                     .append("  User Password: ")
                     .append(password)
                     .append("\n");
-            LOG(AbstractUserController.class,sbLogInfo.toString());
-            request.login(username,password);
+            LOG(AbstractUserController.class, sbLogInfo.toString());
+            request.login(username, password);
         } catch (ServletException exception) {
             StringBuilder sbLogInfo = new StringBuilder();
             sbLogInfo.append("\nError with log in request:\n").append("  ")
                     .append(exception.toString()).append("\n");
-            LOG(AbstractUserController.class,sbLogInfo.toString());
+            LOG(AbstractUserController.class, sbLogInfo.toString());
         }
     }
 

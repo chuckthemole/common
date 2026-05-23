@@ -130,7 +130,7 @@ abstract public class AbstractTile extends AbstractComponent {
             } else if (extractedTileType == null) {
                 LOG("TileType is EMPTY. TileType: 'null'");
             } else {
-                LOG("TileType is not valid. TileType: ",extractedTileType.toString());
+                LOG("TileType is not valid. TileType: ", extractedTileType.toString());
             }
         } else {
             LOG("tileTypeAndComponentArray.length is not greater than 0. Length: ",
@@ -184,7 +184,7 @@ abstract public class AbstractTile extends AbstractComponent {
                             super.componentAttributeManager.get(AbstractTile.TITLE_ATTRIBUTE));
                 } else { // this is a subtitle, not a title
                     htmlObject = AbstractTileComponentPart.createLink(
-                            tileComponentAndLink[0].strip(),tileComponentAndLink[1].strip());
+                            tileComponentAndLink[0].strip(), tileComponentAndLink[1].strip());
                     htmlObject.setHtmlAttributes(
                             super.componentAttributeManager.get(AbstractTile.SUBTITLE_ATTRIBUTE));
                 }

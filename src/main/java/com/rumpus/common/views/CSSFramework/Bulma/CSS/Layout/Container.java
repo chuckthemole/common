@@ -14,6 +14,6 @@ public class Container extends AbstractBulmaLayout {
     }
 
     private void init() {
-        this.addHtmlTagAttribute(Attribute.create("class","container"));
+        this.addHtmlTagAttribute(Attribute.create("class", "container"));
     }
 }

@@ -74,7 +74,7 @@ public class NotionIntegration extends AbstractIntegration {
      */
     public String listUsers() throws Exception {
         String url = BASE_URL + "/users";
-        return get(url,defaultHeaders());
+        return get(url, defaultHeaders());
     }
 
     /**
@@ -88,7 +88,7 @@ public class NotionIntegration extends AbstractIntegration {
      */
     public String queryDatabase(String databaseId) throws Exception {
         String url = BASE_URL + ENDPOINT_DATABASES + "/" + databaseId + "/query";
-        return post(url,defaultHeaders(),"{}"); // Notion requires POST even for queries
+        return post(url, defaultHeaders(), "{}"); // Notion requires POST even for queries
     }
 
     /**
@@ -101,12 +101,12 @@ public class NotionIntegration extends AbstractIntegration {
         String url = BASE_URL + ENDPOINT_PAGES;
 
         // Ensure the request body includes the parent field
-        final String wrappedBody = wrapWithDatabaseParent(databaseId,jsonBody);
+        final String wrappedBody = wrapWithDatabaseParent(databaseId, jsonBody);
 
         // Pretty-print the wrapped body for debugging
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Object json = mapper.readValue(wrappedBody,Object.class);
+            Object json = mapper.readValue(wrappedBody, Object.class);
             ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
             String prettyJson = writer.writeValueAsString(json);
 
@@ -121,7 +121,7 @@ public class NotionIntegration extends AbstractIntegration {
                     "createPage() -> Failed to pretty-print JSON, raw body:\n" + wrappedBody);
         }
 
-        return post(url,defaultHeaders(),wrappedBody);
+        return post(url, defaultHeaders(), wrappedBody);
     }
 
     /**
@@ -138,22 +138,22 @@ public class NotionIntegration extends AbstractIntegration {
 
             com.google.gson.JsonObject finalObject = new com.google.gson.JsonObject();
             com.google.gson.JsonObject parent = new com.google.gson.JsonObject();
-            parent.addProperty("database_id",databaseId);
+            parent.addProperty("database_id", databaseId);
 
-            finalObject.add("parent",parent);
+            finalObject.add("parent", parent);
 
             if (body.isJsonObject()) {
                 com.google.gson.JsonObject bodyObj = body.getAsJsonObject();
                 // merge the rest of the body (like properties)
                 for (var entry : bodyObj.entrySet()) {
-                    finalObject.add(entry.getKey(),entry.getValue());
+                    finalObject.add(entry.getKey(), entry.getValue());
                 }
             }
 
             return finalObject.toString();
 
         } catch (Exception e) {
-            LOG("wrapWithDatabaseParent() -> ERROR wrapping payload:",e.getMessage());
+            LOG("wrapWithDatabaseParent() -> ERROR wrapping payload:", e.getMessage());
             // Fallback: minimal valid JSON if parsing fails
             return String.format("{\"parent\":{\"database_id\":\"%s\"},\"properties\":{}}",
                     databaseId);
@@ -173,7 +173,7 @@ public class NotionIntegration extends AbstractIntegration {
      */
     public String updatePage(String pageId, String jsonBody) throws Exception {
         String url = BASE_URL + ENDPOINT_PAGES + "/" + pageId;
-        return patch(url,defaultHeaders(),jsonBody);
+        return patch(url, defaultHeaders(), jsonBody);
     }
 
     /**
@@ -189,7 +189,7 @@ public class NotionIntegration extends AbstractIntegration {
         String url = BASE_URL + ENDPOINT_PAGES + "/" + pageId;
         // Notion doesn't have "DELETE" — instead you set "archived: true" in PATCH
         String body = "{\"archived\": true}";
-        return patch(url,defaultHeaders(),body);
+        return patch(url, defaultHeaders(), body);
     }
 
     // ==============================
@@ -203,9 +203,9 @@ public class NotionIntegration extends AbstractIntegration {
      */
     private Map<String, String> defaultHeaders() {
         Map<String, String> headers = new HashMap<>();
-        headers.put(HEADER_AUTH,"Bearer " + token);
-        headers.put(HEADER_VERSION,API_VERSION);
-        headers.put(HEADER_CONTENT_TYPE,CONTENT_TYPE_JSON);
+        headers.put(HEADER_AUTH, "Bearer " + token);
+        headers.put(HEADER_VERSION, API_VERSION);
+        headers.put(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
         return headers;
     }
 
@@ -218,7 +218,7 @@ public class NotionIntegration extends AbstractIntegration {
         // PATCH
         // So if AbstractIntegration doesn’t support PATCH, add it there (like we did
         // with PUT).
-        return put(url,headers,body); // safe fallback to PUT, though PATCH is preferable
+        return put(url, headers, body); // safe fallback to PUT, though PATCH is preferable
     }
 
     @Override

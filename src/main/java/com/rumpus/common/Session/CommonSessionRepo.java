@@ -34,7 +34,7 @@ public class CommonSessionRepo implements ReactiveSessionRepository<CommonSessio
 
             }
             if (session != null) {
-                this.sessions.put(session.getId().toString(),session);
+                this.sessions.put(session.getId().toString(), session);
             }
         });
     }

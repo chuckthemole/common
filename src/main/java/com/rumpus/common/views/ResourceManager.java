@@ -38,7 +38,7 @@ public class ResourceManager extends AbstractCommonManager<String, Resource> {
 
     @Override
     public Resource createEmptyManagee(String name) {
-        return this.addResource(name,ResourceType.EMPTY,StorageType.EMPTY,"");
+        return this.addResource(name, ResourceType.EMPTY, StorageType.EMPTY, "");
     }
 
     /**
@@ -60,7 +60,7 @@ public class ResourceManager extends AbstractCommonManager<String, Resource> {
     public Resource addResource(String resourceName, ResourceType resourceType,
             StorageType storageType, String resourcePath) {
         Resource resource = new Resource(resourceName, resourceType, storageType, resourcePath);
-        return this.put(resource.getName(),resource);
+        return this.put(resource.getName(), resource);
     }
 
     /**

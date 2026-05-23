@@ -105,7 +105,7 @@ public abstract class AbstractCommonUserCollection<
      */
     public List<USER> sortByUsername() {
         List<USER> list = new ArrayList<>(this.collection);
-        Collections.sort(list,(user1, user2) -> {
+        Collections.sort(list, (user1, user2) -> {
             return user1.getUsername().compareTo(user2.getUsername());
         });
         return list;
@@ -118,18 +118,18 @@ public abstract class AbstractCommonUserCollection<
      */
     public List<USER> sortByEmail() {
         List<USER> list = new ArrayList<>(this.collection);
-        Collections.sort(list,(user1, user2) -> {
+        Collections.sort(list, (user1, user2) -> {
             return user1.getEmail().compareTo(user2.getEmail());
         });
         return list;
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class,args);
+        com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class, args);
     }
 
     private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level,
             String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class,level,args);
+        com.rumpus.common.ICommon.LOG(AbstractCommonUserCollection.class, level, args);
     }
 }

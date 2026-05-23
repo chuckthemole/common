@@ -19,13 +19,13 @@ public class LogItemCollectionManager extends AbstractCommonManager<String, LogI
 
     public static LogItemCollectionManager createWithMainAndAdmin() {
         LogItemCollectionManager manager = LogItemCollectionManager.create();
-        manager.addLogCollection(MAIN_LOG,new LogItemCollection());
-        manager.addLogCollection(ADMIN_LOG,new LogItemCollection());
+        manager.addLogCollection(MAIN_LOG, new LogItemCollection());
+        manager.addLogCollection(ADMIN_LOG, new LogItemCollection());
         return manager;
     }
 
     public LogItemCollection addLogCollection(String name, LogItemCollection collection) {
-        return this.put(name,collection);
+        return this.put(name, collection);
     }
 
     public LogItemCollection removeLogCollection(String name) {
@@ -54,11 +54,11 @@ public class LogItemCollectionManager extends AbstractCommonManager<String, LogI
                         "No LogCollection exists with name '",
                         logItem.getLogName(),
                         "'").toString();
-                LOG(LogLevel.ERROR,log);
+                LOG(LogLevel.ERROR, log);
             }
         } else {
             final String log = LogBuilder.logBuilderFromStringArgs("LogItem is null").toString();
-            LOG(LogLevel.ERROR,log);
+            LOG(LogLevel.ERROR, log);
         }
     }
 

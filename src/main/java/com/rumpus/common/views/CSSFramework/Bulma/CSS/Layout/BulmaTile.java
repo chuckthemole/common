@@ -21,8 +21,8 @@ import com.rumpus.common.views.Html.HtmlTagAttributes;
  *  {@code
  * AbstractTile ancestor = BulmaTile.createAncestorTile("AncestorTile");
  * AbstractTile parent = BulmaTile.createParentTile("ParentTile");
- * AbstractTile child1 = BulmaTile.createChildTile("ChildTile","ChildTitle, ChildSubtitle");
- * AbstractTile child2 = BulmaTile.createChildTile("ChildTile","ChildComponents");
+ * AbstractTile child1 = BulmaTile.createChildTile("ChildTile", "ChildTitle, ChildSubtitle");
+ * AbstractTile child2 = BulmaTile.createChildTile("ChildTile", "ChildComponents");
  * parent.addChild(child1);
  * parent.addChild(child2);
  * parent.addChild(BulmaTile.createEmptyChildTile("ChildTile"));
@@ -92,7 +92,7 @@ public class BulmaTile extends AbstractTile {
                         AbstractTile.CHILD_ATTRIBUTE,
                         AbstractTile.TILE_TYPE_DELIMITER,
                         title,
-                        AbstractComponent.DEFAULT_DELIMITER,subtitle));
+                        AbstractComponent.DEFAULT_DELIMITER, subtitle));
     }
 
     public static BulmaTile createChildTile(String componentName, String tileComponents) {
@@ -124,28 +124,28 @@ public class BulmaTile extends AbstractTile {
 
         HtmlTagAttributes ancestorAttributes = HtmlTagAttributes.create();
         ancestorAttributes
-                .add(Attribute.createClassAttribute(java.util.Set.of("tile","is-ancestor")));
-        manager.put(AbstractTile.ANCESTOR_ATTRIBUTE,ancestorAttributes);
+                .add(Attribute.createClassAttribute(java.util.Set.of("tile", "is-ancestor")));
+        manager.put(AbstractTile.ANCESTOR_ATTRIBUTE, ancestorAttributes);
 
         HtmlTagAttributes parentAttributes = HtmlTagAttributes.create();
-        parentAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile","is-parent")));
-        manager.put(AbstractTile.PARENT_ATTRIBUTE,parentAttributes);
+        parentAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile", "is-parent")));
+        manager.put(AbstractTile.PARENT_ATTRIBUTE, parentAttributes);
 
         HtmlTagAttributes childAttributes = HtmlTagAttributes.create();
-        childAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile","is-child")));
-        manager.put(AbstractTile.CHILD_ATTRIBUTE,childAttributes);
+        childAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile", "is-child")));
+        manager.put(AbstractTile.CHILD_ATTRIBUTE, childAttributes);
 
         HtmlTagAttributes containerAttributes = HtmlTagAttributes.create();
         containerAttributes.add(Attribute.createClassAttribute(java.util.Set.of("tile")));
-        manager.put(AbstractTile.CONTAINER_ATTRIBUTE,containerAttributes);
+        manager.put(AbstractTile.CONTAINER_ATTRIBUTE, containerAttributes);
 
         HtmlTagAttributes titleAttributes = HtmlTagAttributes.create();
         titleAttributes.add(Attribute.createClassAttribute(java.util.Set.of("title")));
-        manager.put(AbstractTile.TITLE_ATTRIBUTE,titleAttributes);
+        manager.put(AbstractTile.TITLE_ATTRIBUTE, titleAttributes);
 
         HtmlTagAttributes subtitleAttributes = HtmlTagAttributes.create();
         subtitleAttributes.add(Attribute.createClassAttribute(java.util.Set.of("subtitle")));
-        manager.put(AbstractTile.SUBTITLE_ATTRIBUTE,subtitleAttributes);
+        manager.put(AbstractTile.SUBTITLE_ATTRIBUTE, subtitleAttributes);
 
         return manager;
     }

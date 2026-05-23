@@ -60,7 +60,7 @@ abstract public class AbstractCommonManagerIdKey<
     }
 
     public MANAGEE update(String key, MANAGEE managee) {
-        return this.manageeSet.put(key,managee);
+        return this.manageeSet.put(key, managee);
     }
 
     /**
@@ -83,7 +83,7 @@ abstract public class AbstractCommonManagerIdKey<
         }
         String id = this.idSet.add();
         managee.setUniqueId(id);
-        this.manageeSet.put(id,managee);
+        this.manageeSet.put(id, managee);
         return id;
     }
 
@@ -99,7 +99,7 @@ abstract public class AbstractCommonManagerIdKey<
             return false;
         }
         managee.setUniqueId(this.idSet.add());
-        this.manageeSet.put(managee.getUniqueId(),managee);
+        this.manageeSet.put(managee.getUniqueId(), managee);
         return true;
     }
 

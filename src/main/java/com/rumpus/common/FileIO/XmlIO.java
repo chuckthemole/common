@@ -35,7 +35,7 @@ final public class XmlIO extends AbstractFileIO {
 
         // If the file content is empty, log an error and return an empty Optional
         if (filePath.isEmpty()) {
-            LOG_THIS(LogLevel.ERROR,"File content is empty or could not be read: " + filePath);
+            LOG_THIS(LogLevel.ERROR, "File content is empty or could not be read: " + filePath);
             return Optional.empty();
         }
 
@@ -46,8 +46,8 @@ final public class XmlIO extends AbstractFileIO {
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            LOG_THIS(LogLevel.ERROR,"Error creating XML document builder: ",
-                    e.getClass().getSimpleName(),e.getMessage());
+            LOG_THIS(LogLevel.ERROR, "Error creating XML document builder: ",
+                    e.getClass().getSimpleName(), e.getMessage());
             return Optional.empty();
         }
 
@@ -55,8 +55,8 @@ final public class XmlIO extends AbstractFileIO {
         try {
             doc = builder.parse(filePath);
         } catch (SAXException | IOException e) {
-            LOG_THIS(LogLevel.ERROR,"Error parsing XML from file: " + filePath,
-                    e.getClass().getSimpleName(),e.getMessage());
+            LOG_THIS(LogLevel.ERROR, "Error parsing XML from file: " + filePath,
+                    e.getClass().getSimpleName(), e.getMessage());
             return Optional.empty();
         }
 
@@ -72,7 +72,7 @@ final public class XmlIO extends AbstractFileIO {
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(XmlIO.class,level,args);
+        ICommon.LOG(XmlIO.class, level, args);
     }
 
     @Override

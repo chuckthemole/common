@@ -46,11 +46,11 @@ public class CommonPython extends AbstractCommonObject {
                 systemState.path.append(new PyString(PYTHON_PATH_PATH + "/python3.11/"));
                 systemState.path
                         .append(new PyString(PYTHON_PATH_PATH + "/python3.11/site-packages/"));
-                props.setProperty(PYTHON_HOME,PYTHON_HOME_PATH);
-                props.setProperty(JYTHON_HOME,PYTHON_HOME_PATH);
-                props.setProperty(PYTHON_PATH,PYTHON_PATH_PATH);
-                props.setProperty(JYTHON_PATH,PYTHON_PATH_PATH);
-                PythonInterpreter.initialize(System.getProperties(),props,new String[]{});
+                props.setProperty(PYTHON_HOME, PYTHON_HOME_PATH);
+                props.setProperty(JYTHON_HOME, PYTHON_HOME_PATH);
+                props.setProperty(PYTHON_PATH, PYTHON_PATH_PATH);
+                props.setProperty(JYTHON_PATH, PYTHON_PATH_PATH);
+                PythonInterpreter.initialize(System.getProperties(), props, new String[]{});
             }
             interpreter = new PythonInterpreter();
         }
@@ -75,8 +75,8 @@ public class CommonPython extends AbstractCommonObject {
         } catch (Exception e) {
             LOG.errorLevel("Could not import module: " + module);
             final String log = LogBuilder.logBuilderFromStackTraceElementArray(
-                    e.getMessage(),e.getStackTrace()).toString();
-            LOG(CommonPython.class,LogLevel.ERROR,log);
+                    e.getMessage(), e.getStackTrace()).toString();
+            LOG(CommonPython.class, LogLevel.ERROR, log);
             return null;
         }
         PyObject pyObjFunction = interpreter.get(function);
@@ -87,12 +87,12 @@ public class CommonPython extends AbstractCommonObject {
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(CommonPython.class,args);
+        com.rumpus.common.ICommon.LOG(CommonPython.class, args);
     }
 
     private static void LOG_THIS(com.rumpus.common.Log.ICommonLogger.LogLevel level,
             String... args) {
-        com.rumpus.common.ICommon.LOG(CommonPython.class,level,args);
+        com.rumpus.common.ICommon.LOG(CommonPython.class, level, args);
     }
 
     @Override

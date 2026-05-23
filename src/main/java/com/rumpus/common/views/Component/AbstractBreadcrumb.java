@@ -82,19 +82,19 @@ public abstract class AbstractBreadcrumb extends AbstractComponent {
                         .createBreadcrumbListItem(crumbAndLink[0].strip());
             } else if (crumbAndLink.length == 2) { // crumbs with links
                 final com.rumpus.common.views.Html.AbstractHtmlObject crumbAndLinkHtmlObject = AbstractBreadcrumbComponentPart
-                        .createBreadcrumbLink(crumbAndLink[0].strip(),crumbAndLink[1].strip());
+                        .createBreadcrumbLink(crumbAndLink[0].strip(), crumbAndLink[1].strip());
                 htmlObject = AbstractBreadcrumbComponentPart.createBreadcrumbListItem("")
                         .addChild(crumbAndLinkHtmlObject);
             } else { // invalid crumbs
-                LOG(LogLevel.ERROR,"Invalid breadcrumb: ",crumbArray[crumbArrayIndex]);
+                LOG(LogLevel.ERROR, "Invalid breadcrumb: ", crumbArray[crumbArrayIndex]);
                 continue;
             }
 
             if (htmlObject != null) {
                 final String componentPartId = this.componentPartManager
-                        .registerComponentPart(super.getComponentName(),htmlObject);
+                        .registerComponentPart(super.getComponentName(), htmlObject);
                 htmlObject.addHtmlTagAttribute(
-                        Attribute.create(AbstractComponent.COMPONENT_PART_ID,componentPartId));
+                        Attribute.create(AbstractComponent.COMPONENT_PART_ID, componentPartId));
                 breadcrumbList.addChild(htmlObject);
             }
         }

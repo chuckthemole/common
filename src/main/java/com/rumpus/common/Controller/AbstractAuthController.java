@@ -80,8 +80,8 @@ abstract public class AbstractAuthController<
         }
 
         OAuth2Provider oauthProvider = OAuth2Provider.fromString(provider);
-        String authUrl = buildAuthorizationUrl(oauthProvider,request);
-        LOG(AbstractAuthController.class,"Built authorization URL: ",authUrl);
+        String authUrl = buildAuthorizationUrl(oauthProvider, request);
+        LOG(AbstractAuthController.class, "Built authorization URL: ", authUrl);
 
         return new RedirectView(authUrl);
     }
@@ -119,13 +119,13 @@ abstract public class AbstractAuthController<
             }
 
             // Step 1: Exchange code for access token
-            String accessToken = exchangeCodeForToken(oauthProvider,code);
+            String accessToken = exchangeCodeForToken(oauthProvider, code);
 
             // Step 2: Retrieve user information
-            Map<String, Object> userInfo = getUserInfo(oauthProvider,accessToken);
+            Map<String, Object> userInfo = getUserInfo(oauthProvider, accessToken);
 
             // Step 3: App-specific login handling (e.g., JWT, session, DB entry)
-            return handleUserAuthentication(oauthProvider,userInfo,accessToken);
+            return handleUserAuthentication(oauthProvider, userInfo, accessToken);
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Authentication failed: " + e.getMessage());
@@ -213,11 +213,11 @@ abstract public class AbstractAuthController<
                 && !(authentication instanceof AnonymousAuthenticationToken)) {
             // Optionally: return username or roles
             return ResponseEntity.ok(Map.of(
-                    "authenticated",true,
-                    "username",authentication.getName(),
-                    "roles",authentication.getAuthorities()));
+                    "authenticated", true,
+                    "username", authentication.getName(),
+                    "roles", authentication.getAuthorities()));
         } else {
-            return ResponseEntity.ok(Map.of("authenticated",false));
+            return ResponseEntity.ok(Map.of("authenticated", false));
         }
     }
 

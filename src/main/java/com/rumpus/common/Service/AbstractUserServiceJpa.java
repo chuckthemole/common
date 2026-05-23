@@ -44,8 +44,8 @@ abstract public class AbstractUserServiceJpa<
         USER exampleUser = this.createUserWithUsername(username);
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreNullValues() // ignore null values
-                .withMatcher(ICommon.USERNAME,ExampleMatcher.GenericPropertyMatchers.exact());
-        Example<USER> example = Example.of(exampleUser,matcher);
+                .withMatcher(ICommon.USERNAME, ExampleMatcher.GenericPropertyMatchers.exact());
+        Example<USER> example = Example.of(exampleUser, matcher);
         return this.userDaoJpa.findOne(example).get(); // TODO: catch NoSuchElementException
     }
 
@@ -56,11 +56,11 @@ abstract public class AbstractUserServiceJpa<
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractUserServiceJpa.class,args);
+        ICommon.LOG(AbstractUserServiceJpa.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractUserServiceJpa.class,level,args);
+        ICommon.LOG(AbstractUserServiceJpa.class, level, args);
     }
 
 }

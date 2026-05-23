@@ -149,11 +149,11 @@ class IFileIOTest {
 
             // Assert
             assertTrue(result.isPresent());
-            assertEquals(IFileIOTest.jsonContentLength,result.get().length);
+            assertEquals(IFileIOTest.jsonContentLength, result.get().length);
 
             TestUserModel[] user = result.get();
             for (int i = 0; i < user.length; i++) {
-                assertEquals(IFileIOTest.userNames[i],user[i].getUsername());
+                assertEquals(IFileIOTest.userNames[i], user[i].getUsername());
             }
         }
     }
@@ -211,9 +211,9 @@ class IFileIOTest {
                     IFileIOTest.JSON_USER_FILE,
                     TestUserModel.class);
             assertTrue(result.isPresent());
-            assertEquals("chuckthemole",result.get().getUsername());
-            assertEquals("chuckthemole@gmail.com",result.get().getEmail());
-            assertEquals("11111111-1111-1111-1111-111111111111",result.get().getId().toString());
+            assertEquals("chuckthemole", result.get().getUsername());
+            assertEquals("chuckthemole@gmail.com", result.get().getEmail());
+            assertEquals("11111111-1111-1111-1111-111111111111", result.get().getId().toString());
         }
     }
 
@@ -262,7 +262,7 @@ class IFileIOTest {
             Optional<String> result = this.jsonFileReader
                     .readRawFileContent(IFileIOTest.JSON_USERS_FILE);
             assertTrue(result.isPresent());
-            assertEquals(IFileIOTest.jsonContent,result.get());
+            assertEquals(IFileIOTest.jsonContent, result.get());
         }
     }
 
@@ -277,6 +277,6 @@ class IFileIOTest {
         Optional<FileMetadata> metadata = this.jsonFileReader
                 .getFileMetadata(IFileIOTest.JSON_META_DATA);
         assertTrue(metadata.isPresent());
-        assertEquals(IFileIOTest.JSON_META_DATA_FILE_SIZE,metadata.get().getFileSize());
+        assertEquals(IFileIOTest.JSON_META_DATA_FILE_SIZE, metadata.get().getFileSize());
     }
 }

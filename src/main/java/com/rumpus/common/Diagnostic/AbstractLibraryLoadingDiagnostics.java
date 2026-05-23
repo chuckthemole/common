@@ -67,13 +67,13 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
     @PostConstruct
     public void onPostConstruct() {
-        LOG(AbstractLibraryLoadingDiagnostics.class,"=== POST CONSTRUCT - Full Library Check ===");
+        LOG(AbstractLibraryLoadingDiagnostics.class, "=== POST CONSTRUCT - Full Library Check ===");
         performCompleteLibraryCheck("PostConstruct");
     }
 
     private void performCompleteLibraryCheck(String phase) {
         LOG(AbstractLibraryLoadingDiagnostics.class,
-                "=================== COMPLETE LIBRARY CHECK - {} ===================",phase);
+                "=================== COMPLETE LIBRARY CHECK - {} ===================", phase);
 
         // 1. Check JAR presence and version
         checkJarPresenceAndVersion(phase);
@@ -100,7 +100,7 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
     private void checkJarPresenceAndVersion(String phase) {
         LOG(AbstractLibraryLoadingDiagnostics.class,
-                "--- JAR Presence & Version Check (Phase: {}) ---",phase);
+                "--- JAR Presence & Version Check (Phase: {}) ---", phase);
 
         String classpath = System.getProperty("java.class.path");
         String[] classpathEntries = classpath.split(File.pathSeparator);
@@ -110,16 +110,16 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
                 .collect(Collectors.toList());
 
         if (libraryJars.isEmpty()) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
-                    "✗ NO library JARs found in classpath (Phase: {})",phase);
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,"  Full classpath: {}",
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
+                    "✗ NO library JARs found in classpath (Phase: {})", phase);
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR, "  Full classpath: {}",
                     classpath);
         } else {
-            LOG(AbstractLibraryLoadingDiagnostics.class,"✓ Found {} library JAR(s) (Phase: {}):",
-                    String.valueOf(libraryJars.size()),phase);
+            LOG(AbstractLibraryLoadingDiagnostics.class, "✓ Found {} library JAR(s) (Phase: {}):",
+                    String.valueOf(libraryJars.size()), phase);
             libraryJars.forEach(jar -> {
-                LOG(AbstractLibraryLoadingDiagnostics.class,"  - {}",jar);
-                checkJarContents(jar,phase);
+                LOG(AbstractLibraryLoadingDiagnostics.class, "  - {}", jar);
+                checkJarContents(jar, phase);
             });
         }
     }
@@ -131,7 +131,7 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
                     long classCount = jar.stream()
                             .filter(entry -> entry.getName().endsWith(".class"))
                             .filter(entry -> entry.getName()
-                                    .startsWith(LIBRARY_PACKAGE.replace(".","/")))
+                                    .startsWith(LIBRARY_PACKAGE.replace(".", "/")))
                             .count();
 
                     LOG(AbstractLibraryLoadingDiagnostics.class,
@@ -145,19 +145,20 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
                         String version = attrs.getValue("Implementation-Version");
                         String title = attrs.getValue("Implementation-Title");
                         LOG(AbstractLibraryLoadingDiagnostics.class,
-                                "    JAR Version: {}, Title: {}",version,title);
+                                "    JAR Version: {}, Title: {}", version, title);
                     }
                 }
             }
         } catch (IOException e) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.WARN,
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.WARN,
                     "    Could not inspect JAR contents: {}",
                     e.getMessage());
         }
     }
 
     private void checkAllLibraryClasses(String phase) {
-        LOG(AbstractLibraryLoadingDiagnostics.class,"--- All Library Classes Check (Phase: {}) ---",
+        LOG(AbstractLibraryLoadingDiagnostics.class,
+                "--- All Library Classes Check (Phase: {}) ---",
                 phase);
 
         try {
@@ -165,13 +166,13 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
             Set<String> libraryClasses = scanForLibraryClasses();
 
             if (libraryClasses.isEmpty()) {
-                LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
-                        "✗ No library classes found in package: {} (Phase: {})",LIBRARY_PACKAGE,
+                LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
+                        "✗ No library classes found in package: {} (Phase: {})", LIBRARY_PACKAGE,
                         phase);
             } else {
                 LOG(AbstractLibraryLoadingDiagnostics.class,
                         "✓ Found {} library classes (Phase: {})",
-                        String.valueOf(libraryClasses.size()),phase);
+                        String.valueOf(libraryClasses.size()), phase);
 
                 int loadedCount = 0;
                 int failedCount = 0;
@@ -179,50 +180,50 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
                 for (String className : libraryClasses) {
                     try {
                         Class<?> clazz = Class.forName(className);
-                        LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.DEBUG,
+                        LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.DEBUG,
                                 "  ✓ Loaded: {} (ClassLoader: {})",
-                                className,clazz.getClassLoader().toString());
+                                className, clazz.getClassLoader().toString());
                         loadedCount++;
                     } catch (ClassNotFoundException | NoClassDefFoundError e) {
-                        LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
+                        LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
                                 "  ✗ Failed to load: {} - {}",
-                                className,e.getMessage());
+                                className, e.getMessage());
                         failedCount++;
                     }
                 }
 
                 LOG(AbstractLibraryLoadingDiagnostics.class,
                         "Class loading summary (Phase: {}): {} loaded, {} failed",
-                        phase,String.valueOf(loadedCount),String.valueOf(failedCount));
+                        phase, String.valueOf(loadedCount), String.valueOf(failedCount));
 
                 if (failedCount > 0) {
-                    LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
+                    LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
                             "✗ Some library classes failed to load! This indicates a serious issue.");
                 }
             }
 
         } catch (Exception e) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
-                    "✗ Error scanning for library classes (Phase: {}): {}",phase,e.getMessage());
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
+                    "✗ Error scanning for library classes (Phase: {}): {}", phase, e.getMessage());
         }
     }
 
     private Set<String> scanForLibraryClasses() throws IOException {
         Set<String> classNames = new HashSet<>();
-        String packagePath = LIBRARY_PACKAGE.replace(".","/");
+        String packagePath = LIBRARY_PACKAGE.replace(".", "/");
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Enumeration<URL> resources = classLoader.getResources(packagePath);
 
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.DEBUG,"Scanning resource: {}",
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.DEBUG, "Scanning resource: {}",
                     resource.toString());
 
             if (resource.getProtocol().equals("jar")) {
-                scanJarForClasses(resource,packagePath,classNames);
+                scanJarForClasses(resource, packagePath, classNames);
             } else if (resource.getProtocol().equals("file")) {
-                scanDirectoryForClasses(new File(resource.getFile()),LIBRARY_PACKAGE,classNames);
+                scanDirectoryForClasses(new File(resource.getFile()), LIBRARY_PACKAGE, classNames);
             }
         }
 
@@ -231,15 +232,15 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
     private void scanJarForClasses(URL resource, String packagePath, Set<String> classNames)
             throws IOException {
-        String jarPath = resource.getPath().substring(5,resource.getPath().indexOf("!"));
-        try (JarFile jar = new JarFile(URLDecoder.decode(jarPath,"UTF-8"))) {
+        String jarPath = resource.getPath().substring(5, resource.getPath().indexOf("!"));
+        try (JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"))) {
             jar.stream()
                     .filter(entry -> entry.getName().startsWith(packagePath))
                     .filter(entry -> entry.getName().endsWith(".class"))
                     .forEach(entry -> {
                         String className = entry.getName()
-                                .replace("/",".")
-                                .replace(".class","");
+                                .replace("/", ".")
+                                .replace(".class", "");
                         classNames.add(className);
                     });
         }
@@ -254,9 +255,9 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    scanDirectoryForClasses(file,packageName + "." + file.getName(),classNames);
+                    scanDirectoryForClasses(file, packageName + "." + file.getName(), classNames);
                 } else if (file.getName().endsWith(".class")) {
-                    String className = packageName + "." + file.getName().replace(".class","");
+                    String className = packageName + "." + file.getName().replace(".class", "");
                     classNames.add(className);
                 }
             }
@@ -264,7 +265,7 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
     }
 
     private void checkLibraryResources(String phase) {
-        LOG(AbstractLibraryLoadingDiagnostics.class,"--- Library Resources Check (Phase: {}) ---",
+        LOG(AbstractLibraryLoadingDiagnostics.class, "--- Library Resources Check (Phase: {}) ---",
                 phase);
 
         String[] commonResourcePaths = {
@@ -283,43 +284,44 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
                 List<URL> resourceList = Collections.list(resources);
 
                 if (!resourceList.isEmpty()) {
-                    LOG(AbstractLibraryLoadingDiagnostics.class,"  ✓ Found {} instance(s) of {}",
+                    LOG(AbstractLibraryLoadingDiagnostics.class, "  ✓ Found {} instance(s) of {}",
                             String.valueOf(resourceList.size()),
                             resourcePath);
                     resourceList.forEach(
-                            url -> LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.DEBUG,
+                            url -> LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.DEBUG,
                                     "    - {}",
                                     url.toString()));
                 } else {
-                    LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.DEBUG,"  - No {} found",
+                    LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.DEBUG, "  - No {} found",
                             resourcePath);
                 }
             } catch (IOException e) {
-                LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.WARN,
-                        "  ! Error checking {}: {}",resourcePath,
+                LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.WARN,
+                        "  ! Error checking {}: {}", resourcePath,
                         e.getMessage());
             }
         }
     }
 
     private void checkDependencyMetadata(String phase) {
-        LOG(AbstractLibraryLoadingDiagnostics.class,"--- Dependency Metadata Check (Phase: {}) ---",
+        LOG(AbstractLibraryLoadingDiagnostics.class,
+                "--- Dependency Metadata Check (Phase: {}) ---",
                 phase);
 
         // Check Maven metadata
-        String pomPath = String.format("META-INF/maven/%s/%s/pom.properties",LIBRARY_GROUP_ID,
+        String pomPath = String.format("META-INF/maven/%s/%s/pom.properties", LIBRARY_GROUP_ID,
                 LIBRARY_ARTIFACT_NAME);
-        checkResourceContent(pomPath,"Maven POM properties",phase);
+        checkResourceContent(pomPath, "Maven POM properties", phase);
 
         // Check Gradle metadata
         String gradlePath = String.format("META-INF/gradle/%s/%s/gradle.properties",
                 LIBRARY_GROUP_ID,
                 LIBRARY_ARTIFACT_NAME);
-        checkResourceContent(gradlePath,"Gradle properties",phase);
+        checkResourceContent(gradlePath, "Gradle properties", phase);
 
         // Check general library info
-        checkResourceContent("library.properties","Library properties",phase);
-        checkResourceContent("build.properties","Build properties",phase);
+        checkResourceContent("library.properties", "Library properties", phase);
+        checkResourceContent("build.properties", "Build properties", phase);
     }
 
     private void checkResourceContent(String resourcePath, String description, String phase) {
@@ -329,7 +331,7 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
             if (is != null) {
                 Properties props = new Properties();
                 props.load(is);
-                LOG(AbstractLibraryLoadingDiagnostics.class,"  ✓ Found {}: {} properties",
+                LOG(AbstractLibraryLoadingDiagnostics.class, "  ✓ Found {}: {} properties",
                         description,
                         String.valueOf(props.size()));
 
@@ -345,11 +347,11 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
                 is.close();
             } else {
-                LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.DEBUG,"  - No {} found",
+                LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.DEBUG, "  - No {} found",
                         description);
             }
         } catch (IOException e) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.WARN,"  ! Error reading {}: {}",
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.WARN, "  ! Error reading {}: {}",
                     description,
                     e.getMessage());
         }
@@ -357,26 +359,27 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
     private void checkClassLoaderHierarchy(String phase) {
         LOG(AbstractLibraryLoadingDiagnostics.class,
-                "--- ClassLoader Hierarchy Check (Phase: {}) ---",phase);
+                "--- ClassLoader Hierarchy Check (Phase: {}) ---", phase);
 
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         int level = 0;
 
         while (cl != null) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,"  Level {}: {} ({})",String.valueOf(level),
+            LOG(AbstractLibraryLoadingDiagnostics.class, "  Level {}: {} ({})",
+                    String.valueOf(level),
                     cl.getClass().getSimpleName(),
                     cl.toString());
 
             // Check what this classloader can see from our library
             try {
-                URL resource = cl.getResource(LIBRARY_PACKAGE.replace(".","/"));
+                URL resource = cl.getResource(LIBRARY_PACKAGE.replace(".", "/"));
                 if (resource != null) {
                     LOG(AbstractLibraryLoadingDiagnostics.class,
                             "    ✓ Can see library package at: {}",
                             resource.toString());
                 }
             } catch (Exception e) {
-                LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.DEBUG,
+                LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.DEBUG,
                         "    - Cannot access library package: {}",
                         e.getMessage());
             }
@@ -385,7 +388,7 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
             level++;
 
             if (level > 10) { // Prevent infinite loops
-                LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.WARN,
+                LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.WARN,
                         "    ... (stopping at level 10 to prevent infinite loop)");
                 break;
             }
@@ -394,7 +397,7 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
     private void validateLibraryInitialization(String phase) {
         LOG(AbstractLibraryLoadingDiagnostics.class,
-                "--- Library Initialization Validation (Phase: {}) ---",phase);
+                "--- Library Initialization Validation (Phase: {}) ---", phase);
 
         try {
             // Check if any static initializers have run
@@ -407,8 +410,8 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
             testInstanceCreation(phase);
 
         } catch (Exception e) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
-                    "✗ Library initialization validation failed (Phase: {}): {}",phase,
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
+                    "✗ Library initialization validation failed (Phase: {}): {}", phase,
                     e.getMessage());
         }
     }
@@ -424,14 +427,15 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
             if (value != null) {
                 LOG(AbstractLibraryLoadingDiagnostics.class,
-                        "  ✓ IRumpus.rumpusForumThreads is initialized (Phase: {})",phase);
+                        "  ✓ IRumpus.rumpusForumThreads is initialized (Phase: {})", phase);
             } else {
-                LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.WARN,
-                        "  ! IRumpus.rumpusForumThreads is null (Phase: {})",phase);
+                LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.WARN,
+                        "  ! IRumpus.rumpusForumThreads is null (Phase: {})", phase);
             }
         } catch (Exception e) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
-                    "  ✗ Cannot check IRumpus static fields (Phase: {}): {}",phase,e.getMessage());
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
+                    "  ✗ Cannot check IRumpus static fields (Phase: {}): {}", phase,
+                    e.getMessage());
         }
     }
 
@@ -457,11 +461,12 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
 
             LOG(AbstractLibraryLoadingDiagnostics.class,
                     "  Found {} Spring component classes in library (Phase: {})",
-                    String.valueOf(componentCount),phase);
+                    String.valueOf(componentCount), phase);
 
         } catch (Exception e) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.WARN,
-                    "  Could not scan for Spring components (Phase: {}): {}",phase,e.getMessage());
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.WARN,
+                    "  Could not scan for Spring components (Phase: {}): {}", phase,
+                    e.getMessage());
         }
     }
 
@@ -474,8 +479,8 @@ public class AbstractLibraryLoadingDiagnostics extends AbstractCommonObject { //
                     "  ✓ Can create ForumThreadManager instances (Phase: {})",
                     phase);
         } catch (Exception e) {
-            LOG(AbstractLibraryLoadingDiagnostics.class,LogLevel.ERROR,
-                    "  ✗ Cannot create ForumThreadManager instances (Phase: {}): {}",phase,
+            LOG(AbstractLibraryLoadingDiagnostics.class, LogLevel.ERROR,
+                    "  ✗ Cannot create ForumThreadManager instances (Phase: {}): {}", phase,
                     e.getMessage());
         }
     }
