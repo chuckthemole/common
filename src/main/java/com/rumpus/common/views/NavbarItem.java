@@ -199,6 +199,22 @@ public class NavbarItem extends AbstractView {
         return new NavbarItem(title, null, active, null, ItemType.DROPDOWN_DIVIDER, null, null, null);
     }
 
+    /**
+     * Creates a section title inside a dropdown menu.
+     * Rendered as a non-clickable bold label.
+     */
+    public static NavbarItem createDropdownSectionTitle(String title, boolean active) {
+        return new NavbarItem(
+                title,
+                null,
+                active,
+                null,
+                ItemType.DROPDOWN_SECTION_TITLE,
+                null,
+                null,
+                null);
+    }
+
     // ------------------------------------------------------------------------
     // Getters & Setters
     // ------------------------------------------------------------------------
@@ -294,6 +310,7 @@ public class NavbarItem extends AbstractView {
         ICON("icon"),
         DROPDOWN("dropdown"),
         DROPDOWN_DIVIDER("dropdown_divider"),
+        DROPDOWN_SECTION_TITLE("dropdown_section_title"),
         BUTTON("button"),
         REACT_COMPONENT("react-component");
 
