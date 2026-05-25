@@ -9,7 +9,9 @@ import com.rumpus.common.Model.AbstractModelsCollection;
 
 public abstract class AbstractCommonUserCollection<
         USER extends AbstractCommonUser<USER, ? extends AbstractCommonUserMetaData<?>>,
-        COLLECTION extends Collection<USER>> extends AbstractModelsCollection<USER, COLLECTION> {
+        COLLECTION extends Collection<USER>>
+        extends
+            AbstractModelsCollection<USER, COLLECTION> {
 
     /**
      * // TODO: look here: org.springframework.data.domain.Sort Sort options for
@@ -36,6 +38,10 @@ public abstract class AbstractCommonUserCollection<
             }
             return null;
         }
+    }
+
+    public enum SortDirection {
+        ASC, DESC
     }
 
     public AbstractCommonUserCollection(COLLECTION userCollection) {

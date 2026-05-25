@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
+import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.Template.IUserTemplate;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -49,6 +54,7 @@ public interface ICommonUserController<
     /**
      * Get all users
      *
+     * @deprecated getAllUsers is prefered.
      * @param sort
      *            the
      *            {@link com.rumpus.common.User.AbstractCommonUserCollection.Sort}
@@ -65,9 +71,29 @@ public interface ICommonUserController<
             HttpSession session);
 
     @GetMapping(value = ICommonUserController.PATH_GET_USERS)
+    @Operation(summary = "Get all users", description = """
+            Returns all users sorted by the requested field and direction.
+
+            Supported sort fields:
+            - USERNAME
+            - EMAIL
+            - ID
+
+            Supported directions:
+            - ASC
+            - DESC
+            """)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid sort parameters")
+    })
     public ResponseEntity<List<USER>> getAllUsers(
-            @RequestParam(value = "sort", defaultValue = "asc", required = false)
-            String sort,
+            @Parameter(description = "Field to sort by")
+            @RequestParam(value = "sort", defaultValue = "username", required = false)
+            AbstractCommonUserCollection.Sort sort,
+            @Parameter(description = "Sort direction")
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
+            AbstractCommonUserCollection.SortDirection direction,
             HttpSession session);
 
     /**
