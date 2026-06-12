@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractMetaDataSerializer;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
@@ -39,7 +40,8 @@ public class TestUserModelMetaDataSerializer
                 TestUserModelMetaData.class,
                 "TestUserModelMetaDataSerializer::createTypeAdapter()::read()").toString();
         LOG(log);
-        TestUserModelMetaData userMetaData = TestUserModelMetaData.createEmpty();
+        TestUserModelFactory factory = new TestUserModelFactory();
+        TestUserModelMetaData userMetaData = factory.createMetaData();
         in.beginObject();
         String fieldname = null;
 

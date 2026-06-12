@@ -1,14 +1,11 @@
 package com.rumpus.common.User;
 
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.CommonStringBuilder;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Model.AbstractModel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
@@ -23,28 +20,17 @@ import java.util.UUID;
  *            the user meta data type
  */
 @MappedSuperclass
-public abstract class AbstractCommonUser<
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>> extends AbstractModel<USER, UUID> {
-
-    /******************************************************************************
-     * Member fields *
-     *****************************************************************************/
-
-    @JsonIgnore
-    private String userPassword; // used for when user logs in initially to authenticate. Otherwise
-                                 // this should be empty. TODO: Maybe look into better solution for
-                                 // this.
-
-    /**
-     * The static field for password encoder
-     */
-    static private PasswordEncoder encoder;
+@Schema(description = "Abstract Common User - base class for all user types in the application")
+public abstract class AbstractCommonUser<USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
+        extends
+            AbstractModel<USER, UUID> {
 
     /**
      * The user email
      */
     @Column(name = "email")
+    @Schema(description = "The user's email address", example = "user@example.com")
     private String email;
 
     /**
@@ -59,19 +45,6 @@ public abstract class AbstractCommonUser<
      */
     private USER_META metaData;
 
-    static {
-        AbstractCommonUser.encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); // TODO:
-                                                                                                 // can
-                                                                                                 // I
-                                                                                                 // inject
-                                                                                                 // this?
-        // CommonUser.encoder = new BCryptPasswordEncoder()
-    }
-
-    /******************************************************************************
-     * Constructors *
-     *****************************************************************************/
-
     public AbstractCommonUser() {
         init();
     }
@@ -83,13 +56,6 @@ public abstract class AbstractCommonUser<
         this.email = EMPTY_FIELD;
         this.setId(ICommon.EMPTY_UUID);
     }
-
-    /******************************************************************************
-     * access/getters/setter *
-     * ----------------------------------------------------------------------------
-     * Purpose: Isn't it obvious *
-     * ----------------------------------------------------------------------------
-     *****************************************************************************/
 
     public CommonUserDetails getUserDetails() {
         if (this.userDetails == null) {
@@ -105,10 +71,6 @@ public abstract class AbstractCommonUser<
             this.userDetails = userDetails;
         }
     }
-
-    // public void setUserDetails(UserDetails userDetails) {
-    // this.userDetails = CommonUserDetails.createFromUserDetails(userDetails);
-    // }
 
     public String getUsername() {
         return this.userDetails.getUsername();
@@ -126,33 +88,12 @@ public abstract class AbstractCommonUser<
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getEncodedPassword() {
         return this.userDetails.getPassword();
     }
 
-    public void setPassword(String password) {
-        this.userPassword = password;
-        String encodedPassword = AbstractCommonUser.encoder.encode(password);
-        String strippedPass = encodedPassword.replaceFirst("\\{bcrypt\\}", ""); // TODO: think about
-                                                                                // how to do this.
-                                                                                // maybe just
-                                                                                // compare
-                                                                                // with the bcrypt
-                                                                                // in
-                                                                                // front.
-        this.userDetails.setPassword(strippedPass);
-    }
-
-    // @JsonIgnore
-    public String getUserPassword() {
-        if (this.userPassword.equals(null) || this.userPassword.isEmpty()) {
-            return String.valueOf("");
-        }
-        return this.userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setEncodedPassword(String password) {
+        this.userDetails.setPassword(password);
     }
 
     public USER_META getMetaData() {
@@ -169,7 +110,7 @@ public abstract class AbstractCommonUser<
                 "\n Class: ", this.getClass().getSimpleName(), "\n",
                 " Id: ", this.getId().toString(), "\n",
                 " Username: ", this.getUsername(), "\n",
-                " Password: ", this.getPassword(), "\n",
+                " Password: ", this.getEncodedPassword(), "\n",
                 " Email: ", this.email, "\n",
                 this.metaData.toString());
     }
@@ -247,7 +188,7 @@ public abstract class AbstractCommonUser<
 
     // TODO check why I have 2 password getters/setters
     private boolean passwordIsEqual(AbstractCommonUser<USER, USER_META> user) {
-        return this.getPassword().equals(user.getPassword()) ? true : false;
+        return this.getEncodedPassword().equals(user.getEncodedPassword()) ? true : false;
     }
 
     private boolean emailIsEqual(AbstractCommonUser<USER, USER_META> user) {

@@ -2,14 +2,14 @@ package com.rumpus.common.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
 import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 
-abstract public class AbstractCommonUserConfig<
-        USER extends AbstractCommonUser<USER, USER_META>,
+abstract public class AbstractCommonUserConfig<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>>
         extends
@@ -24,6 +24,7 @@ abstract public class AbstractCommonUserConfig<
 
     @Bean(name = AbstractCommonUserConfig.USER_SERVICE)
     @DependsOn(AbstractCommonUserConfig.CHILD_USER_SERVICE)
+    @Primary
     public USER_SERVICE userService() {
         return this.childUserService();
     }

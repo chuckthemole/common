@@ -28,6 +28,9 @@ public abstract class AbstractTemplate extends AbstractCommonManager<String, Abs
 
     public AbstractTemplate() {
         super(false);
+    }
+
+    protected void inititialize() {
         this.setComponents();
         this.addComponentsToMap();
         this.head = this.setHead();

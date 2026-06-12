@@ -17,7 +17,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
@@ -222,7 +222,8 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     @Bean
     @Scope(SCOPE_SINGLETON)
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        // return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean

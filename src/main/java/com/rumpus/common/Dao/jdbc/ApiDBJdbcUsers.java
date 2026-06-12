@@ -27,9 +27,10 @@ import org.springframework.security.core.userdetails.UserDetails;
  * this is becsuse manager holds the parent table. possibly make the other the
  * parent table.
  */
-public class ApiDBJdbcUsers<
-        USER extends AbstractCommonUser<USER, META>,
-        META extends AbstractCommonUserMetaData<META>> extends AbstractApiDBJdbc<USER>
+public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>,
+        META extends AbstractCommonUserMetaData<META>>
+        extends
+            AbstractApiDBJdbc<USER>
         implements
             IUserDao<USER, META> {
 
@@ -58,9 +59,10 @@ public class ApiDBJdbcUsers<
     // May not need the super operation if we use ON DELETE CASCADE
     @Override
     public boolean remove(String name) {
-        LOG("ApiDBJdbcUsers::remove()");
+        LOG_THIS("ApiDBJdbcUsers::remove()");
         if (!super.remove(name)) {
-            LOG(LogLevel.ERROR, "ERROR: ApiDBJdbc.remove() could not remove with name = '", name,
+            LOG_THIS(LogLevel.ERROR, "ERROR: ApiDBJdbc.remove() could not remove with name = '",
+                    name,
                     "'");
             return false;
         }
@@ -70,13 +72,13 @@ public class ApiDBJdbcUsers<
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        LOG("loadUserByUsername(username)");
+        LOG_THIS("loadUserByUsername(username)");
         return this.manager.loadUserByUsername(username);
     }
 
     @Override
     public USER getByUsername(String username) {
-        LOG("getByUsername(username)");
+        LOG_THIS("getByUsername(username)");
         final List<USER> users = this.getByColumnValue(ICommon.USERNAME, username);
         if (users.size() == 1) {
             USER user = users.get(0);
@@ -85,17 +87,17 @@ public class ApiDBJdbcUsers<
             user.setUserDetails(details);
             return user;
         } else if (users.size() == 0) {
-            LOG("No user found with username: " + username);
+            LOG_THIS("No user found with username: " + username);
             return null;
         } else {
-            LOG("More than one user found with username: " + username);
+            LOG_THIS("More than one user found with username: " + username);
             return null;
         }
     }
 
     @Override
     public List<USER> getAll() {
-        LOG("ApiDBJdbcUsers::getAll()");
+        LOG_THIS("ApiDBJdbcUsers::getAll()");
         List<USER> users = super.getAll();
         if (users != null && !users.isEmpty()) {
             users.stream().forEach((user) -> {
@@ -107,7 +109,7 @@ public class ApiDBJdbcUsers<
                 user.setUserDetails(details);
             });
         } else {
-            LOG("Error: returned user list is empty or null.");
+            LOG_THIS("Error: returned user list is empty or null.");
         }
         return users;
     }
@@ -115,21 +117,21 @@ public class ApiDBJdbcUsers<
     @Override
     public USER add(USER newUser) {
         // debug
-        LOG("ApiDBJdbcUsers::add()");
-        LOG(newUser.toString());
+        LOG_THIS("ApiDBJdbcUsers::add()");
+        LOG_THIS(newUser.toString());
 
         // check if user exists
         String log = LogBuilder.logBuilderFromStringArgs(
                 "- - - Checking if user '",
                 newUser.getUsername(),
                 "' already exists.").toString();
-        LOG(log);
+        LOG_THIS(log);
         if (this.getByUsername(newUser.getUsername()) != null) {
             log = LogBuilder.logBuilderFromStringArgs(
                     "- - - User with username '",
                     newUser.getUsername(),
                     "' already exists in the db. Returning null...").toString();
-            LOG(log);
+            LOG_THIS(log);
             return null;
         }
         if (this.getById(newUser.getId().toString()) != null) {
@@ -137,7 +139,7 @@ public class ApiDBJdbcUsers<
                     "- - - User with id '",
                     newUser.getId().toString(),
                     "' already exists in the db. Returning null...").toString();
-            LOG(log);
+            LOG_THIS(log);
             return null;
         }
 
@@ -146,7 +148,7 @@ public class ApiDBJdbcUsers<
                 "- - - User with name '",
                 newUser.getUsername(),
                 "' does not exist, continuing.").toString();
-        LOG(log);
+        LOG_THIS(log);
         // create user details in manager (user table). this saves username, password,
         // and enabled.
         UserDetails details = newUser.getUserDetails();
@@ -157,9 +159,9 @@ public class ApiDBJdbcUsers<
         // newUser.attributes.remove(PASSWORD);
 
         // check if user has an id, if not assign.
-        LOG("Checking if user has an id...");
-        LOG("User has id: " + newUser.hasId());
-        LOG("User id: " + newUser.getId());
+        LOG_THIS("Checking if user has an id...");
+        LOG_THIS("User has id: " + newUser.hasId());
+        LOG_THIS("User id: " + newUser.getId());
         if (!newUser.hasId()) {
             newUser.setId(
                     UUID.fromString(
@@ -185,7 +187,7 @@ public class ApiDBJdbcUsers<
                                                                           // getId() here
         );
         sqlBuilder.insert(this.getTable(), columnValues);
-        LOG(sqlBuilder.toString());
+        LOG_THIS(sqlBuilder.toString());
         super.onInsert(newUser, sqlBuilder.toString());
         // create user in user meta table
         // if(super.add(newUser) == null) {
@@ -196,11 +198,11 @@ public class ApiDBJdbcUsers<
     }
 
     private USER simpleAddUser(USER newUser) {
-        LOG("ApiDBJdbcUsers::simpleAddUser()");
+        LOG_THIS("ApiDBJdbcUsers::simpleAddUser()");
         if (newUser == null) {
             final String log = LogBuilder
                     .logBuilderFromStringArgs("Given user is null, returning null.").toString();
-            LOG(LogLevel.ERROR, log);
+            LOG_THIS(LogLevel.ERROR, log);
             return null;
         }
 
@@ -224,7 +226,7 @@ public class ApiDBJdbcUsers<
     private byte[] serializeUserMetaWithCommonBlob(META meta) {
         final String log = LogBuilder.logBuilderFromStringArgs(
                 "ApiDBJdbcUsers::serializeUserMetaWithCommonBlob()", meta.toString()).toString();
-        LOG(log);
+        LOG_THIS(log);
         byte[] byteArray = BlobUtil.serialize(meta);
         // return JdbcBlob.createFromByteArray(byteArray);
         return byteArray;
@@ -249,14 +251,14 @@ public class ApiDBJdbcUsers<
 
     @Override
     public USER update(String id, USER newUser) {
-        LOG("ApiDBJdbcUsers::update()");
+        LOG_THIS("ApiDBJdbcUsers::update()");
         USER user = super.getById(id); // get user in db
         if (user == null) { // if user not in db return null
             final LogBuilder log = LogBuilder.logBuilderFromStringArgs(
                     "Error: Unable to update users with id: ",
                     id,
                     "  returning null...");
-            LOG(log.toString());
+            LOG_THIS(log.toString());
             return null;
         }
 
@@ -269,7 +271,7 @@ public class ApiDBJdbcUsers<
                 this.manager.updateUser(newUser.getUserDetails());
             } else { // else pass sql. this will change 'user' table and 'authorities' table PK
                 super.onUpdate(UPDATE_USERS_TABLE,
-                        new Object[]{newUser.getUsername(), newUser.getPassword(),
+                        new Object[]{newUser.getUsername(), newUser.getEncodedPassword(),
                                 newUser.getUserDetails().isEnabled(), user.getUsername()});
             }
         }
@@ -378,5 +380,13 @@ public class ApiDBJdbcUsers<
     public String toString() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
+    }
+
+    private static void LOG_THIS(String... args) {
+        com.rumpus.common.ICommon.LOG(ApiDBJdbcUsers.class, args);
+    }
+
+    private static void LOG_THIS(LogLevel level, String... args) {
+        com.rumpus.common.ICommon.LOG(ApiDBJdbcUsers.class, level, args);
     }
 }

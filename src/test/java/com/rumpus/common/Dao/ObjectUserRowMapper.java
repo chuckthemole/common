@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import com.rumpus.common.Dao.jdbc.AbstractJdbcRowMapper;
 import com.rumpus.common.Model.User.TestUserModel;
+import com.rumpus.common.Model.User.TestUserModelFactory;
 import com.rumpus.common.util.Pair;
 
 /**
@@ -26,7 +27,8 @@ public class ObjectUserRowMapper extends AbstractJdbcRowMapper<TestUserModel> {
             ResultSet rs = pair.getFirst();
             try {
                 String username = rs.getString("username"); // Assuming "data" column exists
-                TestUserModel user = TestUserModel.createEmptyUser();
+                TestUserModelFactory userFactory = new TestUserModelFactory();
+                TestUserModel user = userFactory.createEmpty();
                 user.setUsername(username);
                 return user;
             } catch (SQLException e) {

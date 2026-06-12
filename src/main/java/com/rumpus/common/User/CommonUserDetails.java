@@ -9,6 +9,7 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 
 /**
@@ -16,20 +17,29 @@ import jakarta.persistence.Column;
  *
  * note: UserDetails already implements Serializable
  */
+@Schema(description = "CommonUserDetails - implementation of Spring Security's UserDetails interface, encapsulating user authentication and authorization information")
 public class CommonUserDetails extends AbstractCommonObject implements UserDetails {
 
     private static final GrantedAuthority GRANTED_AUTH_USER = new CommonAuthority(
             ICommon.ROLE_USER);
 
     @Column(name = "username")
+    @Schema(description = "The user's username", example = "john_doe")
     private String username;
+
     @Column(name = "password")
+    @Schema(description = "The user's password", example = "securePassword123")
     private String password;
+
     @Column(name = "isEnabled")
+    @Schema(description = "Indicates if the user is enabled", example = "true")
     private boolean isEnabled;
+
     // private CommonAuthentication authority;
     @Column(name = "authorities")
+    @Schema(description = "The user's authorities", example = "[\"ROLE_USER\"]")
     private Set<GrantedAuthority> authorities;
+
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -85,7 +95,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
     }
 
     // factory static methods
-    protected static CommonUserDetails createEmptyUserDetails() {
+    public static CommonUserDetails createEmptyUserDetails() {
         return new CommonUserDetails();
     }
 
@@ -93,14 +103,14 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
         return new CommonUserDetails(details);
     }
 
-    protected static CommonUserDetails createFromUsernamePassword(
+    public static CommonUserDetails createFromUsernamePassword(
             String username,
             String password,
             boolean isEnabled) {
         return new CommonUserDetails(username, password, isEnabled, null, false, false, false);
     }
 
-    protected static CommonUserDetails createFromUsernamePasswordAuthority(
+    public static CommonUserDetails createFromUsernamePasswordAuthority(
             String username,
             String password,
             Set<GrantedAuthority> authorities,
@@ -109,7 +119,7 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
                 false);
     }
 
-    protected static CommonUserDetails createWithAll(
+    public static CommonUserDetails createWithAll(
             String username,
             String password,
             boolean isEnabled,

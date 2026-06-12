@@ -2,10 +2,9 @@ package com.rumpus.common.views.Template;
 
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
-import com.rumpus.common.User.EmptyUser;
+import com.rumpus.common.User.IUserFactory;
 
-abstract public class AbstractUserTemplate<
-        USER extends AbstractCommonUser<USER, USER_META>,
+abstract public class AbstractUserTemplate<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
             AbstractTemplate
@@ -16,10 +15,15 @@ abstract public class AbstractUserTemplate<
     public static final String EMAIL_TILE_KEY = "email";
     public static final String AUTHORITIES_TILE_KEY = "authorities";
 
-    private AbstractCommonUser<USER, USER_META> user;
+    private AbstractCommonUser<USER, USER_META> user; // TODO: this can't be USER?
+    private final IUserFactory<USER, USER_META> userFactory;
 
-    public AbstractUserTemplate(AbstractCommonUser<USER, USER_META> user) {
+    public AbstractUserTemplate(
+            AbstractCommonUser<USER, USER_META> user,
+            IUserFactory<USER, USER_META> userFactory) {
         this.user = user;
+        this.userFactory = userFactory;
+        this.inititialize();
     }
 
     @Override
@@ -38,7 +42,7 @@ abstract public class AbstractUserTemplate<
         LOG("AbstractUserTemplate::getUser");
         if (user == null) {
             LOG("AbstractUserTemplate::getUser: user is null");
-            return EmptyUser.<USER, USER_META>createEmptyUser();
+            return this.userFactory.createEmpty();
         }
         return user;
     }

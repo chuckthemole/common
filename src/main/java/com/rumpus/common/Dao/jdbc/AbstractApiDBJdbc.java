@@ -83,7 +83,7 @@ public abstract class AbstractApiDBJdbc<
 
     @Override
     public List<MODEL> getByColumnValue(String column, String value) {
-        LOG_THIS("getByColumnValue()");
+        LOG_THIS("getByColumnValue() :: (column, value) :: (", column, ", ", value, ")");
 
         // build the query
         final Query query = super.dslContext
@@ -227,10 +227,10 @@ public abstract class AbstractApiDBJdbc<
     }
 
     private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractApiDBJdbc.class, args);
+        LOG(AbstractApiDBJdbc.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractApiDBJdbc.class, level, args);
+        LOG(AbstractApiDBJdbc.class, level, args);
     }
 }

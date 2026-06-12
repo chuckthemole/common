@@ -2,10 +2,10 @@ package com.rumpus.common.Controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +22,9 @@ import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
-import com.rumpus.common.User.EmptyUserMetaData;
 import com.rumpus.common.User.ICommonAuthentication;
+import com.rumpus.common.User.Requests.CreateUserRequest;
+import com.rumpus.common.User.Requests.UpdateUserRoleRequest;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Template.IUserTemplate;
 
@@ -36,19 +37,22 @@ abstract public class AbstractUserController<
         // Define generics here//
         /////////////////////////
         SERVICES extends AbstractServiceManager<?>, // TODO: can we have the wildcard be SERVICE?
-        USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-        AbstractCommonController<
-                /////////////////////////
-                // Define generics here//
-                /////////////////////////
-                SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+            AbstractCommonController<
+                    /////////////////////////
+                    // Define generics here//
+                    /////////////////////////
+                    SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
         implements
-        ICommonUserController<
-                /////////////////////////
-                // Define generics here//
-                /////////////////////////
-                USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+            ICommonUserController<
+                    /////////////////////////
+                    // Define generics here//
+                    /////////////////////////
+                    USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     private static final AbstractCommonUserCollection.Sort DEFAULT_SORT = AbstractCommonUserCollection.Sort.USERNAME;
     @Autowired
@@ -59,7 +63,8 @@ abstract public class AbstractUserController<
     }
 
     @Override
-    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort") String sort, HttpSession session) {
+    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort")
+    String sort, HttpSession session) {
         LOG_THIS("AbstractUserController::getAllUsersByPath()");
         return getAllUsers(AbstractCommonUserCollection.Sort.valueOf(sort), null, session);
     }
@@ -67,9 +72,11 @@ abstract public class AbstractUserController<
     @Override
     public ResponseEntity<List<USER>> getAllUsers(
 
-            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false) AbstractCommonUserCollection.Sort sort,
+            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false)
+            AbstractCommonUserCollection.Sort sort,
 
-            @RequestParam(value = "direction", defaultValue = "ASC", required = false) AbstractCommonUserCollection.SortDirection direction,
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
+            AbstractCommonUserCollection.SortDirection direction,
 
             HttpSession session) {
 
@@ -112,7 +119,7 @@ abstract public class AbstractUserController<
 
         switch (sort) {
 
-            case EMAIL:
+            case EMAIL :
 
                 LOG_THIS("Applying sort: EMAIL");
 
@@ -121,7 +128,7 @@ abstract public class AbstractUserController<
 
                 break;
 
-            case ID:
+            case ID :
 
                 LOG_THIS("Applying sort: ID");
 
@@ -130,9 +137,9 @@ abstract public class AbstractUserController<
 
                 break;
 
-            case USERNAME:
+            case USERNAME :
 
-            default:
+            default :
 
                 LOG_THIS("Applying sort: USERNAME (default)");
 
@@ -166,73 +173,36 @@ abstract public class AbstractUserController<
     }
 
     @Override
-    public ResponseEntity<CommonSession> userSubmit(@RequestBody USER newUser, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> userSubmit(
+            @RequestBody
+            CreateUserRequest request,
+            HttpServletRequest servletRequest) {
+
         LOG_THIS("AbstractUserController::userSubmit()");
 
-        // generate UUID for user
-        newUser.setId(java.util.UUID.randomUUID());
+        USER user = this.userService.createUser(request);
 
-        // Check if user already exists
-        final String username = newUser.getUsername();
-        USER user = this.userService.getByUsername(username); // TODO: maybe ID?
-        if (user != null) {
-            LOG_THIS("User already exists.");
-            HttpSession session = request.getSession();
-            session.setAttribute("status", "user already exists");
-            return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
+        loginUser(user, request.getPassword(), servletRequest);
 
-        }
-
-        // User does not exist, create user
-        HttpSession session = request.getSession();
-        LOG_THIS("Creating user: " + newUser.toString());
-        newUser.setMetaData(EmptyUserMetaData.createEmptyUserMetaData()); // new MetaData adds
-                                                                          // creation time
-        user = this.userService.add(newUser);
-
-        // catch error creating user
-        if (user == null) {
-            LOG_THIS("ERROR: User is null.");
-            session.setAttribute("status", "error creating user");
-            return new ResponseEntity<>(new CommonSession(session), HttpStatusCode.valueOf(400));
-        }
-
-        // log in user
-        AbstractUserController.currentUserLogin(user, request);
-        session.setAttribute("loggedIn", true);
-
-        // Gson gson = new GsonBuilder()
-        // .setPrettyPrinting()
-        // // .excludeFieldsWithoutExposeAnnotation()
-        // .serializeNulls()
-        // .disableHtmlEscaping()
-        // // .registerTypeAdapter(USER.class, USER.getSerializer())
-        // .registerTypeAdapter(AbstractCommonUser.class, user.getTypeAdapter())
-        // .create();
-        // session.setAttribute("user", gson.toJson(user));
-
-        session.setAttribute("user", this.serializerService.serializeToString(user, null));
-
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
-
-        // @SuppressWarnings("unchecked")
-        // List<String> messages = (List<String>)
-        // request.getSession().getAttribute("MY_SESSION_MESSAGES");
-        // if (messages == null) {
-        // messages = new ArrayList<>();
-        // request.getSession().setAttribute("MY_SESSION_MESSAGES", messages);
-        // }
-        // messages.add(user.toString());
-        // request.getSession().setAttribute("MY_SESSION_MESSAGES", messages);
-
-        ResponseEntity<CommonSession> re = new ResponseEntity<>(new CommonSession(session),
-                HttpStatus.CREATED);
-        return re;
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new CommonSession(servletRequest.getSession()));
     }
 
     @Override
-    public ResponseEntity<CommonSession> deleteUser(@RequestBody String user, HttpServletRequest request) {
+    public ResponseEntity<Void> updateUserRole(
+            @PathVariable
+            UUID userId,
+            @RequestBody
+            UpdateUserRoleRequest request) {
+        LOG_THIS("AbstractUserController::updateUserRole()");
+        // TODO implement persistence layer update
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<CommonSession> deleteUser(@RequestBody
+    String user, HttpServletRequest request) {
         LOG_THIS("USERRestController POST: /api/delete_user");
         HttpSession session = request.getSession();
         if (this.userService
@@ -259,7 +229,8 @@ abstract public class AbstractUserController<
     }
 
     @Override
-    public ResponseEntity<CommonSession> updateUser(@RequestBody USER user, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> updateUser(@RequestBody
+    USER user, HttpServletRequest request) {
         LOG_THIS("USERRestController POST: /api/update_user");
         HttpSession session = request.getSession();
         // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1,
@@ -282,7 +253,8 @@ abstract public class AbstractUserController<
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserByUsername(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME)
+            String username,
             HttpServletRequest request) {
         return new ResponseEntity<USER>(this.userService.getByUsername(username),
                 HttpStatus.ACCEPTED);
@@ -291,7 +263,8 @@ abstract public class AbstractUserController<
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserById(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID)
+            String id,
             HttpServletRequest request) {
         LOG_THIS("USERRestController::getUserById()");
         USER user = this.userService.getById(id);
@@ -335,41 +308,35 @@ abstract public class AbstractUserController<
     // HELPER METHODS //////
     /////////////////////////
 
-    /**
-     * Logs in the current user.
-     * <p>
-     * This uses
-     * {@link jakarta.servlet.http.HttpServletRequest#login(String, String)} to
-     * login the user.
-     * <p>
-     * TODO: look into this more
-     *
-     * @param <USER>
-     * @param <USER_META>
-     * @param user
-     * @param request
-     */
-    protected static <USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>> void currentUserLogin(
-            USER user, HttpServletRequest request) {
-        LOG_THIS("RumpusController::currentUserLogin()");
-        String password = user.getUserPassword();
+    protected void loginUser(
+            USER user,
+            final String password,
+            HttpServletRequest request) {
+
         String username = user.getUsername();
         try {
-            StringBuilder sbLogInfo = new StringBuilder();
-            sbLogInfo.append("\nUser log in info:\n")
-                    .append("  User Name: ")
-                    .append(username).append("\n")
-                    .append("  User Password: ")
-                    .append(password)
-                    .append("\n");
-            LOG_THIS(sbLogInfo.toString());
             request.login(username, password);
         } catch (ServletException exception) {
             StringBuilder sbLogInfo = new StringBuilder();
             sbLogInfo.append("\nError with log in request:\n").append("  ")
                     .append(exception.toString()).append("\n");
             LOG_THIS(sbLogInfo.toString());
+            return;
         }
+
+        HttpSession session = request.getSession();
+
+        session.setAttribute("loggedIn", true);
+
+        session.setAttribute(
+                "user",
+                this.serializerService.serializeToString(
+                        user,
+                        null));
+
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext());
     }
 
     protected int debugUser(USER user) {
@@ -377,7 +344,7 @@ abstract public class AbstractUserController<
         sb.append("\n* * User * * \n");
         sb.append("  User name: ").append(user.getUsername()).append("\n");
         sb.append("  User email: ").append(user.getEmail()).append("\n");
-        sb.append("  User password: ").append(user.getPassword()).append("\n");
+        sb.append("  User password: ").append(user.getEncodedPassword()).append("\n");
         LOG_THIS(sb.toString());
         return SUCCESS;
     }

@@ -9,8 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import com.rumpus.common.Dao.IUserDao;
 import com.rumpus.common.Service.AbstractUserService;
 
-abstract public class AbstractCommonAuthManager<
-        USER extends AbstractCommonUser<USER, USER_META>,
+abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
             AbstractUserService<USER, USER_META>
@@ -18,7 +17,7 @@ abstract public class AbstractCommonAuthManager<
             AuthenticationManager {
 
     public AbstractCommonAuthManager(IUserDao<USER, USER_META> dao) {
-        super(dao);
+        super(dao, null, null);
     }
 
     @Override

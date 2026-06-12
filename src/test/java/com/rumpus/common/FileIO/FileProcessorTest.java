@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.rumpus.common.Model.User.TestUserModel;
+import com.rumpus.common.Model.User.TestUserModelFactory;
+import com.rumpus.common.User.Requests.CreateUserRequest;
 
 /**
  * Test class for the FileProcessor class.
@@ -31,22 +33,42 @@ public class FileProcessorTest {
 
     private final Type type = TestUserModel[].class;
     private final int userModelsLength = 3;
-    private final TestUserModel[] userModels = new TestUserModel[]{
-            TestUserModel.create("username1", "password1", "email1@email.com"),
-            TestUserModel.create("username2", "password2", "email2@email.com"),
-            TestUserModel.create("username3", "password3", "email3@email.com")
-    };
+    TestUserModelFactory userFactory = new TestUserModelFactory();
+    CreateUserRequest userRequest1;
+    CreateUserRequest userRequest2;
+    CreateUserRequest userRequest3;
+
+    private TestUserModel[] userModels;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        this.userRequest1 = new CreateUserRequest();
+        this.userRequest1.setUsername("username1");
+        this.userRequest1.setPassword("password1");
+        this.userRequest1.setEmail("email1@email.com");
+        this.userRequest2 = new CreateUserRequest();
+        this.userRequest2.setUsername("username2");
+        this.userRequest2.setPassword("password2");
+        this.userRequest2.setEmail("email2@email.com");
+        this.userRequest3 = new CreateUserRequest();
+        this.userRequest3.setUsername("username3");
+        this.userRequest3.setPassword("password3");
+        this.userRequest3.setEmail("email3@email.com");
+
+        this.userModels = new TestUserModel[]{
+                userFactory.createUser(userRequest1),
+                userFactory.createUser(userRequest2),
+                userFactory.createUser(userRequest3)
+        };
     }
 
     @Test
     void testProcessFile_Success() {
 
         // Mock the file reader response
-        when(this.mockFileReader.<TestUserModel>readModelsFromFile(FileProcessorTest.JSON_USERS_FILE, this.type)).thenReturn(Optional.of(this.userModels));
+        when(this.mockFileReader.<TestUserModel>readModelsFromFile(FileProcessorTest.JSON_USERS_FILE, this.type))
+                .thenReturn(Optional.of(this.userModels));
 
         // Act
         Optional<TestUserModel[]> result = this.fileProcessor.processFile(FileProcessorTest.JSON_USERS_FILE, this.type);
@@ -65,10 +87,12 @@ public class FileProcessorTest {
     @Test
     void testProcessFile_ParsingError() {
         // Mock the file reader to return an empty Optional
-        when(this.mockFileReader.readModelsFromFile(FileProcessorTest.JSON_USERS_FILE_INVALID, this.type)).thenReturn(Optional.empty());
+        when(this.mockFileReader.readModelsFromFile(FileProcessorTest.JSON_USERS_FILE_INVALID, this.type))
+                .thenReturn(Optional.empty());
 
         // Act
-        Optional<TestUserModel[]> result = this.fileProcessor.processFile(FileProcessorTest.JSON_USERS_FILE_INVALID, this.type);
+        Optional<TestUserModel[]> result = this.fileProcessor.processFile(FileProcessorTest.JSON_USERS_FILE_INVALID,
+                this.type);
 
         // Assert
         assertFalse(result.isPresent());

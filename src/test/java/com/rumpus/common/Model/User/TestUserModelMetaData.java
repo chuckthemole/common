@@ -14,6 +14,10 @@ public class TestUserModelMetaData extends AbstractCommonUserMetaData<TestUserMo
     // TODO: add more member variables for specific meta data here
 
     // ctors
+    protected TestUserModelMetaData() {
+        super(null, null, null);
+    }
+
     private TestUserModelMetaData(List<Map<String, String>> metaList) {
         super(null, null, null);
         this.init(metaList);
@@ -25,9 +29,6 @@ public class TestUserModelMetaData extends AbstractCommonUserMetaData<TestUserMo
     }
 
     // factory static ctors
-    public static TestUserModelMetaData createEmpty() {
-        return new TestUserModelMetaData(List.of());
-    }
 
     public static TestUserModelMetaData createFromListOfMaps(List<Map<String, String>> metaList) {
         return new TestUserModelMetaData(metaList);

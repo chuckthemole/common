@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.rumpus.common.AbstractCommonTest;
 import com.rumpus.common.Model.User.TestUserModel;
+import com.rumpus.common.Model.User.TestUserModelFactory;
 import com.rumpus.common.views.CSSFramework.Bulma.CSS.Layout.BulmaTile;
 import com.rumpus.common.views.Component.AbstractTile;
 
@@ -32,7 +33,11 @@ public class BulmaTest extends AbstractCommonTest {
     // setters getters
     @Test
     void testBulmaTile() {
-        TestUserModel user = TestUserModel.create("USERNAME", "PASSWORD", "email@email.com");
+        TestUserModelFactory userFactory = new TestUserModelFactory();
+        TestUserModel user = userFactory.createEmpty();
+        user.setUsername("USERNAME");
+        user.setEncodedPassword("PASSWORD");
+        user.setEmail("email@email.com");
         AbstractTile parentTile = BulmaTile.createParentTile("TestUserNameParentTile");
         AbstractTile childTile = BulmaTile.createChildTile("TestUsernameChildTile", "User",
                 user.getUsername());

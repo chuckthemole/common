@@ -10,10 +10,12 @@ import com.rumpus.common.Dao.IUserDaoJpa;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.Requests.CreateUserRequest;
 
-abstract public class AbstractUserServiceJpa<
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>> extends AbstractServiceJpa<USER>
+abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
+        extends
+            AbstractServiceJpa<USER>
         implements
             IUserService<USER, USER_META> {
 
@@ -47,6 +49,24 @@ abstract public class AbstractUserServiceJpa<
                 .withMatcher(ICommon.USERNAME, ExampleMatcher.GenericPropertyMatchers.exact());
         Example<USER> example = Example.of(exampleUser, matcher);
         return this.userDaoJpa.findOne(example).get(); // TODO: catch NoSuchElementException
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'existsByUsername'");
+    }
+
+    @Override
+    public USER createUser(CreateUserRequest request) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createUser'");
+    }
+
+    @Override
+    public USER createUser(USER user) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createUser'");
     }
 
     @Override

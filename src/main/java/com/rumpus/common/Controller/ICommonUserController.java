@@ -1,12 +1,15 @@
 package com.rumpus.common.Controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,6 +18,8 @@ import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.Requests.CreateUserRequest;
+import com.rumpus.common.User.Requests.UpdateUserRoleRequest;
 import com.rumpus.common.views.Template.IUserTemplate;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 public interface ICommonUserController<
         /////////////////////////
@@ -56,9 +62,8 @@ public interface ICommonUserController<
      *
      * @deprecated getAllUsers is prefered.
      * @param sort
-     *            the
-     *            {@link com.rumpus.common.User.AbstractCommonUserCollection.Sort}
-     *            (as a String) to sort by
+     *            the {@link AbstractCommonUserCollection.Sort} (as a String) to
+     *            sort by
      * @param session
      *            the {@link HttpSession} to use
      * @return a list of all users as a {@link ResponseEntity}
@@ -70,6 +75,40 @@ public interface ICommonUserController<
             String sort,
             HttpSession session);
 
+    /**
+     * Retrieve all users sorted by the requested field and direction.
+     * <p>
+     * Supported sort fields:
+     * <ul>
+     * <li>{@link AbstractCommonUserCollection.Sort#USERNAME}</li>
+     * <li>{@link AbstractCommonUserCollection.Sort#EMAIL}</li>
+     * <li>{@link AbstractCommonUserCollection.Sort#ID}</li>
+     * </ul>
+     *
+     * Supported sort directions:
+     * <ul>
+     * <li>{@link AbstractCommonUserCollection.SortDirection#ASC}</li>
+     * <li>{@link AbstractCommonUserCollection.SortDirection#DESC}</li>
+     * </ul>
+     *
+     * If no sort field is provided, results default to
+     * {@link AbstractCommonUserCollection.Sort#USERNAME}.
+     *
+     * If no direction is provided, results default to
+     * {@link AbstractCommonUserCollection.SortDirection#ASC}.
+     *
+     * @param sort
+     *            the field used to sort users
+     *
+     * @param direction
+     *            the direction to sort results
+     *
+     * @param session
+     *            the current HTTP session
+     *
+     * @return a {@link ResponseEntity} containing the sorted list of users and the
+     *         appropriate HTTP status
+     */
     @GetMapping(value = ICommonUserController.PATH_GET_USERS)
     @Operation(summary = "Get all users", description = """
             Returns all users sorted by the requested field and direction.
@@ -96,20 +135,61 @@ public interface ICommonUserController<
             AbstractCommonUserCollection.SortDirection direction,
             HttpSession session);
 
-    /**
-     * Submit a new user to be created
-     *
-     * @param newUser
-     *            the {@link USER} to create
-     * @param request
-     *            the {@link HttpServletRequest} to use
-     * @return the {@link CommonSession} as a {@link ResponseEntity}
-     */
-    @PostMapping(value = ICommonUserController.PATH_USER)
+    // /**
+    // * Creates a new user.
+    // *
+    // * @param newUser
+    // * the user to create
+    // *
+    // * @param request
+    // * the current HTTP request
+    // *
+    // * @return a {@link ResponseEntity} containing the created session and
+    // * appropriate HTTP status
+    // */
+    // @PostMapping(value = ICommonUserController.PATH_USER)
+    // @Operation(summary = "Create user", description = "Creates a new user account
+    // and returns the authenticated session.")
+    // @ApiResponses({
+    // @ApiResponse(responseCode = "201", description = "User created
+    // successfully"),
+    // @ApiResponse(responseCode = "400", description = "Invalid user data"),
+    // @ApiResponse(responseCode = "409", description = "User already exists")
+    // })
+    // public ResponseEntity<CommonSession> userSubmit(
+    // @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User
+    // information used to create the account", required = true)
+    // @RequestBody
+    // USER newUser,
+    // HttpServletRequest request);
 
-    public ResponseEntity<CommonSession> userSubmit(@RequestBody
-    USER newUser,
-            HttpServletRequest request);
+    @PostMapping(value = ICommonUserController.PATH_USER)
+    @Operation(summary = "Create user", description = "Creates a new user account and returns the authenticated session.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "User created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid user data"),
+            @ApiResponse(responseCode = "409", description = "User already exists")
+    })
+    public ResponseEntity<CommonSession> userSubmit(
+            @Valid
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user", required = true)
+            @RequestBody
+            CreateUserRequest request,
+            HttpServletRequest servletRequest);
+
+    @PutMapping("/{userId}/roles")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update user role", description = "Updates the role assigned to a user. Admin only.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Role updated"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden")
+    })
+    public ResponseEntity<Void> updateUserRole(
+            @PathVariable
+            UUID userId,
+            @RequestBody
+            UpdateUserRoleRequest request);
 
     /**
      * Delete a user
@@ -188,5 +268,4 @@ public interface ICommonUserController<
      */
     @GetMapping(value = ICommonUserController.PATH_GET_CURRENT_USER_NAME)
     public ResponseEntity<String> currentUsername();
-
 }

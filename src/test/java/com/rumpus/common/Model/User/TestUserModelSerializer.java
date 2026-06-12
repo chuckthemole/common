@@ -29,7 +29,7 @@ public class TestUserModelSerializer extends AbstractModelSerializer<TestUserMod
         out.name(ICommon.EMAIL);
         out.value(object.getEmail());
         out.name(ICommon.PASSWORD);
-        out.value(object.getPassword());
+        out.value(object.getEncodedPassword());
 
         // meta data
         out.name(AbstractMetaData.USER_CREATION_DATE_TIME);
@@ -43,8 +43,9 @@ public class TestUserModelSerializer extends AbstractModelSerializer<TestUserMod
 
     @Override
     public TestUserModel readJson(JsonReader in) throws IOException {
-        TestUserModel user = TestUserModel.createEmptyUser();
-        TestUserModelMetaData metaData = TestUserModelMetaData.createEmpty();
+        TestUserModelFactory factory = new TestUserModelFactory();
+        TestUserModel user = factory.createEmpty();
+        TestUserModelMetaData metaData = factory.createMetaData();
         in.beginObject();
         String fieldname = null;
 
