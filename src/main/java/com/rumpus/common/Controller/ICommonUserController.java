@@ -58,24 +58,6 @@ public interface ICommonUserController<
     public static final String PATH_VARIABLE_SORT = "sort";
 
     /**
-     * Get all users
-     *
-     * @deprecated getAllUsers is prefered.
-     * @param sort
-     *            the {@link AbstractCommonUserCollection.Sort} (as a String) to
-     *            sort by
-     * @param session
-     *            the {@link HttpSession} to use
-     * @return a list of all users as a {@link ResponseEntity}
-     */
-    @Deprecated
-    @GetMapping(value = ICommonUserController.PATH_GET_USERS_BY_SORT)
-    public ResponseEntity<List<USER>> getAllUsersByPath(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_SORT)
-            String sort,
-            HttpSession session);
-
-    /**
      * Retrieve all users sorted by the requested field and direction.
      * <p>
      * Supported sort fields:
@@ -135,36 +117,43 @@ public interface ICommonUserController<
             AbstractCommonUserCollection.SortDirection direction,
             HttpSession session);
 
-    // /**
-    // * Creates a new user.
-    // *
-    // * @param newUser
-    // * the user to create
-    // *
-    // * @param request
-    // * the current HTTP request
-    // *
-    // * @return a {@link ResponseEntity} containing the created session and
-    // * appropriate HTTP status
-    // */
-    // @PostMapping(value = ICommonUserController.PATH_USER)
-    // @Operation(summary = "Create user", description = "Creates a new user account
-    // and returns the authenticated session.")
-    // @ApiResponses({
-    // @ApiResponse(responseCode = "201", description = "User created
-    // successfully"),
-    // @ApiResponse(responseCode = "400", description = "Invalid user data"),
-    // @ApiResponse(responseCode = "409", description = "User already exists")
-    // })
-    // public ResponseEntity<CommonSession> userSubmit(
-    // @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User
-    // information used to create the account", required = true)
-    // @RequestBody
-    // USER newUser,
-    // HttpServletRequest request);
-
+    /**
+     * Create a new user account.
+     * <p>
+     * The request must contain all required information needed to create a user,
+     * including any validation constraints defined on {@link CreateUserRequest}.
+     * </p>
+     *
+     * If the request is valid and the user is created successfully, a new
+     * authenticated session is established and returned.
+     *
+     * Possible outcomes:
+     * <ul>
+     * <li><b>201 Created</b> - User was created successfully.</li>
+     * <li><b>400 Bad Request</b> - Request data failed validation.</li>
+     * <li><b>409 Conflict</b> - A user with the supplied credentials already
+     * exists.</li>
+     * </ul>
+     *
+     * @param request
+     *            the information required to create the user account
+     *
+     * @param servletRequest
+     *            the current HTTP servlet request used to establish the
+     *            authenticated session
+     *
+     * @return a {@link ResponseEntity} containing the created {@link CommonSession}
+     *         and the appropriate HTTP status
+     */
     @PostMapping(value = ICommonUserController.PATH_USER)
-    @Operation(summary = "Create user", description = "Creates a new user account and returns the authenticated session.")
+    @Operation(summary = "Create user", description = """
+            Creates a new user account and returns the authenticated session.
+
+            Possible outcomes:
+            - 201 Created: User created successfully
+            - 400 Bad Request: Invalid user data
+            - 409 Conflict: User already exists
+            """)
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "User created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid user data"),
@@ -268,4 +257,23 @@ public interface ICommonUserController<
      */
     @GetMapping(value = ICommonUserController.PATH_GET_CURRENT_USER_NAME)
     public ResponseEntity<String> currentUsername();
+
+    // DEPRECATED
+    /**
+     * Get all users
+     *
+     * @deprecated getAllUsers is prefered.
+     * @param sort
+     *            the {@link AbstractCommonUserCollection.Sort} (as a String) to
+     *            sort by
+     * @param session
+     *            the {@link HttpSession} to use
+     * @return a list of all users as a {@link ResponseEntity}
+     */
+    @Deprecated
+    @GetMapping(value = ICommonUserController.PATH_GET_USERS_BY_SORT)
+    public ResponseEntity<List<USER>> getAllUsersByPath(
+            @PathVariable(ICommonUserController.PATH_VARIABLE_SORT)
+            String sort,
+            HttpSession session);
 }
