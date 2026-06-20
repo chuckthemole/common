@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.rumpus.common.Auth.OAuth2Provider;
 import com.rumpus.common.Manager.AbstractServiceManager;
-import com.rumpus.common.Service.IUserService;
+import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.Template.IUserTemplate;

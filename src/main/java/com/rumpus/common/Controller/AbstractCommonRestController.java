@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.HttpStatus;
 
 import com.rumpus.common.Manager.AbstractServiceManager;
-import com.rumpus.common.Service.IUserService;
+import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.Template.IUserTemplate;

@@ -1,11 +1,19 @@
-package com.rumpus.common.Service;
+package com.rumpus.common.Service.User;
+
+import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.rumpus.common.Service.IService;
 import com.rumpus.common.User.AbstractCommonUser;
+import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
+import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.Requests.CreateUserRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service("userDetailsService") // TODO: look at this annotation and see if we could put in IService?
                                // or remove it? - chuck
@@ -36,6 +44,8 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>,
      * @return true if a user exists, false otherwise
      */
     boolean existsByUsername(String username);
+
+    public List<USER> getAllUsers(Sort sort, SortDirection direction);
 
     /**
      * Create a new user from a {@link CreateUserRequest}.
@@ -83,6 +93,40 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>,
      *             if username already exists or user data is invalid
      */
     USER createUser(USER user);
+
+    /**
+     * Authenticate a user and establish an authenticated HTTP session.
+     * <p>
+     * This method is responsible for:
+     * <ul>
+     * <li>Authenticating the supplied username and password through the servlet
+     * container</li>
+     * <li>Creating or retrieving the current {@link HttpSession}</li>
+     * <li>Marking the session as authenticated</li>
+     * <li>Persisting the current Spring Security context in the session</li>
+     * </ul>
+     *
+     * <p>
+     * Implementations should throw an exception if authentication fails rather than
+     * silently ignoring errors whenever possible.
+     *
+     * @param username
+     *            the username of the user to authenticate
+     *
+     * @param password
+     *            the user's plaintext password used for authentication
+     *
+     * @param request
+     *            the current {@link HttpServletRequest} used to establish the
+     *            authenticated session
+     *
+     * @throws jakarta.servlet.ServletException
+     *             if the servlet container fails to authenticate the user
+     */
+    public void loginUser(
+            String username,
+            String password,
+            HttpServletRequest request);
 
     /**
      * Get the key for this service. TODO: look into this more. Am I using this??

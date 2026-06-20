@@ -1,4 +1,6 @@
-package com.rumpus.common.Service;
+package com.rumpus.common.Service.User;
+
+import java.util.List;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -8,9 +10,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.IUserDaoJpa;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
+import com.rumpus.common.Service.AbstractServiceJpa;
 import com.rumpus.common.User.AbstractCommonUser;
+import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
+import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.Requests.CreateUserRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>>
@@ -83,4 +90,21 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
         ICommon.LOG(AbstractUserServiceJpa.class, level, args);
     }
 
+    @Override
+    public List<USER> getAllUsers(Sort sort, SortDirection direction) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");
+    }
+
+    @Override
+    public void loginUser(String username, String password, HttpServletRequest request) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loginUser'");
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
+    }
 }

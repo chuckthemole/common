@@ -1,6 +1,7 @@
 package com.rumpus.common.Service;
 
 import com.rumpus.common.Manager.AbstractCommonManager;
+import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 

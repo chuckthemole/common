@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Service.IUserService;
+import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
@@ -127,7 +127,8 @@ public abstract class AbstractViewController<
     @GetMapping(ICommonViewController.PATH_RESOURCE_BY_NAME)
     public ResponseEntity<Resource> getResourceByName(
             @PathVariable(ICommonViewController.PATH_VARIABLE_RESOURCE_BY_NAME)
-            String name, HttpServletRequest request) {
+            String name,
+            HttpServletRequest request) {
         Resource resource = viewLoader.getResourceByName(name);
         return new ResponseEntity<Resource>(
                 resource != null ? resource : this.resourceManager.createEmptyManagee(),

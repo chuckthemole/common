@@ -1,4 +1,4 @@
-package com.rumpus.common.Controller;
+package com.rumpus.common.Controller.User;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Controller.AbstractCommonController;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Manager.AbstractServiceManager;
-import com.rumpus.common.Service.IUserService;
+import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection;

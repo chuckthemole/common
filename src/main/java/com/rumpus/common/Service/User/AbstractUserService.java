@@ -1,18 +1,32 @@
-package com.rumpus.common.Service;
+package com.rumpus.common.Service.User;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Dao.IUserDao;
 import com.rumpus.common.Exception.User.UserAlreadyExistsException;
 import com.rumpus.common.Exception.User.UserCreationException;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
+import com.rumpus.common.Service.AbstractService;
 import com.rumpus.common.User.AbstractCommonUser;
+import com.rumpus.common.User.AbstractCommonUserCollection;
+import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
+import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.IUserFactory;
 import com.rumpus.common.User.Requests.CreateUserRequest;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>>
@@ -52,6 +66,37 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     @Override
     public boolean existsByUsername(String username) {
         return this.getByUsername(username) != null;
+    }
+
+    @Override
+    public List<USER> getAllUsers(
+            Sort sort,
+            SortDirection direction) {
+        LOG_THIS("AbstractUserService::getAllUsers(sort, direction)");
+        LOG_THIS("Raw sort param: " + sort);
+        LOG_THIS("Raw direction param: " + direction);
+
+        List<USER> users = this.getAll();
+
+        if (users == null) {
+            throw new IllegalStateException(
+                    "User service returned null users");
+        }
+
+        LOG_THIS("Total users fetched: " + users.size());
+
+        if (users.isEmpty()) {
+            LOG_THIS("[WARN] No users found in database/service");
+            return List.of();
+        }
+
+        users = this.sortInMemory(users, sort, direction); // TODO: sort in repository
+
+        if (direction == SortDirection.DESC) {
+            Collections.reverse(users);
+        }
+
+        return users;
     }
 
     @Override
@@ -129,9 +174,87 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     }
 
     @Override
+    public void loginUser(
+            String username,
+            final String password,
+            HttpServletRequest request) {
+
+        try {
+            request.login(username, password);
+        } catch (ServletException exception) {
+            LOG_THIS("Unable to authenticate user: " + username);
+
+            throw new AuthenticationServiceException(
+                    "Unable to authenticate user: " + username,
+                    exception);
+        }
+
+        HttpSession session = request.getSession();
+
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext());
+    }
+
+    @Override
     public String getKey() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getKey'");
+    }
+
+    // Helpers
+    private List<USER> sortInMemory(
+            List<USER> users,
+            Sort sort,
+            SortDirection direction) {
+
+        switch (sort) {
+
+            case EMAIL :
+
+                LOG_THIS("Applying sort: EMAIL");
+
+                users = AbstractCommonUserCollection
+                        .getSortedByEmailListFromCollection(users);
+
+                break;
+
+            case ID :
+
+                LOG_THIS("Applying sort: ID");
+
+                users = AbstractCommonUserCollection
+                        .getSortedByIdListFromCollection(users);
+
+                break;
+
+            case USERNAME :
+
+            default :
+
+                LOG_THIS("Applying sort: USERNAME (default)");
+
+                users = AbstractCommonUserCollection
+                        .getSortedByUsernameListFromCollection(users);
+
+                break;
+        }
+
+        // ---------------------------------------------------------------------
+        // Direction handling
+        // ---------------------------------------------------------------------
+        if (direction == AbstractCommonUserCollection.SortDirection.DESC) {
+
+            LOG_THIS("Reversing list for DESC order");
+
+            Collections.reverse(users);
+
+        } else {
+
+            LOG_THIS("Keeping ASC order");
+        }
+
+        return users;
     }
 
     private static void LOG_THIS(String... args) {

@@ -8,12 +8,12 @@ import org.springframework.core.env.Environment;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Config.AbstractCommonUserConfig;
 import com.rumpus.common.Manager.AbstractServiceManager;
-import com.rumpus.common.Service.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.views.ResourceManager;
 import com.rumpus.common.views.Template.IUserTemplate;
 import com.rumpus.common.Service.ISerializerService;
+import com.rumpus.common.Service.User.IUserService;
 
 public abstract class AbstractCommonController<
         /////////////////////////
