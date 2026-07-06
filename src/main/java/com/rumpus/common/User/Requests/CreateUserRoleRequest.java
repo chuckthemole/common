@@ -4,13 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 @Schema(description = "Request used to update a user's role")
-public class UpdateUserRoleRequest {
+public class CreateUserRoleRequest {
 
     @NotBlank
-    @Schema(description = "The new role for the user", example = "ADMIN")
+    @Schema(description = "The new role for the user", example = "ROLE_ADMIN")
     private String role;
 
-    public UpdateUserRoleRequest() {
+    public CreateUserRoleRequest() {
     }
 
     public String getRole() {

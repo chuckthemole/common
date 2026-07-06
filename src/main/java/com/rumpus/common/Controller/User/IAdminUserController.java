@@ -20,7 +20,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.Requests.CreateUserRequest;
-import com.rumpus.common.User.Requests.UpdateUserRoleRequest;
+import com.rumpus.common.User.Requests.CreateUserRoleRequest;
 import com.rumpus.common.views.Template.IUserTemplate;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,12 +50,9 @@ public interface IAdminUserController<
         /////////////////////////
         // Define generics here//
         /////////////////////////
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+        USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            ICommonController {
+        ICommonController {
 
     ///////////
     // Paths //
@@ -88,13 +85,13 @@ public interface IAdminUserController<
      * {@link AbstractCommonUserCollection.SortDirection#ASC}.
      *
      * @param sort
-     *            the field used to sort users
+     *                  the field used to sort users
      *
      * @param direction
-     *            the direction to sort results
+     *                  the direction to sort results
      *
      * @param session
-     *            the current HTTP session
+     *                  the current HTTP session
      *
      * @return a {@link ResponseEntity} containing the sorted list of users and the
      *         appropriate HTTP status
@@ -117,12 +114,8 @@ public interface IAdminUserController<
             @ApiResponse(responseCode = "400", description = "Invalid sort parameters")
     })
     public ResponseEntity<List<USER>> getAllUsers(
-            @Parameter(description = "Field to sort by")
-            @RequestParam(value = "sort", defaultValue = "username", required = false)
-            AbstractCommonUserCollection.Sort sort,
-            @Parameter(description = "Sort direction")
-            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
-            AbstractCommonUserCollection.SortDirection direction,
+            @Parameter(description = "Field to sort by") @RequestParam(value = "sort", defaultValue = "username", required = false) AbstractCommonUserCollection.Sort sort,
+            @Parameter(description = "Sort direction") @RequestParam(value = "direction", defaultValue = "ASC", required = false) AbstractCommonUserCollection.SortDirection direction,
             HttpSession session);
 
     /**
@@ -144,11 +137,11 @@ public interface IAdminUserController<
      * </ul>
      *
      * @param request
-     *            the information required to create the user account
+     *                       the information required to create the user account
      *
      * @param servletRequest
-     *            the current HTTP servlet request used to establish the
-     *            authenticated session
+     *                       the current HTTP servlet request used to establish the
+     *                       authenticated session
      *
      * @return a {@link ResponseEntity} containing the created {@link CommonSession}
      *         and the appropriate HTTP status
@@ -168,19 +161,16 @@ public interface IAdminUserController<
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
     public ResponseEntity<CommonSession> createUser(
-            @Valid
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user", required = true)
-            @RequestBody
-            CreateUserRequest request,
+            @Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user", required = true) @RequestBody CreateUserRequest request,
             HttpServletRequest servletRequest);
 
     /**
      * Update an existing user (admin full update).
      *
      * @param userId
-     *            user id
+     *               user id
      * @param user
-     *            updated user object
+     *               updated user object
      */
     @PutMapping(PATH_ADMIN_USER_BY_ID)
     @Operation(summary = "Admin: Update user")
@@ -189,17 +179,15 @@ public interface IAdminUserController<
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     ResponseEntity<CommonSession> updateUser(
-            @PathVariable
-            UUID userId,
-            @RequestBody
-            USER user,
+            @PathVariable UUID userId,
+            @RequestBody USER user,
             HttpServletRequest request);
 
     /**
      * Delete a user account.
      *
      * @param userId
-     *            user id
+     *               user id
      */
     @DeleteMapping(PATH_ADMIN_USER_BY_ID)
     @Operation(summary = "Admin: Delete user")
@@ -208,33 +196,63 @@ public interface IAdminUserController<
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     ResponseEntity<Void> deleteUser(
-            @PathVariable
-            UUID userId,
+            @PathVariable UUID userId,
             HttpServletRequest request);
 
     /**
-     * Update a user's roles/authorities.
+     * Get all roles assigned to a user.
      *
-     * This operation is restricted because it modifies authentication/authorization
-     * data.
-     *
-     * @param userId
-     *            target user id
-     * @param request
-     *            role update request
+     * @param userId the user id
+     * @return list of roles assigned to the user
      */
-    @PutMapping(PATH_ADMIN_USER_ROLES)
-    @Operation(summary = "Admin: Update user roles", description = "Replaces or updates the roles assigned to a user.")
+    @GetMapping(PATH_ADMIN_USER_ROLES)
+    @Operation(summary = "Get user roles", description = "Returns all roles currently assigned to a user.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Roles updated"),
+            @ApiResponse(responseCode = "200", description = "Roles retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    ResponseEntity<List<String>> getUserRoles(
+            @PathVariable UUID userId);
+
+    /**
+     * Add a role to a user.
+     *
+     * This operation is idempotent in implementation (adding an existing role
+     * should not cause errors).
+     *
+     * @param userId  target user id
+     * @param request role to assign
+     * @return no content on success
+     */
+    @PostMapping(PATH_ADMIN_USER_ROLES)
+    @Operation(summary = "Add role to user", description = "Assigns a new role to the specified user.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Role added"),
             @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid role"),
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
-    ResponseEntity<Void> updateUserRoles(
-            @PathVariable
-            UUID userId,
-            @RequestBody
-            UpdateUserRoleRequest request);
+    ResponseEntity<Void> addUserRole(
+            @PathVariable UUID userId,
+            @Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user role", required = true) @RequestBody CreateUserRoleRequest request);
+
+    /**
+     * Remove a role from a user.
+     *
+     * @param userId target user id
+     * @param role   role to remove
+     * @return no content on success
+     */
+    @DeleteMapping(PATH_ADMIN_USER_ROLES + "/{role}")
+    @Operation(summary = "Remove role from user", description = "Removes a specific role from a user.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Role removed"),
+            @ApiResponse(responseCode = "404", description = "User or role not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden")
+    })
+    ResponseEntity<Void> removeUserRole(
+            @PathVariable UUID userId,
+            @PathVariable String role);
 
     /**
      * Get a user by ID (admin view).
@@ -242,7 +260,6 @@ public interface IAdminUserController<
     @GetMapping(PATH_ADMIN_USER_BY_ID)
     @Operation(summary = "Admin: Get user by id")
     ResponseEntity<USER> getUserById(
-            @PathVariable
-            UUID userId,
+            @PathVariable UUID userId,
             HttpServletRequest request);
 }

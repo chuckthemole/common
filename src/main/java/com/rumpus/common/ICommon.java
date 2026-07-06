@@ -10,10 +10,7 @@ import com.rumpus.common.Log.application.JavaLogger;
 import java.util.UUID;
 
 /**
- * TODO: maybe make this an interface and have AbstractCommonObject implement
- * it?
- * <p>
- * Then make all public fields public. Think about it - chuck
+ * Common interface for all Rumpus components.
  */
 public interface ICommon {
     public static IRumpusIO io = new RumpusIO();
@@ -131,9 +128,9 @@ public interface ICommon {
      * Top level AbstractCommonObject LOG method. Uses info level.
      *
      * @param clazz
-     *            the class to log the message for
+     *              the class to log the message for
      * @param args
-     *            The message to log
+     *              The message to log
      */
     public static void LOG(Class<?> clazz, String... args) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
@@ -146,11 +143,11 @@ public interface ICommon {
      * Top level AbstractCommonObject LOG method. Uses the specified level.
      *
      * @param clazz
-     *            the class to log the message for
+     *              the class to log the message for
      * @param level
-     *            the level to log the message at
+     *              the level to log the message at
      * @param args
-     *            The message to log
+     *              The message to log
      */
     public static void LOG(Class<?> clazz, LogLevel level, String... args) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();

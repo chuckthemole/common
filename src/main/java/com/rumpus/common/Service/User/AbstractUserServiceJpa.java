@@ -1,6 +1,7 @@
 package com.rumpus.common.Service.User;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -8,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Dao.IUserDaoJpa;
+import com.rumpus.common.Dao.User.IUserDaoJpa;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Service.AbstractServiceJpa;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -19,12 +20,11 @@ import com.rumpus.common.User.Requests.CreateUserRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
-            AbstractServiceJpa<USER>
+        AbstractServiceJpa<USER>
         implements
-            IUserService<USER, USER_META> {
+        IUserService<USER, USER_META> {
 
     private IUserDaoJpa<USER, USER_META> userDaoJpa;
 
@@ -37,7 +37,7 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
      * Create a user with the given username.
      *
      * @param username
-     *            The username of the user to create.
+     *                 The username of the user to create.
      * @return A user with the given username.
      */
     abstract public USER createUserWithUsername(String username);
@@ -106,5 +106,23 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
     public String toString() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
+    }
+
+    @Override
+    public List<String> getUserRoles(UUID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUserRoles'");
+    }
+
+    @Override
+    public void addUserRole(UUID userId, String role) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addUserRole'");
+    }
+
+    @Override
+    public void removeUserRole(UUID userId, String role) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'removeUserRole'");
     }
 }

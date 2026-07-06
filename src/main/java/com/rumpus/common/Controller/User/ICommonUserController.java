@@ -20,7 +20,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.Requests.CreateUserRequest;
-import com.rumpus.common.User.Requests.UpdateUserRoleRequest;
+import com.rumpus.common.User.Requests.CreateUserRoleRequest;
 import com.rumpus.common.views.Template.IUserTemplate;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,12 +35,9 @@ public interface ICommonUserController<
         /////////////////////////
         // Define generics here//
         /////////////////////////
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+        USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            ICommonController {
+        ICommonController {
 
     ///////////
     // Paths //
@@ -81,13 +78,13 @@ public interface ICommonUserController<
      * {@link AbstractCommonUserCollection.SortDirection#ASC}.
      *
      * @param sort
-     *            the field used to sort users
+     *                  the field used to sort users
      *
      * @param direction
-     *            the direction to sort results
+     *                  the direction to sort results
      *
      * @param session
-     *            the current HTTP session
+     *                  the current HTTP session
      *
      * @return a {@link ResponseEntity} containing the sorted list of users and the
      *         appropriate HTTP status
@@ -110,12 +107,8 @@ public interface ICommonUserController<
             @ApiResponse(responseCode = "400", description = "Invalid sort parameters")
     })
     public ResponseEntity<List<USER>> getAllUsers(
-            @Parameter(description = "Field to sort by")
-            @RequestParam(value = "sort", defaultValue = "username", required = false)
-            AbstractCommonUserCollection.Sort sort,
-            @Parameter(description = "Sort direction")
-            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
-            AbstractCommonUserCollection.SortDirection direction,
+            @Parameter(description = "Field to sort by") @RequestParam(value = "sort", defaultValue = "username", required = false) AbstractCommonUserCollection.Sort sort,
+            @Parameter(description = "Sort direction") @RequestParam(value = "direction", defaultValue = "ASC", required = false) AbstractCommonUserCollection.SortDirection direction,
             HttpSession session);
 
     /**
@@ -137,11 +130,11 @@ public interface ICommonUserController<
      * </ul>
      *
      * @param request
-     *            the information required to create the user account
+     *                       the information required to create the user account
      *
      * @param servletRequest
-     *            the current HTTP servlet request used to establish the
-     *            authenticated session
+     *                       the current HTTP servlet request used to establish the
+     *                       authenticated session
      *
      * @return a {@link ResponseEntity} containing the created {@link CommonSession}
      *         and the appropriate HTTP status
@@ -161,10 +154,7 @@ public interface ICommonUserController<
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
     public ResponseEntity<CommonSession> userSubmit(
-            @Valid
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user", required = true)
-            @RequestBody
-            CreateUserRequest request,
+            @Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user", required = true) @RequestBody CreateUserRequest request,
             HttpServletRequest servletRequest);
 
     @PutMapping("/{userId}/roles")
@@ -176,37 +166,33 @@ public interface ICommonUserController<
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     public ResponseEntity<Void> updateUserRole(
-            @PathVariable
-            UUID userId,
-            @RequestBody
-            UpdateUserRoleRequest request);
+            @PathVariable UUID userId,
+            @RequestBody CreateUserRoleRequest request);
 
     /**
      * Delete a user
      *
      * @param user
-     *            the {@link USER} to delete
+     *                the {@link USER} to delete
      * @param request
-     *            the {@link HttpServletRequest} to use
+     *                the {@link HttpServletRequest} to use
      * @return the {@link CommonSession} as a {@link ResponseEntity}
      */
     @PostMapping(value = ICommonUserController.PATH_DELETE_USER)
-    public ResponseEntity<CommonSession> deleteUser(@RequestBody
-    String user,
+    public ResponseEntity<CommonSession> deleteUser(@RequestBody String user,
             HttpServletRequest request);
 
     /**
      * Update a user
      *
      * @param user
-     *            the {@link USER} to update
+     *                the {@link USER} to update
      * @param request
-     *            the {@link HttpServletRequest} to use
+     *                the {@link HttpServletRequest} to use
      * @return the {@link CommonSession} as a {@link ResponseEntity}
      */
     @PostMapping(value = ICommonUserController.PATH_UPDATE_USER)
-    public ResponseEntity<CommonSession> updateUser(@RequestBody
-    USER user,
+    public ResponseEntity<CommonSession> updateUser(@RequestBody USER user,
             HttpServletRequest request);
 
     /**
@@ -214,15 +200,14 @@ public interface ICommonUserController<
      *
      * @TODO this should be secured so user info is not visible
      * @param username
-     *            the username of the {@link USER} to get
+     *                 the username of the {@link USER} to get
      * @param request
-     *            the {@link HttpServletRequest} to use
+     *                 the {@link HttpServletRequest} to use
      * @return the {@link USER} as a {@link ResponseEntity}
      */
     @GetMapping(value = ICommonUserController.PATH_VALUE_GET_BY_USER_NAME)
     public ResponseEntity<USER> getUserByUsername(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME)
-            String username,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username,
             HttpServletRequest request);
 
     /**
@@ -230,22 +215,21 @@ public interface ICommonUserController<
      *
      * @TODO this should be secured so user info is not visible
      * @param id
-     *            the id of the {@link USER} to get
+     *                the id of the {@link USER} to get
      * @param request
-     *            the {@link HttpServletRequest} to use
+     *                the {@link HttpServletRequest} to use
      * @return the {@link USER} as a {@link ResponseEntity}
      */
     @GetMapping(value = ICommonUserController.PATH_VALUE_GET_BY_USER_ID)
     public ResponseEntity<USER> getUserById(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID)
-            String id,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
             HttpServletRequest request);
 
     /**
      * Get the current user
      *
      * @param authentication
-     *            the {@link Authentication} to use
+     *                       the {@link Authentication} to use
      * @return the {@link USER} as a {@link ResponseEntity}
      */
     @GetMapping(value = ICommonUserController.PATH_GET_CURRENT_USER)
@@ -265,16 +249,15 @@ public interface ICommonUserController<
      *
      * @deprecated getAllUsers is prefered.
      * @param sort
-     *            the {@link AbstractCommonUserCollection.Sort} (as a String) to
-     *            sort by
+     *                the {@link AbstractCommonUserCollection.Sort} (as a String) to
+     *                sort by
      * @param session
-     *            the {@link HttpSession} to use
+     *                the {@link HttpSession} to use
      * @return a list of all users as a {@link ResponseEntity}
      */
     @Deprecated
     @GetMapping(value = ICommonUserController.PATH_GET_USERS_BY_SORT)
     public ResponseEntity<List<USER>> getAllUsersByPath(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_SORT)
-            String sort,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_SORT) String sort,
             HttpSession session);
 }

@@ -1,16 +1,15 @@
 package com.rumpus.common.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDaoJpa;
-import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractServiceJpa<
-        MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
+abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
         implements
-            IService<MODEL> {
+        IService<MODEL> {
 
     /**
      * The data access object for this service.
@@ -22,15 +21,9 @@ abstract public class AbstractServiceJpa<
     }
 
     @Override
-    public MODEL getById(String id) {
+    public MODEL getById(UUID id) {
         LOG("getById(id)");
-        return this.daoJpa.getById(id);
-    }
-
-    @Override
-    public List<MODEL> getByColumnValue(String column, String value) {
-        LOG(LogLevel.ERROR, "getByColumnValue(column, value) not implemented");
-        return null;
+        return this.daoJpa.getReferenceById(id);
     }
 
     @Override
@@ -46,14 +39,14 @@ abstract public class AbstractServiceJpa<
     }
 
     @Override
-    public boolean remove(String id) {
+    public boolean remove(UUID id) {
         LOG("remove(id)");
         this.daoJpa.deleteById(id);
         return true; // TODO: obvious hack for now
     }
 
     @Override
-    public MODEL update(String id, MODEL updatedModel) { // TODO: doesn't need id
+    public MODEL update(UUID id, MODEL updatedModel) { // TODO: doesn't need id
         LOG("update()");
         return this.daoJpa.save(updatedModel);
     }

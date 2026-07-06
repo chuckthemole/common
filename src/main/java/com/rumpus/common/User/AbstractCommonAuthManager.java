@@ -6,15 +6,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.rumpus.common.Dao.IUserDao;
+import com.rumpus.common.Dao.User.IUserDao;
 import com.rumpus.common.Service.User.AbstractUserService;
 
-abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
-            AbstractUserService<USER, USER_META>
+        AbstractUserService<USER, USER_META>
         implements
-            AuthenticationManager {
+        AuthenticationManager {
 
     public AbstractCommonAuthManager(IUserDao<USER, USER_META> dao) {
         super(dao, null, null);

@@ -16,22 +16,18 @@ import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.Requests.CreateUserRequest;
-import com.rumpus.common.User.Requests.UpdateUserRoleRequest;
+import com.rumpus.common.User.Requests.CreateUserRoleRequest;
 import com.rumpus.common.views.Template.IUserTemplate;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-public class AbstractAdminUserController<SERVICES extends AbstractServiceManager<?>,
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+abstract public class AbstractAdminUserController<SERVICES extends AbstractServiceManager<?>, USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            AbstractCommonController<SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+        AbstractCommonController<SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
         implements
-            IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+        IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     @Override
     public ResponseEntity<List<USER>> getAllUsers(Sort sort, SortDirection direction,
@@ -40,8 +36,7 @@ public class AbstractAdminUserController<SERVICES extends AbstractServiceManager
     }
 
     @Override
-    public ResponseEntity<CommonSession> createUser(@Valid
-    CreateUserRequest request,
+    public ResponseEntity<CommonSession> createUser(@Valid CreateUserRequest request,
             HttpServletRequest servletRequest) {
         LOG_THIS("AbstractUserController::userSubmit()");
 
@@ -68,12 +63,6 @@ public class AbstractAdminUserController<SERVICES extends AbstractServiceManager
     }
 
     @Override
-    public ResponseEntity<Void> updateUserRoles(UUID userId, UpdateUserRoleRequest request) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUserRoles'");
-    }
-
-    @Override
     public ResponseEntity<USER> getUserById(UUID userId, HttpServletRequest request) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getUserById'");
@@ -91,6 +80,25 @@ public class AbstractAdminUserController<SERVICES extends AbstractServiceManager
 
     private static void LOG_THIS(LogLevel level, String... args) {
         LOG(AbstractAdminUserController.class, level, args);
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getUserRoles(UUID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUserRoles'");
+    }
+
+    @Override
+    public ResponseEntity<Void> addUserRole(UUID userId, @Valid CreateUserRoleRequest request) {
+        LOG_THIS("AbstractAdminUserController::addUserRole()");
+        USER user = this.userService.getById(String.valueOf(userId));
+
+    }
+
+    @Override
+    public ResponseEntity<Void> removeUserRole(UUID userId, String role) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'removeUserRole'");
     }
 
 }

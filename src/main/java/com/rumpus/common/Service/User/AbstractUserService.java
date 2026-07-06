@@ -2,6 +2,7 @@ package com.rumpus.common.Service.User;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import com.rumpus.common.ICommon;
-import com.rumpus.common.Dao.IUserDao;
+import com.rumpus.common.Dao.User.IUserDao;
 import com.rumpus.common.Exception.User.UserAlreadyExistsException;
 import com.rumpus.common.Exception.User.UserCreationException;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
@@ -21,6 +22,7 @@ import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.CommonUserDetails;
 import com.rumpus.common.User.IUserFactory;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 
@@ -28,14 +30,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
-            AbstractService<USER>
+        AbstractService<USER>
         implements
-            IUserService<USER, USER_META> {
+        IUserService<USER, USER_META> {
 
     protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
+    protected UserSecurityService userSecurityService;
 
     private final IUserFactory<USER, USER_META> userFactory;
 
@@ -43,10 +45,12 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
     public AbstractUserService(
             IUserDao<USER, USER_META> userDao,
+            UserSecurityService userSecurityService,
             IUserFactory<USER, USER_META> userFactory,
             PasswordEncoder passwordEncoder) {
         super(userDao);
         this.userDao = userDao;
+        this.userSecurityService = userSecurityService;
         this.userFactory = userFactory;
         this.passwordEncoder = passwordEncoder;
     }
@@ -54,13 +58,17 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOG_THIS("loadUserByUsername(username)");
-        return this.userDao.loadUserByUsername(username);
+        return this.userSecurityService.loadUserByUsername(username);
     }
 
     @Override
     public USER getByUsername(String username) {
         LOG_THIS("getByUsername(username)");
-        return this.userDao.getByUsername(username);
+        USER user = this.userDao.getByUsername(username).orElseThrow();
+        CommonUserDetails userDetails = CommonUserDetails
+                .createFromUserDetails(this.userSecurityService.loadUserByUsername(username));
+        user.setUserDetails(userDetails);
+        return user;
     }
 
     @Override
@@ -90,8 +98,15 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
             return List.of();
         }
 
-        users = this.sortInMemory(users, sort, direction); // TODO: sort in repository
+        // UserDetails
+        users.stream().forEach(user -> {
+            final UserDetails userDetails = this.userSecurityService.loadUserByUsername(user.getUsername());
+            CommonUserDetails commonUserDetails = CommonUserDetails.createFromUserDetails(userDetails);
+            user.setUserDetails(commonUserDetails);
+        });
 
+        // Sort
+        users = this.sortInMemory(users, sort, direction); // TODO: sort in repository
         if (direction == SortDirection.DESC) {
             Collections.reverse(users);
         }
@@ -118,6 +133,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
         USER user = this.userFactory.createUser(request);
         String encodedPassword = this.passwordEncoder.encode(request.getPassword());
         user.setEncodedPassword(encodedPassword);
+        this.userSecurityService.createUser(user.getUserDetails());
 
         USER savedUser = this.add(user);
 
@@ -174,6 +190,44 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     }
 
     @Override
+    public USER update(UUID id, USER updatedUser) {
+        LOG("update()");
+        final USER user = this.getById(id);
+        final String username = user.getUsername();
+        if (this.userSecurityService.userExists(username) && username.equals(updatedUser.getUsername())) {
+            this.userSecurityService.updateUser(updatedUser.getUserDetails());
+        } else {
+            this.userSecurityService.deleteUser(username);
+            this.userSecurityService.createUser(updatedUser.getUserDetails());
+        }
+        return this.dao.update(id, updatedUser);
+    }
+
+    @Override
+    public boolean remove(UUID userId) {
+        final String username = this.getById(userId).getUsername();
+        this.userSecurityService.deleteUser(username);
+        return this.remove(userId);
+    }
+
+    @Override
+    public List<String> getUserRoles(UUID userId) {
+        throw new UnsupportedOperationException("Unimplemented method 'getUserRoles'");
+    }
+
+    @Override
+    public void addUserRole(UUID userId, String role) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addUserRole'");
+    }
+
+    @Override
+    public void removeUserRole(UUID userId, String role) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'removeUserRole'");
+    }
+
+    @Override
     public void loginUser(
             String username,
             final String password,
@@ -210,7 +264,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
         switch (sort) {
 
-            case EMAIL :
+            case EMAIL:
 
                 LOG_THIS("Applying sort: EMAIL");
 
@@ -219,7 +273,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
                 break;
 
-            case ID :
+            case ID:
 
                 LOG_THIS("Applying sort: ID");
 
@@ -228,9 +282,9 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
                 break;
 
-            case USERNAME :
+            case USERNAME:
 
-            default :
+            default:
 
                 LOG_THIS("Applying sort: USERNAME (default)");
 
@@ -263,5 +317,11 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
     private static void LOG_THIS(LogLevel level, String... args) {
         ICommon.LOG(AbstractUserService.class, level, args);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

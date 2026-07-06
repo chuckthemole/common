@@ -1,34 +1,29 @@
 package com.rumpus.common.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractService<
-        MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
+abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
         implements
-            IService<MODEL> {
+        IService<MODEL> {
 
     /**
      * The data access object for this service.
      */
-    private IDao<MODEL> dao;
+    protected IDao<MODEL> dao;
 
     public AbstractService(IDao<MODEL> dao) {
         this.dao = dao;
     }
 
     @Override
-    public MODEL getById(String id) {
+    public MODEL getById(UUID id) {
         LOG("getById(id)");
-        return this.dao.getById(id);
-    }
-
-    @Override
-    public List<MODEL> getByColumnValue(String column, String value) {
-        return this.dao.getByColumnValue(column, value);
+        return this.dao.getById(id).orElseThrow();
     }
 
     @Override
@@ -44,13 +39,13 @@ abstract public class AbstractService<
     }
 
     @Override
-    public boolean remove(String id) {
+    public boolean remove(UUID id) {
         LOG("remove(id)");
         return this.dao.remove(id);
     }
 
     @Override
-    public MODEL update(String id, MODEL updatedModel) {
+    public MODEL update(UUID id, MODEL updatedModel) {
         LOG("update()");
         return this.dao.update(id, updatedModel);
     }

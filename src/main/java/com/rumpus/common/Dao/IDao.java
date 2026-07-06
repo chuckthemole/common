@@ -1,152 +1,85 @@
 package com.rumpus.common.Dao;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Model.AbstractModel;
 
 /**
- * Interface for Dao classes
+ * Generic DAO interface for CRUD operations.
  *
- * @param <MODEL>
- *            the model to use
+ * @param <MODEL> the model type managed by this DAO
  * @see AbstractModel
  * @see AbstractDao
  */
 public interface IDao<MODEL extends AbstractModel<MODEL, ?>> extends ICommon {
 
     /**
-     * Get a model by its id
+     * Retrieve a model by its unique identifier.
      *
-     * @param id
-     *            to search
-     * @return MODEl if found, null if not found
+     * @param id UUID of the model
+     * @return an Optional containing the model if found, otherwise empty
      */
-    MODEL getById(String id);
+    Optional<MODEL> getById(UUID id);
 
     /**
-     * Get a model by a column value
+     * Retrieve all models.
      *
-     * @param column
-     *            to search
-     * @param value
-     *            to search
-     * @return MODEL if found, null if not found
-     */
-    List<MODEL> getByColumnValue(String column, String value);
-
-    /**
-     * Get a model by a set of constraints
+     * @deprecated Use {@link #findAll(Pageable)} instead. This method performs
+     *             a full table scan and may cause performance issues or memory
+     *             exhaustion on
+     *             large datasets.
      *
-     * @param constraints
-     *            to search
-     * @return MODEL if found, null if not found
+     * @return list of all models (never null; may be empty)
      */
-    List<MODEL> getByConstraints(Map<String, String> constraints);
-
-    /**
-     * Get all models
-     *
-     * @return {@link List} of all models
-     */
+    @Deprecated(since = "1.0.0", forRemoval = true)
     List<MODEL> getAll();
 
     /**
-     * Add a model to the database
+     * Retrieve a paginated list of models.
      *
-     * @param model
-     *            to add
-     * @return MODEL if added, null if not
+     * This is the preferred way to query large datasets. It avoids loading
+     * all records into memory and supports efficient database pagination.
+     *
+     * @param pageRequest pagination and sorting information
+     * @return a page of models (never null; may be empty)
+     */
+    Page<MODEL> findAll(Pageable pageRequest);
+
+    /**
+     * Persist a new model.
+     *
+     * @param model model to persist
+     * @return the persisted model, or null if insertion failed
      */
     MODEL add(MODEL model);
 
     /**
-     * Update a model in the database
+     * Update an existing model.
      *
-     * @param id
-     *            of the model to update
-     * @param updatedModel
-     *            to update
-     * @return MODEL if updated, null if not
+     * @param id           UUID of the model to update
+     * @param updatedModel new state of the model
+     * @return the updated model, or null if update failed or record not found
      */
-    MODEL update(String id, MODEL updatedModel);
+    MODEL update(UUID id, MODEL updatedModel);
 
     /**
-     * Remove a model from the database
+     * Remove a model by id.
      *
-     * @param id
-     *            of the model to remove
-     * @return true if removed, false if not
+     * @param id UUID of the model to remove
+     * @return true if a record was removed, false otherwise
      */
-    boolean remove(String id);
+    boolean remove(UUID id);
 
     /**
-     * Remove all models from the database
+     * Remove all models.
      *
-     * @return true if removed, false if not
+     * @return true if operation succeeded, false otherwise
      */
     boolean removeAll();
-
-    /**
-     * Get the table name
-     *
-     * @return table name
-     */
-    String getTable();
-
-    /**
-     * Set the table
-     *
-     * @param table
-     *            to set
-     */
-    public void setTable(String table);
-
-    /**
-     * Get the meta table name
-     *
-     * @return meta table name
-     */
-    String getMetaTable();
-
-    /**
-     * Set the meta table
-     *
-     * @param metaTable
-     *            to set
-     */
-    public void setMetaTable(String metaTable);
-
-    /**
-     * Get the mapper
-     *
-     * @return {@link RowMapper} for this model
-     */
-    RowMapper<MODEL> getMapper();
-
-    /**
-     * Creates a set that keeps track of ids for the given name this has a default
-     * length for ids, managed by UniqueIdManager
-     *
-     * @param name
-     *            the name of the set to register
-     */
-    public static void registerIdSet(final String name) {
-        AbstractDao.idManager.createUniqueIdSetWithDefaultLength(name);
-    }
-
-    /**
-     * Creates a set that keeps track of ids for the given name
-     *
-     * @param name
-     *            the name of the set to register
-     * @param length
-     *            the length of the ids in this set
-     */
-    public static void registerIdSet(final String name, final int length) {
-        AbstractDao.idManager.createUniqueIdSetWithSetLength(name, length);
-    }
 }
