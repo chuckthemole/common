@@ -16,7 +16,7 @@ abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<
         AuthenticationManager {
 
     public AbstractCommonAuthManager(IUserDao<USER, USER_META> dao) {
-        super(dao, null, null);
+        super(dao, null, null, null);
     }
 
     @Override

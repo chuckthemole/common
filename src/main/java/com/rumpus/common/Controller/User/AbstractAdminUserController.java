@@ -69,6 +69,27 @@ abstract public class AbstractAdminUserController<SERVICES extends AbstractServi
     }
 
     @Override
+    public ResponseEntity<List<String>> getUserRoles(UUID userId) {
+        LOG_THIS("AbstractAdminUserController::getUserRoles()");
+        List<String> roles = this.userService.getUserRoles(userId);
+        return ResponseEntity.ok(roles);
+    }
+
+    @Override
+    public ResponseEntity<Void> addUserRole(UUID userId, @Valid CreateUserRoleRequest request) {
+        LOG_THIS("AbstractAdminUserController::addUserRole()");
+        this.userService.addUserRole(userId, request.getRole());
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> removeUserRole(UUID userId, String role) {
+        LOG_THIS("AbstractAdminUserController::removeUserRole()");
+        this.userService.removeUserRole(userId, role);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
     public String toString() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
@@ -81,24 +102,4 @@ abstract public class AbstractAdminUserController<SERVICES extends AbstractServi
     private static void LOG_THIS(LogLevel level, String... args) {
         LOG(AbstractAdminUserController.class, level, args);
     }
-
-    @Override
-    public ResponseEntity<List<String>> getUserRoles(UUID userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserRoles'");
-    }
-
-    @Override
-    public ResponseEntity<Void> addUserRole(UUID userId, @Valid CreateUserRoleRequest request) {
-        LOG_THIS("AbstractAdminUserController::addUserRole()");
-        USER user = this.userService.getById(String.valueOf(userId));
-
-    }
-
-    @Override
-    public ResponseEntity<Void> removeUserRole(UUID userId, String role) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeUserRole'");
-    }
-
 }

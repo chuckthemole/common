@@ -196,16 +196,11 @@ abstract public class AbstractUserController<
     public ResponseEntity<CommonSession> deleteUser(@RequestBody String user, HttpServletRequest request) {
         LOG_THIS("USERRestController POST: /api/delete_user");
         HttpSession session = request.getSession();
-        if (this.userService
-                .remove(StringUtil.isQuoted(user) ? user.substring(1, user.length() - 1) : user)) { // if
-                                                                                                    // user
-                                                                                                    // was
-                                                                                                    // removed,
-                                                                                                    // return
-                                                                                                    // session
-                                                                                                    // with
-                                                                                                    // status
-                                                                                                    // delete
+
+        // if user was removed, return session with status delete
+        final UUID userId = StringUtil.isQuoted(user) ? UUID.fromString(user.substring(1, user.length() - 1))
+                : UUID.fromString(user);
+        if (this.userService.remove(userId)) {
             session.setAttribute("status", "user deleted");
             return new ResponseEntity<CommonSession>(new CommonSession(session),
                     HttpStatus.CREATED);
@@ -227,10 +222,10 @@ abstract public class AbstractUserController<
         // user.length() - 1) : user);
         LogBuilder log = LogBuilder.logBuilderFromStringArgs("Update this user: ", user.toString());
         LOG_THIS(log.toString());
-        if (this.userService.update(user.getId().toString(), user) != null) { // if user was updated
-                                                                              // successfully,
-                                                                              // return session with
-                                                                              // status updateed
+        if (this.userService.update(user.getId(), user) != null) { // if user was updated
+                                                                   // successfully,
+                                                                   // return session with
+                                                                   // status updateed
             session.setAttribute("status", "user updated");
             return new ResponseEntity<CommonSession>(new CommonSession(session),
                     HttpStatus.CREATED);
@@ -255,7 +250,8 @@ abstract public class AbstractUserController<
             @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
             HttpServletRequest request) {
         LOG_THIS("USERRestController::getUserById()");
-        USER user = this.userService.getById(id);
+        final UUID userUUID = UUID.fromString(id);
+        USER user = this.userService.getById(userUUID);
         if (user != null) {
             LogBuilder log = LogBuilder.logBuilderFromStringArgs("Retrieved user: ",
                     user.toString());
