@@ -169,9 +169,9 @@ public abstract class AbstractCommonConfig extends AbstractCommonObject { // TOD
     @Bean
     @Scope(SCOPE_SINGLETON)
     public JdbcUserDetailsManager jdbcUserDetailsManager() {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource());
 
-        jdbcUserDetailsManager.setDataSource(dataSource());
+        // jdbcUserDetailsManager.setDataSource(dataSource());
         return jdbcUserDetailsManager;
     }
 

@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 import org.jooq.DSLContext;
-import org.jooq.Table;
-import org.jooq.impl.DSL;
 
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Model.AbstractModel;
@@ -20,29 +18,31 @@ import com.rumpus.common.Model.AbstractModel;
  *
  * <p>
  * This class provides shared structural metadata for data access objects,
- * primarily through {@link TableDefinition}.
- * It does not define persistence behavior, SQL execution, or mapping logic.
- * Those responsibilities are delegated to concrete DAO implementations.
+ * primarily through {@link TableDefinition}. It does not define persistence
+ * behavior, SQL execution, or mapping logic. Those responsibilities are
+ * delegated to concrete DAO implementations.
  * </p>
  *
  * <p>
- * The purpose of this abstraction is to standardize table configuration
- * across DAOs while remaining agnostic to the underlying persistence
- * technology (e.g. JDBC, JOOQ, etc.).
+ * The purpose of this abstraction is to standardize table configuration across
+ * DAOs while remaining agnostic to the underlying persistence technology (e.g.
+ * JDBC, JOOQ, etc.).
  * </p>
  *
- * @param <MODEL> the model type managed by this DAO
+ * @param <MODEL>
+ *            the model type managed by this DAO
  */
 public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
-        extends AbstractCommonObject
-        implements IDao<MODEL> {
+        extends
+            AbstractCommonObject
+        implements
+            IDao<MODEL> {
 
     /**
-     * Logical-to-physical table mapping definition used by this DAO.
+     * Table mapping definition used by this DAO.
      *
      * <p>
-     * This replaces hard-coded assumptions such as "table" and "metaTable"
-     * and allows DAOs to declare multiple related tables in a structured way.
+     * Allows DAOs to declare multiple related tables in a structured way.
      * </p>
      */
     protected final TableDefinition tableDefinition;
@@ -51,15 +51,15 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
      * JOOQ DSL context used for constructing type-safe SQL queries.
      *
      * <p>
-     * Concrete DAO implementations may use this context to build SQL
-     * statements while remaining database vendor agnostic. The resulting
-     * SQL may be executed through JDBC, Spring JDBC, JOOQ, or another
-     * persistence mechanism chosen by the implementation.
+     * Concrete DAO implementations may use this context to build SQL statements
+     * while remaining database vendor agnostic. The resulting SQL may be executed
+     * through JDBC, Spring JDBC, JOOQ, or another persistence mechanism chosen by
+     * the implementation.
      * </p>
      *
      * <p>
-     * This field is intentionally provided as a convenience for DAO
-     * implementations and is not used directly by {@link AbstractDao}.
+     * This field is intentionally provided as a convenience for DAO implementations
+     * and is not used directly by {@link AbstractDao}.
      * </p>
      */
     @Autowired
@@ -69,15 +69,16 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
      * Constructs a new DAO instance using a simple main + meta table structure.
      *
      * <p>
-     * This constructor is a convenience for common cases where a DAO
-     * operates on a primary table and an optional metadata table.
-     * Additional tables can be defined by extending this class and
-     * providing a custom {@link TableDefinition}.
+     * This constructor is a convenience for common cases where a DAO operates on a
+     * primary table and an optional metadata table. Additional tables can be
+     * defined by extending this class and providing a custom
+     * {@link TableDefinition}.
      * </p>
      *
-     * @param table     primary database table name (required)
-     * @param metaTable optional metadata table name (may be null or empty if
-     *                  unused)
+     * @param table
+     *            primary database table name (required)
+     * @param metaTable
+     *            optional metadata table name (may be null or empty if unused)
      */
     protected AbstractDao(String table, String metaTable) {
 
@@ -95,12 +96,13 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
      * Constructs a DAO with a fully defined table structure.
      *
      * <p>
-     * Use this constructor when the DAO operates on multiple tables
-     * beyond the standard main/meta pattern (e.g. audit tables,
-     * join tables, or partitioned schemas).
+     * Use this constructor when the DAO operates on multiple tables beyond the
+     * standard main/meta pattern (e.g. audit tables, join tables, or partitioned
+     * schemas).
      * </p>
      *
-     * @param tableDefinition complete table mapping definition
+     * @param tableDefinition
+     *            complete table mapping definition
      */
     protected AbstractDao(TableDefinition tableDefinition) {
         this.tableDefinition = tableDefinition;
@@ -172,7 +174,8 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
     /**
      * Hook executed after a successful add operation.
      *
-     * @param model created model
+     * @param model
+     *            created model
      * @return final model result
      */
     protected MODEL afterAdd(MODEL model) {
@@ -182,7 +185,8 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
     /**
      * Hook executed after a successful update operation.
      *
-     * @param model updated model
+     * @param model
+     *            updated model
      * @return final model result
      */
     protected MODEL afterUpdate(MODEL model) {
@@ -193,16 +197,20 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
     // Helpers
     // ============================================================
 
-    protected final Table<?> mainTable() {
-        return DSL.table(this.tableDefinition.getMain());
+    protected final TableDefinition tables() {
+        return tableDefinition;
+    }
+
+    protected final String mainTable() {
+        return this.tableDefinition.getMain();
     }
 
     /**
      * Counts the number of rows in the DAO's primary table.
      *
      * <p>
-     * This helper is primarily intended for pagination implementations
-     * when constructing Spring {@link Page} instances.
+     * This helper is primarily intended for pagination implementations when
+     * constructing Spring {@link Page} instances.
      * </p>
      *
      * @return total number of rows in the primary table

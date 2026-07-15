@@ -30,11 +30,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
-        AbstractService<USER>
+            AbstractService<USER>
         implements
-        IUserService<USER, USER_META> {
+            IUserService<USER, USER_META> {
 
     protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
     protected UserSecurityService userSecurityService;
@@ -64,16 +65,20 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     @Override
     public USER getByUsername(String username) {
         LOG_THIS("getByUsername(username)");
-        USER user = this.userDao.getByUsername(username).orElseThrow();
+
+        USER user = this.userDao.getByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found: " + username));
+
         CommonUserDetails userDetails = CommonUserDetails
                 .createFromUserDetails(this.userSecurityService.loadUserByUsername(username));
+
         user.setUserDetails(userDetails);
         return user;
     }
 
     @Override
     public boolean existsByUsername(String username) {
-        return this.getByUsername(username) != null;
+        return this.userDao.getByUsername(username).isPresent();
     }
 
     @Override
@@ -100,8 +105,10 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
         // UserDetails
         users.stream().forEach(user -> {
-            final UserDetails userDetails = this.userSecurityService.loadUserByUsername(user.getUsername());
-            CommonUserDetails commonUserDetails = CommonUserDetails.createFromUserDetails(userDetails);
+            final UserDetails userDetails = this.userSecurityService
+                    .loadUserByUsername(user.getUsername());
+            CommonUserDetails commonUserDetails = CommonUserDetails
+                    .createFromUserDetails(userDetails);
             user.setUserDetails(commonUserDetails);
         });
 
@@ -124,18 +131,14 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
         }
 
         final String username = request.getUsername();
-
-        if (this.existsByUsername(username)) {
-            LOG_THIS("User already exists: " + username);
-            throw new UserAlreadyExistsException(username);
-        }
+        validateUsername(username);
 
         USER user = this.userFactory.createUser(request);
         String encodedPassword = this.passwordEncoder.encode(request.getPassword());
         user.setEncodedPassword(encodedPassword);
         this.userSecurityService.createUser(user.getUserDetails());
 
-        USER savedUser = this.add(user);
+        final USER savedUser = this.add(user);
 
         if (savedUser == null) {
             throw new UserCreationException("Failed to persist user: " + username);
@@ -154,15 +157,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
         }
 
         final String username = user.getUsername();
-
-        if (username == null || username.isBlank()) {
-            throw new UserCreationException("Username cannot be null or empty");
-        }
-
-        if (this.existsByUsername(username)) {
-            LOG_THIS("User already exists: " + username);
-            throw new UserAlreadyExistsException(username);
-        }
+        validateUsername(username);
 
         /**
          * Ensure password is encoded.
@@ -171,7 +166,6 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
          * encoding here for safety
          */
         if (user.getEncodedPassword() == null || user.getEncodedPassword().isBlank()) {
-
             throw new UserCreationException("Password must be provided");
         }
 
@@ -180,7 +174,8 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
             user.setMetaData(this.userFactory.createMetaData());
         }
 
-        USER savedUser = this.add(user);
+        this.userSecurityService.createUser(user.getUserDetails());
+        final USER savedUser = this.add(user);
 
         if (savedUser == null) {
             throw new UserCreationException("Failed to persist user: " + username);
@@ -194,7 +189,8 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
         LOG("update()");
         final USER user = this.getById(id);
         final String username = user.getUsername();
-        if (this.userSecurityService.userExists(username) && username.equals(updatedUser.getUsername())) {
+        if (this.userSecurityService.userExists(username)
+                && username.equals(updatedUser.getUsername())) {
             this.userSecurityService.updateUser(updatedUser.getUserDetails());
         } else {
             this.userSecurityService.deleteUser(username);
@@ -264,7 +260,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
         switch (sort) {
 
-            case EMAIL:
+            case EMAIL :
 
                 LOG_THIS("Applying sort: EMAIL");
 
@@ -273,7 +269,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
                 break;
 
-            case ID:
+            case ID :
 
                 LOG_THIS("Applying sort: ID");
 
@@ -282,9 +278,9 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
                 break;
 
-            case USERNAME:
+            case USERNAME :
 
-            default:
+            default :
 
                 LOG_THIS("Applying sort: USERNAME (default)");
 
@@ -309,6 +305,18 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
         }
 
         return users;
+    }
+
+    // Helpers
+    private void validateUsername(final String username) {
+        if (username == null || username.isBlank()) {
+            throw new UserCreationException("Username cannot be null or empty");
+        }
+
+        if (this.existsByUsername(username)) {
+            LOG_THIS("User already exists: " + username);
+            throw new UserAlreadyExistsException(username);
+        }
     }
 
     private static void LOG_THIS(String... args) {

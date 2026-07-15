@@ -34,15 +34,19 @@ public abstract class AbstractViewController<
         /////////////////////////
         // Define generics here//
         /////////////////////////
-        SERVICES extends com.rumpus.common.Manager.AbstractServiceManager<?>, USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+        SERVICES extends com.rumpus.common.Manager.AbstractServiceManager<?>,
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-        AbstractCommonController<
-                /////////////////////////
-                // Define generics here//
-                /////////////////////////
-                SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+            AbstractCommonController<
+                    /////////////////////////
+                    // Define generics here//
+                    /////////////////////////
+                    SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
         implements
-        ICommonViewController {
+            ICommonViewController {
 
     protected final AbstractViews viewLoader;
 
@@ -123,7 +127,8 @@ public abstract class AbstractViewController<
      */
     @GetMapping(ICommonViewController.PATH_RESOURCE_BY_NAME)
     public ResponseEntity<Resource> getResourceByName(
-            @PathVariable(ICommonViewController.PATH_VARIABLE_RESOURCE_BY_NAME) String name,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_RESOURCE_BY_NAME)
+            String name,
             HttpServletRequest request) {
         Resource resource = viewLoader.getResourceByName(name);
         return new ResponseEntity<Resource>(
@@ -141,7 +146,8 @@ public abstract class AbstractViewController<
      */
     @PostMapping(value = ICommonViewController.PATH_USER_TEMPLATE)
     public ResponseEntity<CommonSession> updateCurrentUserTemplate(
-            @RequestBody USER user,
+            @RequestBody
+            USER user,
             // @RequestBody AbstractUserTemplate<? extends AbstractCommonUser<?, ?>, ?
             // extends AbstractCommonUserMetaData<?>> userTemplate,
             HttpServletRequest request) {
@@ -170,14 +176,15 @@ public abstract class AbstractViewController<
      * Example: /template/RumpusAdmin
      *
      * @param templateName
-     *                     The name of the template
+     *            The name of the template
      * @param request
-     *                     The HttpServletRequest
+     *            The HttpServletRequest
      * @return The Template as a ResponseEntity
      */
     @GetMapping(ICommonViewController.PATH_TEMPLATE_BY_NAME)
     public ResponseEntity<AbstractHtmlObject> getTemplate(
-            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME)
+            String templateName,
             HttpServletRequest request) {
 
         LOG("AbstractViewController::getTemplate()");
@@ -239,8 +246,10 @@ public abstract class AbstractViewController<
 
     @GetMapping(ICommonViewController.PATH_USER_TEMPLATE)
     public ResponseEntity<AbstractHtmlObject> getUserTemplate(
-            @PathVariable(ICommonViewController.PATH_VARIABLE_USER_ID) String userId,
-            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_USER_ID)
+            String userId,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME)
+            String templateName,
             HttpServletRequest request) {
 
         LOG("AbstractViewController::getUserTemplate()");
@@ -290,8 +299,10 @@ public abstract class AbstractViewController<
     /** */
     @GetMapping(ICommonViewController.PATH_COMPONENT_BY_NAME)
     public ResponseEntity<AbstractComponent> getTemplateComponent(
-            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
-            @PathVariable(ICommonViewController.PATH_VARIABLE_COMPONENT_BY_NAME) String componentName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME)
+            String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_COMPONENT_BY_NAME)
+            String componentName,
             HttpServletRequest request) {
 
         // check if the templateName or componentName is null or empty
@@ -367,7 +378,8 @@ public abstract class AbstractViewController<
      */
     @PostMapping(ICommonViewController.PATH_TEMPLATE_BY_NAME)
     public ResponseEntity<AbstractHtmlObject> updateTemplate(
-            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME) String templateName,
+            @PathVariable(ICommonViewController.PATH_VARIABLE_TEMPLATE_BY_NAME)
+            String templateName,
             AbstractTemplate updatedTemplate,
             HttpServletRequest request) {
 

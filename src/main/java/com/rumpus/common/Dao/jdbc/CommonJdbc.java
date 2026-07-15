@@ -79,7 +79,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      * the class can only be instantiated once via the singleton pattern.
      *
      * @param dataSource
-     *                   the DataSource to be used for the JdbcTemplate.
+     *            the DataSource to be used for the JdbcTemplate.
      */
     private CommonJdbc(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -91,7 +91,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      *
      * @return the singleton instance of CommonJdbc.
      */
-    protected static CommonJdbc getInstance() {
+    public static CommonJdbc getInstance() {
         return CommonJdbc.commonJdbcSingleton;
     }
 
@@ -101,8 +101,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      * unnecessary synchronization.
      *
      * @param dataSource
-     *                   the DataSource to be used for initializing the
-     *                   JdbcTemplate.
+     *            the DataSource to be used for initializing the JdbcTemplate.
      * @return the singleton instance of CommonJdbc.
      */
     protected static CommonJdbc createAndSetDataSource(DataSource dataSource) {
@@ -123,7 +122,7 @@ final public class CommonJdbc extends AbstractCommonObject {
      *
      * @return the JdbcTemplate instance.
      */
-    protected JdbcTemplate getJdbcTemplate() {
+    public JdbcTemplate getJdbcTemplate() {
         return this.jdbcTemplate;
     }
 
@@ -149,13 +148,13 @@ final public class CommonJdbc extends AbstractCommonObject {
      * using a RowMapper.
      *
      * @param <T>
-     *                  the type of the object to be returned.
+     *            the type of the object to be returned.
      * @param sql
-     *                  the SQL query to be executed.
+     *            the SQL query to be executed.
      * @param rowMapper
-     *                  the RowMapper to map the results to objects.
+     *            the RowMapper to map the results to objects.
      * @param args
-     *                  the arguments to be passed to the SQL query.
+     *            the arguments to be passed to the SQL query.
      * @return a list of objects mapped from the SQL query results.
      */
     public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
@@ -167,13 +166,13 @@ final public class CommonJdbc extends AbstractCommonObject {
      * using a RowMapper.
      *
      * @param <T>
-     *                  the type of the object to be returned.
+     *            the type of the object to be returned.
      * @param sql
-     *                  the SQL query to be executed.
+     *            the SQL query to be executed.
      * @param rowMapper
-     *                  the RowMapper to map the results to an object.
+     *            the RowMapper to map the results to an object.
      * @param args
-     *                  the arguments to be passed to the SQL query.
+     *            the arguments to be passed to the SQL query.
      * @return a single object mapped from the SQL query results.
      */
     public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) {
@@ -184,13 +183,13 @@ final public class CommonJdbc extends AbstractCommonObject {
      * Query method to execute a SQL query and return a single scalar value.
      *
      * @param <T>
-     *                     the expected return type.
+     *            the expected return type.
      * @param sql
-     *                     the SQL query to execute.
+     *            the SQL query to execute.
      * @param requiredType
-     *                     the expected Java type of the returned value.
+     *            the expected Java type of the returned value.
      * @param args
-     *                     bind parameters for the SQL query.
+     *            bind parameters for the SQL query.
      * @return the mapped scalar value.
      */
     public <T> T queryForObject(
@@ -205,9 +204,9 @@ final public class CommonJdbc extends AbstractCommonObject {
      * Update method to execute an SQL update statement.
      *
      * @param sql
-     *             the SQL update statement to be executed.
+     *            the SQL update statement to be executed.
      * @param args
-     *             the arguments to be passed to the SQL update statement.
+     *            the arguments to be passed to the SQL update statement.
      * @return the number of rows affected by the update.
      */
     public int update(String sql, Object... args) {
@@ -215,14 +214,33 @@ final public class CommonJdbc extends AbstractCommonObject {
     }
 
     /**
+     * Executes an SQL update statement using a custom
+     * {@link PreparedStatementCreator}.
+     *
+     * <p>
+     * This overload should be used when bind parameters require explicit JDBC
+     * handling, such as {@link java.sql.Blob}, binary data, streams, arrays, or
+     * other database specific types that cannot be reliably inferred by
+     * {@link JdbcTemplate}.
+     * </p>
+     *
+     * @param preparedStatementCreator
+     *            callback used to create and populate the
+     *            {@link java.sql.PreparedStatement}.
+     * @return the number of rows affected by the update.
+     */
+    public int update(PreparedStatementCreator preparedStatementCreator) {
+        return this.jdbcTemplate.update(preparedStatementCreator);
+    }
+
+    /**
      * Update method to execute an SQL update statement and return the generated
      * keys.
      *
      * @param preparedStatementCreator
-     *                                 the PreparedStatementCreator to create the
-     *                                 prepared statement.
+     *            the PreparedStatementCreator to create the prepared statement.
      * @param keyHolder
-     *                                 the KeyHolder to hold the generated keys.
+     *            the KeyHolder to hold the generated keys.
      * @return the number of rows affected by the update.
      */
     public int update(PreparedStatementCreator preparedStatementCreator, KeyHolder keyHolder) {
@@ -253,9 +271,9 @@ final public class CommonJdbc extends AbstractCommonObject {
      * Use the SimpleJdbcInsert to insert a row into the database.
      *
      * @param table
-     *                   the table to insert into
+     *            the table to insert into
      * @param parameters
-     *                   the parameters to insert
+     *            the parameters to insert
      * @return the number of rows affected
      */
     public int simpleInsert(final String table, Map<String, ?> parameters) {

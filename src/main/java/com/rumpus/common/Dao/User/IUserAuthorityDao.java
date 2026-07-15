@@ -10,7 +10,8 @@ public interface IUserAuthorityDao { // TODO: make authority model so this can e
     /**
      * Get all roles assigned to a user.
      *
-     * @param userId the user id
+     * @param userId
+     *            the user id
      * @return list of role names assigned to the user
      */
     List<String> getUserRoles(UUID userId);
@@ -18,13 +19,16 @@ public interface IUserAuthorityDao { // TODO: make authority model so this can e
     /**
      * Add a role to a user.
      * <p>
-     * This method should be idempotent:
-     * adding an existing role should not create duplicates or error.
+     * This method should be idempotent: adding an existing role should not create
+     * duplicates or error.
      *
-     * @param userId the user id
-     * @param role   the role to assign
+     * @param userId
+     *            the user id
+     * @param role
+     *            the role to assign
      *
-     * @throws IllegalArgumentException if user does not exist or role is invalid
+     * @throws IllegalArgumentException
+     *             if user does not exist or role is invalid
      */
     void addUserRole(UUID userId, String role);
 
@@ -33,10 +37,13 @@ public interface IUserAuthorityDao { // TODO: make authority model so this can e
      * <p>
      * If the user does not have the role, the operation should be a no-op.
      *
-     * @param userId the user id
-     * @param role   the role to remove
+     * @param userId
+     *            the user id
+     * @param role
+     *            the role to remove
      *
-     * @throws IllegalArgumentException if user does not exist
+     * @throws IllegalArgumentException
+     *             if user does not exist
      */
     void removeUserRole(UUID userId, String role);
 }

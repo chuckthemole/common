@@ -7,9 +7,10 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDaoJpa;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractServiceJpa<MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
+abstract public class AbstractServiceJpa<
+        MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonObject
         implements
-        IService<MODEL> {
+            IService<MODEL> {
 
     /**
      * The data access object for this service.

@@ -19,16 +19,17 @@ import jakarta.servlet.http.HttpSession;
 
 @Service("userDetailsService") // TODO: look at this annotation and see if we could put in IService?
                                // or remove it? - chuck
-public interface IUserService<USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>>
+public interface IUserService<USER extends AbstractCommonUser<USER, META>,
+        META extends AbstractCommonUserMetaData<META>>
         extends
-        IService<USER>,
-        UserDetailsService {
+            IService<USER>,
+            UserDetailsService {
 
     /**
      * Get a user by their username.
      *
      * @param username
-     *                 The username of the user to get.
+     *            The username of the user to get.
      * @return The user with the given username. If no user is found, return null.
      *         If more than one user is found, return null. TODO: I don't like this.
      *         I think it should throw an exception if more than one user is found
@@ -40,7 +41,7 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * Get the user details for a user with the given username.
      *
      * @param username
-     *                 The username of the user to get the details for.
+     *            The username of the user to get the details for.
      * @return The {@link UserDetails} for the user with the given username.
      */
     public UserDetails loadUserByUsername(String username);
@@ -49,7 +50,7 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * Check if a user exists with the given username.
      *
      * @param username
-     *                 the username to check
+     *            the username to check
      *
      * @return true if a user exists, false otherwise
      */
@@ -69,13 +70,12 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * </ul>
      *
      * @param request
-     *                the user creation request containing required fields
+     *            the user creation request containing required fields
      *
      * @return the persisted {@link USER} entity
      *
      * @throws IllegalArgumentException
-     *                                  if username already exists or request is
-     *                                  invalid
+     *             if username already exists or request is invalid
      */
     USER createUser(CreateUserRequest request);
 
@@ -96,20 +96,20 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * constructed (e.g. from factories, mappers, or internal services).
      *
      * @param user
-     *             the fully or partially constructed user entity
+     *            the fully or partially constructed user entity
      *
      * @return the persisted {@link USER} entity
      *
      * @throws IllegalArgumentException
-     *                                  if username already exists or user data is
-     *                                  invalid
+     *             if username already exists or user data is invalid
      */
     USER createUser(USER user);
 
     /**
      * Get all roles assigned to a user.
      *
-     * @param userId the user id
+     * @param userId
+     *            the user id
      * @return list of role names assigned to the user
      */
     List<String> getUserRoles(UUID userId);
@@ -117,13 +117,16 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
     /**
      * Add a role to a user.
      * <p>
-     * This method should be idempotent:
-     * adding an existing role should not create duplicates or error.
+     * This method should be idempotent: adding an existing role should not create
+     * duplicates or error.
      *
-     * @param userId the user id
-     * @param role   the role to assign
+     * @param userId
+     *            the user id
+     * @param role
+     *            the role to assign
      *
-     * @throws IllegalArgumentException if user does not exist or role is invalid
+     * @throws IllegalArgumentException
+     *             if user does not exist or role is invalid
      */
     void addUserRole(UUID userId, String role);
 
@@ -132,10 +135,13 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * <p>
      * If the user does not have the role, the operation should be a no-op.
      *
-     * @param userId the user id
-     * @param role   the role to remove
+     * @param userId
+     *            the user id
+     * @param role
+     *            the role to remove
      *
-     * @throws IllegalArgumentException if user does not exist
+     * @throws IllegalArgumentException
+     *             if user does not exist
      */
     void removeUserRole(UUID userId, String role);
 
@@ -156,18 +162,17 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * silently ignoring errors whenever possible.
      *
      * @param username
-     *                 the username of the user to authenticate
+     *            the username of the user to authenticate
      *
      * @param password
-     *                 the user's plaintext password used for authentication
+     *            the user's plaintext password used for authentication
      *
      * @param request
-     *                 the current {@link HttpServletRequest} used to establish the
-     *                 authenticated session
+     *            the current {@link HttpServletRequest} used to establish the
+     *            authenticated session
      *
      * @throws jakarta.servlet.ServletException
-     *                                          if the servlet container fails to
-     *                                          authenticate the user
+     *             if the servlet container fails to authenticate the user
      */
     public void loginUser(
             String username,

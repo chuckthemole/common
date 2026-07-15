@@ -23,11 +23,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-abstract public class AbstractAdminUserController<SERVICES extends AbstractServiceManager<?>, USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+abstract public class AbstractAdminUserController<SERVICES extends AbstractServiceManager<?>,
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-        AbstractCommonController<SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+            AbstractCommonController<SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
         implements
-        IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+            IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     @Override
     public ResponseEntity<List<USER>> getAllUsers(Sort sort, SortDirection direction,
@@ -36,7 +40,8 @@ abstract public class AbstractAdminUserController<SERVICES extends AbstractServi
     }
 
     @Override
-    public ResponseEntity<CommonSession> createUser(@Valid CreateUserRequest request,
+    public ResponseEntity<CommonSession> createUser(@Valid
+    CreateUserRequest request,
             HttpServletRequest servletRequest) {
         LOG_THIS("AbstractUserController::userSubmit()");
 
@@ -76,7 +81,8 @@ abstract public class AbstractAdminUserController<SERVICES extends AbstractServi
     }
 
     @Override
-    public ResponseEntity<Void> addUserRole(UUID userId, @Valid CreateUserRoleRequest request) {
+    public ResponseEntity<Void> addUserRole(UUID userId, @Valid
+    CreateUserRoleRequest request) {
         LOG_THIS("AbstractAdminUserController::addUserRole()");
         this.userService.addUserRole(userId, request.getRole());
         return ResponseEntity.ok().build();

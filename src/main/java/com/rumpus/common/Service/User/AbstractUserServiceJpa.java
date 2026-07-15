@@ -20,11 +20,12 @@ import com.rumpus.common.User.Requests.CreateUserRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
-        AbstractServiceJpa<USER>
+            AbstractServiceJpa<USER>
         implements
-        IUserService<USER, USER_META> {
+            IUserService<USER, USER_META> {
 
     private IUserDaoJpa<USER, USER_META> userDaoJpa;
 
@@ -37,7 +38,7 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
      * Create a user with the given username.
      *
      * @param username
-     *                 The username of the user to create.
+     *            The username of the user to create.
      * @return A user with the given username.
      */
     abstract public USER createUserWithUsername(String username);

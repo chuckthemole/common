@@ -38,19 +38,22 @@ abstract public class AbstractUserController<
         // Define generics here//
         /////////////////////////
         SERVICES extends AbstractServiceManager<?>, // TODO: can we have the wildcard be SERVICE?
-        USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-        AbstractCommonController<
-                /////////////////////////
-                // Define generics here//
-                /////////////////////////
-                SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+            AbstractCommonController<
+                    /////////////////////////
+                    // Define generics here//
+                    /////////////////////////
+                    SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
         implements
-        ICommonUserController<
-                /////////////////////////
-                // Define generics here//
-                /////////////////////////
-                USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+            ICommonUserController<
+                    /////////////////////////
+                    // Define generics here//
+                    /////////////////////////
+                    USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     private static final AbstractCommonUserCollection.Sort DEFAULT_SORT = AbstractCommonUserCollection.Sort.USERNAME;
     @Autowired
@@ -61,7 +64,8 @@ abstract public class AbstractUserController<
     }
 
     @Override
-    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort") String sort, HttpSession session) {
+    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort")
+    String sort, HttpSession session) {
         LOG_THIS("AbstractUserController::getAllUsersByPath()");
         return getAllUsers(AbstractCommonUserCollection.Sort.valueOf(sort), null, session);
     }
@@ -69,9 +73,11 @@ abstract public class AbstractUserController<
     @Override
     public ResponseEntity<List<USER>> getAllUsers(
 
-            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false) AbstractCommonUserCollection.Sort sort,
+            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false)
+            AbstractCommonUserCollection.Sort sort,
 
-            @RequestParam(value = "direction", defaultValue = "ASC", required = false) AbstractCommonUserCollection.SortDirection direction,
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
+            AbstractCommonUserCollection.SortDirection direction,
 
             HttpSession session) {
 
@@ -114,7 +120,7 @@ abstract public class AbstractUserController<
 
         switch (sort) {
 
-            case EMAIL:
+            case EMAIL :
 
                 LOG_THIS("Applying sort: EMAIL");
 
@@ -123,7 +129,7 @@ abstract public class AbstractUserController<
 
                 break;
 
-            case ID:
+            case ID :
 
                 LOG_THIS("Applying sort: ID");
 
@@ -132,9 +138,9 @@ abstract public class AbstractUserController<
 
                 break;
 
-            case USERNAME:
+            case USERNAME :
 
-            default:
+            default :
 
                 LOG_THIS("Applying sort: USERNAME (default)");
 
@@ -169,7 +175,8 @@ abstract public class AbstractUserController<
 
     @Override
     public ResponseEntity<CommonSession> userSubmit(
-            @RequestBody CreateUserRequest request,
+            @RequestBody
+            CreateUserRequest request,
             HttpServletRequest servletRequest) {
 
         LOG_THIS("AbstractUserController::userSubmit()");
@@ -185,20 +192,24 @@ abstract public class AbstractUserController<
 
     @Override
     public ResponseEntity<Void> updateUserRole(
-            @PathVariable UUID userId,
-            @RequestBody CreateUserRoleRequest request) {
+            @PathVariable
+            UUID userId,
+            @RequestBody
+            CreateUserRoleRequest request) {
         LOG_THIS("AbstractUserController::updateUserRole()");
         // TODO implement persistence layer update
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<CommonSession> deleteUser(@RequestBody String user, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> deleteUser(@RequestBody
+    String user, HttpServletRequest request) {
         LOG_THIS("USERRestController POST: /api/delete_user");
         HttpSession session = request.getSession();
 
         // if user was removed, return session with status delete
-        final UUID userId = StringUtil.isQuoted(user) ? UUID.fromString(user.substring(1, user.length() - 1))
+        final UUID userId = StringUtil.isQuoted(user)
+                ? UUID.fromString(user.substring(1, user.length() - 1))
                 : UUID.fromString(user);
         if (this.userService.remove(userId)) {
             session.setAttribute("status", "user deleted");
@@ -215,7 +226,8 @@ abstract public class AbstractUserController<
     }
 
     @Override
-    public ResponseEntity<CommonSession> updateUser(@RequestBody USER user, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> updateUser(@RequestBody
+    USER user, HttpServletRequest request) {
         LOG_THIS("USERRestController POST: /api/update_user");
         HttpSession session = request.getSession();
         // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1,
@@ -238,7 +250,8 @@ abstract public class AbstractUserController<
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserByUsername(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME)
+            String username,
             HttpServletRequest request) {
         return new ResponseEntity<USER>(this.userService.getByUsername(username),
                 HttpStatus.ACCEPTED);
@@ -247,7 +260,8 @@ abstract public class AbstractUserController<
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserById(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID)
+            String id,
             HttpServletRequest request) {
         LOG_THIS("USERRestController::getUserById()");
         final UUID userUUID = UUID.fromString(id);

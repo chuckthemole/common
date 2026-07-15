@@ -34,7 +34,8 @@ public final class TableDefinition {
     /**
      * Create a TableDefinition with a prebuilt map of table mappings.
      *
-     * @param tables map of logical table names to physical DB table names
+     * @param tables
+     *            map of logical table names to physical DB table names
      */
     private TableDefinition(Map<String, String> tables) {
         this.tables = Collections.unmodifiableMap(new HashMap<>(tables));
@@ -52,7 +53,8 @@ public final class TableDefinition {
     /**
      * Gets a table name by logical key.
      *
-     * @param key logical table key (e.g. "main", "meta")
+     * @param key
+     *            logical table key (e.g. "main", "meta")
      * @return physical table name
      */
     public String get(String key) {
@@ -63,7 +65,8 @@ public final class TableDefinition {
      * Gets the primary table (required).
      *
      * @return main table name
-     * @throws IllegalStateException if not defined
+     * @throws IllegalStateException
+     *             if not defined
      */
     public String getMain() {
         return require(MAIN);

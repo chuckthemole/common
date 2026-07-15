@@ -20,7 +20,8 @@ import org.jooq.Query;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> extends AbstractDao<MODEL> {
+public abstract class AbstractApiDBJdbc<
+        MODEL extends AbstractModel<MODEL, ?>> extends AbstractDao<MODEL> {
 
     /**
      * The {@link CommonJdbc} for this Dao
@@ -43,7 +44,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
         LOG_THIS("remove()");
 
         final Query query = this.dslContext
-                .deleteFrom(this.mainTable())
+                .deleteFrom(DSL.table(this.mainTable()))
                 .where(DSL.field(ICommon.ID, UUID.class).eq(id));
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
@@ -62,7 +63,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         final Query query = this.dslContext
                 .select()
-                .from(mainTable())
+                .from(DSL.table(this.mainTable()))
                 .where(
                         DSL.field(ICommon.ID, UUID.class)
                                 .eq(id));
@@ -84,7 +85,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         final Query query = this.dslContext
                 .select(DSL.asterisk())
-                .from(mainTable());
+                .from(DSL.table(this.mainTable()));
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
 
@@ -101,7 +102,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         final Query query = super.dslContext
                 .select()
-                .from(this.mainTable())
+                .from(DSL.table(this.mainTable()))
                 .limit(pageable.getPageSize())
                 .offset((int) pageable.getOffset());
 
@@ -124,7 +125,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
         LOG_THIS("removeAll()");
 
         final Query query = this.dslContext
-                .deleteFrom(mainTable());
+                .deleteFrom(DSL.table(this.mainTable()));
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
 
@@ -145,7 +146,7 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ?>> e
 
         final Query query = this.dslContext
                 .selectCount()
-                .from(this.mainTable());
+                .from(DSL.table(this.mainTable()));
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
 

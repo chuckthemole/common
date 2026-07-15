@@ -128,9 +128,9 @@ public interface ICommon {
      * Top level AbstractCommonObject LOG method. Uses info level.
      *
      * @param clazz
-     *              the class to log the message for
+     *            the class to log the message for
      * @param args
-     *              The message to log
+     *            The message to log
      */
     public static void LOG(Class<?> clazz, String... args) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
@@ -143,11 +143,11 @@ public interface ICommon {
      * Top level AbstractCommonObject LOG method. Uses the specified level.
      *
      * @param clazz
-     *              the class to log the message for
+     *            the class to log the message for
      * @param level
-     *              the level to log the message at
+     *            the level to log the message at
      * @param args
-     *              The message to log
+     *            The message to log
      */
     public static void LOG(Class<?> clazz, LogLevel level, String... args) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();

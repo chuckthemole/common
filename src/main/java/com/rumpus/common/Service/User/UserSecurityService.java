@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import com.rumpus.common.ICommon;
+import com.rumpus.common.Dao.jdbc.CommonJdbc;
 
 /**
  * Thin wrapper around Spring's JdbcUserDetailsManager.
@@ -19,9 +20,9 @@ public class UserSecurityService {
         this.delegate = delegate;
         // TODO: I believe spring ships with these default queries, so we do not need to
         // set.
-        // this.setDefaultQueries(); // TODO: should we have params for ctor for custom,
+        this.setDefaultQueries(); // TODO: should we have params for ctor for custom,
         // setQueries?
-        // this.delegate.setJdbcTemplate(CommonJdbc.getInstance().getJdbcTemplate());
+        this.delegate.setJdbcTemplate(CommonJdbc.getInstance().getJdbcTemplate());
         // todo: should we do this?
     }
 
@@ -121,7 +122,8 @@ public class UserSecurityService {
         this.delegate.setChangePasswordSql(JdbcUserDetailsManager.DEF_CHANGE_PASSWORD_SQL);
         this.delegate.setCreateAuthoritySql(JdbcUserDetailsManager.DEF_INSERT_AUTHORITY_SQL);
         this.delegate.setFindUsersInGroupSql(JdbcUserDetailsManager.DEF_FIND_USERS_IN_GROUP_SQL);
-        this.delegate.setGroupAuthoritiesSql(JdbcUserDetailsManager.DEF_GROUP_AUTHORITIES_QUERY_SQL);
+        this.delegate
+                .setGroupAuthoritiesSql(JdbcUserDetailsManager.DEF_GROUP_AUTHORITIES_QUERY_SQL);
         this.delegate.setDeleteGroupMemberSql(JdbcUserDetailsManager.DEF_DELETE_GROUP_MEMBER_SQL);
         this.delegate.setInsertGroupMemberSql(JdbcUserDetailsManager.DEF_INSERT_GROUP_MEMBER_SQL);
         this.delegate.setDeleteGroupMembersSql(JdbcUserDetailsManager.DEF_DELETE_GROUP_MEMBERS_SQL);

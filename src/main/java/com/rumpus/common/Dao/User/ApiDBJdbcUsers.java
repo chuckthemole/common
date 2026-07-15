@@ -1,5 +1,6 @@
 package com.rumpus.common.Dao.User;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -7,6 +8,7 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import com.rumpus.common.ICommon;
+import com.rumpus.common.Blob.BlobUtil;
 import com.rumpus.common.Dao.jdbc.AbstractApiDBJdbc;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -17,11 +19,12 @@ import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 import org.springframework.jdbc.core.RowMapper;
 
-public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>>
+public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>,
+        META extends AbstractCommonUserMetaData<META>>
         extends
-        AbstractApiDBJdbc<USER>
+            AbstractApiDBJdbc<USER>
         implements
-        IUserDao<USER, META> {
+            IUserDao<USER, META> {
 
     public ApiDBJdbcUsers(
             DataSource dataSource,
@@ -36,7 +39,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
         final Query query = super.dslContext
                 .select(DSL.asterisk())
-                .from(this.mainTable())
+                .from(DSL.table(this.mainTable()))
                 .where(
                         DSL.field(ICommon.USERNAME)
                                 .eq(username));
@@ -64,7 +67,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
         final Query query = super.dslContext
                 .selectOne()
-                .from(this.mainTable())
+                .from(DSL.table(this.mainTable()))
                 .where(DSL.field(ICommon.USERNAME).eq(username));
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
@@ -83,7 +86,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
         LOG_THIS("ApiDBJdbcUsers::doAdd()");
 
         final Query query = this.dslContext
-                .insertInto(this.mainTable())
+                .insertInto(DSL.table(this.mainTable()))
                 .columns(
                         DSL.field(ICommon.ID),
                         DSL.field(ICommon.USER_META_DATA),
@@ -97,9 +100,16 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
 
-        int rows = this.jdbc.update(
-                query.getSQL(),
-                query.getBindValues().toArray());
+        int rows = this.jdbc.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(query.getSQL());
+
+            ps.setString(1, newUser.getId().toString());
+            ps.setBytes(2, BlobUtil.serialize(newUser.getMetaData()));
+            ps.setString(3, newUser.getEmail());
+            ps.setString(4, newUser.getUsername());
+
+            return ps;
+        });
 
         return rows == 1 ? newUser : null;
     }
@@ -110,7 +120,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
         LOG_THIS("ApiDBJdbcUsers::doUpdate()");
 
         final Query query = this.dslContext
-                .update(this.mainTable())
+                .update(DSL.table(this.mainTable()))
                 .set(DSL.field(ICommon.USER_META_DATA), newUser.getMetaData())
                 .set(DSL.field(ICommon.EMAIL), newUser.getEmail())
                 .set(DSL.field(ICommon.USERNAME), newUser.getUsername())
@@ -128,7 +138,7 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>, META ex
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + "[table=" + this.mainTable().getName() + "]";
+                + "[table=" + this.mainTable() + "]";
     }
 
     private static void LOG_THIS(String... args) {
