@@ -89,7 +89,7 @@ abstract public class AbstractCommonObject implements ICommon {
     protected static void LOG(Class<?> clazz, LogLevel level, String... args) {
         final String log = LogBuilder.logBuilderFromStringArgsNoSpaces(clazz, args).toString();
         ICommon.LOG_COMMON.setClass(clazz);
-        ICommon.LOG_COMMON.infoLevel(log);
+        ICommon.LOG_COMMON.logAtLevel(level, log);
         ICommon.LOG_COMMON.setClass(ICommon.DEFAULT_LOGGER_CLASS);
     }
 

@@ -2,18 +2,17 @@ package com.rumpus.common.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.env.Environment;
 
+import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.Serializer.ISerializerRegistry;
 import com.rumpus.common.Service.ISerializerService;
 import com.rumpus.common.Service.SerializerService;
 
-abstract public class AbstractCommonModelConfig<
-        SERVICES extends AbstractServiceManager<?>,
+abstract public class AbstractCommonModelConfig<SERVICES extends AbstractServiceManager<?>,
         SERIALIZER_REGISTRY_SERVICE extends ISerializerRegistry>
         extends
-            AbstractCommonConfig {
+            AbstractCommonObject {
 
     public static final String PARENT_SERVICES = "parentServices";
     public static final String CHILD_SERVICES = "childServices";
@@ -22,8 +21,7 @@ abstract public class AbstractCommonModelConfig<
     public static final String PARENT_SERIALIZER_SERVICE = "parentSerializerService";
     public static final String CHILD_SERIALIZER_SERVICE = "childSerializerService";
 
-    public AbstractCommonModelConfig(Environment environment) {
-        super(environment);
+    public AbstractCommonModelConfig() {
     }
 
     @Bean(name = AbstractCommonModelConfig.PARENT_SERVICES)

@@ -10,6 +10,7 @@ import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -89,6 +90,92 @@ public final class NotionIntegrationLoader extends AbstractCommonObject {
         String completeMsg = String.format(
                 "Completed loading Notion integrations for '%s'. Registry now contains %d entries.%n",
                 propertyKey, registry.size());
+        debugOutput.append(completeMsg);
+        LOG_THIS(completeMsg);
+    }
+
+    /**
+     * Loads Notion integration entries from a configuration map.
+     *
+     * @param entries
+     *            Map of logical resource names to Notion IDs.
+     * @param registry
+     *            The {@link NotionIntegrationRegistry} to populate.
+     * @param resourceType
+     *            The {@link NotionResourceType} for all loaded entries.
+     * @param debugOutput
+     *            Accumulates diagnostic output.
+     */
+    public static void load(
+            Map<String, String> entries,
+            NotionIntegrationRegistry registry,
+            NotionResourceType resourceType,
+            final StringBuilder debugOutput) {
+
+        // Guard against null debugOutput
+        if (debugOutput == null) {
+            LOG(NotionIntegrationLoader.class, LogLevel.ERROR,
+                    "NotionIntegrationLoader::load() -> debugOutput is null. Caller must pass a valid StringBuilder instance.");
+            return;
+        }
+
+        Objects.requireNonNull(entries, "Entries must not be null");
+        Objects.requireNonNull(registry, "Registry must not be null");
+        Objects.requireNonNull(resourceType, "Resource type must not be null");
+
+        if (entries.isEmpty()) {
+            String msg = "No Notion integration entries configured. Skipping load.\n";
+            debugOutput.append(msg);
+            LOG_THIS(msg);
+            return;
+        }
+
+        String msg = String.format(
+                "Loading %d Notion integration entr%s.%n",
+                entries.size(),
+                entries.size() == 1 ? "y" : "ies");
+        debugOutput.append(msg);
+        LOG_THIS(msg);
+
+        entries.forEach((name, value) -> {
+            try {
+
+                if (name == null || name.isBlank()) {
+                    throw new IllegalArgumentException("Entry name is blank.");
+                }
+
+                if (value == null || value.isBlank()) {
+                    throw new IllegalArgumentException(
+                            "Entry value is blank for '" + name + "'.");
+                }
+
+                NotionIntegrationEntry notionEntry = new NotionIntegrationEntry(name, resourceType,
+                        value);
+
+                registry.register(notionEntry);
+
+                String registerMsg = String.format(
+                        "Registered Notion integration entry: %s%n",
+                        notionEntry);
+
+                debugOutput.append(registerMsg);
+                LOG_THIS(registerMsg);
+
+            } catch (Exception e) {
+                String errMsg = String.format(
+                        "Failed to register Notion integration '%s': %s%n",
+                        name,
+                        e.getMessage());
+
+                debugOutput.append(errMsg);
+                LOG_THIS(errMsg);
+            }
+        });
+
+        String completeMsg = String.format(
+                "Completed loading Notion integrations. Registry now contains %d entries.%n",
+                registry.size());
+
         debugOutput.append(completeMsg);
         LOG_THIS(completeMsg);
     }

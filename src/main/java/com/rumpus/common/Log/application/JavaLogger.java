@@ -2,6 +2,7 @@ package com.rumpus.common.Log.application;
 
 import java.util.logging.Logger;
 
+import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
 import com.rumpus.common.Log.AbstractCommonLogger;
 import com.rumpus.common.Log.ICommonLogger;
@@ -19,7 +20,7 @@ public class JavaLogger extends AbstractCommonLogger {
     }
 
     public static ICommonLogger createEmptyLogger() {
-        return new JavaLogger(com.rumpus.common.ICommon.DEFAULT_LOGGER_CLASS);
+        return new JavaLogger(ICommon.DEFAULT_LOGGER_CLASS);
     }
 
     public static ICommonLogger createLogger(Class<?> clazz) {

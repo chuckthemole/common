@@ -17,7 +17,9 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 /**
  * AbstractAwsConfig
  *
- * Abstract class for AWS configuration.
+ * Abstract class for AWS configuration. TODO: Icorporate this into the new
+ * AWSConfig class. This is a temporary solution to get the S3Template working
+ * with the new AWS SDK.
  */
 abstract public class AbstractAwsConfig {
 

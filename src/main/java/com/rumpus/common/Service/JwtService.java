@@ -3,7 +3,7 @@ package com.rumpus.common.Service;
 import org.springframework.stereotype.Service;
 
 import com.rumpus.common.Auth.OAuth2Provider;
-import com.rumpus.common.Config.AbstractCommonConfig;
+import com.rumpus.common.Config.Security.JwtProperties;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,10 +23,10 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    @Value(AbstractCommonConfig.JWT_SECRET_VALUE_ANNOTATION)
+    @Value(JwtProperties.JWT_SECRET_VALUE_ANNOTATION)
     private String jwtSecret;
 
-    @Value(AbstractCommonConfig.JWT_SECRET_EXPIRATION_ANNOTATION)
+    @Value(JwtProperties.JWT_SECRET_EXPIRATION_ANNOTATION)
     private Long jwtExpiration;
 
     /**

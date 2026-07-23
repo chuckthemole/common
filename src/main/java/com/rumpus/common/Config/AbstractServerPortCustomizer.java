@@ -2,7 +2,9 @@ package com.rumpus.common.Config;
 
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.core.env.Environment;
+
+import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Server.Port.IPort;
 
 /**
  * Used to customize the port of a server.
@@ -19,11 +21,11 @@ import org.springframework.core.env.Environment;
  * The bean for the port is created in the
  * {@link com.rumpus.common.Config.AbstractCommonConfig} class.
  */
-public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig
+public abstract class AbstractServerPortCustomizer extends AbstractCommonObject
         implements
             WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
 
-    private com.rumpus.common.Server.Port.IPort port;
+    private IPort port;
 
     /**
      * Ctor
@@ -31,14 +33,12 @@ public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig
      * @param port
      *            port to set
      */
-    public AbstractServerPortCustomizer(Environment environment,
-            com.rumpus.common.Server.Port.IPort port) {
-        super(environment);
+    public AbstractServerPortCustomizer(IPort port) {
         if (port != null) {
             this.port = port;
         } else {
             LOG("Port is null. Setting port to NO_PORT.");
-            com.rumpus.common.Server.Port.Port.create(com.rumpus.common.Server.Port.IPort.NO_PORT);
+            com.rumpus.common.Server.Port.Port.create(IPort.NO_PORT);
         }
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractServerPortCustomizer extends AbstractCommonConfig
             LOG("Port.getPort() null. Not customize setting port.");
             return;
         }
-        if (this.port.getPort().equals(com.rumpus.common.Server.Port.IPort.NO_PORT)) {
+        if (this.port.getPort().equals(IPort.NO_PORT)) {
             LOG("Port is NO_PORT. Not customize setting port.");
         }
         factory.setPort(Integer.valueOf(this.port.getPort()));

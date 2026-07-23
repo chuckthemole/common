@@ -2,7 +2,6 @@ package com.rumpus.common.Log;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Config.AbstractCommonConfig;
 
 /**
  * Abstract class for a common logger
@@ -225,7 +224,6 @@ abstract public class AbstractCommonLogger implements ICommonLogger {
 
     // Helper methods
     private boolean isLoggingEnabledForLevel(LogLevel level) {
-        final LogLevel currentLevel = AbstractCommonConfig.getLogLevel();
-        return level.getLevel() > currentLevel.getLevel() ? false : true;
+        return level.getLevel() > LoggerContext.getLogLevel().getLevel() ? false : true;
     }
 }
