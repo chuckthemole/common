@@ -1,4 +1,4 @@
-package com.rumpus.common.Config;
+package com.rumpus.common.Config.Session;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
