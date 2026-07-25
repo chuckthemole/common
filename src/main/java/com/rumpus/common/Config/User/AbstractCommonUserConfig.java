@@ -1,4 +1,4 @@
-package com.rumpus.common.Config;
+package com.rumpus.common.Config.User;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -21,7 +21,7 @@ abstract public class AbstractCommonUserConfig<USER extends AbstractCommonUser<U
             AbstractCommonObject {
 
     public static final String USER_SERVICE = "parentUserService";
-    public static final String CHILD_USER_SERVICE = "childUserService";
+    public static final String CHILD_USER_SERVICE = "createUserService";
 
     public AbstractCommonUserConfig() {
     }
@@ -33,14 +33,14 @@ abstract public class AbstractCommonUserConfig<USER extends AbstractCommonUser<U
             UserSecurityService userSecurityService,
             USER_FACTORY userFactory,
             PasswordEncoder passwordEncoder) {
-        return this.childUserService(
+        return this.createUserService(
                 userDao,
                 userSecurityService,
                 userFactory,
                 passwordEncoder);
     }
 
-    abstract public USER_SERVICE childUserService(
+    abstract public USER_SERVICE createUserService(
             USER_DAO userDao,
             UserSecurityService userSecurityService,
             USER_FACTORY userFactory,

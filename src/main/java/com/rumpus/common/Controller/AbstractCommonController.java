@@ -6,7 +6,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.env.Environment;
 
 import com.rumpus.common.AbstractCommonObject;
-import com.rumpus.common.Config.AbstractCommonUserConfig;
+import com.rumpus.common.Config.User.AbstractCommonUserConfig;
 import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
