@@ -34,20 +34,25 @@ public abstract class AbstractCommonController<
 
     @Autowired
     protected Environment environment;
+
     @Autowired
-    @Qualifier(AbstractCommonUserConfig.USER_SERVICE)
+    @Qualifier(AbstractCommonUserConfig.BEAN_USER_SERVICE)
     protected USER_SERVICE userService;
 
     @Autowired(required = false)
     protected ISerializerService serializerService;
+
     @Autowired
     protected USER_TEMPLATE userTemplate;
+
     @Autowired
     protected ResourceLoader resourceLoader;
+
     @Autowired(required = false)
     protected SERVICES serviceManager;
 
     protected String currentBasePath;
+
     protected ResourceManager resourceManager;
 
     static protected ICommonPaths commonPaths = null;
