@@ -1,11 +1,9 @@
 package com.rumpus.common.Controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,46 +28,19 @@ import com.rumpus.common.views.Template.IUserTemplate;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public abstract class AbstractViewController<
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        SERVICES extends com.rumpus.common.Manager.AbstractServiceManager<?>,
-        USER extends AbstractCommonUser<USER, USER_META>,
+public abstract class AbstractViewController<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            AbstractCommonController<
-                    /////////////////////////
-                    // Define generics here//
-                    /////////////////////////
-                    SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+            AbstractCommonController
         implements
             ICommonViewController {
 
     protected final AbstractViews viewLoader;
 
-    public AbstractViewController(
-            AbstractViews viewLoader) {
-
+    public AbstractViewController(AbstractViews viewLoader) {
         this.viewLoader = viewLoader;
-    }
-
-    // TODO: commited this but need to work on some more... - chuck
-    // I should probably delete and think about having the header take care of this?
-    @GetMapping("/resources/default_brand")
-    public ResponseEntity<byte[]> getDefaultNavBarBrand(HttpServletRequest request) {
-        org.springframework.core.io.Resource resource = this.resourceLoader
-                .getResource("classpath:images/default_brand.PNG");
-        InputStream in;
-        try {
-            in = resource.getInputStream();
-            return new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatusCode.valueOf(200));
-        } catch (IOException e) {
-            LogBuilder.logBuilderFromStackTraceElementArray(e.getMessage(), e.getStackTrace());
-            return new ResponseEntity<byte[]>(new byte[0], HttpStatusCode.valueOf(404));
-        }
     }
 
     /**
@@ -79,7 +50,7 @@ public abstract class AbstractViewController<
      */
     @GetMapping(ICommonViewController.PATH_FOOTER)
     public ResponseEntity<Footer> getFooter(HttpServletRequest request) {
-        return new ResponseEntity<Footer>(viewLoader.getFooter(), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<Footer>(viewLoader.getFooter(), HttpStatus.ACCEPTED);
     }
 
     /**
@@ -89,13 +60,13 @@ public abstract class AbstractViewController<
      */
     @GetMapping(ICommonViewController.PATH_HEADER)
     public ResponseEntity<Header> getHeader(HttpServletRequest request) {
-        return new ResponseEntity<Header>(viewLoader.getHeader(), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<Header>(viewLoader.getHeader(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(ICommonViewController.PATH_LANDING_PAGE_BODY)
     public ResponseEntity<AbstractHtmlObject> getLandingPageBody(HttpServletRequest request) {
         return new ResponseEntity<AbstractHtmlObject>(viewLoader.getLandingPageBody(),
-                HttpStatusCode.valueOf(200));
+                HttpStatus.ACCEPTED);
     }
 
     /**
@@ -106,7 +77,7 @@ public abstract class AbstractViewController<
     @GetMapping(ICommonViewController.PATH_USER_TABLE)
     public ResponseEntity<String> getUserTable(HttpServletRequest request) {
         return new ResponseEntity<String>(viewLoader.getUserTable().getTable(),
-                HttpStatusCode.valueOf(200));
+                HttpStatus.ACCEPTED);
     }
 
     /**
@@ -117,7 +88,7 @@ public abstract class AbstractViewController<
     @GetMapping(ICommonViewController.PATH_RESOURCES)
     public ResponseEntity<List<Resource>> getResources(HttpServletRequest request) {
         return new ResponseEntity<List<Resource>>(viewLoader.getResources(),
-                HttpStatusCode.valueOf(200));
+                HttpStatus.ACCEPTED);
     }
 
     /**
@@ -130,10 +101,14 @@ public abstract class AbstractViewController<
             @PathVariable(ICommonViewController.PATH_VARIABLE_RESOURCE_BY_NAME)
             String name,
             HttpServletRequest request) {
+
         Resource resource = viewLoader.getResourceByName(name);
-        return new ResponseEntity<Resource>(
-                resource != null ? resource : this.resourceManager.createEmptyManagee(),
-                HttpStatusCode.valueOf(200));
+
+        if (resource == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return new ResponseEntity<Resource>(resource, HttpStatus.ACCEPTED);
     }
 
     ////////////////////////////
@@ -168,7 +143,7 @@ public abstract class AbstractViewController<
         userTemplate.setUser(user);
         return new ResponseEntity<CommonSession>(
                 CommonSession.createFromHttpSession(request.getSession()),
-                HttpStatusCode.valueOf(200));
+                HttpStatus.ACCEPTED);
     }
 
     /**
@@ -202,7 +177,7 @@ public abstract class AbstractViewController<
         AbstractTemplate retrievedTemplate = this.viewLoader.get(templateName); // get the template
                                                                                 // from the
                                                                                 // viewLoader
-        HttpStatusCode httpCode = HttpStatusCode.valueOf(200);
+        HttpStatusCode httpCode = HttpStatus.ACCEPTED;
 
         // check if the template is null, empty, or has a null head, update status code,
         // and debug in the logs
@@ -273,10 +248,10 @@ public abstract class AbstractViewController<
         }
 
         final UUID userUUID = UUID.fromString(userId);
-        AbstractCommonUser<USER, USER_META> user = this.userService.getById(userUUID);
 
-        LOG("DEBUG USER");
-        LOG(user.toString());
+        // TODO: commented out for now. This will break this method. 2026/7/30 - chuck
+        // AbstractCommonUser<USER, USER_META> user =
+        // this.userService.getById(userUUID);
 
         /*
          * TODO: get the user from the database I stopped here to work on controllers
@@ -285,7 +260,10 @@ public abstract class AbstractViewController<
         @SuppressWarnings("unchecked")
         AbstractUserTemplate<USER, USER_META> currentUserTemplate = (AbstractUserTemplate<USER, USER_META>) viewLoader
                 .get(AbstractViews.CURRENT_USER_TEMPLATE_KEY);
-        currentUserTemplate.setUser(user);
+
+        // TODO: commented out for now. This will break this method. 2026/7/30 - chuck
+        // currentUserTemplate.setUser(user);
+
         LOG("DEBUG currentUserTemplate");
         currentUserTemplate.reload();
         final String log = LogBuilder
@@ -293,7 +271,7 @@ public abstract class AbstractViewController<
                 .toString();
         LOG(log);
         return new ResponseEntity<AbstractHtmlObject>(currentUserTemplate.getHead(),
-                HttpStatusCode.valueOf(200));
+                HttpStatus.ACCEPTED);
     }
 
     /** */
@@ -323,7 +301,7 @@ public abstract class AbstractViewController<
         AbstractTemplate retrievedTemplate = this.viewLoader.get(templateName); // get the template
                                                                                 // from the
                                                                                 // viewLoader
-        HttpStatusCode httpCode = HttpStatusCode.valueOf(200);
+        HttpStatusCode httpCode = HttpStatus.ACCEPTED;
         AbstractComponent retrievedComponent = null;
 
         // check if the template is null, empty, or has a null head, update status code,
@@ -403,7 +381,7 @@ public abstract class AbstractViewController<
 
         AbstractTemplate previousTemplate = this.viewLoader.put(templateName, updatedTemplate);
         HttpStatusCode httpCode = previousTemplate != null
-                ? HttpStatusCode.valueOf(200)
+                ? HttpStatus.ACCEPTED
                 : HttpStatusCode.valueOf(404);
         return new ResponseEntity<AbstractHtmlObject>(previousTemplate != null
                 ? previousTemplate.getHead()

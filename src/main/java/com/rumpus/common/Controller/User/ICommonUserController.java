@@ -31,20 +31,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-public interface ICommonUserController<
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        USER extends AbstractCommonUser<USER, USER_META>,
+public interface ICommonUserController<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
             ICommonController {
 
-    ///////////
-    // Paths //
-    ///////////
     public static final String PATH_USER = "/user";
     public static final String PATH_GET_USERS = "/users";
     public static final String PATH_GET_CURRENT_USER_NAME = "/username";

@@ -6,15 +6,15 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.rumpus.common.Controller.AbstractCommonController;
+import com.rumpus.common.Controller.AbstractCommonRestController;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
-import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.ICommonAuthentication;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 import com.rumpus.common.User.Requests.CreateUserRoleRequest;
 import com.rumpus.common.views.Template.IUserTemplate;
@@ -23,15 +23,55 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-abstract public class AbstractAdminUserController<SERVICES extends AbstractServiceManager<?>,
+abstract public class AbstractAdminUserRestController<
         USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            AbstractCommonController<SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+            AbstractCommonRestController
         implements
             IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+
+    /**
+     * Provides access to the currently authenticated user.
+     */
+    protected final ICommonAuthentication authentication;
+
+    /**
+     * Service responsible for user-related business operations.
+     */
+    protected final USER_SERVICE userService;
+
+    /**
+     * Template responsible for rendering user-related views.
+     */
+    protected final USER_TEMPLATE userTemplate;
+
+    /**
+     * Creates a new base user REST controller.
+     *
+     * @param basePath
+     *            base REST path served by this controller
+     * @param userService
+     *            user business service
+     * @param userTemplate
+     *            user view template
+     * @param authentication
+     *            authentication provider
+     */
+    protected AbstractAdminUserRestController(
+            String basePath,
+            USER_SERVICE userService,
+            USER_TEMPLATE userTemplate,
+            ICommonAuthentication authentication) {
+
+        super(basePath);
+
+        this.userService = userService;
+        this.userTemplate = userTemplate;
+        this.authentication = authentication;
+    }
 
     @Override
     public ResponseEntity<List<USER>> getAllUsers(Sort sort, SortDirection direction,
@@ -102,10 +142,10 @@ abstract public class AbstractAdminUserController<SERVICES extends AbstractServi
     }
 
     private static void LOG_THIS(String... args) {
-        LOG(AbstractAdminUserController.class, args);
+        LOG(AbstractAdminUserRestController.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        LOG(AbstractAdminUserController.class, level, args);
+        LOG(AbstractAdminUserRestController.class, level, args);
     }
 }

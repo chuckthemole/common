@@ -46,20 +46,13 @@ import jakarta.validation.Valid;
  * </p>
  */
 @PreAuthorize("hasRole('ADMIN')")
-public interface IAdminUserController<
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        USER extends AbstractCommonUser<USER, USER_META>,
+public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
             ICommonController {
 
-    ///////////
-    // Paths //
-    ///////////
     String PATH_ADMIN_USER = "/admin/user";
     String PATH_ADMIN_USERS = "/admin/users";
     String PATH_ADMIN_USER_BY_ID = "/admin/users/{userId}";

@@ -85,38 +85,23 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     public List<USER> getAllUsers(
             Sort sort,
             SortDirection direction) {
+
         LOG_THIS("AbstractUserService::getAllUsers(sort, direction)");
         LOG_THIS("Raw sort param: " + sort);
         LOG_THIS("Raw direction param: " + direction);
 
-        List<USER> users = this.getAll();
-
-        if (users == null) {
-            throw new IllegalStateException(
-                    "User service returned null users");
-        }
+        List<USER> users = getAll();
 
         LOG_THIS("Total users fetched: " + users.size());
 
         if (users.isEmpty()) {
             LOG_THIS("[WARN] No users found in database/service");
-            return List.of();
+            return users;
         }
 
-        // UserDetails
-        users.stream().forEach(user -> {
-            final UserDetails userDetails = this.userSecurityService
-                    .loadUserByUsername(user.getUsername());
-            CommonUserDetails commonUserDetails = CommonUserDetails
-                    .createFromUserDetails(userDetails);
-            user.setUserDetails(commonUserDetails);
-        });
+        populateUserDetails(users);
 
-        // Sort
-        users = this.sortInMemory(users, sort, direction); // TODO: sort in repository
-        if (direction == SortDirection.DESC) {
-            Collections.reverse(users);
-        }
+        users = sortUsers(users, sort, direction);
 
         return users;
     }
@@ -253,58 +238,95 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     }
 
     // Helpers
-    private List<USER> sortInMemory(
+
+    /**
+     * Populates the Spring Security details for each user.
+     *
+     * <p>
+     * The persisted user model does not contain the runtime security information
+     * required by Spring Security. This method loads the corresponding
+     * {@link UserDetails} for each user and attaches it to the model.
+     * </p>
+     *
+     * @param users
+     *            users whose security details should be populated
+     */
+    protected void populateUserDetails(List<USER> users) {
+
+        for (USER user : users) {
+
+            UserDetails userDetails = userSecurityService.loadUserByUsername(user.getUsername());
+
+            user.setUserDetails(
+                    CommonUserDetails.createFromUserDetails(userDetails));
+        }
+    }
+
+    /**
+     * Sorts the supplied users according to the requested sort field and direction.
+     *
+     * <p>
+     * Sorting is currently performed in memory. Future implementations should move
+     * this responsibility into the persistence layer.
+     * </p>
+     *
+     * @param users
+     *            the users to sort
+     * @param sort
+     *            the sort field
+     * @param direction
+     *            the sort direction
+     *
+     * @return the sorted list
+     */
+    protected List<USER> sortUsers(
             List<USER> users,
             Sort sort,
             SortDirection direction) {
 
+        List<USER> sortedUsers = sortInMemory(users, sort);
+
+        if (direction == SortDirection.DESC) {
+            Collections.reverse(sortedUsers);
+        }
+
+        return sortedUsers;
+    }
+
+    /**
+     * Sorts users in ascending order according to the requested field.
+     *
+     * <p>
+     * Descending order is handled separately by
+     * {@link #sortUsers(List, Sort, SortDirection)}.
+     * </p>
+     *
+     * @param users
+     *            the users to sort
+     * @param sort
+     *            the sort field
+     *
+     * @return the sorted users
+     */
+    protected List<USER> sortInMemory(
+            List<USER> users,
+            Sort sort) {
+
         switch (sort) {
 
             case EMAIL :
-
-                LOG_THIS("Applying sort: EMAIL");
-
-                users = AbstractCommonUserCollection
+                return AbstractCommonUserCollection
                         .getSortedByEmailListFromCollection(users);
 
-                break;
-
             case ID :
-
-                LOG_THIS("Applying sort: ID");
-
-                users = AbstractCommonUserCollection
+                return AbstractCommonUserCollection
                         .getSortedByIdListFromCollection(users);
 
-                break;
-
             case USERNAME :
-
             default :
-
-                LOG_THIS("Applying sort: USERNAME (default)");
-
-                users = AbstractCommonUserCollection
+                return AbstractCommonUserCollection
                         .getSortedByUsernameListFromCollection(users);
-
-                break;
         }
-
-        // ---------------------------------------------------------------------
-        // Direction handling
-        // ---------------------------------------------------------------------
-        if (direction == AbstractCommonUserCollection.SortDirection.DESC) {
-
-            LOG_THIS("Reversing list for DESC order");
-
-            Collections.reverse(users);
-
-        } else {
-
-            LOG_THIS("Keeping ASC order");
-        }
-
-        return users;
     }
 
     // Helpers

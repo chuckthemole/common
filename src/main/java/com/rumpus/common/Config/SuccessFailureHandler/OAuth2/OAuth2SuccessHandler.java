@@ -2,6 +2,7 @@ package com.rumpus.common.Config.SuccessFailureHandler.OAuth2;
 
 import java.io.IOException;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -12,14 +13,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-abstract public class AbstractOAuth2SuccesHandler extends AbstractSuccessHandler {
+@EnableConfigurationProperties(OAuth2HandlerProperties.class)
+public class OAuth2SuccessHandler extends AbstractSuccessHandler {
 
     private JwtService jwtService;
 
-    abstract public String getBaseRedirectUrl();
+    private final String baseRedirectUrl;
 
-    public AbstractOAuth2SuccesHandler(JwtService jwtService) {
+    public OAuth2SuccessHandler(
+            JwtService jwtService,
+            OAuth2HandlerProperties oAuth2Properties) {
         this.jwtService = jwtService;
+        this.baseRedirectUrl = oAuth2Properties.getSuccessRedirectUrl();
     }
 
     @Override
@@ -35,7 +40,7 @@ abstract public class AbstractOAuth2SuccesHandler extends AbstractSuccessHandler
         String token = this.jwtService.generateToken(oAuth2User);
 
         // Redirect to React app with token
-        final String baseRedirectUrl = this.getBaseRedirectUrl();
+        final String baseRedirectUrl = this.baseRedirectUrl;
         String redirectUrl = baseRedirectUrl + token;
         response.sendRedirect(redirectUrl);
     }

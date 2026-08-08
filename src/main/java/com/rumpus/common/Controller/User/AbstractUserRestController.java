@@ -1,27 +1,26 @@
 package com.rumpus.common.Controller.User;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rumpus.common.Builder.LogBuilder;
-import com.rumpus.common.Controller.AbstractCommonController;
+import com.rumpus.common.Controller.AbstractCommonRestController;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
-import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;
-import com.rumpus.common.User.AbstractCommonUserCollection;
+import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
+import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.ICommonAuthentication;
 import com.rumpus.common.User.Requests.CreateUserRequest;
@@ -33,144 +32,105 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-abstract public class AbstractUserController<
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        SERVICES extends AbstractServiceManager<?>, // TODO: can we have the wildcard be SERVICE?
-        USER extends AbstractCommonUser<USER, USER_META>,
+/**
+ * Base class for REST controllers responsible for user management.
+ *
+ * <p>
+ * This class provides the common infrastructure required by REST endpoints that
+ * operate on users. It exposes shared dependencies such as the user service,
+ * authentication provider, and view template while allowing concrete
+ * implementations to define application-specific endpoints.
+ * </p>
+ *
+ * <p>
+ * General REST functionality belongs in {@link AbstractCommonRestController}.
+ * User-specific behavior should be implemented here or in subclasses.
+ * </p>
+ *
+ * @param <USER>
+ *            concrete user model
+ * @param <USER_META>
+ *            metadata associated with the user
+ * @param <USER_SERVICE>
+ *            service responsible for user business logic
+ * @param <USER_TEMPLATE>
+ *            template used to render user views
+ */
+public abstract class AbstractUserRestController<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            AbstractCommonController<
-                    /////////////////////////
-                    // Define generics here//
-                    /////////////////////////
-                    SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE>
+            AbstractCommonRestController
         implements
-            ICommonUserController<
-                    /////////////////////////
-                    // Define generics here//
-                    /////////////////////////
-                    USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+            ICommonUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
-    private static final AbstractCommonUserCollection.Sort DEFAULT_SORT = AbstractCommonUserCollection.Sort.USERNAME;
-    @Autowired
-    protected ICommonAuthentication authentication;
+    /**
+     * Default sort order used when none is specified by the client.
+     */
+    public static final Sort DEFAULT_SORT = Sort.USERNAME;
 
-    public AbstractUserController() {
+    /**
+     * Provides access to the currently authenticated user.
+     */
+    protected final ICommonAuthentication authentication;
 
+    /**
+     * Service responsible for user-related business operations.
+     */
+    protected final USER_SERVICE userService;
+
+    /**
+     * Template responsible for rendering user-related views.
+     */
+    protected final USER_TEMPLATE userTemplate;
+
+    /**
+     * Creates a new base user REST controller.
+     *
+     * @param basePath
+     *            base REST path served by this controller
+     * @param userService
+     *            user business service
+     * @param userTemplate
+     *            user view template
+     * @param authentication
+     *            authentication provider
+     */
+    protected AbstractUserRestController(
+            String basePath,
+            USER_SERVICE userService,
+            USER_TEMPLATE userTemplate,
+            ICommonAuthentication authentication) {
+
+        super(basePath);
+
+        this.userService = userService;
+        this.userTemplate = userTemplate;
+        this.authentication = authentication;
     }
 
     @Override
     public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort")
     String sort, HttpSession session) {
         LOG_THIS("AbstractUserController::getAllUsersByPath()");
-        return getAllUsers(AbstractCommonUserCollection.Sort.valueOf(sort), null, session);
+        return getAllUsers(Sort.valueOf(sort), null, session);
     }
 
     @Override
     public ResponseEntity<List<USER>> getAllUsers(
 
             @RequestParam(value = "sort", defaultValue = "USERNAME", required = false)
-            AbstractCommonUserCollection.Sort sort,
+            Sort sort,
 
             @RequestParam(value = "direction", defaultValue = "ASC", required = false)
-            AbstractCommonUserCollection.SortDirection direction,
+            SortDirection direction,
 
             HttpSession session) {
 
-        LOG_THIS("==================================================");
-        LOG_THIS("getAllUsers invoked");
-        LOG_THIS("Session ID: " + (session != null ? session.getId() : "NULL"));
-
-        // ---------------------------------------------------------------------
-        // Log request parameters (critical for debugging enum binding issues)
-        // ---------------------------------------------------------------------
-        LOG_THIS("Raw sort param: " + sort);
-        LOG_THIS("Raw direction param: " + direction);
-
-        final List<USER> allUsers = this.userService.getAll();
-
-        if (allUsers == null) {
-
-            LOG_THIS("[ERROR] userService.getAll() returned NULL");
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(List.of());
-        }
-
-        LOG_THIS("Total users fetched: " + allUsers.size());
-
-        if (allUsers.isEmpty()) {
-
-            LOG_THIS("[WARN] No users found in database/service");
-
-            return ResponseEntity.ok(List.of());
-        }
-
-        // ---------------------------------------------------------------------
-        // Sorting selection debug
-        // ---------------------------------------------------------------------
-        LOG_THIS("Sorting strategy selected: " + sort);
-        LOG_THIS("Sorting direction: " + direction);
-
-        List<USER> users;
-
-        switch (sort) {
-
-            case EMAIL :
-
-                LOG_THIS("Applying sort: EMAIL");
-
-                users = AbstractCommonUserCollection
-                        .getSortedByEmailListFromCollection(allUsers);
-
-                break;
-
-            case ID :
-
-                LOG_THIS("Applying sort: ID");
-
-                users = AbstractCommonUserCollection
-                        .getSortedByIdListFromCollection(allUsers);
-
-                break;
-
-            case USERNAME :
-
-            default :
-
-                LOG_THIS("Applying sort: USERNAME (default)");
-
-                users = AbstractCommonUserCollection
-                        .getSortedByUsernameListFromCollection(allUsers);
-
-                break;
-        }
-
-        // ---------------------------------------------------------------------
-        // Direction handling
-        // ---------------------------------------------------------------------
-        if (direction == AbstractCommonUserCollection.SortDirection.DESC) {
-
-            LOG_THIS("Reversing list for DESC order");
-
-            Collections.reverse(users);
-
-        } else {
-
-            LOG_THIS("Keeping ASC order");
-        }
-
-        // ---------------------------------------------------------------------
-        // Final output log
-        // ---------------------------------------------------------------------
-        LOG_THIS("Final user count returned: " + users.size());
-        LOG_THIS("==================================================");
-
-        return ResponseEntity.ok(users);
+        LOG_THIS("AbstractUserRestController::getAllUsers()");
+        final List<USER> allUsers = this.userService.getAllUsers(sort, direction);
+        return ResponseEntity.ok(allUsers);
     }
 
     @Override
@@ -326,11 +286,11 @@ abstract public class AbstractUserController<
 
         session.setAttribute("loggedIn", true);
 
-        session.setAttribute(
-                "user",
-                this.serializerService.serializeToString(
-                        user,
-                        null));
+        // session.setAttribute(
+        // "user",
+        // this.serializerService.serializeToString(
+        // user,
+        // null));
 
         session.setAttribute(
                 HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
@@ -348,10 +308,31 @@ abstract public class AbstractUserController<
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractUserController.class, args);
+        com.rumpus.common.ICommon.LOG(AbstractUserRestController.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        com.rumpus.common.ICommon.LOG(AbstractUserController.class, level, args);
+        com.rumpus.common.ICommon.LOG(AbstractUserRestController.class, level, args);
+    }
+
+    /**
+     * @brief Check if the current user is authenticated
+     *
+     *        This endpoint can be used by any app inheriting from
+     *        AbstractCommonRestController to verify whether the current user is
+     *        logged in.
+     *
+     * @param authentication
+     *            Spring Security Authentication object injected by the framework.
+     * @return ResponseEntity<Boolean> representing whether the user is
+     *         authenticated.
+     */
+    @GetMapping(value = "/is_authenticated")
+    public ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication) {
+        LOG("AbstractCommonRestController::getAuthenticationOfUser()");
+
+        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
+
+        return new ResponseEntity<>(isAuthenticated, HttpStatus.ACCEPTED);
     }
 }

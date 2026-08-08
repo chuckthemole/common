@@ -1,72 +1,54 @@
 package com.rumpus.common.Controller;
 
-import java.util.Map;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.http.HttpStatus;
-
-import com.rumpus.common.Manager.AbstractServiceManager;
-import com.rumpus.common.Service.User.IUserService;
-import com.rumpus.common.User.AbstractCommonUser;
-import com.rumpus.common.User.AbstractCommonUserMetaData;
-import com.rumpus.common.views.Template.IUserTemplate;
-
-abstract public class AbstractCommonRestController<
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        SERVICES extends AbstractServiceManager<?>,
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+/**
+ * Base class for REST controllers.
+ *
+ * <p>
+ * Provides functionality common to all REST endpoints in the application. REST
+ * controllers should extend this class rather than extending
+ * {@link AbstractCommonController} directly.
+ * </p>
+ *
+ * <p>
+ * Domain-specific functionality such as authentication, user management,
+ * administration, or application-specific endpoints should be implemented in
+ * dedicated abstract subclasses rather than here.
+ * </p>
+ */
+public abstract class AbstractCommonRestController
         extends
-            AbstractCommonController<
-                    /////////////////////////
-                    // Define generics here//
-                    /////////////////////////
-                    SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+            AbstractCommonController {
 
-    public static final String COMMON_REST_API_PATH = "/common/api";
+    /**
+     * The base path associated with this controller.
+     *
+     * <p>
+     * Subclasses should initialize this to the appropriate path during construction
+     * or initialization.
+     * </p>
+     */
+    protected final String basePath;
 
-    public AbstractCommonRestController() {
-
+    protected AbstractCommonRestController(String basePath) {
+        super();
+        this.basePath = basePath;
     }
 
     /**
-     * @brief Set the default current base path set a default current base path for
-     *        your controller
-     */
-    abstract public void setDefaultCurrentBasePath();
-
-    // CRUD - Create, Read, Update, Delete
-    /**
-     * @brief GET the current base path
-     * @return the current base path
-     */
-    abstract public ResponseEntity<Map<String, String>> currentBasePath(); // TODO: can maybe not
-                                                                           // use Map in future
-
-    /**
-     * @brief Check if the current user is authenticated
+     * Returns the base path served by this controller.
      *
-     *        This endpoint can be used by any app inheriting from
-     *        AbstractCommonRestController to verify whether the current user is
-     *        logged in.
-     *
-     * @param authentication
-     *            Spring Security Authentication object injected by the framework.
-     * @return ResponseEntity<Boolean> representing whether the user is
-     *         authenticated.
+     * @return the controller's base path
      */
-    @GetMapping(value = "/is_authenticated")
-    public ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication) {
-        LOG("AbstractCommonRestController::getAuthenticationOfUser()");
-
-        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
-
-        return new ResponseEntity<>(isAuthenticated, HttpStatus.ACCEPTED);
+    public String getBasePath() {
+        return basePath;
     }
+
+    /**
+     * TODO: Consider removing. Am I only using this for debugging purposes? - chuck
+     * 2026/7/30
+     */
+    // @GetMapping(value = "/current_base_path")
+    // public final ResponseEntity<Map<String, String>> getCurrentBasePath() {
+    // return ResponseEntity.ok(Map.of("path", this.getBasePath()));
+    // }
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.rumpus.common.Auth.OAuth2Provider;
-import com.rumpus.common.Manager.AbstractServiceManager;
 import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
@@ -26,19 +25,13 @@ import com.rumpus.common.views.Template.IUserTemplate;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/auth")
-abstract public class AbstractAuthController<
-
-        /////////////////////////
-        // Define generics here//
-        /////////////////////////
-        SERVICES extends AbstractServiceManager<?>,
-        USER extends AbstractCommonUser<USER, USER_META>,
+abstract public class AbstractAuthController<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>,
         USER_SERVICE extends IUserService<USER, USER_META>,
         USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
 
         extends
-            AbstractCommonController<SERVICES, USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+            AbstractCommonController {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractAuthController.class);
 

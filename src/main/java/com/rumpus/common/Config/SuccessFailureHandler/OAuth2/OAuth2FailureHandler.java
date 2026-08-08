@@ -10,15 +10,21 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-abstract public class AbstractOAuth2FailureHandler extends AbstractFailureHandler {
+public class OAuth2FailureHandler extends AbstractFailureHandler {
 
-    abstract public String getBaseRedirectUrl();
+    private final String baseRedirectUrl;
+
+    public OAuth2FailureHandler(String baseRedirectUrl) {
+        this.baseRedirectUrl = baseRedirectUrl;
+    }
 
     @Override
-    public void onFailure(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException exception)
-            throws IOException, ServletException {
-        final String baseRedirectUrl = this.getBaseRedirectUrl();
+    public void onFailure(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException exception) throws IOException, ServletException {
+
+        final String baseRedirectUrl = this.baseRedirectUrl;
         String redirectUrl = baseRedirectUrl + "?error=" +
                 exception.getLocalizedMessage();
         response.sendRedirect(redirectUrl);

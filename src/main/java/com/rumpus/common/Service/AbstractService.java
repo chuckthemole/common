@@ -15,7 +15,7 @@ abstract public class AbstractService<
     /**
      * The data access object for this service.
      */
-    protected IDao<MODEL> dao;
+    final protected IDao<MODEL> dao;
 
     public AbstractService(IDao<MODEL> dao) {
         this.dao = dao;
@@ -30,7 +30,12 @@ abstract public class AbstractService<
     @Override
     public List<MODEL> getAll() {
         LOG("getAll()");
-        return this.dao.getAll();
+
+        List<MODEL> models = this.dao.getAll();
+
+        return models == null
+                ? List.of()
+                : models;
     }
 
     @Override

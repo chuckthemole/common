@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "properties.oauth2.client.registration.google")
+@ConfigurationProperties(prefix = "properties.security.oauth2.client.registration.google")
 public class OAuth2Properties {
 
     private String clientId;

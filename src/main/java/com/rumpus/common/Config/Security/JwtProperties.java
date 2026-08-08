@@ -2,11 +2,13 @@ package com.rumpus.common.Config.Security;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "properties.jwt")
+@ConfigurationProperties(prefix = "properties.security.jwt")
 public class JwtProperties {
 
-    public static final String JWT_SECRET_VALUE_ANNOTATION = "${properties.jwt.secret}";
-    public static final String JWT_SECRET_EXPIRATION_ANNOTATION = "${properties.jwt.expiration}";
+    // TODO: I think we can remove these constants and
+    // just use the annotations directly in JwtService.
+    public static final String JWT_SECRET_VALUE_ANNOTATION = "${properties.security.jwt.secret}";
+    public static final String JWT_SECRET_EXPIRATION_ANNOTATION = "${properties.security.jwt.expiration}";
 
     private String secret;
     private long expiration;
