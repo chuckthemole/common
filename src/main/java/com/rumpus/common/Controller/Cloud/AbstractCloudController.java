@@ -1,4 +1,4 @@
-package com.rumpus.common.Controller;
+package com.rumpus.common.Controller.Cloud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;

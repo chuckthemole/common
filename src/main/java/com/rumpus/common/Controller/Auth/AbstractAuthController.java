@@ -1,4 +1,4 @@
-package com.rumpus.common.Controller;
+package com.rumpus.common.Controller.Auth;
 
 import java.util.Map;
 
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.rumpus.common.Auth.OAuth2Provider;
+import com.rumpus.common.Controller.AbstractCommonController;
 import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserMetaData;

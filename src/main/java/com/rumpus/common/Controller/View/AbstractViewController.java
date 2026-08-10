@@ -1,4 +1,4 @@
-package com.rumpus.common.Controller;
+package com.rumpus.common.Controller.View;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.rumpus.common.Builder.LogBuilder;
+import com.rumpus.common.Controller.AbstractCommonController;
 import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.Session.CommonSession;
 import com.rumpus.common.User.AbstractCommonUser;

@@ -1,4 +1,4 @@
-package com.rumpus.common.Controller;
+package com.rumpus.common.Controller.View;
 
 public interface ICommonViewController {
     public static final String PATH_FOOTER = "/footer";
