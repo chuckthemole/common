@@ -25,6 +25,7 @@ import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.ICommonAuthentication;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 import com.rumpus.common.User.Requests.CreateUserRoleRequest;
+import com.rumpus.common.User.Requests.UserRoleOperation;
 import com.rumpus.common.util.StringUtil;
 import com.rumpus.common.views.Template.IUserTemplate;
 
@@ -48,22 +49,19 @@ import jakarta.servlet.http.HttpSession;
  * </p>
  *
  * @param <USER>
- *            concrete user model
+ *                        concrete user model
  * @param <USER_META>
- *            metadata associated with the user
+ *                        metadata associated with the user
  * @param <USER_SERVICE>
- *            service responsible for user business logic
+ *                        service responsible for user business logic
  * @param <USER_TEMPLATE>
- *            template used to render user views
+ *                        template used to render user views
  */
-public abstract class AbstractUserRestController<USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+public abstract class AbstractUserRestController<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            AbstractCommonRestController
+        AbstractCommonRestController
         implements
-            ICommonUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+        ICommonUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     /**
      * Default sort order used when none is specified by the client.
@@ -89,13 +87,13 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
      * Creates a new base user REST controller.
      *
      * @param basePath
-     *            base REST path served by this controller
+     *                       base REST path served by this controller
      * @param userService
-     *            user business service
+     *                       user business service
      * @param userTemplate
-     *            user view template
+     *                       user view template
      * @param authentication
-     *            authentication provider
+     *                       authentication provider
      */
     protected AbstractUserRestController(
             String basePath,
@@ -111,20 +109,17 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     }
 
     @Override
-    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort")
-    String sort, HttpSession session) {
+    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort") String sort, HttpSession session) {
         LOG_THIS("AbstractUserController::getAllUsersByPath()");
-        return getAllUsers(Sort.valueOf(sort), null, session);
+        return this.getAllUsers(Sort.valueOf(sort), null, session);
     }
 
     @Override
     public ResponseEntity<List<USER>> getAllUsers(
 
-            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false)
-            Sort sort,
+            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false) Sort sort,
 
-            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
-            SortDirection direction,
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false) SortDirection direction,
 
             HttpSession session) {
 
@@ -135,8 +130,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
 
     @Override
     public ResponseEntity<CommonSession> userSubmit(
-            @RequestBody
-            CreateUserRequest request,
+            @RequestBody CreateUserRequest request,
             HttpServletRequest servletRequest) {
 
         LOG_THIS("AbstractUserController::userSubmit()");
@@ -152,42 +146,43 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
 
     @Override
     public ResponseEntity<Void> updateUserRole(
-            @PathVariable
-            UUID userId,
-            @RequestBody
-            CreateUserRoleRequest request) {
+            @PathVariable UUID userId,
+            @RequestBody CreateUserRoleRequest request) {
         LOG_THIS("AbstractUserController::updateUserRole()");
-        // TODO implement persistence layer update
+
+        final String role = request.getRole();
+        final UserRoleOperation operation = request.getOperation();
+
+        switch (operation) {
+            case ADD -> userService.addUserRole(userId, role);
+            case REMOVE -> userService.removeUserRole(userId, role);
+        }
+
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<CommonSession> deleteUser(@RequestBody
-    String user, HttpServletRequest request) {
-        LOG_THIS("USERRestController POST: /api/delete_user");
-        HttpSession session = request.getSession();
+    public ResponseEntity<CommonSession> deleteUser(
+            @RequestBody String user,
+            HttpServletRequest request) {
 
-        // if user was removed, return session with status delete
-        final UUID userId = StringUtil.isQuoted(user)
-                ? UUID.fromString(user.substring(1, user.length() - 1))
-                : UUID.fromString(user);
-        if (this.userService.remove(userId)) {
-            session.setAttribute("status", "user deleted");
-            return new ResponseEntity<CommonSession>(new CommonSession(session),
-                    HttpStatus.CREATED);
-        }
-        session.setAttribute("status", "error deleting user");
-        return new ResponseEntity<CommonSession>(new CommonSession(session), HttpStatus.CREATED); // else
-                                                                                                  // return
-                                                                                                  // session
-                                                                                                  // with
-                                                                                                  // status
-                                                                                                  // error
+        LOG_THIS("USERRestController POST: /api/delete_user");
+
+        HttpSession session = request.getSession();
+        UUID userId = UUID.fromString(StringUtil.removeQuotes(user));
+
+        boolean deleted = this.userService.remove(userId);
+        session.setAttribute("status", deleted
+                ? "user deleted"
+                : "error deleting user");
+
+        return new ResponseEntity<>(
+                new CommonSession(session),
+                HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<CommonSession> updateUser(@RequestBody
-    USER user, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> updateUser(@RequestBody USER user, HttpServletRequest request) {
         LOG_THIS("USERRestController POST: /api/update_user");
         HttpSession session = request.getSession();
         // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1,
@@ -210,8 +205,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserByUsername(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME)
-            String username,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username,
             HttpServletRequest request) {
         return new ResponseEntity<USER>(this.userService.getByUsername(username),
                 HttpStatus.ACCEPTED);
@@ -220,8 +214,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserById(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID)
-            String id,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
             HttpServletRequest request) {
         LOG_THIS("USERRestController::getUserById()");
         final UUID userUUID = UUID.fromString(id);
@@ -260,6 +253,28 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
         }
 
         return new ResponseEntity<String>("NO_USER_NAME", HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * @brief Check if the current user is authenticated
+     *
+     *        This endpoint can be used by any app inheriting from
+     *        AbstractCommonRestController to verify whether the current user is
+     *        logged in.
+     *
+     * @param authentication
+     *                       Spring Security Authentication object injected by the
+     *                       framework.
+     * @return ResponseEntity<Boolean> representing whether the user is
+     *         authenticated.
+     */
+    @GetMapping(value = "/is_authenticated")
+    public ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication) {
+        LOG("AbstractCommonRestController::getAuthenticationOfUser()");
+
+        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
+
+        return new ResponseEntity<>(isAuthenticated, HttpStatus.ACCEPTED);
     }
 
     /////////////////////////
@@ -313,26 +328,5 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
 
     private static void LOG_THIS(LogLevel level, String... args) {
         com.rumpus.common.ICommon.LOG(AbstractUserRestController.class, level, args);
-    }
-
-    /**
-     * @brief Check if the current user is authenticated
-     *
-     *        This endpoint can be used by any app inheriting from
-     *        AbstractCommonRestController to verify whether the current user is
-     *        logged in.
-     *
-     * @param authentication
-     *            Spring Security Authentication object injected by the framework.
-     * @return ResponseEntity<Boolean> representing whether the user is
-     *         authenticated.
-     */
-    @GetMapping(value = "/is_authenticated")
-    public ResponseEntity<Boolean> getAuthenticationOfUser(Authentication authentication) {
-        LOG("AbstractCommonRestController::getAuthenticationOfUser()");
-
-        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
-
-        return new ResponseEntity<>(isAuthenticated, HttpStatus.ACCEPTED);
     }
 }

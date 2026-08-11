@@ -27,7 +27,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * TODO: should this be Object or String?
      *
      * @param args
-     *            args to build string from
+     *             args to build string from
      * @return string built from args
      */
     public static String buildStringFromArgs(Object... args) {
@@ -78,9 +78,9 @@ public class StringUtil implements com.rumpus.common.ICommon {
      *        beginning and end.
      *
      * @param inputString
-     *            string to trim
+     *                    string to trim
      * @param inputChar
-     *            char to trim
+     *                    char to trim
      * @return string without surrounding chars, if string is surrounded by given
      *         char, otherwise returns original string
      */
@@ -92,9 +92,9 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * @brief remove surrounding String sequence.
      *
      * @param trimmee
-     *            string to trim
+     *                string to trim
      * @param trimmer
-     *            string to trim
+     *                string to trim
      * @return string without surrounding String, if string is surrounded by given
      *         String, otherwise returns original string
      */
@@ -171,7 +171,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
     /**
      * @brief remove end char
      * @param inpuString
-     *            string to trim
+     *                   string to trim
      * @return string without end char, if string ends with given char, otherwise
      *         returns original string
      */
@@ -189,7 +189,7 @@ public class StringUtil implements com.rumpus.common.ICommon {
     /**
      * @brief remove end String
      * @param inpuString
-     *            string to trim
+     *                   string to trim
      * @return string without end String, if string ends with given String,
      *         otherwise returns original string
      */
@@ -211,11 +211,11 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * @brief add char to beginning and/or end of string
      *
      * @param inpuString
-     *            string to add char to
+     *                   string to add char to
      * @param startChar
-     *            char to add to beginning of string
+     *                   char to add to beginning of string
      * @param endChar
-     *            char to add to end of string
+     *                   char to add to end of string
      * @return string with given chars added to beginning and/or end of string
      */
     public static String addCharToStartAndOrEnd(String inpuString, Character startChar,
@@ -243,6 +243,21 @@ public class StringUtil implements com.rumpus.common.ICommon {
     public static boolean isQuoted(String inpuString) {
         return (StringUtil.isSurrounded(inpuString, Character.valueOf('\''))
                 || StringUtil.isSurrounded(inpuString, Character.valueOf('"')));
+    }
+
+    /**
+     * @brief Removes surrounding "" or '' from a string if present.
+     *
+     * @param inputString the string to remove quotes from
+     * @return the string without surrounding quotes, or the original string
+     *         if it is not quoted
+     */
+    public static String removeQuotes(String inputString) {
+        if (isQuoted(inputString)) {
+            return inputString.substring(1, inputString.length() - 1);
+        }
+
+        return inputString;
     }
 
     /**
@@ -374,14 +389,16 @@ public class StringUtil implements com.rumpus.common.ICommon {
      * }</pre>
      *
      * @param json
-     *            the input JSON string containing a "results" array
+     *                       the input JSON string containing a "results" array
      * @param includeFields
-     *            list of field names to include; if empty, all fields are included
+     *                       list of field names to include; if empty, all fields
+     *                       are included
      * @param excludeFields
-     *            list of field names to remove from each object
+     *                       list of field names to remove from each object
      * @param excludeEntries
-     *            a mapping of field names to lists of values; objects matching
-     *            these key/value pairs are excluded entirely
+     *                       a mapping of field names to lists of values; objects
+     *                       matching
+     *                       these key/value pairs are excluded entirely
      * @return a formatted JSON string with filtered results; returns the original
      *         JSON if parsing fails
      *
