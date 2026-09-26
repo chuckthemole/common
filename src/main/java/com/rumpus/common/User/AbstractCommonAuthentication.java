@@ -5,12 +5,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 abstract public class AbstractCommonAuthentication implements ICommonAuthentication {
 
     private String name;
-    private Set<CommonAuthority> authorities;
+    private Set<GrantedAuthority> authorities;
     private String password;
     private String username;
     private Map<String, String> details;
@@ -25,8 +26,13 @@ abstract public class AbstractCommonAuthentication implements ICommonAuthenticat
         this.authenticated = false;
     }
 
-    public AbstractCommonAuthentication(String name, Set<CommonAuthority> authorities,
-            String password, String username, Map<String, String> details, boolean authenticated) {
+    public AbstractCommonAuthentication(
+            String name,
+            Set<GrantedAuthority> authorities,
+            String password,
+            String username,
+            Map<String, String> details,
+            boolean authenticated) {
         this.name = name;
         this.authorities = authorities;
         this.password = password;
@@ -53,7 +59,7 @@ abstract public class AbstractCommonAuthentication implements ICommonAuthenticat
     }
 
     @Override
-    public Set<CommonAuthority> getAuthorities() {
+    public Set<GrantedAuthority> getAuthorities() {
         return this.authorities;
     }
 
@@ -87,11 +93,12 @@ abstract public class AbstractCommonAuthentication implements ICommonAuthenticat
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    private Set<CommonAuthority> getAuthorities(Authentication auth) {
-        Set<CommonAuthority> authorities = new HashSet<>();
-        auth.getAuthorities().stream().forEach(grantedAuth -> {
-            authorities.add(new CommonAuthority(grantedAuth));
-        });
+    private Set<GrantedAuthority> getAuthorities(Authentication auth) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        auth.getAuthorities().stream().forEach(
+                grantedAuth -> {
+                    authorities.add(grantedAuth);
+                });
         return authorities;
     }
 }

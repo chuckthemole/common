@@ -33,8 +33,18 @@ public abstract class AbstractApiDBJdbc<
      */
     protected final RowMapper<MODEL> mapper;
 
-    public AbstractApiDBJdbc(DataSource dataSource, String table, RowMapper<MODEL> mapper) {
+    public AbstractApiDBJdbc(
+            DataSource dataSource,
+            String table,
+            RowMapper<MODEL> mapper) {
         super(TableDefinition.builder().main(table).build());
+        this.mapper = mapper;
+        this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
+    }
+
+    public AbstractApiDBJdbc(DataSource dataSource, TableDefinition tables,
+            RowMapper<MODEL> mapper) {
+        super(tables);
         this.mapper = mapper;
         this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
     }

@@ -1,7 +1,9 @@
 package com.rumpus.common.Service.User;
 
+import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
@@ -59,6 +61,18 @@ public class UserSecurityService {
      */
     public boolean userExists(String username) {
         return delegate.userExists(username);
+    }
+
+    /**
+     * Get the authorities for a user by username.
+     *
+     * @param username
+     *            the username of the user to get authorities for
+     * @return a collection of GrantedAuthority objects representing the user's
+     *         authorities
+     */
+    public Collection<? extends GrantedAuthority> getAuthorities(String username) {
+        return delegate.loadUserByUsername(username).getAuthorities();
     }
 
     private void setQueries(Map<String, String> queries) {

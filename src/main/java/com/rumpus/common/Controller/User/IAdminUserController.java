@@ -1,6 +1,7 @@
 package com.rumpus.common.Controller.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -210,7 +211,7 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
      *
      * @param userId
      *            the user id
-     * @return list of roles assigned to the user
+     * @return set of roles assigned to the user
      */
     @GetMapping(PATH_ADMIN_USER_ROLES)
     @Operation(summary = "Get user roles", description = "Returns all roles currently assigned to a user.")
@@ -218,7 +219,7 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "200", description = "Roles retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    ResponseEntity<List<String>> getUserRoles(
+    ResponseEntity<Set<String>> getUserRoles(
             @PathVariable
             UUID userId);
 

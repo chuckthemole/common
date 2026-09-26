@@ -2,6 +2,7 @@ package com.rumpus.common.Service.User;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -12,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import com.rumpus.common.ICommon;
+import com.rumpus.common.Dao.User.IAuthorityDao;
+import com.rumpus.common.Dao.User.IUserAuthorityDao;
 import com.rumpus.common.Dao.User.IUserDao;
 import com.rumpus.common.Exception.User.UserAlreadyExistsException;
 import com.rumpus.common.Exception.User.UserCreationException;
@@ -22,6 +25,7 @@ import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.CommonUserDetails;
 import com.rumpus.common.User.IUserFactory;
 import com.rumpus.common.User.Requests.CreateUserRequest;
@@ -38,6 +42,8 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
             IUserService<USER, USER_META> {
 
     protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
+    protected IUserAuthorityDao userAuthorityDao; // TODO: should this be private?
+    protected IAuthorityDao authorityDao; // TODO: should this be private?
     protected UserSecurityService userSecurityService;
 
     private final IUserFactory<USER, USER_META> userFactory;
@@ -46,11 +52,15 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
     public AbstractUserService(
             IUserDao<USER, USER_META> userDao,
+            IUserAuthorityDao userAuthorityDao,
+            IAuthorityDao authorityDao,
             UserSecurityService userSecurityService,
             IUserFactory<USER, USER_META> userFactory,
             PasswordEncoder passwordEncoder) {
         super(userDao);
         this.userDao = userDao;
+        this.userAuthorityDao = userAuthorityDao;
+        this.authorityDao = authorityDao;
         this.userSecurityService = userSecurityService;
         this.userFactory = userFactory;
         this.passwordEncoder = passwordEncoder;
@@ -192,20 +202,28 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     }
 
     @Override
-    public List<String> getUserRoles(UUID userId) {
-        throw new UnsupportedOperationException("Unimplemented method 'getUserRoles'");
+    public Set<CommonAuthority> getUserRoles(UUID userId) {
+        return this.userAuthorityDao.getUserRoles(userId);
     }
 
     @Override
-    public void addUserRole(UUID userId, String role) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addUserRole'");
+    public boolean addUserRole(UUID userId, String role) {
+        return this.authorityDao.findByName(role)
+                .map(authority -> {
+                    this.userAuthorityDao.addUserRole(userId, authority);
+                    return true;
+                })
+                .orElse(false);
     }
 
     @Override
-    public void removeUserRole(UUID userId, String role) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeUserRole'");
+    public boolean removeUserRole(UUID userId, String role) {
+        return this.authorityDao.findByName(role)
+                .map(authority -> {
+                    this.userAuthorityDao.removeUserRole(userId, authority);
+                    return true;
+                })
+                .orElse(false);
     }
 
     @Override

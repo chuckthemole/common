@@ -1,6 +1,7 @@
 package com.rumpus.common.Service.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -110,9 +112,9 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>,
      *
      * @param userId
      *            the user id
-     * @return list of role names assigned to the user
+     * @return set of {@link CommonAuthority} assigned to the user
      */
-    List<String> getUserRoles(UUID userId);
+    Set<CommonAuthority> getUserRoles(UUID userId);
 
     /**
      * Add a role to a user.
@@ -124,11 +126,12 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>,
      *            the user id
      * @param role
      *            the role to assign
+     * @return true if the role was added, false otherwise
      *
      * @throws IllegalArgumentException
      *             if user does not exist or role is invalid
      */
-    void addUserRole(UUID userId, String role);
+    boolean addUserRole(UUID userId, String role);
 
     /**
      * Remove a role from a user.
@@ -139,11 +142,12 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>,
      *            the user id
      * @param role
      *            the role to remove
+     * @return true if the role was removed, false otherwise
      *
      * @throws IllegalArgumentException
      *             if user does not exist
      */
-    void removeUserRole(UUID userId, String role);
+    boolean removeUserRole(UUID userId, String role);
 
     /**
      * Authenticate a user and establish an authenticated HTTP session.

@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.rumpus.common.AbstractCommonObject;
+import com.rumpus.common.Dao.User.IAuthorityDao;
+import com.rumpus.common.Dao.User.IUserAuthorityDao;
 import com.rumpus.common.Dao.User.IUserDao;
 import com.rumpus.common.Service.User.IUserService;
 import com.rumpus.common.Service.User.UserSecurityService;
@@ -66,6 +68,8 @@ public abstract class AbstractCommonUserConfig<USER extends AbstractCommonUser<U
      *
      * @param userDao
      *            User persistence implementation.
+     * @param userAuthorityDao
+     *            User authority persistence implementation.
      * @param userSecurityService
      *            Security integration for user management.
      * @param userFactory
@@ -79,12 +83,16 @@ public abstract class AbstractCommonUserConfig<USER extends AbstractCommonUser<U
     @Primary
     public USER_SERVICE userService(
             final USER_DAO userDao,
+            final IUserAuthorityDao userAuthorityDao,
+            final IAuthorityDao authorityDao,
             final UserSecurityService userSecurityService,
             final USER_FACTORY userFactory,
             final PasswordEncoder passwordEncoder) {
 
         return createUserService(
                 userDao,
+                userAuthorityDao,
+                authorityDao,
                 userSecurityService,
                 userFactory,
                 passwordEncoder);
@@ -101,6 +109,10 @@ public abstract class AbstractCommonUserConfig<USER extends AbstractCommonUser<U
      *
      * @param userDao
      *            User persistence implementation.
+     * @param userAuthorityDao
+     *            User authority persistence implementation.
+     * @param authorityDao
+     *            Authority persistence implementation.
      * @param userSecurityService
      *            Security integration for user management.
      * @param userFactory
@@ -112,6 +124,8 @@ public abstract class AbstractCommonUserConfig<USER extends AbstractCommonUser<U
      */
     protected abstract USER_SERVICE createUserService(
             USER_DAO userDao,
+            IUserAuthorityDao userAuthorityDao,
+            IAuthorityDao authorityDao,
             UserSecurityService userSecurityService,
             USER_FACTORY userFactory,
             PasswordEncoder passwordEncoder);

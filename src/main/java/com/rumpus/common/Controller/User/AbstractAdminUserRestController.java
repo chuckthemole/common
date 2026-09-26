@@ -1,7 +1,9 @@
 package com.rumpus.common.Controller.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.ICommonAuthentication;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 import com.rumpus.common.User.Requests.CreateUserRoleRequest;
@@ -114,10 +117,14 @@ abstract public class AbstractAdminUserRestController<
     }
 
     @Override
-    public ResponseEntity<List<String>> getUserRoles(UUID userId) {
+    public ResponseEntity<Set<String>> getUserRoles(UUID userId) {
         LOG_THIS("AbstractAdminUserController::getUserRoles()");
-        List<String> roles = this.userService.getUserRoles(userId);
-        return ResponseEntity.ok(roles);
+        Set<CommonAuthority> roles = this.userService.getUserRoles(userId);
+        Set<String> roleNames = roles.stream()
+                .map(role -> role.getAuthority())
+                .collect(Collectors.toSet());
+        return ResponseEntity.ok(roleNames);
+
     }
 
     @Override

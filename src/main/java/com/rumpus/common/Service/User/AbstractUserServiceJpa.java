@@ -1,6 +1,7 @@
 package com.rumpus.common.Service.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.domain.Example;
@@ -16,6 +17,7 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
+import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -110,19 +112,19 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
     }
 
     @Override
-    public List<String> getUserRoles(UUID userId) {
+    public Set<CommonAuthority> getUserRoles(UUID userId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getUserRoles'");
     }
 
     @Override
-    public void addUserRole(UUID userId, String role) {
+    public boolean addUserRole(UUID userId, String role) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addUserRole'");
     }
 
     @Override
-    public void removeUserRole(UUID userId, String role) {
+    public boolean removeUserRole(UUID userId, String role) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removeUserRole'");
     }

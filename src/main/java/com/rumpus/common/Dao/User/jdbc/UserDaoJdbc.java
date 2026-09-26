@@ -1,4 +1,4 @@
-package com.rumpus.common.Dao.User;
+package com.rumpus.common.Dao.User.jdbc;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Blob.BlobUtil;
+import com.rumpus.common.Dao.User.IUserDao;
 import com.rumpus.common.Dao.jdbc.AbstractApiDBJdbc;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -19,14 +20,14 @@ import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 import org.springframework.jdbc.core.RowMapper;
 
-public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>,
+public class UserDaoJdbc<USER extends AbstractCommonUser<USER, META>,
         META extends AbstractCommonUserMetaData<META>>
         extends
             AbstractApiDBJdbc<USER>
         implements
             IUserDao<USER, META> {
 
-    public ApiDBJdbcUsers(
+    public UserDaoJdbc(
             DataSource dataSource,
             String table,
             RowMapper<USER> mapper) {
@@ -142,10 +143,10 @@ public class ApiDBJdbcUsers<USER extends AbstractCommonUser<USER, META>,
     }
 
     private static void LOG_THIS(String... args) {
-        com.rumpus.common.ICommon.LOG(ApiDBJdbcUsers.class, args);
+        ICommon.LOG(UserDaoJdbc.class, args);
     }
 
     private static void LOG_THIS(LogLevel level, String... args) {
-        com.rumpus.common.ICommon.LOG(ApiDBJdbcUsers.class, level, args);
+        ICommon.LOG(UserDaoJdbc.class, level, args);
     }
 }

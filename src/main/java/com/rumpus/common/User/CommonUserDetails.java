@@ -3,6 +3,7 @@ package com.rumpus.common.User;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.rumpus.common.AbstractCommonObject;
@@ -20,7 +21,7 @@ import jakarta.persistence.Column;
 @Schema(description = "CommonUserDetails - implementation of Spring Security's UserDetails interface, encapsulating user authentication and authorization information")
 public class CommonUserDetails extends AbstractCommonObject implements UserDetails {
 
-    private static final GrantedAuthority GRANTED_AUTH_USER = new CommonAuthority(
+    private static final GrantedAuthority GRANTED_AUTH_USER = new SimpleGrantedAuthority(
             ICommon.ROLE_USER);
 
     @Column(name = "username")
