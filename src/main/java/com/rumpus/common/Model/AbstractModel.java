@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Serializer.AbstractCommonSerializer;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.MappedSuperclass;
 
 /**
@@ -26,8 +28,9 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID>
             Serializable,
             Comparable<MODEL> {
 
-    abstract public static class AbstractModelSerializer<
-            MODEL extends AbstractModel<MODEL, ?>> extends AbstractCommonSerializer<MODEL> {
+    abstract public static class AbstractModelSerializer<MODEL extends AbstractModel<MODEL, ?>>
+            extends
+                AbstractCommonSerializer<MODEL> {
         public AbstractModelSerializer(SerializationType serializationType) {
             super(serializationType);
         }
@@ -36,6 +39,8 @@ public abstract class AbstractModel<MODEL extends AbstractCommonObject, ID>
     /**
      * The id of the model
      */
+    @Column(name = "id")
+    @Schema(description = "The unique identifier of the model", example = "550e8400-e29b-41d4-a716-446655440000")
     @Id
     private ID id; // TODO: will have to use org.springframework.data.annotation.Id for NoSQL. Need
                    // to figure out how to handle this.

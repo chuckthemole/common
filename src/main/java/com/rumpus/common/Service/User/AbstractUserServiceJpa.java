@@ -85,32 +85,6 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
         throw new UnsupportedOperationException("Unimplemented method 'getKey'");
     }
 
-    private static void LOG_THIS(String... args) {
-        ICommon.LOG(AbstractUserServiceJpa.class, args);
-    }
-
-    private static void LOG_THIS(LogLevel level, String... args) {
-        ICommon.LOG(AbstractUserServiceJpa.class, level, args);
-    }
-
-    @Override
-    public List<USER> getAllUsers(Sort sort, SortDirection direction) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");
-    }
-
-    @Override
-    public void loginUser(String username, String password, HttpServletRequest request) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'loginUser'");
-    }
-
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toString'");
-    }
-
     @Override
     public Set<CommonAuthority> getUserRoles(UUID userId) {
         // TODO Auto-generated method stub
@@ -127,5 +101,31 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
     public boolean removeUserRole(UUID userId, String role) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removeUserRole'");
+    }
+
+    @Override
+    public List<USER> getAllUsers(Sort sort, SortDirection direction) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");
+    }
+
+    @Override
+    public void loginUser(String username, String password, HttpServletRequest request) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loginUser'");
+    }
+
+    private static void LOG_THIS(String... args) {
+        ICommon.LOG(AbstractUserServiceJpa.class, args);
+    }
+
+    private static void LOG_THIS(LogLevel level, String... args) {
+        ICommon.LOG(AbstractUserServiceJpa.class, level, args);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 }

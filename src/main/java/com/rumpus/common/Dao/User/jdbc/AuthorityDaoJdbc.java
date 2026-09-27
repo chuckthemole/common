@@ -23,9 +23,9 @@ import com.rumpus.common.User.CommonAuthority;
  */
 public class AuthorityDaoJdbc
         extends
-            AbstractApiDBJdbc<CommonAuthority>
+        AbstractApiDBJdbc<CommonAuthority>
         implements
-            IAuthorityDao {
+        IAuthorityDao {
 
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
@@ -42,7 +42,7 @@ public class AuthorityDaoJdbc
      * Finds a registered authority by its name.
      *
      * @param roleName
-     *            the authority name, for example {@code ROLE_ADMIN}
+     *                 the authority name, for example {@code ROLE_ADMIN}
      * @return the matching authority, or {@link Optional#empty()} if none exists
      */
     @Override
@@ -66,7 +66,7 @@ public class AuthorityDaoJdbc
      * Inserts a new registered authority.
      *
      * @param model
-     *            the authority to insert
+     *              the authority to insert
      * @return the inserted authority
      */
     @Override
@@ -81,7 +81,7 @@ public class AuthorityDaoJdbc
                 connection -> {
                     final PreparedStatement statement = connection.prepareStatement(sql);
 
-                    statement.setObject(1, model.getId());
+                    statement.setObject(1, model.getId().toString());
                     statement.setString(2, model.getAuthority());
 
                     return statement;
@@ -94,9 +94,9 @@ public class AuthorityDaoJdbc
      * Updates an existing registered authority.
      *
      * @param id
-     *            the identifier of the authority to update
+     *              the identifier of the authority to update
      * @param model
-     *            the new authority values
+     *              the new authority values
      * @return the updated authority
      */
     @Override

@@ -26,18 +26,14 @@ import jakarta.persistence.Table;
  * service/DAO layer rather than in the authority model itself.
  * </p>
  */
-@Table(name = "authorities")
+@Table(name = "authority")
 @Schema(description = "CommonAuthority - implementation of Spring Security's GrantedAuthority interface, representing a single authority granted to a user")
 public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
         implements
-            GrantedAuthority {
+        GrantedAuthority {
     // TODO: Eventually remove GrantedAuthority from CommonAuthority.
     // Keep this class focused on the persisted/domain authority model and
     // convert to Spring Security's SimpleGrantedAuthority at the security boundary.
-
-    @Column(name = "id")
-    @Schema(description = "The unique identifier of the authority", example = "550e8400-e29b-41d4-a716-446655440000")
-    private final UUID id;
 
     @Column(name = "authority")
     @Schema(description = "The name of the authority", example = "ROLE_USER")
@@ -47,16 +43,15 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
      * Creates an authority from its string representation.
      *
      * @param authority
-     *            the authority name; must not be null or blank
+     *                  the authority name; must not be null or blank
      * @throws IllegalArgumentException
-     *             if the authority is null or blank
+     *                                  if the authority is null or blank
      */
     public CommonAuthority(UUID id, String authority) {
         if (authority == null || authority.isBlank()) {
             throw new IllegalArgumentException("Authority must not be null or blank");
         }
-
-        this.id = id;
+        super.setId(id);
         this.authority = authority;
     }
 
@@ -64,9 +59,10 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
      * Creates an authority from another {@link GrantedAuthority}.
      *
      * @param authority
-     *            the authority to copy; must not be null
+     *                  the authority to copy; must not be null
      * @throws IllegalArgumentException
-     *             if the authority is null or has a null or blank name
+     *                                  if the authority is null or has a null or
+     *                                  blank name
      */
     public CommonAuthority(UUID id, GrantedAuthority authority) {
         this(
@@ -74,15 +70,6 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
                 Objects
                         .requireNonNull(authority, "Authority must not be null")
                         .getAuthority());
-    }
-
-    /**
-     * Returns the unique identifier for this authority.
-     *
-     * @return the authority UUID
-     */
-    public UUID getId() {
-        return id;
     }
 
     /**
@@ -122,18 +109,18 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
             return false;
         }
 
-        return Objects.equals(id, other.id);
+        return Objects.equals(this.getId(), other.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.getId());
     }
 
     @Override
     public String toString() {
         return "CommonAuthority{" +
-                "id=" + id +
+                "id=" + this.getId() +
                 ", authority='" + authority + '\'' +
                 '}';
     }

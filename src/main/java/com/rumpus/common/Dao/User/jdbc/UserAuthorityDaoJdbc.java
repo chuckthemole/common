@@ -37,7 +37,14 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<CommonAuthority>
         implements
             IUserAuthorityDao {
 
+    /**
+     * The authorities table key used in the table definition.
+     */
     public static final String AUTHORITIES_DEFINITION_TABLE = "authorities_definition";
+
+    /**
+     * The users table key used in the table definition.
+     */
     public static final String USERS_TABLE = "users";
 
     public UserAuthorityDaoJdbc(
