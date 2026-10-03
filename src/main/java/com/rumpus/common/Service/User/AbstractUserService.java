@@ -1,5 +1,6 @@
 package com.rumpus.common.Service.User;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -25,21 +26,20 @@ import com.rumpus.common.User.AbstractCommonUserCollection;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
-import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.CommonUserDetails;
 import com.rumpus.common.User.IUserFactory;
+import com.rumpus.common.User.UserAuthority;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
-            AbstractService<USER>
+        AbstractService<USER, UUID>
         implements
-            IUserService<USER, USER_META> {
+        IUserService<USER, USER_META> {
 
     protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
     protected IUserAuthorityDao userAuthorityDao; // TODO: should this be private?
@@ -202,15 +202,21 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     }
 
     @Override
-    public Set<CommonAuthority> getUserRoles(UUID userId) {
-        return this.userAuthorityDao.getUserRoles(userId);
+    public Set<UserAuthority> getUserRoles(UUID userId) {
+        final String username = this.getUsernameFromId(userId);
+        return this.userAuthorityDao.getUserRoles(username);
     }
 
     @Override
-    public boolean addUserRole(UUID userId, String role) {
+    public boolean addUserRole(
+            UUID userId,
+            String role,
+            UUID grantedBy,
+            Instant expiresAt) {
         return this.authorityDao.findByName(role)
                 .map(authority -> {
-                    this.userAuthorityDao.addUserRole(userId, authority);
+                    final String username = this.getUsernameFromId(userId);
+                    this.userAuthorityDao.addUserRole(username, authority, grantedBy, expiresAt);
                     return true;
                 })
                 .orElse(false);
@@ -220,7 +226,8 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
     public boolean removeUserRole(UUID userId, String role) {
         return this.authorityDao.findByName(role)
                 .map(authority -> {
-                    this.userAuthorityDao.removeUserRole(userId, authority);
+                    final String username = this.getUsernameFromId(userId);
+                    this.userAuthorityDao.removeUserRole(username, authority);
                     return true;
                 })
                 .orElse(false);
@@ -267,7 +274,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
      * </p>
      *
      * @param users
-     *            users whose security details should be populated
+     *              users whose security details should be populated
      */
     protected void populateUserDetails(List<USER> users) {
 
@@ -289,11 +296,11 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
      * </p>
      *
      * @param users
-     *            the users to sort
+     *                  the users to sort
      * @param sort
-     *            the sort field
+     *                  the sort field
      * @param direction
-     *            the sort direction
+     *                  the sort direction
      *
      * @return the sorted list
      */
@@ -320,9 +327,9 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
      * </p>
      *
      * @param users
-     *            the users to sort
+     *              the users to sort
      * @param sort
-     *            the sort field
+     *              the sort field
      *
      * @return the sorted users
      */
@@ -332,16 +339,16 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
         switch (sort) {
 
-            case EMAIL :
+            case EMAIL:
                 return AbstractCommonUserCollection
                         .getSortedByEmailListFromCollection(users);
 
-            case ID :
+            case ID:
                 return AbstractCommonUserCollection
                         .getSortedByIdListFromCollection(users);
 
-            case USERNAME :
-            default :
+            case USERNAME:
+            default:
                 return AbstractCommonUserCollection
                         .getSortedByUsernameListFromCollection(users);
         }
@@ -357,6 +364,11 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
             LOG_THIS("User already exists: " + username);
             throw new UserAlreadyExistsException(username);
         }
+    }
+
+    private String getUsernameFromId(final UUID userId) {
+        final USER user = this.userDao.getById(userId).get();
+        return user.getUsername();
     }
 
     private static void LOG_THIS(String... args) {

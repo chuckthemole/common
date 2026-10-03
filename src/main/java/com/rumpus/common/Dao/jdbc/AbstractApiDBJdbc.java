@@ -2,7 +2,6 @@ package com.rumpus.common.Dao.jdbc;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.sql.DataSource;
 
@@ -20,8 +19,7 @@ import org.jooq.Query;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public abstract class AbstractApiDBJdbc<
-        MODEL extends AbstractModel<MODEL, ?>> extends AbstractDao<MODEL> {
+public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>, ID> extends AbstractDao<MODEL, ID> {
 
     /**
      * The {@link CommonJdbc} for this Dao
@@ -33,29 +31,41 @@ public abstract class AbstractApiDBJdbc<
      */
     protected final RowMapper<MODEL> mapper;
 
+    /**
+     * The class of the ID type.
+     */
+    private final Class<ID> idClass;
+
     public AbstractApiDBJdbc(
             DataSource dataSource,
             String table,
-            RowMapper<MODEL> mapper) {
+            RowMapper<MODEL> mapper,
+            Class<ID> idClass) {
         super(TableDefinition.builder().main(table).build());
         this.mapper = mapper;
         this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
+        this.idClass = idClass;
+
     }
 
-    public AbstractApiDBJdbc(DataSource dataSource, TableDefinition tables,
-            RowMapper<MODEL> mapper) {
+    public AbstractApiDBJdbc(
+            DataSource dataSource,
+            TableDefinition tables,
+            RowMapper<MODEL> mapper,
+            Class<ID> idClass) {
         super(tables);
         this.mapper = mapper;
         this.jdbc = CommonJdbc.createAndSetDataSource(dataSource);
+        this.idClass = idClass;
     }
 
     @Override
-    protected boolean doRemove(UUID id) {
+    protected boolean doRemove(ID id) {
         LOG_THIS("remove()");
 
         final Query query = this.dslContext
                 .deleteFrom(DSL.table(this.mainTable()))
-                .where(DSL.field(ICommon.ID, UUID.class).eq(id));
+                .where(DSL.field(ICommon.ID, this.idClass).eq(id));
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
 
@@ -67,7 +77,7 @@ public abstract class AbstractApiDBJdbc<
     }
 
     @Override
-    protected Optional<MODEL> doGetById(UUID id) {
+    protected Optional<MODEL> doGetById(ID id) {
 
         LOG_THIS("getById()");
 
@@ -75,7 +85,7 @@ public abstract class AbstractApiDBJdbc<
                 .select()
                 .from(DSL.table(this.mainTable()))
                 .where(
-                        DSL.field(ICommon.ID, UUID.class)
+                        DSL.field(ICommon.ID, this.idClass)
                                 .eq(id));
 
         LOG_THIS(query.getSQL(ParamType.INLINED));

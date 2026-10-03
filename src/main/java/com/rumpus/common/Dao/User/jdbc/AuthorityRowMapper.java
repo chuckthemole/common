@@ -22,10 +22,9 @@ public class AuthorityRowMapper extends AbstractJdbcRowMapper<CommonAuthority> {
             ResultSet rs = resultSetAndRow.getFirst();
 
             try {
-                UUID id = UUID.fromString(rs.getString(ID));
                 String authority = rs.getString(NAME);
 
-                return new CommonAuthority(id, authority);
+                return new CommonAuthority(authority);
 
             } catch (SQLException e) {
                 final String log = LogBuilder

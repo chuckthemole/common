@@ -1,7 +1,6 @@
 package com.rumpus.common.Service.User;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,7 @@ public class AuthorityService implements IAuthorityService {
      * Creates an authority service using the supplied DAO.
      *
      * @param authorityDao
-     *            DAO responsible for authority persistence
+     *                     DAO responsible for authority persistence
      */
     public AuthorityService(IAuthorityDao authorityDao) {
         this.authorityDao = authorityDao;
@@ -36,11 +35,11 @@ public class AuthorityService implements IAuthorityService {
      * Gets an authority by ID.
      *
      * @param id
-     *            authority ID
+     *           authority ID
      * @return authority if found, otherwise {@code null}
      */
     @Override
-    public CommonAuthority getById(UUID id) {
+    public CommonAuthority getById(Integer id) {
         return authorityDao.getById(id).get();
     }
 
@@ -58,7 +57,7 @@ public class AuthorityService implements IAuthorityService {
      * Adds an authority.
      *
      * @param authority
-     *            authority to add
+     *                  authority to add
      * @return added authority, or {@code null} if the operation failed
      */
     @Override
@@ -76,7 +75,7 @@ public class AuthorityService implements IAuthorityService {
      * </p>
      *
      * @param authority
-     *            authority to create
+     *                  authority to create
      * @return created authority, or {@code null} if the operation failed
      */
     @Override
@@ -89,12 +88,12 @@ public class AuthorityService implements IAuthorityService {
      * Removes an authority by ID.
      *
      * @param id
-     *            authority ID
+     *           authority ID
      * @return {@code true} if removed, otherwise {@code false}
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean remove(UUID id) {
+    public boolean remove(Integer id) {
         return authorityDao.remove(id);
     }
 
@@ -102,15 +101,15 @@ public class AuthorityService implements IAuthorityService {
      * Updates an authority by ID.
      *
      * @param id
-     *            ID of the authority to update
+     *                         ID of the authority to update
      * @param updatedAuthority
-     *            updated authority
+     *                         updated authority
      * @return updated authority, or {@code null} if the operation failed
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public CommonAuthority update(
-            UUID id,
+            Integer id,
             CommonAuthority updatedAuthority) {
 
         return authorityDao.update(id, updatedAuthority);
@@ -120,7 +119,7 @@ public class AuthorityService implements IAuthorityService {
      * Gets an authority by its role name.
      *
      * @param name
-     *            authority name
+     *             authority name
      * @return authority if found, otherwise {@code null}
      */
     @Override
@@ -132,7 +131,7 @@ public class AuthorityService implements IAuthorityService {
      * Determines whether an authority exists with the given role name.
      *
      * @param name
-     *            authority name
+     *             authority name
      * @return {@code true} if the authority exists, otherwise {@code false}
      */
     @Override
@@ -144,7 +143,7 @@ public class AuthorityService implements IAuthorityService {
      * Removes an authority by its role name.
      *
      * @param name
-     *            authority name
+     *             authority name
      * @return {@code true} if removed, otherwise {@code false}
      */
     @Override
@@ -158,9 +157,9 @@ public class AuthorityService implements IAuthorityService {
      * Updates an authority by its role name.
      *
      * @param name
-     *            existing authority name
+     *                         existing authority name
      * @param updatedAuthority
-     *            updated authority
+     *                         updated authority
      * @return updated authority, or {@code null} if the operation failed
      */
     @Override

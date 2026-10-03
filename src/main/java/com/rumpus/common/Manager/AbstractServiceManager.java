@@ -2,8 +2,8 @@ package com.rumpus.common.Manager;
 
 import com.rumpus.common.Service.IService;
 
-public abstract class AbstractServiceManager<
-        SERVICE extends IService<?>> extends AbstractCommonManager<String, SERVICE> {
+public abstract class AbstractServiceManager<SERVICE extends IService<?, ?>>
+        extends AbstractCommonManager<String, SERVICE> {
 
     public AbstractServiceManager() {
         super(false);

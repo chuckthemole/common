@@ -18,6 +18,7 @@ import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
 import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.ICommonAuthentication;
+import com.rumpus.common.User.UserAuthority;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 import com.rumpus.common.User.Requests.CreateUserRoleRequest;
 import com.rumpus.common.views.Template.IUserTemplate;
@@ -26,15 +27,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-abstract public class AbstractAdminUserRestController<
-        USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+abstract public class AbstractAdminUserRestController<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            AbstractCommonRestController
+        AbstractCommonRestController
         implements
-            IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+        IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     /**
      * Provides access to the currently authenticated user.
@@ -55,13 +52,13 @@ abstract public class AbstractAdminUserRestController<
      * Creates a new base user REST controller.
      *
      * @param basePath
-     *            base REST path served by this controller
+     *                       base REST path served by this controller
      * @param userService
-     *            user business service
+     *                       user business service
      * @param userTemplate
-     *            user view template
+     *                       user view template
      * @param authentication
-     *            authentication provider
+     *                       authentication provider
      */
     protected AbstractAdminUserRestController(
             String basePath,
@@ -83,8 +80,7 @@ abstract public class AbstractAdminUserRestController<
     }
 
     @Override
-    public ResponseEntity<CommonSession> createUser(@Valid
-    CreateUserRequest request,
+    public ResponseEntity<CommonSession> createUser(@Valid CreateUserRequest request,
             HttpServletRequest servletRequest) {
         LOG_THIS("AbstractUserController::userSubmit()");
 
@@ -117,21 +113,16 @@ abstract public class AbstractAdminUserRestController<
     }
 
     @Override
-    public ResponseEntity<Set<String>> getUserRoles(UUID userId) {
+    public ResponseEntity<Set<UserAuthority>> getUserRoles(UUID userId) {
         LOG_THIS("AbstractAdminUserController::getUserRoles()");
-        Set<CommonAuthority> roles = this.userService.getUserRoles(userId);
-        Set<String> roleNames = roles.stream()
-                .map(role -> role.getAuthority())
-                .collect(Collectors.toSet());
-        return ResponseEntity.ok(roleNames);
-
+        Set<UserAuthority> roles = this.userService.getUserRoles(userId);
+        return ResponseEntity.ok(roles);
     }
 
     @Override
-    public ResponseEntity<Void> addUserRole(UUID userId, @Valid
-    CreateUserRoleRequest request) {
+    public ResponseEntity<Void> addUserRole(UUID userId, @Valid CreateUserRoleRequest request) {
         LOG_THIS("AbstractAdminUserController::addUserRole()");
-        this.userService.addUserRole(userId, request.getRole());
+        this.userService.addUserRole(userId, request.getRole(), request.getGrantedBy(), request.getExpiresAt());
         return ResponseEntity.ok().build();
     }
 

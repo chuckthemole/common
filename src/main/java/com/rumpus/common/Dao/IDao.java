@@ -2,7 +2,6 @@ package com.rumpus.common.Dao;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -14,20 +13,20 @@ import com.rumpus.common.Model.AbstractModel;
  * Generic DAO interface for CRUD operations.
  *
  * @param <MODEL>
- *            the model type managed by this DAO
+ *                the model type managed by this DAO
  * @see AbstractModel
  * @see AbstractDao
  */
-public interface IDao<MODEL extends AbstractModel<MODEL, ?>> extends ICommon {
+public interface IDao<MODEL extends AbstractModel<MODEL, ID>, ID> extends ICommon {
 
     /**
      * Retrieve a model by its unique identifier.
      *
      * @param id
-     *            UUID of the model
+     *           identifier of the model
      * @return an Optional containing the model if found, otherwise empty
      */
-    Optional<MODEL> getById(UUID id);
+    Optional<MODEL> getById(ID id);
 
     /**
      * Retrieve all models.
@@ -48,7 +47,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ?>> extends ICommon {
      * records into memory and supports efficient database pagination.
      *
      * @param pageRequest
-     *            pagination and sorting information
+     *                    pagination and sorting information
      * @return a page of models (never null; may be empty)
      */
     Page<MODEL> findAll(Pageable pageRequest);
@@ -57,7 +56,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ?>> extends ICommon {
      * Persist a new model.
      *
      * @param model
-     *            model to persist
+     *              model to persist
      * @return the persisted model, or null if insertion failed
      */
     MODEL add(MODEL model);
@@ -66,21 +65,21 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ?>> extends ICommon {
      * Update an existing model.
      *
      * @param id
-     *            UUID of the model to update
+     *                     identifier of the model to update
      * @param updatedModel
-     *            new state of the model
+     *                     new state of the model
      * @return the updated model, or null if update failed or record not found
      */
-    MODEL update(UUID id, MODEL updatedModel);
+    MODEL update(ID id, MODEL updatedModel);
 
     /**
      * Remove a model by id.
      *
      * @param id
-     *            UUID of the model to remove
+     *           identifier of the model to remove
      * @return true if a record was removed, false otherwise
      */
-    boolean remove(UUID id);
+    boolean remove(ID id);
 
     /**
      * Remove all models.

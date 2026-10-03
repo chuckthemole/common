@@ -49,22 +49,19 @@ import jakarta.servlet.http.HttpSession;
  * </p>
  *
  * @param <USER>
- *            concrete user model
+ *                        concrete user model
  * @param <USER_META>
- *            metadata associated with the user
+ *                        metadata associated with the user
  * @param <USER_SERVICE>
- *            service responsible for user business logic
+ *                        service responsible for user business logic
  * @param <USER_TEMPLATE>
- *            template used to render user views
+ *                        template used to render user views
  */
-public abstract class AbstractUserRestController<USER extends AbstractCommonUser<USER, USER_META>,
-        USER_META extends AbstractCommonUserMetaData<USER_META>,
-        USER_SERVICE extends IUserService<USER, USER_META>,
-        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+public abstract class AbstractUserRestController<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-            AbstractCommonRestController
+        AbstractCommonRestController
         implements
-            ICommonUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+        ICommonUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     /**
      * Default sort order used when none is specified by the client.
@@ -90,13 +87,13 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
      * Creates a new base user REST controller.
      *
      * @param basePath
-     *            base REST path served by this controller
+     *                       base REST path served by this controller
      * @param userService
-     *            user business service
+     *                       user business service
      * @param userTemplate
-     *            user view template
+     *                       user view template
      * @param authentication
-     *            authentication provider
+     *                       authentication provider
      */
     protected AbstractUserRestController(
             String basePath,
@@ -112,8 +109,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     }
 
     @Override
-    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort")
-    String sort, HttpSession session) {
+    public ResponseEntity<List<USER>> getAllUsersByPath(@PathVariable("sort") String sort, HttpSession session) {
         LOG_THIS("AbstractUserController::getAllUsersByPath()");
         return this.getAllUsers(Sort.valueOf(sort), null, session);
     }
@@ -121,11 +117,9 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     @Override
     public ResponseEntity<List<USER>> getAllUsers(
 
-            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false)
-            Sort sort,
+            @RequestParam(value = "sort", defaultValue = "USERNAME", required = false) Sort sort,
 
-            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
-            SortDirection direction,
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false) SortDirection direction,
 
             HttpSession session) {
 
@@ -136,8 +130,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
 
     @Override
     public ResponseEntity<CommonSession> userSubmit(
-            @RequestBody
-            CreateUserRequest request,
+            @RequestBody CreateUserRequest request,
             HttpServletRequest servletRequest) {
 
         LOG_THIS("AbstractUserController::userSubmit()");
@@ -153,19 +146,17 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
 
     @Override
     public ResponseEntity<Void> updateUserRole(
-            @PathVariable
-            UUID userId,
-            @RequestBody
-            CreateUserRoleRequest request) {
+            @PathVariable UUID userId,
+            @RequestBody CreateUserRoleRequest request) {
 
         LOG_THIS("AbstractUserController::updateUserRole()");
 
-        final String role = request.getRole();
         final UserRoleOperation operation = request.getOperation();
 
         switch (operation) {
-            case ADD -> userService.addUserRole(userId, role);
-            case REMOVE -> userService.removeUserRole(userId, role);
+            case ADD ->
+                userService.addUserRole(userId, request.getRole(), request.getGrantedBy(), request.getExpiresAt());
+            case REMOVE -> userService.removeUserRole(userId, request.getRole());
         }
 
         return ResponseEntity.ok().build();
@@ -173,8 +164,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
 
     @Override
     public ResponseEntity<CommonSession> deleteUser(
-            @RequestBody
-            String user,
+            @RequestBody String user,
             HttpServletRequest request) {
 
         LOG_THIS("USERRestController POST: /api/delete_user");
@@ -193,8 +183,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     }
 
     @Override
-    public ResponseEntity<CommonSession> updateUser(@RequestBody
-    USER user, HttpServletRequest request) {
+    public ResponseEntity<CommonSession> updateUser(@RequestBody USER user, HttpServletRequest request) {
         LOG_THIS("USERRestController POST: /api/update_user");
         HttpSession session = request.getSession();
         // this.userService.remove(StringUtil.isQuoted(user) ? user.substring(1,
@@ -217,8 +206,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserByUsername(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME)
-            String username,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_NAME) String username,
             HttpServletRequest request) {
         return new ResponseEntity<USER>(this.userService.getByUsername(username),
                 HttpStatus.ACCEPTED);
@@ -227,8 +215,7 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
     // TODO this should be secured so user info is not visible
     @Override
     public ResponseEntity<USER> getUserById(
-            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID)
-            String id,
+            @PathVariable(ICommonUserController.PATH_VARIABLE_GET_BY_USER_ID) String id,
             HttpServletRequest request) {
         LOG_THIS("USERRestController::getUserById()");
         final UUID userUUID = UUID.fromString(id);
@@ -277,7 +264,8 @@ public abstract class AbstractUserRestController<USER extends AbstractCommonUser
      *        logged in.
      *
      * @param authentication
-     *            Spring Security Authentication object injected by the framework.
+     *                       Spring Security Authentication object injected by the
+     *                       framework.
      * @return ResponseEntity<Boolean> representing whether the user is
      *         authenticated.
      */

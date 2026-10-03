@@ -1,7 +1,6 @@
 package com.rumpus.common.User;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -28,7 +27,7 @@ import jakarta.persistence.Table;
  */
 @Table(name = "authority")
 @Schema(description = "CommonAuthority - implementation of Spring Security's GrantedAuthority interface, representing a single authority granted to a user")
-public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
+public class CommonAuthority extends AbstractModel<CommonAuthority, Integer>
         implements
         GrantedAuthority {
     // TODO: Eventually remove GrantedAuthority from CommonAuthority.
@@ -47,11 +46,10 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
      * @throws IllegalArgumentException
      *                                  if the authority is null or blank
      */
-    public CommonAuthority(UUID id, String authority) {
+    public CommonAuthority(String authority) {
         if (authority == null || authority.isBlank()) {
             throw new IllegalArgumentException("Authority must not be null or blank");
         }
-        super.setId(id);
         this.authority = authority;
     }
 
@@ -64,9 +62,8 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
      *                                  if the authority is null or has a null or
      *                                  blank name
      */
-    public CommonAuthority(UUID id, GrantedAuthority authority) {
+    public CommonAuthority(GrantedAuthority authority) {
         this(
-                id,
                 Objects
                         .requireNonNull(authority, "Authority must not be null")
                         .getAuthority());
@@ -94,7 +91,7 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, UUID>
     }
 
     @Override
-    public IModelIdManager<UUID> getIdManager() {
+    public IModelIdManager<Integer> getIdManager() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getIdManager'");
     }

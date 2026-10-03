@@ -2,7 +2,6 @@ package com.rumpus.common.Dao;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +29,13 @@ import com.rumpus.common.Model.AbstractModel;
  * </p>
  *
  * @param <MODEL>
- *            the model type managed by this DAO
+ *                the model type managed by this DAO
  */
-public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
+public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ID>, ID>
         extends
-            AbstractCommonObject
+        AbstractCommonObject
         implements
-            IDao<MODEL> {
+        IDao<MODEL, ID> {
 
     /**
      * Table mapping definition used by this DAO.
@@ -76,9 +75,10 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
      * </p>
      *
      * @param table
-     *            primary database table name (required)
+     *                  primary database table name (required)
      * @param metaTable
-     *            optional metadata table name (may be null or empty if unused)
+     *                  optional metadata table name (may be null or empty if
+     *                  unused)
      */
     protected AbstractDao(String table, String metaTable) {
 
@@ -102,7 +102,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
      * </p>
      *
      * @param tableDefinition
-     *            complete table mapping definition
+     *                        complete table mapping definition
      */
     protected AbstractDao(TableDefinition tableDefinition) {
         this.tableDefinition = tableDefinition;
@@ -113,7 +113,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
     // ============================================================
 
     @Override
-    public final Optional<MODEL> getById(UUID id) {
+    public final Optional<MODEL> getById(ID id) {
         return doGetById(id);
     }
 
@@ -134,13 +134,13 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
     }
 
     @Override
-    public final MODEL update(UUID id, MODEL model) {
+    public final MODEL update(ID id, MODEL model) {
         MODEL updated = doUpdate(id, model);
         return afterUpdate(updated);
     }
 
     @Override
-    public final boolean remove(UUID id) {
+    public final boolean remove(ID id) {
         return doRemove(id);
     }
 
@@ -153,7 +153,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
     // Implementation hooks - DAO responsibility
     // ============================================================
 
-    protected abstract Optional<MODEL> doGetById(UUID id);
+    protected abstract Optional<MODEL> doGetById(ID id);
 
     protected abstract List<MODEL> doGetAll();
 
@@ -161,9 +161,9 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
 
     protected abstract MODEL doAdd(MODEL model);
 
-    protected abstract MODEL doUpdate(UUID id, MODEL model);
+    protected abstract MODEL doUpdate(ID id, MODEL model);
 
-    protected abstract boolean doRemove(UUID id);
+    protected abstract boolean doRemove(ID id);
 
     protected abstract boolean doRemoveAll();
 
@@ -175,7 +175,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
      * Hook executed after a successful add operation.
      *
      * @param model
-     *            created model
+     *              created model
      * @return final model result
      */
     protected MODEL afterAdd(MODEL model) {
@@ -186,7 +186,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ?>>
      * Hook executed after a successful update operation.
      *
      * @param model
-     *            updated model
+     *              updated model
      * @return final model result
      */
     protected MODEL afterUpdate(MODEL model) {

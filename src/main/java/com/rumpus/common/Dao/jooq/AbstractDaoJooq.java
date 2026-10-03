@@ -2,7 +2,6 @@ package com.rumpus.common.Dao.jooq;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import com.rumpus.common.Dao.TableDefinition;
 import com.rumpus.common.Model.AbstractModel;
 
 //TODO: MAKE ABSTRACT
-public class AbstractDaoJooq<MODEL extends AbstractModel<MODEL, ?>> extends AbstractDao<MODEL> {
+public class AbstractDaoJooq<MODEL extends AbstractModel<MODEL, ID>, ID> extends AbstractDao<MODEL, ID> {
 
     /**
      * JOOQ DSL context for type-safe SQL generation and execution.
@@ -27,7 +26,7 @@ public class AbstractDaoJooq<MODEL extends AbstractModel<MODEL, ?>> extends Abst
     }
 
     @Override
-    protected Optional<MODEL> doGetById(UUID id) {
+    protected Optional<MODEL> doGetById(ID id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'doGetById'");
     }
@@ -51,13 +50,13 @@ public class AbstractDaoJooq<MODEL extends AbstractModel<MODEL, ?>> extends Abst
     }
 
     @Override
-    protected MODEL doUpdate(UUID id, MODEL model) {
+    protected MODEL doUpdate(ID id, MODEL model) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'doUpdate'");
     }
 
     @Override
-    protected boolean doRemove(UUID id) {
+    protected boolean doRemove(ID id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'doRemove'");
     }

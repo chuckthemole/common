@@ -1,6 +1,7 @@
 package com.rumpus.common.Dao.User;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.User.AbstractCommonUser;
@@ -9,16 +10,15 @@ import com.rumpus.common.User.AbstractCommonUserMetaData;
 /**
  * DAO for managing users.
  */
-public interface IUserDao<USER extends AbstractCommonUser<USER, META>,
-        META extends AbstractCommonUserMetaData<META>>
+public interface IUserDao<USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>>
         extends
-            IDao<USER> {
+        IDao<USER, UUID> {
 
     /**
      * Get a user by their username.
      *
      * @param username
-     *            The username of the user to get.
+     *                 The username of the user to get.
      * @return The user with the given username. If no user is found, return null.
      *         If more than one user is found, return null.
      */
@@ -28,7 +28,7 @@ public interface IUserDao<USER extends AbstractCommonUser<USER, META>,
      * Check if a user exists with the given username.
      *
      * @param username
-     *            The username of the user to check.
+     *                 The username of the user to check.
      * @return True if a user with the given username exists, false otherwise.
      */
     boolean existsByUsername(String username);

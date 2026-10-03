@@ -15,13 +15,13 @@ import com.rumpus.common.User.CommonAuthority;
  * {@code ROLE_ADMIN}.
  * </p>
  */
-public interface IAuthorityService extends IService<CommonAuthority> {
+public interface IAuthorityService extends IService<CommonAuthority, Integer> {
 
     /**
      * Gets an authority by its role name.
      *
      * @param name
-     *            authority name to look for
+     *             authority name to look for
      * @return authority with the given name, or {@code null} if not found
      */
     public CommonAuthority getByName(String name);
@@ -30,7 +30,7 @@ public interface IAuthorityService extends IService<CommonAuthority> {
      * Determines whether an authority with the given role name exists.
      *
      * @param name
-     *            authority name to check
+     *             authority name to check
      * @return {@code true} if an authority with the given name exists;
      *         {@code false} otherwise
      */
@@ -44,7 +44,7 @@ public interface IAuthorityService extends IService<CommonAuthority> {
      * new role.
      *
      * @param authority
-     *            authority to create
+     *                  authority to create
      * @return created authority, or {@code null} if the authority could not be
      *         created
      */
@@ -54,7 +54,7 @@ public interface IAuthorityService extends IService<CommonAuthority> {
      * Removes an authority by its role name.
      *
      * @param name
-     *            authority name to remove
+     *             authority name to remove
      * @return {@code true} if the authority was removed; {@code false} if it did
      *         not exist or could not be removed
      */
@@ -64,9 +64,9 @@ public interface IAuthorityService extends IService<CommonAuthority> {
      * Updates an authority identified by its role name.
      *
      * @param name
-     *            name of the authority to update
+     *                         name of the authority to update
      * @param updatedAuthority
-     *            authority containing the updated values
+     *                         authority containing the updated values
      * @return updated authority, or {@code null} if the authority could not be
      *         updated
      */

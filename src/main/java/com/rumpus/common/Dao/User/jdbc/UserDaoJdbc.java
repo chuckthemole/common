@@ -20,18 +20,17 @@ import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 import org.springframework.jdbc.core.RowMapper;
 
-public class UserDaoJdbc<USER extends AbstractCommonUser<USER, META>,
-        META extends AbstractCommonUserMetaData<META>>
+public class UserDaoJdbc<USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>>
         extends
-            AbstractApiDBJdbc<USER>
+        AbstractApiDBJdbc<USER, UUID>
         implements
-            IUserDao<USER, META> {
+        IUserDao<USER, META> {
 
     public UserDaoJdbc(
             DataSource dataSource,
             String table,
             RowMapper<USER> mapper) {
-        super(dataSource, table, mapper);
+        super(dataSource, table, mapper, UUID.class);
     }
 
     @Override
