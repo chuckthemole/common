@@ -37,7 +37,9 @@ public class CommonUserDetails extends AbstractCommonObject implements UserDetai
     private boolean isEnabled;
 
     // private CommonAuthentication authority;
-    @Column(name = "authorities")
+    @Column(name = "authorities") // TODO: this changed to user_authorities, consider changing and
+                                  // injecting
+                                  // accordingly
     @Schema(description = "The user's authorities", example = "[\"ROLE_USER\"]")
     private Set<GrantedAuthority> authorities;
 

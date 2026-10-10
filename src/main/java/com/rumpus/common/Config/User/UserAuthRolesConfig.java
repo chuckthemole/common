@@ -13,7 +13,10 @@ import com.rumpus.common.Dao.User.jdbc.UserAuthorityDaoJdbc;
 import com.rumpus.common.Dao.User.jdbc.UserAuthorityRowMapper;
 
 @Configuration
-@EnableConfigurationProperties(UserRolesProperties.class)
+@EnableConfigurationProperties({
+        UserRolesTablesProperties.class,
+        UserRolesListProperties.class
+})
 @Import({
         DatabaseConfig.class
 })
@@ -24,7 +27,7 @@ public class UserAuthRolesConfig {
     @Bean
     public IUserAuthorityDao userAuthorityDao(
             DataSource dataSource,
-            UserRolesProperties userRolesProperties) {
+            UserRolesTablesProperties userRolesProperties) {
         final UserAuthorityRowMapper authorityRowMapper = new UserAuthorityRowMapper();
 
         IUserAuthorityDao userAuthorityDao = new UserAuthorityDaoJdbc(

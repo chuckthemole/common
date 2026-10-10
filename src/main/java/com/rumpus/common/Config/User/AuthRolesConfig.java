@@ -16,7 +16,10 @@ import com.rumpus.common.Service.User.AuthorityService;
 import com.rumpus.common.Service.User.IAuthorityService;
 
 @Configuration
-@EnableConfigurationProperties(AuthRolesProperties.class)
+@EnableConfigurationProperties({
+        AuthRolesTableProperties.class,
+        AuthRolesListProperties.class
+})
 @Import({
         DatabaseConfig.class
 })
@@ -24,7 +27,7 @@ public class AuthRolesConfig {
     @Bean
     public IAuthorityDao authorityDao(
             DataSource dataSource,
-            AuthRolesProperties authRolesTableProperties) {
+            AuthRolesTableProperties authRolesTableProperties) {
         AuthorityRowMapper authorityRowMapper = new AuthorityRowMapper();
         return new AuthorityDaoJdbc(
                 dataSource,

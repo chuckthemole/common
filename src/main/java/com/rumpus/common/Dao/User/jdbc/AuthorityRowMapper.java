@@ -13,7 +13,7 @@ import com.rumpus.common.util.Pair;
 public class AuthorityRowMapper extends AbstractJdbcRowMapper<CommonAuthority> {
 
     private static final String ID = "id";
-    private static final String NAME = "name";
+    private static final String NAME = "authority";
 
     @Override
     protected Function<Pair<ResultSet, Integer>, CommonAuthority> initMapperFunction() {
@@ -21,9 +21,11 @@ public class AuthorityRowMapper extends AbstractJdbcRowMapper<CommonAuthority> {
             ResultSet rs = resultSetAndRow.getFirst();
 
             try {
+                String id = rs.getString(ID);
                 String authority = rs.getString(NAME);
-
-                return new CommonAuthority(authority);
+                CommonAuthority authorityObj = new CommonAuthority(authority);
+                authorityObj.setId(Integer.valueOf(id));
+                return authorityObj;
 
             } catch (SQLException e) {
                 final String log = LogBuilder

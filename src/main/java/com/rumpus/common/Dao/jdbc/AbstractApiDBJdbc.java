@@ -2,6 +2,7 @@ package com.rumpus.common.Dao.jdbc;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.sql.DataSource;
 
@@ -15,12 +16,12 @@ import com.rumpus.common.Dao.TableDefinition;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
 import com.rumpus.common.Model.AbstractModel;
 
+import org.jooq.Condition;
 import org.jooq.Query;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>,
-        ID> extends AbstractDao<MODEL, ID> {
+public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>, ID> extends AbstractDao<MODEL, ID> {
 
     /**
      * The {@link CommonJdbc} for this Dao
@@ -79,24 +80,46 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>,
 
     @Override
     protected Optional<MODEL> doGetById(ID id) {
-
         LOG_THIS("getById()");
+
+        final Condition idCondition;
+
+        if (id instanceof UUID) {
+            /*
+             * UUIDs in this schema are stored as VARCHAR(36), not as a native
+             * UUID type. Use String.class and UUID.toString() so JDBC binds the
+             * parameter as text, matching the database column's storage type.
+             */
+            idCondition = DSL.field(
+                    ICommon.ID,
+                    String.class)
+                    .eq(id.toString());
+        } else {
+            /*
+             * For other ID types (e.g. Integer or Long), preserve the ID's
+             * configured Java type so jOOQ binds the parameter appropriately.
+             */
+            idCondition = DSL.field(
+                    ICommon.ID,
+                    this.idClass)
+                    .eq(id);
+        }
 
         final Query query = this.dslContext
                 .select()
                 .from(DSL.table(this.mainTable()))
-                .where(
-                        DSL.field(ICommon.ID, this.idClass)
-                                .eq(id));
+                .where(idCondition);
+
+        final String sql = query.getSQL();
+        final Object[] params = query.getBindValues().toArray();
 
         LOG_THIS(query.getSQL(ParamType.INLINED));
 
-        return this.jdbc.query(
-                query.getSQL(),
-                this.mapper,
-                query.getBindValues().toArray())
-                .stream()
-                .findFirst();
+        List<MODEL> results = this.jdbc.query(sql, this.mapper, params);
+
+        LOG_THIS("Rows returned by getById query: " + results.size());
+
+        return results.stream().findFirst();
     }
 
     @Override

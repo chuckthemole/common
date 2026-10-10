@@ -109,6 +109,13 @@ abstract public class AbstractUserServiceJpa<USER extends AbstractCommonUser<USE
     }
 
     @Override
+    public boolean existsByUserIdAndAuthority(UUID userId, String authority) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException(
+                "Unimplemented method 'existsByUserIdAndAuthority'");
+    }
+
+    @Override
     public List<USER> getAllUsers(Sort sort, SortDirection direction) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");

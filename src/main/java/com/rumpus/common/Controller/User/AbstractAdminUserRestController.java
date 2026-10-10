@@ -25,11 +25,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-abstract public class AbstractAdminUserRestController<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+abstract public class AbstractAdminUserRestController<
+        USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-        AbstractCommonRestController
+            AbstractCommonRestController
         implements
-        IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
+            IAdminUserController<USER, USER_META, USER_SERVICE, USER_TEMPLATE> {
 
     /**
      * Provides access to the currently authenticated user.
@@ -50,13 +54,13 @@ abstract public class AbstractAdminUserRestController<USER extends AbstractCommo
      * Creates a new base user REST controller.
      *
      * @param basePath
-     *                       base REST path served by this controller
+     *            base REST path served by this controller
      * @param userService
-     *                       user business service
+     *            user business service
      * @param userTemplate
-     *                       user view template
+     *            user view template
      * @param authentication
-     *                       authentication provider
+     *            authentication provider
      */
     protected AbstractAdminUserRestController(
             String basePath,
@@ -78,7 +82,8 @@ abstract public class AbstractAdminUserRestController<USER extends AbstractCommo
     }
 
     @Override
-    public ResponseEntity<CommonSession> createUser(@Valid CreateUserRequest request,
+    public ResponseEntity<CommonSession> createUser(@Valid
+    CreateUserRequest request,
             HttpServletRequest servletRequest) {
         LOG_THIS("AbstractUserController::userSubmit()");
 
@@ -118,7 +123,8 @@ abstract public class AbstractAdminUserRestController<USER extends AbstractCommo
     }
 
     @Override
-    public ResponseEntity<Void> addUserRole(UUID userId, @Valid CreateUserRoleRequest request) {
+    public ResponseEntity<Void> addUserRole(UUID userId, @Valid
+    CreateUserRoleRequest request) {
         LOG_THIS("AbstractAdminUserController::addUserRole()");
         this.userService.addUserRole(userId, request.getRole(), request.getGrantedBy(),
                 request.getExpiresAt());

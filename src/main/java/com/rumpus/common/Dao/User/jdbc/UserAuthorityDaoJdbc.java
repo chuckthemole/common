@@ -39,7 +39,7 @@ import com.rumpus.common.User.UserAuthority;
  */
 public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integer>
         implements
-            IUserAuthorityDao {
+        IUserAuthorityDao {
 
     /**
      * The authorities table key used in the table definition.
@@ -105,7 +105,7 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
 
         final Field<String> authorityField = DSL.field("authority", String.class);
 
-        final Field<UUID> grantedByField = DSL.field("granted_by", UUID.class);
+        final Field<String> grantedByField = DSL.field("granted_by", String.class);
 
         final Field<Instant> expiresAtField = DSL.field("expires_at", Instant.class);
 
@@ -120,7 +120,7 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
                         DSL.select(
                                 DSL.val(username, String.class),
                                 authorityIdSourceField,
-                                DSL.val(grantedBy, UUID.class),
+                                DSL.val(grantedBy.toString(), String.class),
                                 DSL.val(expiresAt, Instant.class))
                                 .from(DSL.table(
                                         this.tableDefinition.get(
@@ -276,9 +276,9 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
                 Instant.class)
                 .as("created_at");
 
-        final Field<UUID> grantedByField = DSL.field(
+        final Field<String> grantedByField = DSL.field(
                 DSL.name("ua", "granted_by"),
-                UUID.class)
+                String.class)
                 .as("granted_by");
 
         final Field<Instant> expiresAtField = DSL.field(
@@ -335,6 +335,72 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
     }
 
     @Override
+    public UserAuthority getUserRoleFromUserId(UUID userId, CommonAuthority role) {
+        LOG_THIS("UserAuthorityDao::getUserRoleFromUserId()");
+
+        final Field<String> usernameField = DSL.field(
+                DSL.name("ua", "username"),
+                String.class);
+
+        final Field<Integer> userAuthorityAuthorityIdField = DSL.field(
+                DSL.name("ua", "authority_id"),
+                Integer.class);
+
+        final Field<Integer> authorityDefinitionIdField = DSL.field(
+                DSL.name("a", ICommon.ID),
+                Integer.class);
+
+        final Field<String> authorityNameField = DSL.field(
+                DSL.name("a", "authority"),
+                String.class);
+
+        /*
+         * users.id is VARCHAR(36) in MySQL, even though the application represents
+         * user IDs as UUID objects. Declare the SQL field as String and convert the
+         * UUID argument to text so the comparison uses matching types.
+         */
+        final Field<String> userIdField = DSL.field(
+                DSL.name("u", ICommon.ID),
+                String.class);
+
+        final Field<String> userUsernameField = DSL.field(
+                DSL.name("u", "username"),
+                String.class);
+
+        final Select<?> query = this.dslContext
+                .select(
+                        DSL.field(DSL.name("ua", ICommon.ID), Integer.class)
+                                .as("user_authority_id"),
+                        usernameField.as("username"),
+                        authorityDefinitionIdField.as("authority_id"),
+                        authorityNameField.as("authority"),
+                        DSL.field(DSL.name("ua", "created_at"), Instant.class)
+                                .as("created_at"),
+                        DSL.field(DSL.name("ua", "granted_by"), UUID.class)
+                                .as("granted_by"),
+                        DSL.field(DSL.name("ua", "expires_at"), Instant.class)
+                                .as("expires_at"))
+                .from(DSL.table(this.mainTable()).as("ua"))
+                .join(DSL.table(this.tableDefinition.get(USERS_TABLE)).as("u"))
+                .on(usernameField.eq(userUsernameField))
+                .join(DSL.table(
+                        this.tableDefinition.get(AUTHORITIES_DEFINITION_TABLE)).as("a"))
+                .on(userAuthorityAuthorityIdField.eq(authorityDefinitionIdField))
+                .where(userIdField.eq(userId.toString()))
+                .and(authorityNameField.eq(role.getAuthority()));
+
+        LOG_THIS(query.getSQL(ParamType.INLINED));
+
+        return this.jdbc.query(
+                query.getSQL(),
+                this.mapper,
+                query.getBindValues().toArray())
+                .stream()
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public UserAuthority getUserRoleById(
             Integer userAuthorityId) {
 
@@ -373,9 +439,9 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
                 Instant.class)
                 .as("created_at");
 
-        final Field<UUID> grantedByField = DSL.field(
+        final Field<String> grantedByField = DSL.field(
                 DSL.name("ua", "granted_by"),
-                UUID.class)
+                String.class)
                 .as("granted_by");
 
         final Field<Instant> expiresAtField = DSL.field(
@@ -467,9 +533,9 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
                 Instant.class)
                 .as("created_at");
 
-        final Field<UUID> grantedByField = DSL.field(
+        final Field<String> grantedByField = DSL.field(
                 DSL.name("ua", "granted_by"),
-                UUID.class)
+                String.class)
                 .as("granted_by");
 
         final Field<Instant> expiresAtField = DSL.field(
@@ -556,11 +622,12 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
      * </p>
      *
      * @param model
-     *            authority model that would otherwise be persisted
+     *              authority model that would otherwise be persisted
      * @return never returns; this operation is intentionally unsupported
      * @throws UnsupportedOperationException
-     *             always, because authorities must be managed through the explicit
-     *             user-role operations
+     *                                       always, because authorities must be
+     *                                       managed through the explicit
+     *                                       user-role operations
      */
     @Override
     protected UserAuthority doAdd(UserAuthority model) {
@@ -650,15 +717,16 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
      * </p>
      *
      * @param id
-     *            identifier of the {@link UserAuthority} being updated
+     *              identifier of the {@link UserAuthority} being updated
      * @param model
-     *            authority definition containing the attempted changes
+     *              authority definition containing the attempted changes
      *
      * @return never returns; this operation is intentionally unsupported
      *
      * @throws UnsupportedOperationException
-     *             always, because generic updates to {@link UserAuthority} are not
-     *             supported by this DAO
+     *                                       always, because generic updates to
+     *                                       {@link UserAuthority} are not
+     *                                       supported by this DAO
      */
     @Override
     protected UserAuthority doUpdate(

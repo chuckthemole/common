@@ -1,14 +1,23 @@
 package com.rumpus.common.Service.User;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import com.rumpus.common.ICommon;
+import com.rumpus.common.Dao.User.IUserAuthorityDao;
 import com.rumpus.common.Dao.jdbc.CommonJdbc;
+import com.rumpus.common.User.CommonUserDetails;
+import com.rumpus.common.User.UserAuthority;
 
 /**
  * Thin wrapper around Spring's JdbcUserDetailsManager.
@@ -17,23 +26,69 @@ public class UserSecurityService {
     private static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
 
     private final JdbcUserDetailsManager delegate;
+    private final IUserAuthorityDao userAuthorityDao;
 
-    public UserSecurityService(JdbcUserDetailsManager delegate) {
+    public UserSecurityService(JdbcUserDetailsManager delegate,
+            IUserAuthorityDao userAuthorityDao) {
         this.delegate = delegate;
+        this.userAuthorityDao = userAuthorityDao;
         // TODO: I believe spring ships with these default queries, so we do not need to
         // set.
         this.setDefaultQueries(); // TODO: should we have params for ctor for custom,
         // setQueries?
         this.delegate.setJdbcTemplate(CommonJdbc.getInstance().getJdbcTemplate());
         // todo: should we do this?
+
+        this.delegate.setEnableAuthorities(false);
+
+    }
+
+    public UserDetails loadUserByUsername(String username) {
+        List<CommonUserDetails> users = CommonJdbc.getInstance()
+                .getJdbcTemplate()
+                .query(
+                        "SELECT username, password, enabled FROM users WHERE username = ?",
+                        (rs, rowNum) -> CommonUserDetails.createWithAll(
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getBoolean("enabled"),
+                                Set.of(),
+                                true,
+                                true,
+                                true),
+                        username);
+
+        if (users.isEmpty()) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+
+        CommonUserDetails userDetails = users.get(0);
+
+        Set<GrantedAuthority> authorities = new HashSet<>(this.getAuthorities(username));
+
+        if (authorities.isEmpty()) {
+            authorities.add(new SimpleGrantedAuthority(ICommon.ROLE_USER));
+        }
+
+        userDetails.setAuthorities(authorities);
+        return userDetails;
     }
 
     /**
-     * Load Spring Security user by username.
+     * Load a Spring Security user by username, using the custom
+     * user-authority assignments instead of the legacy authorities table.
      */
-    public UserDetails loadUserByUsername(String username) {
-        return delegate.loadUserByUsername(username);
-    }
+    // public UserDetails loadUserByUsername(String username) {
+    // UserDetails user = delegate.loadUserByUsername(username);
+
+    // Collection<? extends GrantedAuthority> authorities =
+    // getAuthorities(username);
+
+    // return User
+    // .withUserDetails(user)
+    // .authorities(authorities)
+    // .build();
+    // }
 
     /**
      * Create a new security user (username/password/enabled + roles).
@@ -67,12 +122,18 @@ public class UserSecurityService {
      * Get the authorities for a user by username.
      *
      * @param username
-     *            the username of the user to get authorities for
+     *                 the username of the user to get authorities for
      * @return a collection of GrantedAuthority objects representing the user's
      *         authorities
      */
     public Collection<? extends GrantedAuthority> getAuthorities(String username) {
-        return delegate.loadUserByUsername(username).getAuthorities();
+        // return delegate.loadUserByUsername(username).getAuthorities();
+
+        Set<UserAuthority> userAuthorities = userAuthorityDao.getUserRoles(username);
+        return userAuthorities.stream()
+                .map(userRole -> new SimpleGrantedAuthority(
+                        userRole.getAuthority().getAuthority()))
+                .collect(Collectors.toSet());
     }
 
     private void setQueries(Map<String, String> queries) {

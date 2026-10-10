@@ -31,7 +31,7 @@ import jakarta.persistence.Table;
 @Schema(description = "CommonAuthority - implementation of Spring Security's GrantedAuthority interface, representing a single authority granted to a user")
 public class CommonAuthority extends AbstractModel<CommonAuthority, Integer>
         implements
-        GrantedAuthority {
+            GrantedAuthority {
     // TODO: Eventually remove GrantedAuthority from CommonAuthority.
     // Keep this class focused on the persisted/domain authority model and
     // convert to Spring Security's SimpleGrantedAuthority at the security boundary.
@@ -52,9 +52,9 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, Integer>
      * Creates an authority from its string representation.
      *
      * @param authority
-     *                  the authority name; must not be null or blank
+     *            the authority name; must not be null or blank
      * @throws IllegalArgumentException
-     *                                  if the authority is null or blank
+     *             if the authority is null or blank
      */
     public CommonAuthority(String authority) {
         if (authority == null || authority.isBlank()) {
@@ -67,10 +67,9 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, Integer>
      * Creates an authority from another {@link GrantedAuthority}.
      *
      * @param authority
-     *                  the authority to copy; must not be null
+     *            the authority to copy; must not be null
      * @throws IllegalArgumentException
-     *                                  if the authority is null or has a null or
-     *                                  blank name
+     *             if the authority is null or has a null or blank name
      */
     public CommonAuthority(GrantedAuthority authority) {
         this(

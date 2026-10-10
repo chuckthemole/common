@@ -155,6 +155,17 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>,
     boolean removeUserRole(UUID userId, String role);
 
     /**
+     * Check whether a user has a specific authority assigned.
+     *
+     * @param userId
+     *            the UUID of the user
+     * @param authority
+     *            the name of the authority
+     * @return true if the user has the authority assigned, false otherwise
+     */
+    boolean existsByUserIdAndAuthority(UUID userId, String authority);
+
+    /**
      * Authenticate a user and establish an authenticated HTTP session.
      * <p>
      * This method is responsible for:

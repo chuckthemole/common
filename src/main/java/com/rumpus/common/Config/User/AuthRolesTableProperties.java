@@ -3,11 +3,11 @@ package com.rumpus.common.Config.User;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "properties.tables")
-public class AuthRolesProperties {
+public class AuthRolesTableProperties {
 
     private String authorityTable;
 
-    AuthRolesProperties() {
+    AuthRolesTableProperties() {
     }
 
     public String getAuthorityTable() {

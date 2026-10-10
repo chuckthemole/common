@@ -116,6 +116,17 @@ public interface IUserAuthorityDao extends ICommon {
     UserAuthority getUserRole(String username, CommonAuthority role);
 
     /**
+     * Get a user-authority assignment by the user's UUID and authority.
+     *
+     * @param userId
+     *            the UUID of the user
+     * @param role
+     *            the authority to retrieve
+     * @return the matching user-authority assignment, or {@code null} if not found
+     */
+    UserAuthority getUserRoleFromUserId(UUID userId, CommonAuthority role);
+
+    /**
      * Get a user-authority assignment by its database ID.
      *
      * @param userAuthorityId
