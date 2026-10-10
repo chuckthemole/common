@@ -13,7 +13,7 @@ import com.rumpus.common.Model.AbstractModel;
  * Generic DAO interface for CRUD operations.
  *
  * @param <MODEL>
- *                the model type managed by this DAO
+ *            the model type managed by this DAO
  * @see AbstractModel
  * @see AbstractDao
  */
@@ -23,7 +23,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ID>, ID> extends ICommo
      * Retrieve a model by its unique identifier.
      *
      * @param id
-     *           identifier of the model
+     *            identifier of the model
      * @return an Optional containing the model if found, otherwise empty
      */
     Optional<MODEL> getById(ID id);
@@ -47,7 +47,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ID>, ID> extends ICommo
      * records into memory and supports efficient database pagination.
      *
      * @param pageRequest
-     *                    pagination and sorting information
+     *            pagination and sorting information
      * @return a page of models (never null; may be empty)
      */
     Page<MODEL> findAll(Pageable pageRequest);
@@ -56,7 +56,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ID>, ID> extends ICommo
      * Persist a new model.
      *
      * @param model
-     *              model to persist
+     *            model to persist
      * @return the persisted model, or null if insertion failed
      */
     MODEL add(MODEL model);
@@ -65,9 +65,9 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ID>, ID> extends ICommo
      * Update an existing model.
      *
      * @param id
-     *                     identifier of the model to update
+     *            identifier of the model to update
      * @param updatedModel
-     *                     new state of the model
+     *            new state of the model
      * @return the updated model, or null if update failed or record not found
      */
     MODEL update(ID id, MODEL updatedModel);
@@ -76,7 +76,7 @@ public interface IDao<MODEL extends AbstractModel<MODEL, ID>, ID> extends ICommo
      * Remove a model by id.
      *
      * @param id
-     *           identifier of the model to remove
+     *            identifier of the model to remove
      * @return true if a record was removed, false otherwise
      */
     boolean remove(ID id);

@@ -2,7 +2,6 @@ package com.rumpus.common.FileIO;
 
 import java.lang.reflect.Type;
 import java.util.Optional;
-import java.util.UUID;
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Model.AbstractModel;
 
@@ -25,7 +24,7 @@ public interface IFileIO extends ICommon {
      * @return An Optional containing the parsed models, or an empty Optional if
      *         parsing fails.
      */
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> Optional<MODEL[]> readModelsFromFile(
             String filePath, Type type);
 
     /**
@@ -38,7 +37,7 @@ public interface IFileIO extends ICommon {
      * @return An Optional containing the parsed model, or an empty Optional if
      *         parsing fails.
      */
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> Optional<MODEL> readModelFromFile(
             String filePath, Type type);
 
     /**
@@ -50,7 +49,7 @@ public interface IFileIO extends ICommon {
      *            The array of models to write to the file.
      * @return true if the write operation succeeds, false otherwise.
      */
-    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath,
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> boolean writeModelsToFile(String filePath,
             MODEL[] models);
 
     /**

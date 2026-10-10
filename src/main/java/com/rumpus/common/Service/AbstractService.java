@@ -6,9 +6,10 @@ import com.rumpus.common.AbstractCommonObject;
 import com.rumpus.common.Dao.IDao;
 import com.rumpus.common.Model.AbstractModel;
 
-abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ID>, ID> extends AbstractCommonObject
+abstract public class AbstractService<MODEL extends AbstractModel<MODEL, ID>,
+        ID> extends AbstractCommonObject
         implements
-        IService<MODEL, ID> {
+            IService<MODEL, ID> {
 
     /**
      * The data access object for this service.

@@ -1,7 +1,6 @@
 package com.rumpus.common.FileIO;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import com.rumpus.common.Model.AbstractModel;
 
@@ -38,7 +37,8 @@ final public class FileProcessor {
      * @return An Optional containing the parsed models, or an empty Optional if
      *         parsing fails.
      */
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> processFile(String filePath,
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> Optional<MODEL[]> processFile(
+            String filePath,
             Type type) {
         return fileReader.readModelsFromFile(filePath, type);
     }

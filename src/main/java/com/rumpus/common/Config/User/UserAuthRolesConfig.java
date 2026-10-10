@@ -19,6 +19,8 @@ import com.rumpus.common.Dao.User.jdbc.UserAuthorityRowMapper;
 })
 public class UserAuthRolesConfig {
 
+    public static final String USER_AUTHORITY_DAO_BEAN_NAME = "userAuthorityDao";
+
     @Bean
     public IUserAuthorityDao userAuthorityDao(
             DataSource dataSource,

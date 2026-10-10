@@ -3,7 +3,6 @@ package com.rumpus.common.FileIO;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.rumpus.common.ICommon;
 import com.rumpus.common.Log.ICommonLogger.LogLevel;
@@ -30,7 +29,7 @@ final public class XmlIO extends AbstractFileIO {
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> Optional<MODEL[]> readModelsFromFile(
             final String filePath, final Type type) {
 
         // If the file content is empty, log an error and return an empty Optional
@@ -76,14 +75,14 @@ final public class XmlIO extends AbstractFileIO {
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> Optional<MODEL> readModelFromFile(
             String filePath, Type type) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'readModelFromFile'");
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath,
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> boolean writeModelsToFile(String filePath,
             MODEL[] models) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeModelsToFile'");

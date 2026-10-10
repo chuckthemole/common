@@ -29,13 +29,13 @@ import com.rumpus.common.Model.AbstractModel;
  * </p>
  *
  * @param <MODEL>
- *                the model type managed by this DAO
+ *            the model type managed by this DAO
  */
 public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ID>, ID>
         extends
-        AbstractCommonObject
+            AbstractCommonObject
         implements
-        IDao<MODEL, ID> {
+            IDao<MODEL, ID> {
 
     /**
      * Table mapping definition used by this DAO.
@@ -75,10 +75,9 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ID>, ID>
      * </p>
      *
      * @param table
-     *                  primary database table name (required)
+     *            primary database table name (required)
      * @param metaTable
-     *                  optional metadata table name (may be null or empty if
-     *                  unused)
+     *            optional metadata table name (may be null or empty if unused)
      */
     protected AbstractDao(String table, String metaTable) {
 
@@ -102,7 +101,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ID>, ID>
      * </p>
      *
      * @param tableDefinition
-     *                        complete table mapping definition
+     *            complete table mapping definition
      */
     protected AbstractDao(TableDefinition tableDefinition) {
         this.tableDefinition = tableDefinition;
@@ -175,7 +174,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ID>, ID>
      * Hook executed after a successful add operation.
      *
      * @param model
-     *              created model
+     *            created model
      * @return final model result
      */
     protected MODEL afterAdd(MODEL model) {
@@ -186,7 +185,7 @@ public abstract class AbstractDao<MODEL extends AbstractModel<MODEL, ID>, ID>
      * Hook executed after a successful update operation.
      *
      * @param model
-     *              updated model
+     *            updated model
      * @return final model result
      */
     protected MODEL afterUpdate(MODEL model) {

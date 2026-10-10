@@ -2,7 +2,6 @@ package com.rumpus.common.Dao.User.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 import java.util.function.Function;
 
 import com.rumpus.common.Builder.LogBuilder;

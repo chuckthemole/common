@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 
 import org.jooq.Field;
 import org.jooq.Query;
-import org.jooq.Record1;
 import org.jooq.Select;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
@@ -40,7 +39,7 @@ import com.rumpus.common.User.UserAuthority;
  */
 public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integer>
         implements
-        IUserAuthorityDao {
+            IUserAuthorityDao {
 
     /**
      * The authorities table key used in the table definition.
@@ -83,15 +82,15 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
          * The user-authority relationship is stored in user_authorities.
          *
          * The caller supplies the username and CommonAuthority, while the
-         * user_authorities table stores the authority's database ID rather than
-         * its string name. Resolve that ID from the authorities table as part
-         * of the INSERT ... SELECT.
+         * user_authorities table stores the authority's database ID rather than its
+         * string name. Resolve that ID from the authorities table as part of the INSERT
+         * ... SELECT.
          *
-         * The caller also supplies the UUID of the user granting the authority
-         * and an optional expiration timestamp.
+         * The caller also supplies the UUID of the user granting the authority and an
+         * optional expiration timestamp.
          *
-         * created_at is intentionally not included in the INSERT because the
-         * database should populate it using DEFAULT CURRENT_TIMESTAMP.
+         * created_at is intentionally not included in the INSERT because the database
+         * should populate it using DEFAULT CURRENT_TIMESTAMP.
          */
 
         final Field<String> usernameField = DSL.field("username", String.class);
@@ -99,9 +98,8 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         final Field<Integer> authorityIdField = DSL.field("authority_id", Integer.class);
 
         /*
-         * This is the ID column from the AUTHORITIES_DEFINITION_TABLE.
-         * It is distinct from authorityIdField above, which represents
-         * user_authorities.authority_id.
+         * This is the ID column from the AUTHORITIES_DEFINITION_TABLE. It is distinct
+         * from authorityIdField above, which represents user_authorities.authority_id.
          */
         final Field<Integer> authorityIdSourceField = DSL.field("id", Integer.class);
 
@@ -132,8 +130,7 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         LOG_THIS(query.getSQL(ParamType.INLINED));
 
         /*
-         * Use a KeyHolder so MySQL returns the generated ID from
-         * user_authorities.id.
+         * Use a KeyHolder so MySQL returns the generated ID from user_authorities.id.
          */
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -154,8 +151,8 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         }, keyHolder);
 
         /*
-         * INSERT ... SELECT returns zero rows when the requested authority
-         * does not exist.
+         * INSERT ... SELECT returns zero rows when the requested authority does not
+         * exist.
          */
         if (rows != 1) {
             throw new IllegalArgumentException(
@@ -164,8 +161,8 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         }
 
         /*
-         * The database generated the UserAuthority ID. Retrieve it so we can
-         * return the complete UserAuthority represented by the new row.
+         * The database generated the UserAuthority ID. Retrieve it so we can return the
+         * complete UserAuthority represented by the new row.
          */
         final Number generatedId = keyHolder.getKey();
 
@@ -179,9 +176,9 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         final Integer userAuthorityId = generatedId.intValue();
 
         /*
-         * Retrieve the complete persisted UserAuthority. This keeps the DAO
-         * responsible for constructing the domain object from the database
-         * rather than manually reconstructing it here.
+         * Retrieve the complete persisted UserAuthority. This keeps the DAO responsible
+         * for constructing the domain object from the database rather than manually
+         * reconstructing it here.
          */
         final UserAuthority userAuthority = this.getUserRoleById(userAuthorityId);
 
@@ -204,13 +201,13 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         /*
          * User-authority assignments are stored in user_authorities.
          *
-         * The user_authorities table stores authority_id rather than the
-         * authority name, so resolve the authority definition's ID from
-         * the authorities table when performing the delete.
+         * The user_authorities table stores authority_id rather than the authority
+         * name, so resolve the authority definition's ID from the authorities table
+         * when performing the delete.
          *
-         * If the user has the role, the matching assignment is removed.
-         * If the user does not have the role, zero rows are affected and
-         * the operation is treated as a no-op.
+         * If the user has the role, the matching assignment is removed. If the user
+         * does not have the role, zero rows are affected and the operation is treated
+         * as a no-op.
          */
 
         final Field<String> usernameField = DSL.field("username", String.class);
@@ -247,12 +244,11 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         LOG_THIS("UserAuthorityDao::getUserRole()");
 
         /*
-         * User-authority assignments are stored in user_authorities while the
-         * authority definition is stored in authorities. Join the two tables
-         * using user_authorities.authority_id = authorities.id.
+         * User-authority assignments are stored in user_authorities while the authority
+         * definition is stored in authorities. Join the two tables using
+         * user_authorities.authority_id = authorities.id.
          *
-         * The username and authority name together identify the requested
-         * assignment.
+         * The username and authority name together identify the requested assignment.
          */
 
         final Field<Integer> userAuthorityIdField = DSL.field(
@@ -439,12 +435,11 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         /*
          * User-authority assignments are stored in user_authorities.
          *
-         * The authority definition is stored separately in the authorities
-         * table. Join the two tables using user_authorities.authority_id =
-         * authorities.id.
+         * The authority definition is stored separately in the authorities table. Join
+         * the two tables using user_authorities.authority_id = authorities.id.
          *
-         * The username is already supplied by the caller, so there is no need
-         * to join the users table.
+         * The username is already supplied by the caller, so there is no need to join
+         * the users table.
          */
 
         final Field<Integer> userAuthorityIdField = DSL.field(
@@ -561,12 +556,11 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
      * </p>
      *
      * @param model
-     *              authority model that would otherwise be persisted
+     *            authority model that would otherwise be persisted
      * @return never returns; this operation is intentionally unsupported
      * @throws UnsupportedOperationException
-     *                                       always, because authorities must be
-     *                                       managed through the explicit
-     *                                       user-role operations
+     *             always, because authorities must be managed through the explicit
+     *             user-role operations
      */
     @Override
     protected UserAuthority doAdd(UserAuthority model) {
@@ -584,9 +578,9 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         /*
          * A UserAuthority represents an assignment of an authority to a user.
          *
-         * This operation only updates the mutable expiration metadata for the
-         * existing assignment. The user, authority, created_at, and granted_by
-         * values remain unchanged.
+         * This operation only updates the mutable expiration metadata for the existing
+         * assignment. The user, authority, created_at, and granted_by values remain
+         * unchanged.
          *
          * A null expiresAt value means that the assignment should not expire.
          */
@@ -613,8 +607,8 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
         }
 
         /*
-         * Retrieve the persisted assignment so the caller receives the complete
-         * updated UserAuthority rather than having to reconstruct it.
+         * Retrieve the persisted assignment so the caller receives the complete updated
+         * UserAuthority rather than having to reconstruct it.
          */
         final UserAuthority userAuthority = this.getUserRoleById(userAuthorityId);
 
@@ -656,16 +650,15 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
      * </p>
      *
      * @param id
-     *              identifier of the {@link UserAuthority} being updated
+     *            identifier of the {@link UserAuthority} being updated
      * @param model
-     *              authority definition containing the attempted changes
+     *            authority definition containing the attempted changes
      *
      * @return never returns; this operation is intentionally unsupported
      *
      * @throws UnsupportedOperationException
-     *                                       always, because generic updates to
-     *                                       {@link UserAuthority} are not
-     *                                       supported by this DAO
+     *             always, because generic updates to {@link UserAuthority} are not
+     *             supported by this DAO
      */
     @Override
     protected UserAuthority doUpdate(

@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
- * 
+ *
  * Represents the assignment of an authority to a user.
  *
  * <p>
@@ -33,10 +33,10 @@ import jakarta.persistence.Table;
  * </p>
  *
  * <p>
- * This class corresponds to the {@code user_authorities} persistence table.
- * The database identity of an assignment is represented by an {@link Integer}.
+ * This class corresponds to the {@code user_authorities} persistence table. The
+ * database identity of an assignment is represented by an {@link Integer}.
  * </p>
- * 
+ *
  */
 @Entity
 @Table(name = "user_authorities")
@@ -60,8 +60,8 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Authority assigned to the user.
      *
      * <p>
-     * This represents the authority definition itself, such as
-     * {@code ROLE_USER} or {@code ROLE_ADMIN}.
+     * This represents the authority definition itself, such as {@code ROLE_USER} or
+     * {@code ROLE_ADMIN}.
      * </p>
      */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -84,8 +84,8 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * UUID of the user who granted the authority.
      *
      * <p>
-     * This may be {@code null} when the assignment is created automatically by
-     * the system rather than explicitly granted by another user.
+     * This may be {@code null} when the assignment is created automatically by the
+     * system rather than explicitly granted by another user.
      * </p>
      */
     @Column(name = "granted_by", length = 50)
@@ -108,8 +108,7 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Required no-argument constructor for JPA.
      *
      * <p>
-     * This constructor should not normally be called directly by application
-     * code.
+     * This constructor should not normally be called directly by application code.
      * </p>
      */
     protected UserAuthority() {
@@ -120,9 +119,9 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Create a user-authority assignment.
      *
      * @param username
-     *                  username receiving the authority
+     *            username receiving the authority
      * @param authority
-     *                  authority being assigned
+     *            authority being assigned
      */
     public UserAuthority(
             final String username,
@@ -145,13 +144,13 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Create a user-authority assignment with expiration and grant metadata.
      *
      * @param username
-     *                  username receiving the authority
+     *            username receiving the authority
      * @param authority
-     *                  authority being assigned
+     *            authority being assigned
      * @param grantedBy
-     *                  UUID of the user granting the authority
+     *            UUID of the user granting the authority
      * @param expiresAt
-     *                  optional expiration timestamp
+     *            optional expiration timestamp
      */
     public UserAuthority(
             final String username,
@@ -175,17 +174,17 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * </p>
      *
      * @param id
-     *                  database ID of the user-authority assignment
+     *            database ID of the user-authority assignment
      * @param username
-     *                  username receiving the authority
+     *            username receiving the authority
      * @param authority
-     *                  authority being assigned
+     *            authority being assigned
      * @param createdAt
-     *                  timestamp when the assignment was created
+     *            timestamp when the assignment was created
      * @param grantedBy
-     *                  UUID of the user who granted the authority
+     *            UUID of the user who granted the authority
      * @param expiresAt
-     *                  optional expiration timestamp
+     *            optional expiration timestamp
      */
     public UserAuthority(
             final Integer id,
@@ -214,7 +213,7 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Set the username receiving this authority.
      *
      * @param username
-     *                 username receiving the authority
+     *            username receiving the authority
      */
     public void setUsername(final String username) {
         this.username = Objects.requireNonNull(
@@ -235,7 +234,7 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Set the authority assigned to the user.
      *
      * @param authority
-     *                  authority to assign
+     *            authority to assign
      */
     public void setAuthority(final CommonAuthority authority) {
         this.authority = Objects.requireNonNull(
@@ -256,7 +255,7 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Set the assignment timestamp.
      *
      * @param createdAt
-     *                  assignment timestamp
+     *            assignment timestamp
      */
     public void setCreatedAt(final Instant createdAt) {
         this.createdAt = Objects.requireNonNull(
@@ -277,7 +276,7 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Set the UUID of the user who granted this authority.
      *
      * @param grantedBy
-     *                  granting UUID, or {@code null} for system grants
+     *            granting UUID, or {@code null} for system grants
      */
     public void setGrantedBy(final UUID grantedBy) {
         this.grantedBy = grantedBy;
@@ -297,7 +296,7 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
      * Set the expiration timestamp.
      *
      * @param expiresAt
-     *                  expiration timestamp, or {@code null} for no expiration
+     *            expiration timestamp, or {@code null} for no expiration
      */
     public void setExpiresAt(final Instant expiresAt) {
         this.expiresAt = expiresAt;
@@ -306,8 +305,8 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
     /**
      * Determine whether this authority assignment has expired.
      *
-     * @return {@code true} when an expiration exists and has passed;
-     *         {@code false} otherwise
+     * @return {@code true} when an expiration exists and has passed; {@code false}
+     *         otherwise
      */
     public boolean isExpired() {
         return this.expiresAt != null
@@ -317,8 +316,8 @@ public class UserAuthority extends AbstractModel<UserAuthority, Integer> {
     /**
      * Determine whether this authority assignment is currently active.
      *
-     * @return {@code true} when the assignment has not expired;
-     *         {@code false} otherwise
+     * @return {@code true} when the assignment has not expired; {@code false}
+     *         otherwise
      */
     public boolean isActive() {
         return !this.isExpired();

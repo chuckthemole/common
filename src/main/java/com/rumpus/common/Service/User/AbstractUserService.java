@@ -35,11 +35,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>>
+abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>>
         extends
-        AbstractService<USER, UUID>
+            AbstractService<USER, UUID>
         implements
-        IUserService<USER, USER_META> {
+            IUserService<USER, USER_META> {
 
     protected IUserDao<USER, USER_META> userDao; // TODO: should this be private?
     protected IUserAuthorityDao userAuthorityDao; // TODO: should this be private?
@@ -274,7 +275,7 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
      * </p>
      *
      * @param users
-     *              users whose security details should be populated
+     *            users whose security details should be populated
      */
     protected void populateUserDetails(List<USER> users) {
 
@@ -296,11 +297,11 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
      * </p>
      *
      * @param users
-     *                  the users to sort
+     *            the users to sort
      * @param sort
-     *                  the sort field
+     *            the sort field
      * @param direction
-     *                  the sort direction
+     *            the sort direction
      *
      * @return the sorted list
      */
@@ -327,9 +328,9 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
      * </p>
      *
      * @param users
-     *              the users to sort
+     *            the users to sort
      * @param sort
-     *              the sort field
+     *            the sort field
      *
      * @return the sorted users
      */
@@ -339,16 +340,16 @@ abstract public class AbstractUserService<USER extends AbstractCommonUser<USER, 
 
         switch (sort) {
 
-            case EMAIL:
+            case EMAIL :
                 return AbstractCommonUserCollection
                         .getSortedByEmailListFromCollection(users);
 
-            case ID:
+            case ID :
                 return AbstractCommonUserCollection
                         .getSortedByIdListFromCollection(users);
 
-            case USERNAME:
-            default:
+            case USERNAME :
+            default :
                 return AbstractCommonUserCollection
                         .getSortedByUsernameListFromCollection(users);
         }

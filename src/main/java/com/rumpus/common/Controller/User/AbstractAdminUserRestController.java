@@ -3,7 +3,6 @@ package com.rumpus.common.Controller.User;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
-import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.ICommonAuthentication;
 import com.rumpus.common.User.UserAuthority;
 import com.rumpus.common.User.Requests.CreateUserRequest;
@@ -122,7 +120,8 @@ abstract public class AbstractAdminUserRestController<USER extends AbstractCommo
     @Override
     public ResponseEntity<Void> addUserRole(UUID userId, @Valid CreateUserRoleRequest request) {
         LOG_THIS("AbstractAdminUserController::addUserRole()");
-        this.userService.addUserRole(userId, request.getRole(), request.getGrantedBy(), request.getExpiresAt());
+        this.userService.addUserRole(userId, request.getRole(), request.getGrantedBy(),
+                request.getExpiresAt());
         return ResponseEntity.ok().build();
     }
 

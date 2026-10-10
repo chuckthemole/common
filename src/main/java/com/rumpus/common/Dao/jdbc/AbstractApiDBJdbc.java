@@ -19,7 +19,8 @@ import org.jooq.Query;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>, ID> extends AbstractDao<MODEL, ID> {
+public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>,
+        ID> extends AbstractDao<MODEL, ID> {
 
     /**
      * The {@link CommonJdbc} for this Dao

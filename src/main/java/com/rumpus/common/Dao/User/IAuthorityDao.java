@@ -13,7 +13,7 @@ public interface IAuthorityDao extends IDao<CommonAuthority, Integer> {
      * Find an authority by its name.
      *
      * @param roleName
-     *                 the name of the authority
+     *            the name of the authority
      * @return an Optional containing the authority if found, or empty if not found
      */
     Optional<CommonAuthority> findByName(String roleName);

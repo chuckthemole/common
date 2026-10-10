@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Type;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,7 +68,7 @@ public class FileProcessorTest {
     void testProcessFile_Success() {
 
         // Mock the file reader response
-        when(this.mockFileReader.<TestUserModel>readModelsFromFile(FileProcessorTest.JSON_USERS_FILE, this.type))
+        when(this.mockFileReader.<TestUserModel, UUID>readModelsFromFile(FileProcessorTest.JSON_USERS_FILE, this.type))
                 .thenReturn(Optional.of(this.userModels));
 
         // Act
@@ -87,7 +88,8 @@ public class FileProcessorTest {
     @Test
     void testProcessFile_ParsingError() {
         // Mock the file reader to return an empty Optional
-        when(this.mockFileReader.readModelsFromFile(FileProcessorTest.JSON_USERS_FILE_INVALID, this.type))
+        when(this.mockFileReader.<TestUserModel, UUID>readModelsFromFile(FileProcessorTest.JSON_USERS_FILE_INVALID,
+                this.type))
                 .thenReturn(Optional.empty());
 
         // Act

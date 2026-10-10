@@ -13,7 +13,8 @@ import com.rumpus.common.Dao.TableDefinition;
 import com.rumpus.common.Model.AbstractModel;
 
 //TODO: MAKE ABSTRACT
-public class AbstractDaoJooq<MODEL extends AbstractModel<MODEL, ID>, ID> extends AbstractDao<MODEL, ID> {
+public class AbstractDaoJooq<MODEL extends AbstractModel<MODEL, ID>,
+        ID> extends AbstractDao<MODEL, ID> {
 
     /**
      * JOOQ DSL context for type-safe SQL generation and execution.

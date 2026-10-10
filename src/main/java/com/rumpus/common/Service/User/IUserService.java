@@ -14,7 +14,6 @@ import com.rumpus.common.User.AbstractCommonUser;
 import com.rumpus.common.User.AbstractCommonUserCollection.Sort;
 import com.rumpus.common.User.AbstractCommonUserCollection.SortDirection;
 import com.rumpus.common.User.AbstractCommonUserMetaData;
-import com.rumpus.common.User.CommonAuthority;
 import com.rumpus.common.User.UserAuthority;
 import com.rumpus.common.User.Requests.CreateUserRequest;
 
@@ -23,16 +22,17 @@ import jakarta.servlet.http.HttpSession;
 
 @Service("userDetailsService") // TODO: look at this annotation and see if we could put in IService?
                                // or remove it? - chuck
-public interface IUserService<USER extends AbstractCommonUser<USER, META>, META extends AbstractCommonUserMetaData<META>>
+public interface IUserService<USER extends AbstractCommonUser<USER, META>,
+        META extends AbstractCommonUserMetaData<META>>
         extends
-        IService<USER, UUID>,
-        UserDetailsService {
+            IService<USER, UUID>,
+            UserDetailsService {
 
     /**
      * Get a user by their username.
      *
      * @param username
-     *                 The username of the user to get.
+     *            The username of the user to get.
      * @return The user with the given username. If no user is found, return null.
      *         If more than one user is found, return null. TODO: I don't like this.
      *         I think it should throw an exception if more than one user is found
@@ -44,7 +44,7 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * Get the user details for a user with the given username.
      *
      * @param username
-     *                 The username of the user to get the details for.
+     *            The username of the user to get the details for.
      * @return The {@link UserDetails} for the user with the given username.
      */
     public UserDetails loadUserByUsername(String username);
@@ -53,7 +53,7 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * Check if a user exists with the given username.
      *
      * @param username
-     *                 the username to check
+     *            the username to check
      *
      * @return true if a user exists, false otherwise
      */
@@ -73,13 +73,12 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * </ul>
      *
      * @param request
-     *                the user creation request containing required fields
+     *            the user creation request containing required fields
      *
      * @return the persisted {@link USER} entity
      *
      * @throws IllegalArgumentException
-     *                                  if username already exists or request is
-     *                                  invalid
+     *             if username already exists or request is invalid
      */
     USER createUser(CreateUserRequest request);
 
@@ -100,13 +99,12 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * constructed (e.g. from factories, mappers, or internal services).
      *
      * @param user
-     *             the fully or partially constructed user entity
+     *            the fully or partially constructed user entity
      *
      * @return the persisted {@link USER} entity
      *
      * @throws IllegalArgumentException
-     *                                  if username already exists or user data is
-     *                                  invalid
+     *             if username already exists or user data is invalid
      */
     USER createUser(USER user);
 
@@ -114,7 +112,7 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * Get all roles assigned to a user.
      *
      * @param userId
-     *               the user id
+     *            the user id
      * @return set of {@link UserAuthority} assigned to the user
      */
     Set<UserAuthority> getUserRoles(UUID userId);
@@ -126,15 +124,17 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * duplicates or error.
      *
      * @param userId
-     *                  the user id
+     *            the user id
      * @param role
-     *                  the role to assign
-     * @param grantedBy the user who granted the role
-     * @param expiresAt the time at which the role assignment expires
+     *            the role to assign
+     * @param grantedBy
+     *            the user who granted the role
+     * @param expiresAt
+     *            the time at which the role assignment expires
      * @return true if the role was added, false otherwise
      *
      * @throws IllegalArgumentException
-     *                                  if user does not exist or role is invalid
+     *             if user does not exist or role is invalid
      */
     boolean addUserRole(UUID userId, String role, UUID grantedBy, Instant expiresAt);
 
@@ -144,13 +144,13 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * If the user does not have the role, the operation should be a no-op.
      *
      * @param userId
-     *               the user id
+     *            the user id
      * @param role
-     *               the role to remove
+     *            the role to remove
      * @return true if the role was removed, false otherwise
      *
      * @throws IllegalArgumentException
-     *                                  if user does not exist
+     *             if user does not exist
      */
     boolean removeUserRole(UUID userId, String role);
 
@@ -171,18 +171,17 @@ public interface IUserService<USER extends AbstractCommonUser<USER, META>, META 
      * silently ignoring errors whenever possible.
      *
      * @param username
-     *                 the username of the user to authenticate
+     *            the username of the user to authenticate
      *
      * @param password
-     *                 the user's plaintext password used for authentication
+     *            the user's plaintext password used for authentication
      *
      * @param request
-     *                 the current {@link HttpServletRequest} used to establish the
-     *                 authenticated session
+     *            the current {@link HttpServletRequest} used to establish the
+     *            authenticated session
      *
      * @throws jakarta.servlet.ServletException
-     *                                          if the servlet container fails to
-     *                                          authenticate the user
+     *             if the servlet container fails to authenticate the user
      */
     public void loginUser(
             String username,

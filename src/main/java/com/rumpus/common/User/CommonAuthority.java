@@ -9,6 +9,7 @@ import com.rumpus.common.Model.IModelIdManager;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 /**
@@ -25,6 +26,7 @@ import jakarta.persistence.Table;
  * service/DAO layer rather than in the authority model itself.
  * </p>
  */
+@Entity
 @Table(name = "authority")
 @Schema(description = "CommonAuthority - implementation of Spring Security's GrantedAuthority interface, representing a single authority granted to a user")
 public class CommonAuthority extends AbstractModel<CommonAuthority, Integer>
@@ -37,6 +39,14 @@ public class CommonAuthority extends AbstractModel<CommonAuthority, Integer>
     @Column(name = "authority")
     @Schema(description = "The name of the authority", example = "ROLE_USER")
     private final String authority;
+
+    /**
+     * Protected no-argument constructor for JPA.
+     */
+    protected CommonAuthority() {
+        super();
+        this.authority = null;
+    }
 
     /**
      * Creates an authority from its string representation.

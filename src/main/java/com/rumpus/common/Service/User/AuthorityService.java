@@ -25,7 +25,7 @@ public class AuthorityService implements IAuthorityService {
      * Creates an authority service using the supplied DAO.
      *
      * @param authorityDao
-     *                     DAO responsible for authority persistence
+     *            DAO responsible for authority persistence
      */
     public AuthorityService(IAuthorityDao authorityDao) {
         this.authorityDao = authorityDao;
@@ -35,7 +35,7 @@ public class AuthorityService implements IAuthorityService {
      * Gets an authority by ID.
      *
      * @param id
-     *           authority ID
+     *            authority ID
      * @return authority if found, otherwise {@code null}
      */
     @Override
@@ -57,7 +57,7 @@ public class AuthorityService implements IAuthorityService {
      * Adds an authority.
      *
      * @param authority
-     *                  authority to add
+     *            authority to add
      * @return added authority, or {@code null} if the operation failed
      */
     @Override
@@ -75,7 +75,7 @@ public class AuthorityService implements IAuthorityService {
      * </p>
      *
      * @param authority
-     *                  authority to create
+     *            authority to create
      * @return created authority, or {@code null} if the operation failed
      */
     @Override
@@ -88,7 +88,7 @@ public class AuthorityService implements IAuthorityService {
      * Removes an authority by ID.
      *
      * @param id
-     *           authority ID
+     *            authority ID
      * @return {@code true} if removed, otherwise {@code false}
      */
     @Override
@@ -101,9 +101,9 @@ public class AuthorityService implements IAuthorityService {
      * Updates an authority by ID.
      *
      * @param id
-     *                         ID of the authority to update
+     *            ID of the authority to update
      * @param updatedAuthority
-     *                         updated authority
+     *            updated authority
      * @return updated authority, or {@code null} if the operation failed
      */
     @Override
@@ -119,7 +119,7 @@ public class AuthorityService implements IAuthorityService {
      * Gets an authority by its role name.
      *
      * @param name
-     *             authority name
+     *            authority name
      * @return authority if found, otherwise {@code null}
      */
     @Override
@@ -131,7 +131,7 @@ public class AuthorityService implements IAuthorityService {
      * Determines whether an authority exists with the given role name.
      *
      * @param name
-     *             authority name
+     *            authority name
      * @return {@code true} if the authority exists, otherwise {@code false}
      */
     @Override
@@ -143,7 +143,7 @@ public class AuthorityService implements IAuthorityService {
      * Removes an authority by its role name.
      *
      * @param name
-     *             authority name
+     *            authority name
      * @return {@code true} if removed, otherwise {@code false}
      */
     @Override
@@ -157,9 +157,9 @@ public class AuthorityService implements IAuthorityService {
      * Updates an authority by its role name.
      *
      * @param name
-     *                         existing authority name
+     *            existing authority name
      * @param updatedAuthority
-     *                         updated authority
+     *            updated authority
      * @return updated authority, or {@code null} if the operation failed
      */
     @Override

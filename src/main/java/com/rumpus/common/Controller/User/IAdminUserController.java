@@ -48,9 +48,12 @@ import jakarta.validation.Valid;
  * </p>
  */
 @PreAuthorize("hasRole('ADMIN')")
-public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER_META>, USER_META extends AbstractCommonUserMetaData<USER_META>, USER_SERVICE extends IUserService<USER, USER_META>, USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
+public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER_META>,
+        USER_META extends AbstractCommonUserMetaData<USER_META>,
+        USER_SERVICE extends IUserService<USER, USER_META>,
+        USER_TEMPLATE extends IUserTemplate<USER, USER_META>>
         extends
-        ICommonController {
+            ICommonController {
 
     String PATH_ADMIN_USER = "/admin/user";
     String PATH_ADMIN_USERS = "/admin/users";
@@ -80,13 +83,13 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
      * {@link AbstractCommonUserCollection.SortDirection#ASC}.
      *
      * @param sort
-     *                  the field used to sort users
+     *            the field used to sort users
      *
      * @param direction
-     *                  the direction to sort results
+     *            the direction to sort results
      *
      * @param session
-     *                  the current HTTP session
+     *            the current HTTP session
      *
      * @return a {@link ResponseEntity} containing the sorted list of users and the
      *         appropriate HTTP status
@@ -109,8 +112,12 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "400", description = "Invalid sort parameters")
     })
     public ResponseEntity<List<USER>> getAllUsers(
-            @Parameter(description = "Field to sort by") @RequestParam(value = "sort", defaultValue = "username", required = false) AbstractCommonUserCollection.Sort sort,
-            @Parameter(description = "Sort direction") @RequestParam(value = "direction", defaultValue = "ASC", required = false) AbstractCommonUserCollection.SortDirection direction,
+            @Parameter(description = "Field to sort by")
+            @RequestParam(value = "sort", defaultValue = "username", required = false)
+            AbstractCommonUserCollection.Sort sort,
+            @Parameter(description = "Sort direction")
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false)
+            AbstractCommonUserCollection.SortDirection direction,
             HttpSession session);
 
     /**
@@ -132,11 +139,11 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
      * </ul>
      *
      * @param request
-     *                       the information required to create the user account
+     *            the information required to create the user account
      *
      * @param servletRequest
-     *                       the current HTTP servlet request used to establish the
-     *                       authenticated session
+     *            the current HTTP servlet request used to establish the
+     *            authenticated session
      *
      * @return a {@link ResponseEntity} containing the created {@link CommonSession}
      *         and the appropriate HTTP status
@@ -156,16 +163,19 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
     public ResponseEntity<CommonSession> createUser(
-            @Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user", required = true) @RequestBody CreateUserRequest request,
+            @Valid
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user", required = true)
+            @RequestBody
+            CreateUserRequest request,
             HttpServletRequest servletRequest);
 
     /**
      * Update an existing user (admin full update).
      *
      * @param userId
-     *               user id
+     *            user id
      * @param user
-     *               updated user object
+     *            updated user object
      */
     @PutMapping(PATH_ADMIN_USER_BY_ID)
     @Operation(summary = "Admin: Update user")
@@ -174,15 +184,17 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     ResponseEntity<CommonSession> updateUser(
-            @PathVariable UUID userId,
-            @RequestBody USER user,
+            @PathVariable
+            UUID userId,
+            @RequestBody
+            USER user,
             HttpServletRequest request);
 
     /**
      * Delete a user account.
      *
      * @param userId
-     *               user id
+     *            user id
      */
     @DeleteMapping(PATH_ADMIN_USER_BY_ID)
     @Operation(summary = "Admin: Delete user")
@@ -191,14 +203,15 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     ResponseEntity<Void> deleteUser(
-            @PathVariable UUID userId,
+            @PathVariable
+            UUID userId,
             HttpServletRequest request);
 
     /**
      * Get all roles assigned to a user.
      *
      * @param userId
-     *               the user id
+     *            the user id
      * @return set of authority assignments for the user
      */
     @GetMapping(PATH_ADMIN_USER_ROLES)
@@ -208,7 +221,8 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     ResponseEntity<Set<UserAuthority>> getUserRoles(
-            @PathVariable UUID userId);
+            @PathVariable
+            UUID userId);
 
     /**
      * Add a role to a user.
@@ -217,9 +231,9 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
      * should not cause errors).
      *
      * @param userId
-     *                target user id
+     *            target user id
      * @param request
-     *                role to assign
+     *            role to assign
      * @return no content on success
      */
     @PostMapping(PATH_ADMIN_USER_ROLES)
@@ -231,16 +245,20 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     ResponseEntity<Void> addUserRole(
-            @PathVariable UUID userId,
-            @Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user role", required = true) @RequestBody CreateUserRoleRequest request);
+            @PathVariable
+            UUID userId,
+            @Valid
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Information required to create a new user role", required = true)
+            @RequestBody
+            CreateUserRoleRequest request);
 
     /**
      * Remove a role from a user.
      *
      * @param userId
-     *               target user id
+     *            target user id
      * @param role
-     *               role to remove
+     *            role to remove
      * @return no content on success
      */
     @DeleteMapping(PATH_ADMIN_USER_ROLES + "/{role}")
@@ -251,8 +269,10 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     ResponseEntity<Void> removeUserRole(
-            @PathVariable UUID userId,
-            @PathVariable String role);
+            @PathVariable
+            UUID userId,
+            @PathVariable
+            String role);
 
     /**
      * Get a user by ID (admin view).
@@ -260,6 +280,7 @@ public interface IAdminUserController<USER extends AbstractCommonUser<USER, USER
     @GetMapping(PATH_ADMIN_USER_BY_ID)
     @Operation(summary = "Admin: Get user by id")
     ResponseEntity<USER> getUserById(
-            @PathVariable UUID userId,
+            @PathVariable
+            UUID userId,
             HttpServletRequest request);
 }

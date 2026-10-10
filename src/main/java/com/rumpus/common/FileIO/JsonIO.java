@@ -2,7 +2,6 @@ package com.rumpus.common.FileIO;
 
 import java.lang.reflect.Type;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -29,7 +28,7 @@ final public class JsonIO extends AbstractFileIO {
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL> readModelFromFile(
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> Optional<MODEL> readModelFromFile(
             String filePath, Type type) {
         final String jsonContent = FileIOUtil.readFileAsString(filePath);
 
@@ -50,7 +49,7 @@ final public class JsonIO extends AbstractFileIO {
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> Optional<MODEL[]> readModelsFromFile(
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> Optional<MODEL[]> readModelsFromFile(
             String filePath, Type type) {
         final String jsonContent = FileIOUtil.readFileAsString(filePath);
 
@@ -72,7 +71,7 @@ final public class JsonIO extends AbstractFileIO {
     }
 
     @Override
-    public <MODEL extends AbstractModel<MODEL, UUID>> boolean writeModelsToFile(String filePath,
+    public <MODEL extends AbstractModel<MODEL, ID>, ID> boolean writeModelsToFile(String filePath,
             MODEL[] models) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeModelsToFile'");
