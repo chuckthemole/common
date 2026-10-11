@@ -1,15 +1,19 @@
 package com.rumpus.common.User;
 
+import java.util.Set;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.rumpus.common.Dao.User.IAuthorityDao;
 import com.rumpus.common.Dao.User.IUserAuthorityDao;
 import com.rumpus.common.Dao.User.IUserDao;
 import com.rumpus.common.Service.User.AbstractUserService;
+import com.rumpus.common.Service.User.UserSecurityService;
 
 abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<USER, USER_META>,
         USER_META extends AbstractCommonUserMetaData<USER_META>>
@@ -21,14 +25,16 @@ abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<
     public AbstractCommonAuthManager(
             IUserDao<USER, USER_META> dao,
             IUserAuthorityDao userAuthorityDao,
-            IAuthorityDao authorityDao) {
+            IAuthorityDao authorityDao,
+            UserSecurityService userSecurityService,
+            PasswordEncoder passwordEncoder) {
         super(
                 dao,
                 userAuthorityDao,
                 authorityDao,
+                userSecurityService,
                 null,
-                null,
-                null);
+                passwordEncoder);
     }
 
     @Override
@@ -38,7 +44,7 @@ abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<
         final String name = authentication.getName();
         final String password = authentication.getCredentials().toString();
 
-        if (userIsAuthenticated(name, password)) {
+        if (this.userIsAuthenticated(name, password)) {
             LOG("User is authenticated, returning token.");
             // use the credentials
             // and authenticate against the third-party system
@@ -54,5 +60,5 @@ abstract public class AbstractCommonAuthManager<USER extends AbstractCommonUser<
 
     abstract public boolean userIsAuthenticated(String name, String password);
 
-    abstract public java.util.Set<GrantedAuthority> getAuthorities(String name);
+    abstract public Set<GrantedAuthority> getAuthorities(String name);
 }

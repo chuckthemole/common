@@ -19,10 +19,12 @@ import com.rumpus.common.Dao.jdbc.CommonJdbc;
 import com.rumpus.common.User.CommonUserDetails;
 import com.rumpus.common.User.UserAuthority;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 /**
  * Thin wrapper around Spring's JdbcUserDetailsManager.
  */
-public class UserSecurityService {
+public class UserSecurityService implements UserDetailsService {
     private static final String CREATE_USER_SQL = "insert into users (username, password, enabled) values (?,?,?)";
 
     private final JdbcUserDetailsManager delegate;
@@ -43,6 +45,7 @@ public class UserSecurityService {
 
     }
 
+    @Override
     public UserDetails loadUserByUsername(String username) {
         List<CommonUserDetails> users = CommonJdbc.getInstance()
                 .getJdbcTemplate()
@@ -75,8 +78,8 @@ public class UserSecurityService {
     }
 
     /**
-     * Load a Spring Security user by username, using the custom
-     * user-authority assignments instead of the legacy authorities table.
+     * Load a Spring Security user by username, using the custom user-authority
+     * assignments instead of the legacy authorities table.
      */
     // public UserDetails loadUserByUsername(String username) {
     // UserDetails user = delegate.loadUserByUsername(username);
@@ -122,17 +125,45 @@ public class UserSecurityService {
      * Get the authorities for a user by username.
      *
      * @param username
-     *                 the username of the user to get authorities for
+     *            the username of the user to get authorities for
      * @return a collection of GrantedAuthority objects representing the user's
      *         authorities
      */
-    public Collection<? extends GrantedAuthority> getAuthorities(String username) {
-        // return delegate.loadUserByUsername(username).getAuthorities();
+    public Collection<? extends GrantedAuthority> getAuthorities(
+            String username) {
 
-        Set<UserAuthority> userAuthorities = userAuthorityDao.getUserRoles(username);
+        final Set<UserAuthority> userAuthorities = userAuthorityDao.getUserRoles(username);
+
+        if (userAuthorities == null) {
+            throw new IllegalStateException(
+                    "User authority DAO returned null for username: "
+                            + username);
+        }
+
         return userAuthorities.stream()
-                .map(userRole -> new SimpleGrantedAuthority(
-                        userRole.getAuthority().getAuthority()))
+                .map(userRole -> {
+                    if (userRole == null) {
+                        throw new IllegalStateException(
+                                "Null UserAuthority returned for username: "
+                                        + username);
+                    }
+
+                    if (userRole.getAuthority() == null) {
+                        throw new IllegalStateException(
+                                "Null authority definition for username: "
+                                        + username);
+                    }
+
+                    final String authorityName = userRole.getAuthority().getAuthority();
+
+                    if (authorityName == null || authorityName.isBlank()) {
+                        throw new IllegalStateException(
+                                "Missing authority name for username: "
+                                        + username);
+                    }
+
+                    return new SimpleGrantedAuthority(authorityName);
+                })
                 .collect(Collectors.toSet());
     }
 

@@ -39,7 +39,7 @@ import com.rumpus.common.User.UserAuthority;
  */
 public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integer>
         implements
-        IUserAuthorityDao {
+            IUserAuthorityDao {
 
     /**
      * The authorities table key used in the table definition.
@@ -355,9 +355,9 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
                 String.class);
 
         /*
-         * users.id is VARCHAR(36) in MySQL, even though the application represents
-         * user IDs as UUID objects. Declare the SQL field as String and convert the
-         * UUID argument to text so the comparison uses matching types.
+         * users.id is VARCHAR(36) in MySQL, even though the application represents user
+         * IDs as UUID objects. Declare the SQL field as String and convert the UUID
+         * argument to text so the comparison uses matching types.
          */
         final Field<String> userIdField = DSL.field(
                 DSL.name("u", ICommon.ID),
@@ -622,12 +622,11 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
      * </p>
      *
      * @param model
-     *              authority model that would otherwise be persisted
+     *            authority model that would otherwise be persisted
      * @return never returns; this operation is intentionally unsupported
      * @throws UnsupportedOperationException
-     *                                       always, because authorities must be
-     *                                       managed through the explicit
-     *                                       user-role operations
+     *             always, because authorities must be managed through the explicit
+     *             user-role operations
      */
     @Override
     protected UserAuthority doAdd(UserAuthority model) {
@@ -717,16 +716,15 @@ public class UserAuthorityDaoJdbc extends AbstractApiDBJdbc<UserAuthority, Integ
      * </p>
      *
      * @param id
-     *              identifier of the {@link UserAuthority} being updated
+     *            identifier of the {@link UserAuthority} being updated
      * @param model
-     *              authority definition containing the attempted changes
+     *            authority definition containing the attempted changes
      *
      * @return never returns; this operation is intentionally unsupported
      *
      * @throws UnsupportedOperationException
-     *                                       always, because generic updates to
-     *                                       {@link UserAuthority} are not
-     *                                       supported by this DAO
+     *             always, because generic updates to {@link UserAuthority} are not
+     *             supported by this DAO
      */
     @Override
     protected UserAuthority doUpdate(

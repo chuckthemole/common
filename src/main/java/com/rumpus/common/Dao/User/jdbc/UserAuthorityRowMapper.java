@@ -15,7 +15,8 @@ import com.rumpus.common.User.UserAuthority;
 import com.rumpus.common.util.Pair;
 
 public class UserAuthorityRowMapper
-        extends AbstractJdbcRowMapper<UserAuthority> {
+        extends
+            AbstractJdbcRowMapper<UserAuthority> {
 
     static final String USER_AUTHORITY_ID_ROW = "user_authority_id";
     static final String USERNAME_ROW = "username";

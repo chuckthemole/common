@@ -21,7 +21,8 @@ import org.jooq.Query;
 import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 
-public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>, ID> extends AbstractDao<MODEL, ID> {
+public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>,
+        ID> extends AbstractDao<MODEL, ID> {
 
     /**
      * The {@link CommonJdbc} for this Dao
@@ -86,9 +87,9 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>, 
 
         if (id instanceof UUID) {
             /*
-             * UUIDs in this schema are stored as VARCHAR(36), not as a native
-             * UUID type. Use String.class and UUID.toString() so JDBC binds the
-             * parameter as text, matching the database column's storage type.
+             * UUIDs in this schema are stored as VARCHAR(36), not as a native UUID type.
+             * Use String.class and UUID.toString() so JDBC binds the parameter as text,
+             * matching the database column's storage type.
              */
             idCondition = DSL.field(
                     ICommon.ID,
@@ -96,8 +97,8 @@ public abstract class AbstractApiDBJdbc<MODEL extends AbstractModel<MODEL, ID>, 
                     .eq(id.toString());
         } else {
             /*
-             * For other ID types (e.g. Integer or Long), preserve the ID's
-             * configured Java type so jOOQ binds the parameter appropriately.
+             * For other ID types (e.g. Integer or Long), preserve the ID's configured Java
+             * type so jOOQ binds the parameter appropriately.
              */
             idCondition = DSL.field(
                     ICommon.ID,
